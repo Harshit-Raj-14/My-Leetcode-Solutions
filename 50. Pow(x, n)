@@ -1,0 +1,93 @@
+//LEETCODE PROBLEM
+//LEVEL - MODERATE
+//50. Pow(x, n)
+
+
+/*  IDEAL SOLUTION   */
+//Time Complexity : O(logn)
+
+class Solution {
+    public double myPow(double x, int n) {   
+
+        if(n==0)
+            return 1;
+        
+        if(n == Integer.MIN_VALUE){
+            x = x * x;
+            n = n/2;
+        }
+       
+        if(n<0)
+        {
+            n = -n;
+            x = 1/x;
+            //return 1/myPow(x,-n);
+        }
+        
+        double half=myPow(x, n/2);
+        
+        if(n%2==0)              //even number
+            return half*half;
+        else                    //odd number
+            return x*half*half;
+            
+    }
+}
+
+/*END OF PROGRAM  */
+
+
+/*  OTHER APPROACHES AND EXPLANATION  */
+        
+
+/* Recursion with dividing the n by 2
+//Time Complexity: O(logn) - Runtime error
+ if (n==0)
+            return 1;
+        if(n<0) 
+        {
+            n=-n;   //DETRIMENTAL ERROR IF WE MAKE IT +ve THENT HE VALUE WILL OVERFLOW IF WE INPUT A NUMBER GREATER THAN ITS LIMITS eg -2^31 cannot be stored in +ve
+                        //SO IT FAILS AT EDGE CASE OF -2^31 for the test-cases where n=-2147483648 TO SOLVE THIS WE WILL TAKE ANOTHER VAIRABLE AND MAKE IT long
+            x=1/x;
+        }
+        return (n%2==0) ? (myPow(x*x,n/2)) : x*myPow(x*x,n/2));
+
+
+// LOGIC :   if(n%2==0)   // n IS EVEN then 2^4 = (2*2)^2; so n gets halved each time
+            return myPow(x*x,n/2);
+        
+        else           //n is ODD then 2^5 = 2x[(2x2)^2]
+            return x*myPow(x*x,n/2);
+*/
+             
+        
+        
+        /* RECURSIVE APPROACH
+        //Time Complexity: O(n) - Stackoverflow Error (rejected)
+        
+        else
+            return x * myPow(x,n-1);
+        */
+ 
+ 
+      
+        
+        /* NAIVE APPROACH
+        //Time complexity : O(n) rejected
+        else if (n>0)
+        {
+            for(int i=1; i<n;i++)
+            {
+                x=x*temp;
+            }
+            return x;
+        }
+        else
+        {
+            for(int i=1;i<-n;i++)
+            {
+                x=x*temp;
+            }
+            return 1/x;
+        }
+        */
