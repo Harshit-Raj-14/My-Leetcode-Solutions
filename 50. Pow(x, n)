@@ -3,7 +3,7 @@
 //50. Pow(x, n)
 
 
-/*  IDEAL SOLUTION   */
+/*  ACCEPTED SOLUTION  (JAVA) */
 //Time Complexity : O(logn)
 
 class Solution {
@@ -12,7 +12,7 @@ class Solution {
         if(n==0)
             return 1;
         
-        if(n == Integer.MIN_VALUE){
+        if(n == Integer.MIN_VALUE){     //to handle n=-2147483648 which will cause stackoverflow
             x = x * x;
             n = n/2;
         }
