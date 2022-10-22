@@ -2,8 +2,8 @@
 //LEVEL - MODERATE
 //50. Pow(x, n)
 
-```
-/*  ACCEPTED SOLUTION  (JAVA) */
+
+/*  ACCEPTED SOLUTION #1 */
 //Time Complexity : O(logn)
 
 class Solution {
@@ -12,7 +12,8 @@ class Solution {
         if(n==0)
             return 1;
         
-        if(n == Integer.MIN_VALUE){     //to handle n=-2147483648 which will cause stackoverflow
+        if(n == Integer.MIN_VALUE)              //to handle n=-2147483648 which will cause stackoverflow
+        {     
             x = x * x;
             n = n/2;
         }
@@ -34,10 +35,42 @@ class Solution {
     }
 }
 
-```
+// END OF PROGRAM //
 
 
+// ACCEPTED SOLUTION #2 //
+class Solution {
+    public double myPow(double x, int n) {
+        return myPow(x, 1L*n);   //converting n to long by multiplying by 1L takes care of the -2^31 case
+    }
+    
+    private double myPow(double x, long n){
+    if(n==0)
+        return 1;
+    if (n<0(
+        return myPow(1/x,-n);
+    return n%2==0 ? myPow(x*x,n/2):x*myPow(x*x,n/2);
+    }
+ }
+// END OF PROGRAM //
 
+
+// ACCEPTED SOLUTION #3 //  Time Complexity - O(logn) and using while loop and bit magic
+class Solution {
+    public double myPow(double x, int n) {
+        long l = Math.abs((long)n);     //l variable stores n in long typecasted and positive absolute value
+        double ans = 1;
+        while(l>0)
+        {
+            if((l & 1) == 1) ans *= x;           //an even number in binary always ends with zero so when & operator applied with 1 it always becomes one showing l is even
+            x*=x;
+            l >>= 1;                    // divind l by 2 using left shift operator
+        }
+        return n<0 ? 1/ans : ans;
+        }
+   }
+
+// END OF PROGRAM //
 
 
 
