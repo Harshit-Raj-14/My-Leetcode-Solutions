@@ -2,7 +2,7 @@
 //LEVEL - MODERATE
 //50. Pow(x, n)
 
-
+```
 /*  ACCEPTED SOLUTION  (JAVA) */
 //Time Complexity : O(logn)
 
@@ -34,7 +34,11 @@ class Solution {
     }
 }
 
-/*END OF PROGRAM  */
+```
+
+
+
+
 
 
 /*  OTHER APPROACHES AND EXPLANATION  */
