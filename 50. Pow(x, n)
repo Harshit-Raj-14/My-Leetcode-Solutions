@@ -47,7 +47,7 @@ class Solution {
     private double myPow(double x, long n){
     if(n==0)
         return 1;
-    if (n<0(
+    if (n<0)
         return myPow(1/x,-n);
     return n%2==0 ? myPow(x*x,n/2):x*myPow(x*x,n/2);
     }
@@ -64,7 +64,7 @@ class Solution {
         {
             if((l & 1) == 1) ans *= x;           //an even number in binary always ends with zero so when & operator applied with 1 it always becomes one showing l is even
             x*=x;
-            l >>= 1;                    // divind l by 2 using left shift operator
+            l >>= 1;                    // divide l by 2 using left shift operator
         }
         return n<0 ? 1/ans : ans;
         }
