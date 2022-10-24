@@ -9,14 +9,27 @@ class Solution {
     {
         
         int B[]=new int[nums.length];
-        B[0]=nums[0];
+        B[0]=nums[0];                   //Make a new array and declare the first term same
         
         for(int i=1; i<nums.length;i++)
         {
-            B[i]=B[i-1] + nums[i];
+            B[i]=B[i-1] + nums[i];     //Next term of output array will be addition of now and previous element
         }
         
         return B;
         
     }
 }
+
+
+/*Without making another array and storing (clean goodlooking handsome solution)
+
+public int[] runningSum(int[] nums) {
+        int i = 1;
+        while (i<nums.length){
+            nums[i]+=nums[i-1];
+            i++;
+        }
+        return nums;
+    }
+*/
