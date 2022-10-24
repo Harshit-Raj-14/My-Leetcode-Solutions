@@ -1,0 +1,22 @@
+//LEETCODE PROBLEM
+//LEVEL - Easy
+//1480. Running Sum of 1d Array
+
+
+
+class Solution {
+    public int[] runningSum(int[] nums) 
+    {
+        
+        int B[]=new int[nums.length];
+        B[0]=nums[0];
+        
+        for(int i=1; i<nums.length;i++)
+        {
+            B[i]=B[i-1] + nums[i];
+        }
+        
+        return B;
+        
+    }
+}
