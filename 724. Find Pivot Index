@@ -1,0 +1,51 @@
+//LEETCODE PROBLEM
+//LEVEL - Easy
+//724. Find Pivot Index
+
+/*  ACCEPTED O(n^2) JAVA SOLUTION  */
+class Solution {
+    public int pivotIndex(int[] nums) 
+    {
+        int pivot;
+      for (pivot=0; pivot<nums.length; pivot++)
+      {
+          int sumL=0, sumR=0;
+          
+          for(int i=0; i<pivot; i++)
+              sumL+=nums[i];   //finding sum from 0 index to pivot-1 index
+          
+          for(int j=nums.length-1; j>pivot;j--)
+              sumR+=nums[j];    //finding sum from pivot+1 index to last index
+          
+          if(sumL==sumR)
+              return pivot;  
+      }
+        return -1;
+        
+    }
+}
+
+
+
+/*   ACCEPTED O(n) solution by balance scale  */
+/*
+#1.Think of the Balance scale in laboratory or traditional markets.
+#2. Imagine each number from input list as a weight.
+#3 Turn the finding of pivot index with left hand sum = right hand sum into the procedure of reaching the balance on boths sides.
+
+Algorithm:
+
+Step_#1: Let Left hand side be empty, and Right hand side holds all weights.
+
+Step_#2: Iterate weight_i from 0 to (n-1) During each iteration, take away weight_#i from right hand side, check whether balance is met or not. If yes, then the index i is the pivot index.
+If no, put weight_#i on the left hand side, and repeat the process until balance is met or all weights are exchanged.
+
+Step_#3: Finally, if all weights are exchanged and no balance is met, then pivot index does not exist, return -1.
+
+
+
+
+
+
+
+
