@@ -27,8 +27,33 @@ class Solution {
 
 
 
+
+
 /*   ACCEPTED O(n) solution by balance scale  */
-/*
+//Time Complexity - O(n)
+
+/*What we are doing here is fiding total_sum from zero index to last index.
+Next we start finding sum from zero index to i.
+If sum turns out to be half of (total_sum - nums[i]). then i will be the pivot. Since the both sides of pivot have equal sum.
+The idea we got from ym soluton was to reduce the steps we had been repeating in the tweo loops*/
+
+class Solution {
+    public int pivotIndex(int[] nums) {
+        int total = 0, sum = 0
+        for (int num : nums) total += num; //Finding total sum of array
+        for (int i = 0; i < nums.length; sum += nums[i++])
+            if (sum * 2 == total - nums[i]) return i;
+        return -1;  
+    }
+}
+
+
+
+
+
+
+/*   ACCEPTED O(n) solution by balance scale  */
+/* This is the same as above code just with wieghts and an inbuilt function. 
 #1.Think of the Balance scale in laboratory or traditional markets.
 #2. Imagine each number from input list as a weight.
 #3 Turn the finding of pivot index with left hand sum = right hand sum into the procedure of reaching the balance on boths sides.
@@ -40,7 +65,32 @@ Step_#1: Let Left hand side be empty, and Right hand side holds all weights.
 Step_#2: Iterate weight_i from 0 to (n-1) During each iteration, take away weight_#i from right hand side, check whether balance is met or not. If yes, then the index i is the pivot index.
 If no, put weight_#i on the left hand side, and repeat the process until balance is met or all weights are exchanged.
 
-Step_#3: Finally, if all weights are exchanged and no balance is met, then pivot index does not exist, return -1.
+Step_#3: Finally, if all weights are exchanged and no balance is met, then pivot index does not exist, return -1. */
+
+class Solution {
+    public int pivotIndex(int[] nums) {
+        // Left hand side be empty, and
+        // Right hand side holds all weights.
+        int totalWeightOnLeft = 0;
+        int totalWeightOnRight = IntStream.of( nums ).sum();
+        
+        for( int i = 0 ; i < nums.length ; i++ ){
+            
+            int curWeight = nums[i];
+            
+            totalWeightOnRight -= curWeight;
+            
+            if( totalWeightOnLeft == totalWeightOnRight ){
+                // balance is met on both sides
+                return i;
+            }
+            
+            totalWeightOnLeft  += curWeight;
+        }
+        
+        return -1;
+    }
+}
 
 
 
