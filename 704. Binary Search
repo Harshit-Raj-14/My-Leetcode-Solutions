@@ -1,0 +1,71 @@
+//LEETCODE PROBLEM
+//LEVEL - Easy
+//704. Binary Search
+
+
+/* JAVA SOLUTION - 1 */
+
+class Solution {
+    public int search(int[] nums, int target) {
+        int l=0;
+        int h=nums.length-1;
+        while(l<=h)
+        {
+        int key=(l+h)/2;      // can cause integer overflow
+            
+        if(nums[key]==target)
+            return key;
+            
+        else if(nums[key]>target)
+            h=key-1;
+            
+        else if(nums[key]<target)
+            l=key+1;
+        
+        }
+        return -1;
+    }
+}
+
+
+/* JAVA SOLUTION - 2 === PERFECT SOLUTION  */
+
+class Solution {
+public int search(int[] nums, int target) {
+        
+        if (nums == null || nums.length == 0) return -1;      // Taking care of corner case
+        int left = 0;
+        int right = nums.length - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;      //Does not allow integer overflow
+            if (nums[mid] == target) return mid;
+            if (nums[mid] > target) right = mid - 1;
+            else left = mid + 1;
+        }
+        return -1;
+    }
+
+
+
+/* C++ SOLUTION */
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int mid = 0;
+        int low = 0;
+        int high = nums.size()-1;
+        while(low<=high)
+        {
+            mid = (low+high)/2;
+            if(target==nums[mid])
+                return mid;
+            
+            else
+                if(nums[mid]>target)
+                    high = mid-1;
+            else
+                low = mid+1;
+        }
+        return -1;
+    }
+};
