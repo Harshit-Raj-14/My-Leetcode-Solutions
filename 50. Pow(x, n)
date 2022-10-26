@@ -62,7 +62,7 @@ class Solution {
         double ans = 1;
         while(l>0)
         {
-            if((l & 1) == 1) ans *= x;           //an even number in binary always ends with zero so when & operator applied with 1 it always becomes one showing l is even
+            if((l & 1) == 1) ans *= x;           //an odd number in binary always ends with one so when & operator applied with 1 it always becomes one showing l is odd
             x*=x;
             l >>= 1;                    // divide l by 2 using left shift operator
         }
