@@ -1,0 +1,12 @@
+//LEETCODE PROBLEM
+//LEVEL - Easy
+//2235. Add Two Integers
+
+
+/*  ACCEPTED O(1) JAVA SOLUTION  */
+
+class Solution {
+    public int sum(int num1, int num2) {
+        return num1 + num2;
+    }
+}
