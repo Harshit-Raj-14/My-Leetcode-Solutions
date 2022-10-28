@@ -1,0 +1,45 @@
+//LEETCODE PROBLEM
+//LEVEL - Easy
+//1991. Find the Middle Index in Array
+
+
+
+/* OPTIMISED TIME COMPLEXITY : O(n) ACCEPTED SOLUTION */
+class Solution {
+    public int findMiddleIndex(int[] nums) {
+        int sum=0;
+       for(int i=0; i<nums.length;i++)
+           sum+= nums[i];
+        int half=0;
+        for(int mi=0; mi<nums.length; mi++)
+        {
+           if (mi != 0) half+= nums[mi - 1];
+           if (2*half == sum - nums[mi]) return mi;
+        }
+        return -1;
+    }
+}
+            
+        
+     
+        
+
+        
+/* TIME COMPLEXITY : O(n^2) ACCEPTED SOLUTION */
+
+class Solution {
+    public int findMiddleIndex(int[] nums) {
+        for(int pivot=0; pivot<nums.length; pivot++)        //pivot is MiddleIndex
+        {
+            int sumL=0, sumR=0;
+            for(int i=0; i<pivot;i++)
+                sumL+=nums[i]; //sumL= from nums[0] to nums[pivot-1]
+            for (int j=nums.length-1; j>pivot;j--)
+                sumR+=nums[j];  //sumR= from nums[last] to nums [pivot+1]
+            if(sumL==sumR)
+                return pivot;
+        }
+        return -1;
+    }
+}   
+*/
