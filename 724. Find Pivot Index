@@ -29,7 +29,7 @@ class Solution {
 
 
 
-/*   ACCEPTED O(n) solution by balance scale  */
+/*   ACCEPTED O(n) solution */
 //Time Complexity - O(n)
 
 /*What we are doing here is fiding total_sum from zero index to last index.
@@ -44,6 +44,23 @@ class Solution {
         for (int i = 0; i < nums.length; sum += nums[i++])
             if (sum * 2 == total - nums[i]) return i;
         return -1;  
+    }
+}
+
+/*The same solution as above but in expanded form for better understnading how loop working  */
+/*   ACCEPTED O(n) solution  */
+//Time Complexity - O(n)
+class Solution {
+    public int pivotIndex(int[] nums) {
+        int sum = 0, left = 0;
+        for (int i = 0; i < nums.length; i++) sum += nums[i];
+        
+        for (int i = 0; i < nums.length; i++) {
+            if (i != 0) left += nums[i - 1];
+            if (2*left == sum - nums[i]) return i;
+        }
+        
+        return -1;
     }
 }
 
