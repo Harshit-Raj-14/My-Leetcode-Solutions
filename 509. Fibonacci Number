@@ -3,13 +3,23 @@
 //509. Fibonacci Number
 
 /* Iterative Solution */
-//Time complexity: O(n)
+
+class Solution {
+    public int fib(int n) {
+        if(n<=1) return n;
+        
+        int a=0, b=1, sum=0;
+        for(int i=2; i<=n; i++)
+        {
+            sum=a+b;
+            a=b;
+            b=sum;      
+        }
+        return sum;
+    }
+    //Time complexity: O(n)
 //Space complexity: O(1)
-
-
-
-
-
+}
 
 
 
@@ -29,6 +39,29 @@ class Solution {
         
     }
 }
+/*
+Analysis of time :
+T(n) = T(n-1) + T(n-2) + k (here k is time in adding fn1 and fn2)
+T(n) =T(n-1) + T(n-1) (approximation)
+T(n)=2T(n-1)
+2T(n-1)=2^2T(n-2)//replace n with n-1 and multiply by 2 because we want to cancel LHS and RHS
+2^2T(n-2)=2^3T(n-3)
+....
+..
+2^n-1T(1)=2^n*T(0). // T(0)=1 in O(1) we can get fibonacci (0)=1 (basically base case)
+-------------- (add all equation and cancel RHS with LHS )
+T(n)=2^n
+
+                           F(5)
+					  /	               \
+			  	F(4)                    F(3)
+	    	/		 \                 /     \
+        F(3)        F(2) 		   F(2)       F(1)
+	/      \         /  \        
+F(2)	F(1)       F(1)  F(0)
+
+as calls are repeating there so we can do memoization to improve the time complexity.
+*/
 
 
 
@@ -44,3 +77,59 @@ class Solution
             return fib(n - 1) + fib(n - 2);
     }
 }
+
+
+
+
+//Solution by memoized the recursion solution as we calls are repeating
+//Time complexity O(N)
+//Space : O(N)
+
+public int fibonacci(int n){
+   return fibonacci(n,new int[n]);
+}
+
+private int fibonacci(int n,int[] qb){
+   if(n==0 || n==1) return n;
+    if(qb[n]!=0) return qb[n];   // qb : question bank (basically dp)
+	
+   int fnm1=fibonacci(n-1,qb);  //fn1:fibonaaci of n-1
+   int fnm2=fibonacci(n-2,qb); // fn2:fibonacci of n-2
+   
+   int fn=fnm1 + fnm2;     // fn: fiboncacci of n
+   qb[n]=fn;
+   return fn;
+}
+
+NOTE :
+1.Instead of writting a new function name . I have override fibonacci function ( make a very Positive impression in interview)
+2. and I have made it private. ( generally people have tendency to make public everything)
+These 2 points are very valuable point which people miss in generall .
+
+
+
+
+
+Solution 3:Dp tabulation with O(n) space and O(n) time
+
+ public int fibonacci(int n){
+    int[] dp=new int[n+1];
+	dp[0]=0;
+	dp[1]=1;
+	
+	for(int i=2;i<dp.length;i++){
+	  dp[i]=dp[i-1]+dp[i-2];
+	}
+    return dp[n];
+ }
+
+we can see that we just need previous to value to calcluate mine so space can be optimised
+
+
+
+
+
+//Similar questions:
+91. Decode Ways
+62. Unique Paths
+70. Climbing Stairs
