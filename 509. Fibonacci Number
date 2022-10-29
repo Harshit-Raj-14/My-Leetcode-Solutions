@@ -1,0 +1,46 @@
+//LEETCODE PROBLEM
+//LEVEL - Easy
+//509. Fibonacci Number
+
+/* Iterative Solution */
+//Time complexity: O(n)
+//Space complexity: O(1)
+
+
+
+
+
+
+
+
+
+/* RECURSIVE SOLUTION */
+/* ACCEPTED O(2^N) SOLUTION */
+class Solution {
+    public int fib(int n) {
+        if (n==0) return 0;
+        if (n==1) return 1;
+        if (n>0) return fib(n-1)+fib(n-2);
+        
+        return -1;
+        
+//Time complexity: O(2^n)- since T(n) = T(n-1) + T(n-2)is an exponential time
+//Space complexity: O(n) - space for recursive function call stack      
+        
+    }
+}
+
+
+
+/* RECURSIVE SOLUTION (SAME AS ABOVE)*/
+/* ACCEPTED O(2^N) SOLUTION */
+class Solution 
+{
+    public int fib(int n)
+    {
+        if(n <= 1)
+            return n;
+        else
+            return fib(n - 1) + fib(n - 2);
+    }
+}
