@@ -1,0 +1,54 @@
+//LEETCODE PROBLEM
+//LEVEL - Easy
+//278. First Bad Version
+
+/* ACCEPTED O(logn) SOLUTION */
+public class Solution extends VersionControl {
+    public int firstBadVersion(int n) {
+        int l=1, h=n, ans=-1;
+        while(l<=h)
+        {
+            int key=l + (h-l)/2;
+            if(isBadVersion(key)==true) 
+            {
+                h=key-1;
+                ans=key;
+            }
+            if(isBadVersion(key)==false)
+            {
+                l=key+1;
+            }
+        }
+        return ans;
+      
+    }
+//Time Complexity: O(log n) as search space reduces to half at every decision.
+//Space Complexity: O(1).
+}
+
+Algorithm:
+
+    select a mid element.
+    if isBadVersion(mid)==false move the search space to right.
+    if isBadVersion(mid)==true save mid; and move search space to left.
+    get out of the loop when space converges to 1 element.
+
+
+
+
+/* REJECTED O(n) SOLUTION */
+public class Solution extends VersionControl {
+    public int firstBadVersion(int n) {
+    for(int i=1;i<=n;i++)
+        {
+            if(isBadVersion(i))
+                return i;
+        }
+        return -1;
+    }
+//Time Complexity: O(n), we would check n numbers in worst case
+//Space Complexity: O(1)
+}
+        
+
+
