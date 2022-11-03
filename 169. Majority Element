@@ -1,0 +1,59 @@
+//LEETCODE PROBLEM
+//LEVEL - Easy
+//169. Majority Element
+
+
+/* JAVA ACCEPTED SOLUTION O(n^2) */
+class Solution {
+    public int majorityElement(int[] nums) {
+        int a=nums.length/2;
+        
+        for(int i=0;i<nums.length;i++)
+        {
+            int temp=nums[i];
+            int count=0;
+            for(int j=0;j<nums.length;j++)
+            {
+                if(nums[j]==temp)
+                    count++;
+            }
+            if(count>a)
+                return temp;
+        }
+        return -1;
+        
+    }
+}
+Approach I : Two for loops. 
+Iterate through each eleemnt of the nums array. For each element, iterate again through the nums array and count the occurence of that element. 
+If count is greater than floor(n/2) then the element is the majority element.
+TC- O(n^2)
+SC - O(1)
+
+
+
+Approach II : HashMap
+Iterate through each eleemnt of the aray and increment its count in the map. Here, key will be an elemnt present in nums and value will be the count. 
+Now iterate through the map and return the eleemnt with a count value greater than floor(n/2).
+TC - O(n)
+SC - O(1)
+
+
+
+
+Approach III Sorting
+Why if you ask asorting?
+As per the question it says that to find the element that appears more than n/2 times, so after sorting, the majority element always ends up taking the n/2th position.
+example : n=10, sorted nums=[1,2,3,3,4,4,4,4,4,4]
+n/2 = 10/2 =5
+So at 5th index is the answer =4
+TC -O(nlogn)
+SC- O(1)
+
+
+
+
+
+Approach IV - Boyer Moore Majority Voting Algorithm : Best Solution
+TC- O(n) 
+SC - O(1)
