@@ -37,11 +37,29 @@ Iterate through each eleemnt of the aray and increment its count in the map. Her
 Now iterate through the map and return the eleemnt with a count value greater than floor(n/2).
 TC - O(n)
 SC - O(1)
+// Hashtable 
+public int majorityElement2(int[] nums) {
+    Map<Integer, Integer> myMap = new HashMap<Integer, Integer>();
+    //Hashtable<Integer, Integer> myMap = new Hashtable<Integer, Integer>();
+    int ret=0;
+    for (int num: nums) {
+        if (!myMap.containsKey(num))
+            myMap.put(num, 1);
+        else
+            myMap.put(num, myMap.get(num)+1);
+        if (myMap.get(num)>nums.length/2) {
+            ret = num;
+            break;
+        }
+    }
+    return ret;
+}
 
 
 
 
-Approach III Sorting
+
+Approach III SORTING : TWO LINE SOLUTION
 Why if you ask asorting?
 As per the question it says that to find the element that appears more than n/2 times, so after sorting, the majority element always ends up taking the n/2th position.
 example : n=10, sorted nums=[1,2,3,3,4,4,4,4,4,4]
@@ -49,11 +67,88 @@ n/2 = 10/2 =5
 So at 5th index is the answer =4
 TC -O(nlogn)
 SC- O(1)
+DEEP EXPLANATION :When an element appears more than n/2 times in the array, the middle one must be the "majority" number when array is sorted.
+
+Think about this example:
+
+Assume O is the "majority" and X is other numbers. The two extreme cases:
+
+O is at the front.
+
+[O O O O X X X]
+
+O is at the end.
+
+[X X X O O O O]
+
+They both must have the "majority" number in the middle.
+
+All the other cases:
+
+No matter how you shift X to the front or the end, O must be in the middle:
+
+[X O O O O X X]
+
+[X X O O O O X]
+That was really subtle.
+Though the complexity increases due to sorting, I can't disagree that it is one of the better solutions and definitely one of the solutions 
+that you can start with in your interviews before trying to improve for complexity.
+
+// RECURSIVE CODE - ONLY TWO LINER
+public int majorityElement1(int[] nums) {
+    Arrays.sort(nums);
+    return nums[nums.length/2];
+//ok, got it. it's trick. An assumption is the frequency of majority element > n/2
 
 
 
 
-
-Approach IV - Boyer Moore Majority Voting Algorithm : Best Solution
+Approach IV - Boyer Moore Majority VOTING ALGORITHM : Best Solution
 TC- O(n) 
 SC - O(1)
+BEST METHOD
+LINK - https://medium.com/@ashaynayak50/interview-question-16-efficient-technique-to-find-majority-element-9dc9a4c355c
+Great idea!
+And I want to express my thinking of this solution.
+
+When count != 0 , it means nums[1...i] has a majority,which is major in the solution.
+When count == 0 , it means nums[1...i ] doesn't have a majority, so nums[1...i ] will not help nums[1...n].And then we have a subproblem of nums[i+1...n].
+
+I think it's kind of DP.
+
+//
+public class Solution {
+    public int majorityElement(int[] num) {
+
+        int major=num[0], count = 1;
+        for(int i=1; i<num.length;i++){
+            if(count==0){
+                count++;
+                major=num[i];
+            }else if(major==num[i]){
+                count++;
+            }else count--;
+            
+        }
+        return major;
+    }
+}
+
+
+
+
+/*   BIT MANIPULATION    */
+public int majorityElement(int[] nums) {
+        int[] bit = new int[32];
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = 0; j < 32; j++) {
+                bit[j] += (nums[i] >> j) & 1;
+            }
+        }
+        int majority = 0;
+        for (int j = 0; j < 32; j++) {
+            bit[j] = bit[j] > (nums.length / 2)? 1 : 0;
+            majority += bit[j] << j;
+        }
+        return majority;
+    }
