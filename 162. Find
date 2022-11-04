@@ -1,0 +1,26 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+If num[i-1] < num[i] > num[i+1], then num[i] is peak
+If num[i-1] < num[i] < num[i+1], then num[i+1...n-1] must contains a peak
+If num[i-1] > num[i] > num[i+1], then num[0...i-1] must contains a peak
+If num[i-1] > num[i] < num[i+1], then both sides have peak
+
+
+If the array contains only one element, it is easy to see that this element is a peak element.
