@@ -22,7 +22,7 @@ class Solution {
     }
 }
 
-Note :The return type of the rpogram is not integer but an array so we have returned i and j and -1 in form of an array.
+Note :The return type of the program is not integer but an array so we have returned i and j and -1 in form of an array.
 Also, "You may assume that each input would have exactly one solution, and you may not use the same element twice." 
 This statment means that the same index cannot be used twice.
 This was the brute force approach, we fix an index and then use it while traversing other numbers and checking the sum.
