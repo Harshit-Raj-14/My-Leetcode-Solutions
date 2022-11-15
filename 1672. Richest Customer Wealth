@@ -1,0 +1,67 @@
+//LEETCODE PROBLEM
+//LEVEL - Easy
+//1672. Richest Customer Wealth
+
+
+/* BRUTE FORCE APPROACH - ACCEPTED === TC : 0(n^2)*/
+class Solution {
+    public int maximumWealth(int[][] accounts) {
+        
+        int maxW=0;
+        
+        for (int i=0; i<accounts.length;i++)
+        {
+            int sum =0;
+            
+            for (int j=0; j<accounts[i].length;j++)
+            {
+                sum+=accounts[i][j];
+            }
+            if(sum>maxW) maxW=sum;  //maxW = Math.max(sum,maxW);
+        }
+        return maxW;
+        
+    }
+}
+
+
+NOTE : for each loops are faster than for indexed loops
+
+
+/* Using for-each loop becoems 100% times faster */
+
+class Solution {
+    public int maximumWealth(int[][] accounts) {
+        int maxW = 0;
+        
+        for(int[] account : accounts){
+            int sum = 0;
+            for(int x : account){
+                sum += x;
+            }
+            maxW = Math.max(maxW, sum);
+        }
+        return maxW;
+    }
+}
+
+
+
+
+/* ONE LINER SOLUTIONS */
+class Solution {
+    public int maximumWealth(int[][] accounts) {
+        return Arrays.stream(accounts).mapToInt(i -> Arrays.stream(i).sum()).max().getAsInt();
+    }
+}
+   
+
+LOGIC : for every row calculate the sum, then find the biggest sum from the row_sum_list e.g map(sum, accounts) the time complexity for a rectangle matrix M x N 
+where M is number of rows and N is number of columns is O(M x N + M) but simplified is O(M x N) hence lee215 says O(input) since the input is M x N elements big.
+
+EXPLANATION : There's a concept in functional programming called Higher-Order Functions, which are a type of functions that can accept functions as arguments 
+and/or return functions as results. The built-in function map is an example of Higher-Order Functions, it takes the function sum and applies it to each entry 
+of the accounts list.
+Therefore, map(sum, accounts) returns a list containing the sum of each sub-list in the accounts list and max(map(sum, accounts)) returns the maximum sum 
+from the sums produced using the map function.
+  
