@@ -9,7 +9,7 @@ public class Solution extends GuessGame {
         int l=1, h=Integer.MAX_VALUE; //given in constraints
         
         while(l<=h){
-            int mid = l + (h-l)/2;  
+            int mid = l + (h-l)/2;  //int mid = (l+h) >>>1; makes program faster also overflow won't occur becuase it works on bits
             if(guess(mid)==0) return mid;
             if(guess(mid)==1) l=mid+1;
             if(guess(mid)==-1) h=mid-1;
@@ -29,3 +29,13 @@ a way to query ranges, i.e., by calling guess(m) we are basically asking 3 quest
 
 One of them will return a positive answer, thus, allowing us to either return the unknown number or update the interval of ignorance. 
 It is known from the theory that halving the interval of ignorance is the best way to go, thus, we take a middle point on each iteration.
+
+
+Probably faster, and arguably as clear is:
+
+             int mid = (low + high) >>> 1;      // can use this
+
+
+In C and C++ (where you don't have the >>> operator), you can do this:
+
+            mid = ((unsigned int)low + (unsigned int)high)) >> 1;
