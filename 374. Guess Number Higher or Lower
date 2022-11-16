@@ -1,0 +1,31 @@
+//LEETCODE PROBLEM
+//LEVEL - Easy
+//374. Guess Number Higher or Lower
+
+
+/* JAVA ACCEPTED SOLUTION === BINARY SEARCH 0(log n) */
+public class Solution extends GuessGame {
+    public int guessNumber(int n) {
+        int l=1, h=Integer.MAX_VALUE; //given in constraints
+        
+        while(l<=h){
+            int mid = l + (h-l)/2;  
+            if(guess(mid)==0) return mid;
+            if(guess(mid)==1) l=mid+1;
+            if(guess(mid)==-1) h=mid-1;
+        }
+        return -1;    
+    }
+}
+LOGIC - here we had been asked to find the number picked by the perosn with constraints 1 <= n <= 231 - 1.
+So we can treat this array wiht that constriant and apply binary search to find solution.
+Use the API given in question similar to binary search conditions set.
+
+Comment. Brute-force solution (i.e., guessing each number from 1 to n iteratively) is highly inefficient. Conveniently, the guess function provides us 
+a way to query ranges, i.e., by calling guess(m) we are basically asking 3 questions simultaneously:
+    Is m the unknown number?
+    Does the unknown number lie on the interval [1, m)?
+    Does the unknown number lie on the interval (m, n]?
+
+One of them will return a positive answer, thus, allowing us to either return the unknown number or update the interval of ignorance. 
+It is known from the theory that halving the interval of ignorance is the best way to go, thus, we take a middle point on each iteration.
