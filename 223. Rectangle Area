@@ -1,0 +1,73 @@
+//LEETCODE PROBLEM
+//LEVEL - Medium
+//223. Rectangle Area
+
+
+
+class Solution {
+    public int computeArea(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2) {
+        
+        //Case I : Two rectangles touch or does not overlap === Total area = sum of both rectangles
+        //Case II : Two rectangles overlap === Total area = sum of both rectnagle- overlapped
+        
+        int TotalArea = Math.abs(ax2-ax1)*Math.abs(ay2-ay1) + Math.abs(bx2-bx1)*Math.abs(by2-by1);
+        
+        if(ax2 <= bx1 || ay1 >= by2 || ax1 >= bx2 || ay2<= by1) //conditions for not overlapping
+        {
+            return TotalArea;
+        }
+        
+        else    //Not overlapping
+        {
+            int a1 = Math.min(ax2, bx2) - Math.max(ax1, bx1);
+            int a2 = Math.min(ay2, by2) - Math.max(ay1, by1);
+            int overlap = a1 * a2;
+            return TotalArea - overlap;
+        }  
+    }
+}
+
+
+
+TC : O(1)
+SC : O(1)
+
+LOGIC ==== pretty fundamental understanding of use cases, because here the easier job is to find out which cases turn out to no overlapping, 
+and then the rest of the work is done by 'else'.
+Consider each of the points in for condition as a line paralle to axis and see which comparison will make them not overlap.
+Dont forget we have top left and bottom right for a reason.
+
+Fun fact, this algorithm is very widely used in machine learning on object detection tasks to calculate the IoU (intersection over union) to train the model.
+
+watch this video for logic - https://www.youtube.com/watch?v=btxtREq8fAQ
+read article solution - https://leetcode.com/problems/rectangle-area/solution/
+
+
+
+Points to note :
+Use math.abs to avoid only negative values since, for area we only multiply distances between each point and not exactly the difference. 
+May not needed since multiply invovled
+
+
+
+
+/* ONE LINER JAVA SOLUTION */
+
+class Solution {
+    public int computeArea(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2) 
+    { 
+    return (ax2-ax1)*(ay2-ay1) + (bx2-bx1)*(by2-by1) - ( (Math.max(Math.min(ax2,bx2) - Math.max(ax1,bx1) , 0) * Math.max(Math.min(ay2,by2) - Math.max(ay1,by1) , 0)));      
+    }
+}
+
+
+/* 100% FASTER SOLUTION */
+class Solution {
+    public int computeArea(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2) {
+        int horizontal = Math.max(0, Math.min(ax2,bx2) - Math.max(ax1,bx1));
+        int vertical = Math.max(0, Math.min(ay2,by2) - Math.max(ay1,by1));
+        return (ax2-ax1)*(ay2-ay1) + (bx2-bx1)*(by2-by1) - horizontal* vertical;
+    }
+}
+
+
