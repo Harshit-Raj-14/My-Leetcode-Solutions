@@ -1,0 +1,114 @@
+//LEETCODE PROBLEM
+//LEVEL - Easy
+//263. Ugly Number
+
+
+/* JAVA ACCEPTED ONLY WHILE LOOPS */  //100% FASTER
+class Solution {
+    public boolean isUgly(int n) {
+        if(n<=0) return false;    //handle negative number cases
+        
+            while(n%2==0) n/=2;
+            while(n%3==0) n/=3;
+            while(n%5==0) n/=5;
+        
+        if(n>1) return false;
+       
+        return true;    //for 1 we have to return true givien in example 2 of code, since it will be in every no., so no case has been written for it
+    }
+}
+
+TIME COMPLEXITY : O(logn(base 2) + logn(base3) + logn(base 5)) === O(logn(base 2))
+SC : 0(1)
+
+
+
+/* ACCEPTED JAVA SOLUTION */  // 10% faster
+class Solution {
+    public boolean isUgly(int n) {
+        
+        if(n<=0) return false;    //handle negative number cases
+        
+        while(n>1){
+            if(n%2==0) n/=2;
+            else if(n%3==0) n/=3;
+            else if(n%5==0) n/=5;
+            else return false;    
+        }
+        return true;     //for 1 we have to return true givien in example 2 of code, since it will be in every no., so no case has been written for it
+    }
+}
+
+LOGIC : Prime factorization is dividing a number until you get 1 . Here we can divide with 2,3 and 5 only -- Apply this condition and return respective output. DONE!!!
+
+Intuition:
+If a number is divisible by 2,3 or 5. We can keep on dividing it with these numbers till it becomes 1.
+Example,
+Let, n = 15
+15 / 3 = 5
+5 / 5 = 1
+For any number divisible by these 3 numbers only, we will get 1 at the end
+
+Approach:
+Using a recursive approach,
+If a number is 1 or 0 return true or false respectively.
+if a number of divisible by 2, 3, or 5, send the quotient back to isUgly function as a parameter.
+if a number is not divisible by 2, 3 or 5 return False
+
+Note : If you wanted to use only if and not else if; the problem is that it will give wrong solution. eg after checking n=6, it will do n/2.
+Giving n=3; and then if(n%3==0) will be executed and n will become 1. next else would have been executed and we would have got wrong solution.
+Below gives a way to use if properly by using recursion;
+
+/* RECURSIVE APPROACH */ // 80% faster
+class Solution {
+    public boolean isUgly(int n) {
+        if(n<=0) return false;
+        
+        while(n>1){
+            if(n%2==0) return isUgly(n/2);
+            else if(n%3==0) return isUgly(n/3);
+            else if(n%5==0) return isUgly(n/5);
+            else return false;    
+        }
+        return true;  
+    }
+}
+
+
+/* JAVA ACCEPTED ONLY WHILE LOOPS */  //100% FASTER
+class Solution {
+    public boolean isUgly(int n) {
+        if(n<=0) return false;
+        
+            while(n%2==0) n/=2;
+            while(n%3==0) n/=3;
+            while(n%5==0) n/=5;
+        
+        if(n>1) return false;
+       
+        return true;
+    }
+}
+
+TIME COMPLEXITY : O(logn(base 2) + logn(base3) + logn(base 5)) === O(logn(base 2))
+SC : 0(1)
+
+
+
+
+
+/* JAVA SOLUTION USING FOR LOOP */  //not a creative way and looks forced
+class Solution {
+    public boolean isUgly(int n) {  
+        if(n==0) return false;
+        for(int i=2;i<=5;i+=i-1){
+            while(n%i==0){
+                n=n/i;
+            }
+        }
+        return n==1;
+    }
+}
+
+
+
