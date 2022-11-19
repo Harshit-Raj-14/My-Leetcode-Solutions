@@ -1,0 +1,43 @@
+//LEETCODE PROBLEM
+//LEVEL - Hard
+//42. Trapping Rain Water
+
+
+WRONG SOLUTION
+
+class Solution {
+    public int trap(int[] height) {
+        int lmax=height[0];
+        int rmax=height[height.length-1];
+        int totalTrappedWater=0;
+        
+        for(int i=1; i<height.length-1;i++)
+        {
+            int waterLevel= Math.min(lmax,rmax);
+            int trappedWater = waterLevel- height[i];
+            if(trappedWater<0) trappedWater=0;    
+            totalTrappedWater+=trappedWater;
+            
+            if(height[i]>lmax) lmax=height[i];
+            if(height[height.length-1-i]>rmax) rmax=height[height.length-1-i];         
+        }
+        return totalTrappedWater;   
+    }
+}
+
+testcase
+[0,1,0,2,1,0,1,3,2,1,2,1]
+[5,4,1,2]
+[5,5,1,7,1,1,5,2,7,6]
+
+
+output
+9
+1
+23
+
+
+expected
+6
+1
+23
