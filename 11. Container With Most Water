@@ -1,0 +1,38 @@
+//LEETCODE PROBLEM
+//LEVEL - Easy
+//11. Container With Most Water
+
+
+
+
+
+
+LOGIC = trapped water between two tallest rod is like an area enclosed between them
+
+
+
+
+
+
+
+/* Brute Force Time Limit Exceeded O(n^2) */      
+class Solution {
+    public int maxArea(int[] height) {
+        int waterContainer =0;
+        
+        for(int i=0;i<height.length-1;i++)
+        {
+            for(int j=i+1;j<height.length;j++)
+            {
+                int trappedWater = Math.min(height[i],height[j]) * (j-i);
+                waterContainer=Math.max(trappedWater, waterContainer);
+            }
+        }
+        return waterContainer;
+    }
+}
+        
+        
+        
+        
+        
