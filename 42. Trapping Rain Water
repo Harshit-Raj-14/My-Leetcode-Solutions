@@ -35,3 +35,20 @@ class Solution {
         return totalWaterLevel;
     }
 }
+LOGIC: DYNAMIC PROGRAMMING
+TC : O(n)
+SC: O(n)
+
+
+
+/* TWO POINTERS */
+
+
+
+
+
+TC : O(n)
+SC: O(1)
+
+
+/* BRUTE FORCE O(n^2) */
