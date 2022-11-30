@@ -17,7 +17,7 @@ class Solution {
             return TotalArea;
         }
         
-        else    //Not overlapping
+        else    // overlapping
         {
             int a1 = Math.min(ax2, bx2) - Math.max(ax1, bx1);
             int a2 = Math.min(ay2, by2) - Math.max(ay1, by1);
