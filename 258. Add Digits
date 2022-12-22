@@ -1,0 +1,45 @@
+//LEETCODE PROBLEM
+//LEVEL - Easy
+//258. Add Digits
+
+/* ACCEPTED SOLUTION */
+
+class Solution {
+    public int addDigits(int n) {
+        if(n==0) return 0;
+        int sum=0;
+        while(n>0){
+            sum+=n%10;
+            n=n/10;
+        }
+        if(sum>9) return addDigits(sum);
+        return sum; 
+    }
+}
+//TC : O(logn)
+//SC : O(1)
+
+
+/* Mathematical: Digital Root */
+
+class Solution {
+    public int addDigits(int num) {
+        if (num == 0) return 0;
+        if (num % 9 == 0) return 9;
+        return num % 9;
+    }
+}
+//TC : O(1)
+//SC : O(1)
+
+THEORY :
+DR = 0 ,if n=0
+DR = 9 ,if n=9k
+DR = n mod 9 ,if n!=9k
+
+How to derive it? 
+divisibility by 9: "The original number is divisible by 9 if and only if the sum of its digits is divisible by 9". Let's revise it briefly.
+
+NOTES : The value we're asked to compute is the so-called Digital Root.
+The digital root (also repeated digital sum) of a natural number in a given radix is the (single digit) value obtained by an iterative process of summing digits, 
+on each iteration using the result from the previous iteration to compute a digit sum.
