@@ -3,14 +3,72 @@
 //11. Container With Most Water
 
 
+/* JAVA ACCEPTED SOLUTION O(n) */
+class Solution {
+    public int maxArea(int[] height) {
+        int i=0, j=height.length-1;
+        int maxWater=0;
+        while(i<=j){
+            maxWater=Math.max(maxWater, (j-i)*Math.min(height[i],height[j]));
+            if(height[i]<height[j]) i++;    //we move the pointer which has the smaller height. Reason : becuase that is the ebst thing we can do. we already have maxArea to remember the bigger value.
+            else j--;
+        }
+        return maxWater;
+    }
+}
+/*
+three cases:
+h[i]>h[j] -> j--; j moves backward
+h[i]<h[j] -> i++; i moves forward
+h[i]==h[j] -> i++,j--; both moves Also considering this case or not in code does not matter as it gets managed in else part and later, but it saves time writing seperately
+*/
 
+/* SAME CODE IN LENGTHY BORKEN FORM */
+class Solution {
+    public int maxArea(int[] height) {
+        int left = 0;
+        int right = height.length - 1;
+        int max = 0;
+        while(left < right){
+            int w = right - left;
+            int h = Math.min(height[left], height[right]);
+            int area = h * w;
+            max = Math.max(max, area);
+            if(height[left] < height[right]) left++;
+            else if(height[left] > height[right]) right--;
+            else {  //both equal heights
+                left++;
+                right--;
+            }
+        }
+        return max;
+    }
+}
 
+LOGIC = trapped water between two tallest rod is like an area enclosed between them. Forget about water; the problem is just about finding a maximum area rectangle.
+Try to use two-pointers. Set one pointer to the left and one to the right of the array. Always move the pointer that points to the lower line.
 
-
-LOGIC = trapped water between two tallest rod is like an area enclosed between them
-
-
-
+Explanation - Variables i and j define the container under consideration. We initialize them to first and last line, meaning the widest container. 
+Variable water will keep track of the highest amount of water we managed so far. We compute j - i, the width of the current container, and min(height[i], height[j]), 
+the water level that this container can support. Multiply them to get how much water this container can hold, and update water accordingly. 
+Next remove the smaller one of the two lines from consideration, as justified in "Idea / Proof". 
+Continue until there is nothing left to consider, then return the result.
+Idea / Proof:
+    The widest container (using first and last line) is a good candidate, because of its width. Its water level is the height of the smaller one of first and last line.
+    All other containers are less wide and thus would need a higher water level in order to hold more water.
+    The smaller one of first and last line doesn't support a higher water level and can thus be safely removed from further consideration.
+    
+8				|	                                    |
+7				|	                                    |	            |                             width = 8 - 0 = 8
+6				|	    |	                            |	            |                             height = min(1, 7)
+5				|	    |	            |	            |	            |                             Area = 8 * 1 = 8
+4				|	    |	            |	    |	    |	            |
+3				|	    |	            |	    |	    |	    |	    |                             max = 0 -> max = 8
+2				|	    |	    |	    |	    |	    |	    |	    |
+1	   |	    |	    |	    |	    |	    |	    |	    |	    |
+       0        1       2       3       4       5       6       7       8
+	   ^                                                                ^
+	  left                                                            right
 
 
 
@@ -18,17 +76,50 @@ LOGIC = trapped water between two tallest rod is like an area enclosed between t
 /* Brute Force Time Limit Exceeded O(n^2) */      
 class Solution {
     public int maxArea(int[] height) {
-        int waterContainer =0;
-        
-        for(int i=0;i<height.length-1;i++)
-        {
-            for(int j=i+1;j<height.length;j++)
-            {
-                int trappedWater = Math.min(height[i],height[j]) * (j-i);
-                waterContainer=Math.max(trappedWater, waterContainer);
+        int maxWater=0;
+        for(int i=0;i<height.length-1;i++){
+            for(int j=1;j<height.length;j++){
+                int waterStored = (j-i)*Math.min(height[i],height[j]);
+                maxWater=Math.max(maxWater, waterStored);
             }
         }
-        return waterContainer;
+        return maxWater;
+    }
+}
+
+
+
+/* IN DEPTH SOLUTION */
+class Solution {
+    public int maxArea(int[] heights) {
+        int maxArea = 0;
+        
+        int left = 0;
+        int right = heights.length - 1;
+        
+        int maxHeight = 0;
+        
+        while (left < right) {
+            // because the length is always decreasing
+            // we only need to consider a pair if its height
+            // is greater than any pair's height we've used so far
+            if (heights[left] > maxHeight && heights[right] > maxHeight) {
+                maxHeight = Math.min(heights[left], heights[right]);
+                maxArea = Math.max(maxArea, maxHeight * (right - left));
+            }
+            
+            // move pointers
+            if (heights[left] == heights[right]) {
+                left ++;
+                right --;
+            } else if (heights[left] < heights[right]) {
+                left ++;
+            } else {
+                right --;
+            }
+        }
+        
+        return maxArea;
     }
 }
         
