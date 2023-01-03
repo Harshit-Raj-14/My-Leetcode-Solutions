@@ -47,6 +47,8 @@ class Solution {
 
 LOGIC = trapped water between two tallest rod is like an area enclosed between them. Forget about water; the problem is just about finding a maximum area rectangle.
 Try to use two-pointers. Set one pointer to the left and one to the right of the array. Always move the pointer that points to the lower line.
+The intuition behind this approach is that the area formed between the lines will always be limited by the height of the shorter line. 
+Further, the farther the lines, the more will be the area obtained.
 
 Explanation - Variables i and j define the container under consideration. We initialize them to first and last line, meaning the widest container. 
 Variable water will keep track of the highest amount of water we managed so far. We compute j - i, the width of the current container, and min(height[i], height[j]), 
@@ -123,7 +125,15 @@ class Solution {
     }
 }
         
-	
+
+
+How does this approach work?
+
+Initially we consider the area constituting the exterior most lines. Now, to maximize the area, we need to consider the area between the lines of larger lengths. 
+If we try to move the pointer at the longer line inwards, we won't gain any increase in area, since it is limited by the shorter line. 
+But moving the shorter line's pointer could turn out to be beneficial, as per the same argument, despite the reduction in the width. 
+This is done since a relatively longer line obtained by moving the shorter line's pointer might overcome the reduction in area caused by the width reduction.
+
 Comments for h[i]==h[j] case:
    Consider u do not move both pointers,
 -> Say u only move left pointer, the even if there is a larger height at height[left] we just multiply (right-left) with min(height[left],height[right]), 
