@@ -123,7 +123,13 @@ class Solution {
     }
 }
         
-        
-        
+	
+Comments for h[i]==h[j] case:
+   Consider u do not move both pointers,
+-> Say u only move left pointer, the even if there is a larger height at height[left] we just multiply (right-left) with min(height[left],height[right]), 
+so it doesn't make any difference if u move either only left or only right, it just gives you less answer or same answer. So to avoid this we move both pointers..
+
+You could also just arbitrarily choose a pointer to move and proceed as normal and it should work; this just saves a little bit of time 
+   (if you move one pointer to a taller line you'll have to end up moving the other pointer, and if you move to a shorter line you'll have to move the pointer again).
         
         
