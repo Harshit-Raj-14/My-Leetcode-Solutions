@@ -1,0 +1,81 @@
+//LEETCODE PROBLEM
+//LEVEL - Medium
+//287. Find the Duplicate Number
+
+2 MORE METHODS SOLUTION VIST - 
+https://stackoverflow.com/questions/2936213/how-does-finding-a-cycle-start-node-in-a-cycle-linked-list-work/6110767#6110767
+https://github.com/zyzyis/OneSizeDoesFitAll/blob/master/src/FindTheDuplicateNumber.c
+https://docs.google.com/presentation/d/1vw8wehzngGtwxMk8c2tYKgLurmNelVdftzwgYmwyAqc/edit#slide=id.g70dd47e34b_0_181
+https://keithschwarz.com/interesting/code/?dir=find-duplicate
+https://leetcode.com/problems/find-the-duplicate-number/solutions/1892921/9-approaches-count-hash-in-place-marked-sort-binary-search-bit-mask-fast-slow-pointers/
+https://leetcode.com/problems/find-the-duplicate-number/solutions/2899843/java-solution-98-faster/
+https://leetcode.com/problems/find-the-duplicate-number/solutions/72846/my-easy-understood-solution-with-o-n-time-and-o-1-space-without-modifying-the-array-with-clear-explanation/
+https://leetcode.com/problems/find-the-duplicate-number/solutions/72844/two-solutions-with-explanation-o-nlog-n-and-o-n-time-o-1-space-without-changing-the-input-array/
+https://leetcode.com/problems/find-the-duplicate-number/solutions/2872160/go-binsearch/
+
+
+/* ACCEPTED SOLUTION - SORTING */
+class Solution {
+    public int findDuplicate(int[] nums) {
+        Arrays.sort(nums);
+        for(int i=1;i<nums.length;i++){
+            if(nums[i]==nums[i-1]) return nums[i];
+        }
+        return -1;   
+    }
+}
+TC - O(nlog(n)+n) = O(nlogn)
+LOGIC- Sort
+EX) 3,1,3,4,2-> 1,2,3,3,4
+Check for adjacent duplicates by scanning through 1,3,4,4,6,7 and notice 4 appears 2x
+-therefore a duplicate exists
+
+How can we prove that at least one duplicate number must exist in nums?
+Points to note : question has n+1 elements. And numbers range from 1 to n. Then that means a repeated number will always exist.
+
+NOTE : THE QUESTION ASK US TO NOT EDIT ARRAY nums. So, lets maintain the sanctity of the question and do just that.
+
+
+/* APPROACH Solving it with a set */
+
+
+
+LOGIC - We can use a set in python to store occurences of a number
+-If a number in the list has not been seen before, we add it to the set
+-If a number already seen and stored in the set appears, we found a duplicate
+Time Complexity: O(n): Sets in Python rely on underlying hash tables so insertions and lookups have constant time complexities. The algorithm is linear as it only loops through list once.
+Space Complexity: O(n): Worst case scenario the duplicate element will appear 2x with one appearance at n-1. In this case the set will have n-1 distinct values and occupy O(n) space b/c n-1 elements are stored in the set.
+
+
+
+
+
+
+/* BRUTE FORCE O(n^2) TLE ERROR */
+class Solution {
+    public int findDuplicate(int[] nums) {
+        for(int i=0;i<nums.length-1;i++){
+            for(int j=i+1;j<nums.length;j++){
+                if(nums[i]==nums[j]) return nums[i];
+            }
+        }
+        return -1;
+    }
+}
+
+
+
+/* A FAILED APPROACH */
+class Solution {
+    public int findDuplicate(int[] nums) {
+        int n=nums.length;
+        int sum=0;
+        for(int i=0;i<nums.length;i++){ sum+=nums[i];}  //A witty approach but the question constraint outwits
+        int ans=sum-(n*(n-1)/2);  //if considering pattern of testcase, 1,2,3,4,2.... 1to4 is sum of series and if subtract from sum of array we get duplicated... But... 
+        return ans;
+    }
+}
+Attention TESTCASE: [2, 2, 2, 2,2]. The problem statement says that all the integers in array are in the range of 1 to n , 
+and only one number is repeated. But the problem doesn't say that the integer that is repeated, is repeated only twice, so the repeated integer can be repeated more than 
+twice. They specifically mentioned this in the constraints => "All the integers in nums appear only once except for precisely one integer which appears two or more times."
+Hence [2,2,2,2,2] is valid.
