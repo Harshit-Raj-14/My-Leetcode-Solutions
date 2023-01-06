@@ -1,0 +1,14 @@
+//LEETCODE PROBLEM
+//LEVEL - Medium
+//75. Sort Colors
+
+
+/* ACCEPTED SOLUTION - SORTING Library */
+class Solution {
+    public void sortColors(int[] nums) {
+        Arrays.sort(nums);
+        System.out.println(nums);     
+    }
+}
+
+NOTE : let's maintain the sanctity of the question and not do it.
