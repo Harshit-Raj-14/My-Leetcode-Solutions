@@ -2,6 +2,72 @@
 //LEVEL - Medium
 //75. Sort Colors
 
+LINK - https://github.com/azl397985856/leetcode/blob/master/problems/75.sort-colors.md
+https://leetcode.com/problems/sort-colors/solutions/2953415/easy-java-solution-single-pass-3-pointers-o-n-in-place-solution/
+
+/* COUNTING SORT */
+class Solution {
+    public void sortColors(int[] nums) {
+      //We will be using counting sort.
+      //Reason :It is efficient for smaller range.
+      //O(n)
+
+      int largest = Integer.MIN_VALUE;
+
+    //STEP 1 : largest element in the array. though in our case we can directly also write it as 2.     
+      for(int i=0; i<nums.length; i++){
+          largest = Math.max(largest, nums[i]);
+      }
+
+      //STEP 2 : making our count array
+      int count[] = new int[largest+1]; //this array keeps track of the coutn frequency of numbers equal to its index
+
+      for(int i=0;i<nums.length;i++){
+          count[nums[i]]++;  //writing the frequncy in coutn array
+      }
+
+      //STEP 3 : Sorting
+      for(int i=0,j=0;i<count.length;i++){
+          while(count[i]>0){
+              nums[j]=i;
+              j++;
+              count[i]--;
+          }
+      }
+    }
+}
+
+AND...BUT STILL..... It was mentioned to solve the question in one pass.
+Counting frequencies would itself take one pass then overwriting the values will take another pass. 
+So the solution you are providing is not a single pass solution and yes there can be many solutions to the problem like using the sort function!
+
+
+
+/* 3 POINTERS */
+
+
+
+
+
+TRAIN OF THOUGHT -
+This problem is a typical Dutch flag problem ( https://en.wikipedia.org/wiki/Dutch_national_flag_problem). Because we can imagine the red, white and blue tricolor balls 
+as strips, which just form the Dutch flag after being arranged in an orderly manner.
+
+LOGIC -
+We can divide the array into three parts, the front part (all 0), the middle part (all 1) and the back part (all 2). 
+Every element (red, white and blue corresponding to 0, 1, 2 respectively) must belong to one of them.
+The core goal is to determine the split point of the three parts. It is not difficult to know that there are two split points.
+And if we arrange the front part and the back part at the front and back of the array, the middle part will naturally be arranged.
+
+Specifically, three pointers can be used.
+--begin points to the next element at the end of the front (at the beginning, there is no 0 in the front by default, so it points to the first position)
+--end points to the previous position at the beginning of the back (at the beginning, there is no 2 in the back by default, so it points to the last position)
+--Traverse the pointer current and start traversing from the beginning.
+To put it figuratively, there are two baffles. We don’t know where these two baffles are in advance. 
+Our goal is to move the baffles to a suitable position and make every part of the baffles the same. color.
+
+
+
 
 /* ACCEPTED SOLUTION - SORTING Library */
 class Solution {
