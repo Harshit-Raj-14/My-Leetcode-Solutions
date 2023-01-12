@@ -1,0 +1,55 @@
+//LEETCODE PROBLEM
+//LEVEL - Medium
+//274. H-Index
+
+
+/* SORTING */
+public class Solution {
+    public int hIndex(int[] citations) {
+        // sorting the citations in ascending order
+        Arrays.sort(citations);
+        // finding h-index 
+        for(int i = 0;i<citations.length;i++){
+        if(citations[i] >= citations.length-i) return citations.length-i;
+        }
+        return 0; 
+    }
+}
+
+
+/* COUNTING SORT */
+public class Solution {
+    public int hIndex(int[] citations) {
+        int n = citations.length;
+        int[] papers = new int[n + 1];
+        // counting papers for each citation number
+        for (int c: citations)
+            papers[Math.min(n, c)]++;
+        // finding the h-index
+        int h = n;
+        for (int s = papers[n]; h > s; s += papers[h])
+            h--;
+        return h;
+    }
+}
+
+
+/* COUNTING SORT */
+public class Solution {
+    public int hIndex(int[] citations) {
+        int[] stats = new int[citations.length + 1];
+        for (int i = 0; i < citations.length; i ++) {
+            int n = citations[i];
+            n = Math.min(n, citations.length);
+            stats[n] ++;
+        }
+        int sum = 0;
+        for (int i = stats.length - 1; i > 0; i --) {
+            sum += stats[i];
+            if (sum >= i) {
+                return i;
+            }
+        }
+        return 0;
+    }
+}
