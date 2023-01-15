@@ -1,0 +1,75 @@
+//LEETCODE PROBLEM
+//LEVEL - Easy
+//1051. Height Checker
+
+
+/* JAVA ACCEPTED SOLUTION - SORTING */
+class Solution {
+    public int heightChecker(int[] heights) {
+
+        int []expected = new int[heights.length];
+
+        for(int i=0;i<heights.length;i++){
+            expected[i]=heights[i];
+        }
+
+        Arrays.sort(expected);
+
+        int count=0;
+
+        for(int i=0;i<heights.length;i++){
+            if(heights[i] != expected[i]) count++;
+        }
+
+        return count;
+        
+    }
+}
+
+//TC - O(nlogn)
+
+LOGIC- sort the array and then compare the both
+
+
+/* JAVA ACCEPTED COUNTING SORT */
+class Solution {
+public int heightChecker(int[] heights) {
+int[] count = new int[101];
+for (int i = 0; i < heights.length; i++) {
+count[heights[i]]++;
+}
+for (int i = 1; i < count.length; i++) {
+count[i] += count[i-1];
+}
+int result = 0;
+for (int i = heights.length-1; i >= 0; i--) {
+count[heights[i]]--; // this is the correct location for heights[i] based on counting sort
+if (heights[count[heights[i]]] != heights[i])
+result++;
+}
+return result;
+}
+}
+
+
+
+
+/* BUCKET SORTING */
+class Solution {
+    public int heightChecker(int[] heights) {         
+        // perform a bucket-sort
+        int[] bucket = new int[101];
+        for(int number : heights) {
+            bucket[number]++;
+        }
+        
+        // check the ammount of disparities between the input array and the bucket
+        int count = 0, index = 0;
+        for(int i = 1; i <= 100; i++) {
+            while(bucket[i] > 0) {
+                if(i != heights[index++]) count++;
+                bucket[i]--;
+            }
+        }
+        return count;
+    }
