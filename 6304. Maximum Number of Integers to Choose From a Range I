@@ -1,0 +1,26 @@
+/* JAVA O(n*banned.length) SOLUTION ACCEPTED*/
+
+
+class Solution {
+    public int maxCount(int[] banned, int n, int maxSum) {
+        int count = 0;
+        int sum=0;
+        for(int i=1;i<=n;i++){
+            int flag=1;
+            for(int j=0;j<banned.length;j++){
+                if(banned[j]==i) flag=0;
+            }
+            if(flag==1){
+                sum=sum+i;
+                if(sum>maxSum) return count++;           
+                count++;           
+            }       
+        }     
+        return count;       
+    } 
+}
+
+
+LOGIC: Just do what is told in the question
+Iterate from 1 to n and check whether they are present in array. If not keep the flag up and vlaidate their sum and increase count.
+Return count.
