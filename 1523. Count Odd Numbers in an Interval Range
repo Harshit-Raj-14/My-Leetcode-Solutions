@@ -1,0 +1,54 @@
+/* JAVA BEST SOLUTION UNDERSTNADEABLE O(1) */
+class Solution {
+  public int countOdds(int low, int high) {
+      int range = high-low; //the no of odd numbers between range will be range/2
+      if(low%2!=0 & high%2!=0) return range/2 + 1;  //low and high are odd
+      if(low%2==0 & high%2==0) return range/2;      //low and high are even
+      else return range/2 + 1;                      //one is odd and other even
+  }
+}
+
+LOGIC - USE THIS, turn it itno cases and find out the answer
+
+
+
+/* JAVA ACCEPTED SOLUTION 0(1) */
+class Solution {
+  public int countOdds(int low, int high) {
+    // If low is even, make it odd.
+    if ((low & 1) == 0) {
+      low++;
+    }
+
+    // low could become greater than high due to incrementation
+    // if it is, the answer is 0; otherwise, use the formula.
+    return low > high ? 0 : (high - low) / 2 + 1;
+  }
+}
+LOGIC: Let's start with an odd integer, say x; what would be the next odd integer? It would be x + 2; as explained above, there is exactly one even integer between 
+every two odd integers, and hence all odd integers are equally spaced with a gap of one integer. 
+By trying out some examples, we can deduce that the count of odd integers between odd x and a greater integer y where x is odd would be (y−x)/2 + 1.
+
+
+
+
+/* JAVA ONE LINER SOLUTION */
+class Solution {
+    public int countOdds(int low, int high) {
+        return ((high + 1) / 2) - (low / 2);  
+    }
+}
+
+
+
+/* JAVA O(n) SOLUTION -- TLE */
+class Solution {
+    public int countOdds(int low, int high) {
+        int count =0;
+        while(low<=high){
+            if(low%2!=0) count++;
+            low++;
+        }
+        return count;     
+    }
+}
