@@ -1,0 +1,27 @@
+//LEETCODE PROBLEM
+//LEVEL - Easy
+//303. Range Sum Query - Immutable
+
+
+/* JAVA ACCEPTED SOLUTION */
+class NumArray {
+
+    public int psa[];       //prefix sum method  
+    //declare it outside to be accessible by all methods // see the codeforces solution ofr more details
+
+    public NumArray(int[] nums) {
+        psa = new int[nums.length];
+        psa[0]=nums[0];
+        for(int i=1;i<nums.length;i++){
+            psa[i]=psa[i-1]+nums[i];
+        }
+    }
+    
+    public int sumRange(int left, int right) {
+        return left>0 ? psa[right]-psa[left-1] : psa[right];    
+    }
+}
+
+
+TC - O(n+q)
+
