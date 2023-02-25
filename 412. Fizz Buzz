@@ -1,0 +1,20 @@
+//LEETCODE PROBLEM
+//LEVEL - Easy
+//412. Fizz Buzz
+
+class Solution {
+    public List<String> fizzBuzz(int n) {
+        ArrayList<String> list = new ArrayList<>();
+
+        for(int i=1;i<=n;i++){
+            boolean divisbleBy3= i%3==0;
+            boolean divisbleBy5 = i%5==0;
+
+            if(divisbleBy3 & divisbleBy5) list.add("FizzBuzz");
+            else if(divisbleBy3) list.add("Fizz");
+            else if(divisbleBy5) list.add("Buzz");
+            else list.add(Integer.toString(i));
+        }
+        return list;
+    }
+}
