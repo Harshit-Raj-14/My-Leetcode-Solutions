@@ -1,0 +1,92 @@
+//LEETCODE PROBLEM
+//LEVEL - Hard
+//668. Kth Smallest Number in Multiplication Table
+
+
+/* BINARY SEARCH */
+class Solution {
+    public int findKthNumber(int m, int n, int k) {
+        int l=1;
+        int r=m*n;
+        while(l<=r){
+            int mid=l+(r-l)/2;
+            int count = getCount(m,n,mid);
+            if(count<k) l=mid+1;
+            else r=mid-1;
+        }
+        return l;
+    }
+
+    private int getCount(int m, int n, int target){
+        int count =0;
+        for(int i=1;i<=m;i++){
+            count+=Math.min(target/i,n);
+        }
+        return count;
+    }
+}
+
+Time Complexity: O(m*log(m*n))
+Space Complexity: O(n)
+
+  
+
+  
+
+
+
+/* BRUTE FORCE APPROACH - MEMORY LIMIT EXCEEDED */
+class Solution {
+    public int findKthNumber(int m, int n, int k) {
+        //Let's make a count array out of the matrix
+        int mat[][] =new int[m+1][n+1]; //1 indexed
+        int count[] = new int[m*n + 1];   //the greatest element in mat will be m*n and since count will be 0 indexed
+        for(int i=1;i<=m;i++){
+            for(int j=1;j<=n;j++){
+                mat[i][j]=i*j;
+                count[mat[i][j]]++;
+            }
+        }
+        int arr[] = new int[m*n +1];
+
+        for(int i=0,j=0;i<count.length;i++){
+            while(count[i]>0){
+                arr[j]=i;
+                j++;
+                count[i]--;
+            }
+        }
+        return arr[k-1];    
+    }
+}
+
+LOGIC : We have a square matrix whose contetns are equal to the product of their row no. and column no., indexed from 1.
+So, we are aksed that if we convert the matrix content into a sorted array, then kth element.
+So, we take matrix content and put them in a count array and make another proper and put elemtns in it one by one. Now just pritn the kth elemtn from arr. 
+
+Use this to print count array and check for yourself
+ for(int i=0;i<count.length;i++){ //you can print count array with this to check image in fig
+         System.out.print(count[i]);
+         }
+         
+         
+
+/* BRUTE FORCE SAME AS ABOVE - MEMORY LIMIT EXCEEDED */
+class Solution {
+    public int findKthNumber(int m, int n, int k) {
+        int[] products = new int[m * n];
+        int x = 0;
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                products[x++] = i * j;
+            }
+        }
+        Arrays.sort(products);
+        return products[k - 1];
+    }
+}
+
+LOGIC- Create the multiplication table and sort it, then take the kthk^{th}kth element.
+Time complexity O(mnlog(mn))
+Space complexity O(mn)
+         
