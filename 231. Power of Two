@@ -1,0 +1,50 @@
+//LEETCODE PROBLEM
+//LEVEL - Easy
+//231. Power of Two
+
+/* C++ SOLUTION - ACCEPTED - O(n) */
+class Solution {
+public:
+    bool isPowerOfTwo(int n) {
+        if(n <= 0) return false;
+        if(n==1) return true;
+        while(n>1){
+            if(n%2!=0) return false;
+            else n/=2;
+        }
+        return true;
+    }
+};
+
+LOGIC : Simple iteration and checking
+
+
+/* C++ SOLUTION - ACCEPTED - O(31 log(n)) */  //time compleixity based on for loop and inbuilt pow function
+class Solution {
+public:
+    bool isPowerOfTwo(int n) {
+        for(int i=0;i<32;i++){    
+            if(n==pow(2,i)) return true;
+        }
+        return false;    
+    }
+};
+
+LOGIC : If there is a power of 2 it will lie between
+2^0,2^1,2^2,......,2^31 as it is the limit of int
+
+
+/* ++ SOLUTION - ACCEPTED - O(31) */    //Beats 100%
+class Solution {
+public:
+    bool isPowerOfTwo(int n) {
+        int ans=1;
+        for(int i=0;i<31;i++){     //loop is running 31 times
+            if(n==ans) return true;   
+            if(ans<INT_MAX/2) ans*=2;   //ans does not overlfow
+        }
+        return false;    
+    }
+};
+
+LOGIC : Above technique this time with memorisation
