@@ -2,7 +2,7 @@
 //LEVEL - Easy
 //231. Power of Two
 
-/* C++ SOLUTION - ACCEPTED - O(n) */
+/* C++ SOLUTION - ACCEPTED - O(logn) */
 class Solution {
 public:
     bool isPowerOfTwo(int n) {
@@ -17,6 +17,21 @@ public:
 };
 
 LOGIC : Simple iteration and checking
+
+
+/* C++ SOLUTION - ACCEPTED - O(logn) */
+class Solution {
+public:
+    bool isPowerOfTwo(int n) {
+        if(n==0) return false;
+        while(n%2==0) n/=2;
+        return n==1;
+    }
+};
+
+LOGIC : Using Reminder-divident method:-
+
+
 
 
 /* C++ SOLUTION - ACCEPTED - O(31 log(n)) */  //time compleixity based on for loop and inbuilt pow function
@@ -48,3 +63,33 @@ public:
 };
 
 LOGIC : Above technique this time with memorisation
+
+
+
+
+/* ++ SOLUTION - ACCEPTED - O(1) */    //Bit manipulation
+class Solution {
+public:
+    bool isPowerOfTwo(int n) {
+        if(n<=0) return false;
+        return ((n&(n-1))==0);
+    }
+};
+
+LOGIC : Bit manipulation
+Let's take some good exampes :
+number->binary form
+3->0000 0011
+4->0000 0100
+5->0000 0101
+6->0000 0110
+7->0000 0111
+8->0000 1000
+
+The observation we can conclude is that the number which is a power of two has always compulsoryily 1 true bit.
+
+Now consider :-
+bit representation of 7  -> 0111
+bit representation of 8  -> 1000
+bitwise AND of 7 and 8 -> 0000
+we are gonna use this property for for all numbers which are powers of two
