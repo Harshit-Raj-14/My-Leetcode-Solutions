@@ -1,0 +1,19 @@
+//LEETCODE PROBLEM
+//LEVEL - Easy
+//476. Number Complement
+
+
+/* ACCEPTED JAVA O(logn) SOLUTION */
+
+class Solution {
+    public int findComplement(int num) {
+        int mask =0;
+        int compliment = ~num;
+        while(num>0){
+            mask = (mask<<1) | 1;
+            num=num>>1;
+        }
+        int ans = compliment & mask;
+        return ans;
+    }
+}
