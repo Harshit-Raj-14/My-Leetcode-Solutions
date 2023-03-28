@@ -1,0 +1,24 @@
+//LEETCODE PROBLEM
+//LEVEL - Easy
+//1464. Maximum Product of Two Elements in an Array
+
+
+class Solution {
+    public int maxProduct(int[] nums) {
+        int max1, max2;
+        max1=max2=Integer.MIN_VALUE;
+
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]>max1){
+                max2=max1;
+                max1=nums[i];
+            }
+            else if(nums[i]>max2) max2=nums[i]; //in case there is a duplicate of largest element; see eg: [1,5,4,5] 
+        }
+        return (max1-1)*(max2-1);
+    }
+}
+
+/*edge cases if not for constraints:
+if(nums.length<2) return -1;
+*/
