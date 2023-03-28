@@ -13,6 +13,7 @@ https://leetcode.com/problems/find-the-duplicate-number/solutions/72846/my-easy-
 https://leetcode.com/problems/find-the-duplicate-number/solutions/72844/two-solutions-with-explanation-o-nlog-n-and-o-n-time-o-1-space-without-changing-the-input-array/
 https://leetcode.com/problems/find-the-duplicate-number/solutions/2872160/go-binsearch/
 
+Also, refer to the same problem on codestudio 4 approaches explaiend there
 
 /* ACCEPTED SOLUTION - SORTING */
 class Solution {
@@ -49,6 +50,26 @@ Space Complexity: O(n): Worst case scenario the duplicate element will appear 2x
 
 
 
+/* DYNAMIC PROGRAMMING O(n) */
+class Solution {
+    public int findDuplicate(int[] nums) {
+        int count[] = new int[nums.length];
+        for(int i=0;i<nums.length;i++){
+            count[nums[i]]++;
+        }
+        for(int i=0;i<nums.length;i++){
+            if(count[i]>1) return i;
+        }
+        return -1;
+    }
+}
+
+
+LOGIC : 
+The idea is to observe the fact that all array elements contain a value between 1 to N - 1. 
+Our approach will be to construct an array to store the frequency of each element in the given array. 
+We create a count array first which will have the frequency of each element of arraylist. 
+Whoseever frequency is greater than 1 will be the duplicate.
 
 
 /* BRUTE FORCE O(n^2) TLE ERROR */
