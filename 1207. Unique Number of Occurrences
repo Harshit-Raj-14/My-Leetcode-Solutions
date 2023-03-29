@@ -1,0 +1,25 @@
+//LEETCODE PROBLEM
+//LEVEL - Easy
+//1207. Unique Number of Occurrences
+
+/BRUTE FORCE O(nlogn) */
+class Solution {
+    public boolean uniqueOccurrences(int[] arr) {
+        //Note that here, constraisn array has negative no so we need to make modification in count array
+        int k=1000;
+        int count[] = new int[2*k+1];
+
+        for(int i=0;i<arr.length;i++){
+            count[arr[i]+k]++;   //to make sure all the indexes are +ve 
+            //we have got our frequency array now just need to check all numbers are unique(no duplicate)
+        }
+        Arrays.sort(count);
+        for(int i=0;i<count.length-1;i++){
+            if(count[i]!=0 & count[i]==count[i+1]) return false;
+        }
+        return true;
+    }
+}
+
+LOGIC - Count frequency -> sorting -> then checking all unqiue and no duplicate
+Note :don't forget to check the following: count[i]!=0 becuase there are empty elemtns in count array
