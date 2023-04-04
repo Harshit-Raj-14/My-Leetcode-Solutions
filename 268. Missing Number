@@ -1,0 +1,104 @@
+/* O(nlogn) */
+class Solution {
+    public int missingNumber(int[] nums) {
+        Arrays.sort(nums);
+        for(int i=0;i<nums.length;i++){
+            if(i!=nums[i]) return i;
+        }
+        return nums.length;
+    }
+}
+
+LOGIC
+range -[0,n] ---- n=nums.length
+array contains n numbers ---- indexing: 0 to n-1
+Sort the array now it will be in conjuction with series 1,2,3,4,....n.
+But note that array can go from index 1 to n-1;
+So, if all the vlaues match in for loop that means it was n that was misisng.
+So, return n at last.
+
+
+/* O(n) BEATS 100%*/
+class Solution {
+    public int missingNumber(int[] nums) {
+        int count[] = new int[nums.length+1]; 
+        for(int i=0;i<nums.length;i++){
+            count[nums[i]]++;
+        }
+        for(int i=0;i<=nums.length;i++){
+            if(count[i]==0) return i;
+        }
+        return -1;
+    }
+}
+
+LOGIC - 
+range -[0,n] ---- n=nums.length
+array contains n numbers ---- indexing: 0 to n-1
+But note that array can go from index 1 to n-1;
+We got a frequency count array that keeps the frequency of nums. We know that frequency of each number in range will be 1 and the missing number will be 0.
+So, again iterate in the loop for count array and check whose is zero. We also need to check n=nums.length, so include that in the loop as well.
+Note : Dont check the condition (count[i]==0) in the same loop since the nums array is not sorted.
+
+
+
+
+OTHER SOLUTIONS (O(n))
+/* BY SWAPPING */
+   public int missingNumber(int[] nums) {
+        for (int i = 0; i < nums.length; i++) {
+            while (nums[i] != i && nums[i] <= nums.length - 1) {
+                swap(nums, i, nums[i]);
+            }
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (i != nums[i]) {
+                return i;
+            }
+        }
+        return nums.length;
+    }
+    
+    public void swap(int[] nums, int i, int j) {
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+    }
+    
+    LOGIC ---- The idea is to put every element to where it is supposed to be at. They should be nums[i] = i. 
+    If not, then we swap. After finishing swapping, we can then check which number is missing. 
+    Even thought there is a two-layer loop. The time complexity is still O(n).
+
+ 
+
+/* USING HASHSET */ 
+    public int missingNumber(int[] nums) {
+        	HashSet set = new HashSet();
+	        for(int i = 0; i < nums.length; i++){
+	            set.add(nums[i]);
+            }
+            int missing = 0;
+            for(int i = 0; i < nums.length + 1; i++ ){
+	            if(!set.contains(i)){
+                    missing = i;	
+                    break;
+                }
+            }
+            return missing;
+    }
+LOGIC ---- use hashset to see which one is not in the original array. Time complexity is O(n). 
+
+
+
+/* SUM APPROACH */
+    public int missingNumber(int[] nums) {
+        	int sum = 0;
+	        int length = nums.length;
+	        for(int i = 0; i < length; i++){
+		        sum += nums[i];
+            }
+            return length * (length + 1) / 2 - sum;
+    }
+    
+    LOGIC --- This calculates the sum difference between the original array and what it supposed to be. The difference is the missing number. 
+    Time complexity is O(n).
