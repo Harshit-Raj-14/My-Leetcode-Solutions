@@ -72,25 +72,41 @@ OTHER SOLUTIONS (O(n))
  
 
 /* USING HASHSET */ 
+class Solution {
     public int missingNumber(int[] nums) {
-        	HashSet set = new HashSet();
-	        for(int i = 0; i < nums.length; i++){
-	            set.add(nums[i]);
-            }
-            int missing = 0;
-            for(int i = 0; i < nums.length + 1; i++ ){
-	            if(!set.contains(i)){
-                    missing = i;	
-                    break;
-                }
-            }
-            return missing;
+        HashSet<Integer> set = new HashSet<>();
+        //Put all the nums elemnts in hashSet
+        for(int i=0;i<nums.length;i++){
+            set.add(nums[i]);
+        }
+        //Now check for missing number by comparing the normal series with what is contained in hashset
+        for(int i=0;i<=nums.length;i++){
+            if(!set.contains(i)) return i;
+        }
+        return -1;
     }
+}
 LOGIC ---- use hashset to see which one is not in the original array. Time complexity is O(n). 
 
 
 
+/* SUM DIFFERNECE APPROACH */
+class Solution {
+    public int missingNumber(int[] nums) {
+           int sum1=0, sum2=0;
+        for(int i=0;i<=nums.length;i++){
+            sum1+=i;
+        }
+        for(int i=0;i<nums.length;i++){
+            sum2+=nums[i];
+        }
+        return sum1-sum2;    
+    }
+}
+
+
 /* SUM APPROACH */
+ 
     public int missingNumber(int[] nums) {
         	int sum = 0;
 	        int length = nums.length;
