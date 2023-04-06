@@ -1,4 +1,5 @@
 Also see this - https://github.com/Harshit-Raj-14/My-Codestudio-Solutions/blob/main/Intersection%20Of%20Two%20Sorted%20Arrays
+
 /* TWO POINTER APPROACH *?
 class Solution {
     public int[] intersect(int[] nums1, int[] nums2) {
@@ -21,3 +22,137 @@ class Solution {
         return ans;
     }
 }
+
+
+
+/* USING HASHMAP MI */
+class Solution {
+    public int[] intersect(int[] nums1, int[] nums2) {
+        ArrayList<Integer> list = new ArrayList<>();
+        HashMap<Integer,Integer> map = new HashMap<>();
+
+        for(int i=0;i<nums1.length;i++){
+            if(map.containsKey(nums1[i])){
+                map.put(nums1[i],1+map.get(nums1[i]));
+            }
+            else map.put(nums1[i],1);
+        }
+
+        for(int j=0;j<nums2.length;j++){
+            if(map.containsKey(nums2[j])){
+                list.add(nums2[j]);
+                map.put(nums2[j], map.get(nums2[j])-1);
+                if (map.get(nums2[j])==0) map.remove(nums2[j]);     //delte the elemnt if it counts reaches zero
+            }
+        }
+            
+        int ans[] = new int[list.size()];
+        for(int i=0;i<list.size();i++){
+            ans[i]=list.get(i);
+        }
+        return ans;
+    }
+}
+
+LOGIC - we need to store value of arr1 in hashmap along with their count as key and value pair.
+
+/* USING HASHMAP getOrDefault */
+class Solution {
+    public int[] intersect(int[] nums1, int[] nums2) {
+        ArrayList<Integer> list = new ArrayList<>();
+        HashMap<Integer,Integer> map = new HashMap<>();
+
+        //traverse the array nums1, store element in Key and store its frequency in Value
+        for(int i=0;i<nums1.length;i++){
+            // If map doesn't contain nums1[i] initially, the default value 0+1
+            // If map contain nums1[i] then increase its freq by 1
+            int freq = map.getOrDefault(nums1[i],0);
+            map.put(nums1[i],freq+1);
+        }
+
+        //traverse the array nums2 and check for common elements
+        for(int j=0;j<nums2.length;j++){
+            // We need to check two conditions:
+            // 1. map should contain nums2[i] element
+            // 2. freq of nums2[i] element must be greater than 1
+            if(map.containsKey(nums2[j]) && map.get(nums2[j])>0){
+                list.add(nums2[j]);     // add it to arraylist
+                map.put(nums2[j],map.get(nums2[j])-1);       //decrease its freq in map
+            }
+        }
+            
+        int ans[] = new int[list.size()];
+        for(int i=0;i<list.size();i++){
+            ans[i]=list.get(i);
+        }
+        return ans;
+    }
+}
+
+
+/* USING TWO HASHMAPS */
+class Solution {
+    public int[] intersect(int[] nums1, int[] nums2) {
+        ArrayList<Integer> list = new ArrayList<>();
+        HashMap<Integer,Integer> hm1 = new HashMap<>();
+        HashMap<Integer,Integer> hm2 = new HashMap<>();
+        //make first hashmap for first array
+        for(int i=0;i<nums1.length;i++){
+            if(hm1.containsKey(nums1[i])){
+                hm1.put(nums1[i],hm1.get(nums1[i])+1);
+            }
+            else hm1.put(nums1[i],1);
+        }
+        //make second hashmap for second array
+        for(int i=0;i<nums2.length;i++){
+            if(hm2.containsKey(nums2[i])){
+                hm2.put(nums2[i],hm2.get(nums2[i])+1);
+            }
+            else hm2.put(nums2[i],1);
+        }
+        //iterate in hashmap1
+        for(int key:hm1.keySet()){
+            if(hm2.containsKey(key)){
+                int x = Math.min(hm1.get(key),hm2.get(key));
+                while(x-->0){
+                    list.add(key);
+                }
+            }
+        }      
+        int ans[] = new int[list.size()];
+        for(int i=0;i<list.size();i++){
+            ans[i]=list.get(i);
+        }
+        return ans;
+    }
+}
+
+LOGIC --- By making two hashmap we have two keys and their freq vlaues
+Now the intersection will be the min(hm1.value, hm2.value)
+add the key to list and print it as an array as our ans
+
+/* BRUTE FORCE O(n^2) */
+class Solution {
+    public int[] intersect(int[] nums1, int[] nums2) {
+        ArrayList<Integer> list = new ArrayList<>();
+        for(int i=0;i<nums1.length;i++){
+            for(int j=0;j<nums2.length;j++){
+                if(nums1[i]==nums2[j]){
+                    list.add(nums2[j]);
+                    nums2[j]=Integer.MIN_VALUE;
+                    break;
+                }
+            }
+        }
+        int ans[] = new int[list.size()];
+        for(int i=0;i<list.size();i++){
+            ans[i]=list.get(i);
+        }
+        return ans;
+    }
+}
+
+Logic - simple just loop and check. Wherever found intersection chang ethat vlaue to Integer.MIN_VALUE. So not to consider it again.
+Note here you can use break in two ways. By writing break inside if we only break out of the second loop.
+If you had used it outside if and inside second loop it would break out of both loops.
+
