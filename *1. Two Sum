@@ -1,14 +1,69 @@
-//LEETCODE PROBLEM
-//LEVEL - Easy
-//1. Two Sum
+LOGIC - best way to maintain a mapping of each element in the array to its index? A hash table.
+We can reduce the lookup time from O(n) to O(1) by trading space for speed.
 
+/* HASHMAP */
+class Solution {
+    public int[] twoSum(int[] arr, int target) {
+        int ans[] = new int[2];
+        HashMap<Integer,Integer> map = new HashMap<>();
+        for(int i=0;i<arr.length;i++){
+            map.put(arr[i],i);
+        }
+
+        for(int i=0;i<arr.length;i++){
+            if(map.containsKey(target-arr[i]) && map.get(target-arr[i])!=i){
+                ans[0] = i;
+                ans[1] = map.get(target-arr[i]);
+            }
+        }
+        return ans;  
+    }
+}
+   
+
+
+/* HASHMAP BETTER LOOKING CODE */
+class Solution {
+    public int[] twoSum(int[] arr, int target) {
+        int ans[] = new int[2];
+        HashMap<Integer,Integer> map = new HashMap<>();
+        for(int i=0;i<arr.length;i++){
+            if(map.containsKey(target-arr[i])){
+                ans[0] = i;
+                ans[1] = map.get(target-arr[i]);
+            }
+            map.put(arr[i],i);
+        }
+        return ans;  
+    }
+}
+   
+ 
+Note that in the first method we had first added all the elements to hasmaps and then checked the condition. 
+So we need to make sure we do not double consider the same element for the target.
+On, the other hand in the second code of ahsmap we are first checking the codntion and then addingn a number for the next check.
 
 
 /* ACCEPTED JAVA 0(n^2) SOLUTION */
+class Solution {
+    public int[] twoSum(int[] arr, int target) {
+        int ans[] = new int[2];
+        for(int i=0;i<arr.length-1;i++){
+            for(int j=i+1;j<arr.length;j++){
+                if(arr[i]+arr[j]==target){
+                    ans[0] = i;
+                    ans[1] = j;
+                }
+            }
+        }
+        return ans;
+    }
+}
 
+
+/* SAME AS ABOVE */
 class Solution {
     public int[] twoSum(int[] nums, int target) {
-        
         for(int i=0; i<nums.length;i++)
         {
             for(int j=i+1; j<nums.length;j++)
@@ -17,8 +72,7 @@ class Solution {
                     return new int[]{i, j};
             }
         }
-        return new int[]{0, 0};
-        
+        return new int[]{0, 0};        
     }
 }
 
@@ -29,5 +83,13 @@ This was the brute force approach, we fix an index and then use it while travers
 
 
 
-
-/* Need to do with hashmaps */
+        
+        
+        
+        
+        
+     
+        
+        
+      
+   
