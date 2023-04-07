@@ -1,0 +1,80 @@
+/* JAVA O(n) SOLUTION */
+class Solution {
+    public List<Integer> findDuplicates(int[] nums) {
+        ArrayList<Integer> ans = new ArrayList<>();
+        int max = Integer.MIN_VALUE;
+        for(int i=0;i<nums.length;i++){
+            max= Math.max(max,nums[i]);
+        }
+        int count[] = new int[max+1];
+        for(int i=0;i<nums.length;i++){
+            count[nums[i]]++;
+        }
+        for(int i=0;i<count.length;i++){
+            if(count[i]>1) ans.add(i);
+        }
+        return ans;   
+    }
+}
+
+
+/* Same thing as above (Beats 99.79%) */
+class Solution {
+    public List<Integer> findDuplicates(int[] nums) {
+        ArrayList<Integer> ans = new ArrayList<>();
+        int count[] = new int[nums.length+1];
+        for(int i=0;i<nums.length;i++){
+            count[nums[i]]++;
+        }
+        for(int i=0;i<count.length;i++){
+            if(count[i]>1) ans.add(i);
+        }
+        return ans;   
+    }
+}
+
+
+/* USING HASMAP O(n) (Beats 5%)*/
+class Solution {
+    public List<Integer> findDuplicates(int[] nums) {
+        ArrayList<Integer> ans = new ArrayList<>();
+        HashMap<Integer,Integer> map = new HashMap<>();
+        for(int i=0;i<nums.length;i++){
+            if(map.containsKey(nums[i])) map.put(nums[i], map.get(nums[i])+1);
+            else map.put(nums[i],1);
+        } 
+        for(int i: map.keySet()){
+            if(map.get(i)>1) ans.add(i);
+        }
+        return ans;
+    }
+}
+
+LOGIC ---
+save <K,V> == <nums[i], frequency>
+Put element sof array into hashmap
+Check whose frequency is greater than one and add it to list
+You can shorten the code with ---
+for(int i=0;i<nums.length;i++) {
+			 map.put(nums[i],map.getOrDefault(nums[i],0)+1);
+		 }
+
+
+
+
+/* USING HASHTABLE (Beats 80%) */
+class Solution {
+    public List<Integer> findDuplicates(int[] nums) {
+        ArrayList<Integer> ans = new ArrayList<>();
+        for(int i=0;i<nums.length;i++){
+            int idx = Math.abs(nums[i]) - 1;
+            if(nums[idx] < 0) ans.add(idx + 1);
+            nums[idx] = -nums[idx];
+        } 
+        return ans;
+    }
+}
+
+LOGIC --- use the input array itself as a hash table, by marking each visited element as negative. 
+If you encounter a negative element during traversal, that means you have already seen it before, so you can add it to the ans list. 
+This approach has a time complexity of O(n) and does not require any additional memory allocation.
