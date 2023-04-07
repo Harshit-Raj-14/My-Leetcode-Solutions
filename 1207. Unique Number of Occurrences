@@ -1,8 +1,4 @@
-//LEETCODE PROBLEM
-//LEVEL - Easy
-//1207. Unique Number of Occurrences
-
-/BRUTE FORCE O(nlogn) */
+/* BRUTE FORCE O(nlogn) */
 class Solution {
     public boolean uniqueOccurrences(int[] arr) {
         //Note that here, constraisn array has negative no so we need to make modification in count array
@@ -23,3 +19,70 @@ class Solution {
 
 LOGIC - Count frequency -> sorting -> then checking all unqiue and no duplicate
 Note :don't forget to check the following: count[i]!=0 becuase there are empty elemtns in count array
+
+
+
+/* HASHMAP O(n) */
+class Solution {
+    public boolean uniqueOccurrences(int[] arr) {
+        //put elements in hashmap
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for(int i=0;i<arr.length;i++){
+            if(map.containsKey(arr[i])){
+                map.put(arr[i],map.get(arr[i])+1);
+            }
+            else map.put(arr[i],1);
+        }
+        //put elements in hashset
+        HashSet<Integer> set = new HashSet<>();
+        for(int i:map.keySet()){
+            if(!set.add(map.get(i))){       //if there is a repition, no unique, return false
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+//The add() method returns true if the value was successfully added to the set, and false if it was not added because it already existed in the set.
+
+
+/* HASHMAP and by comapring size */
+class Solution {
+    public boolean uniqueOccurrences(int[] arr) {
+        //put elements in hashmap   (key,values) => (arr[i],frequency)
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for(int i=0;i<arr.length;i++){
+            if(map.containsKey(arr[i])){
+                map.put(arr[i],map.get(arr[i])+1);
+            }
+            else map.put(arr[i],1);
+        }
+
+        //put the frequency in hashset 
+        HashSet<Integer> set = new HashSet<>();
+        for (int freq : map.values()) {
+            set.add(freq);
+}
+
+        if(map.size()==set.size()) return true;     //if size of hashset and hashmap are same that means all frequecies are unique
+        else return false;       
+    }
+}
+
+
+/* More efficient code */
+class Solution {
+    public boolean uniqueOccurrences(int[] arr) {
+        HashMap<Integer,Integer>hm= new HashMap<>();
+        for(int i:arr){
+          hm.put(i,hm.getOrDefault(i,0)+1);
+        }
+        HashSet <Integer>hs= new HashSet<>(hm.values());
+        int n=hm.size();
+        int m=hs.size();
+        if(n==m)
+         return true;
+        return false;
+    }
+}
