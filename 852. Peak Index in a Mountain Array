@@ -1,0 +1,65 @@
+/* Ologn) SOLUTION */
+class Solution {
+    public int peakIndexInMountainArray(int[] arr) {
+        int l=0;
+        int r=arr.length;
+        while(l<r){
+            int mid = l + (r-l)/2;
+            //visualise this on the mountain to understand
+            //if(arr[mid]>arr[mid+1]) r=mid-1;    //mid on right side of mountain
+            if(arr[mid]<arr[mid+1]) l=mid+1; //mid on left side of mountain
+            else r=mid;    //peak element index
+        }
+        return r;
+    }
+}
+
+NOTE :We didn't use equal to sign here
+
+LOGIC - This type of array is called bitonic array.
+There are only three possiblities for mid.
+I - to fall on left side of moutnian
+II - to fall on right side of mountain
+III - the peak itself
+
+
+/* BINARY SEARCH O(logn) */
+class Solution {
+    public int peakIndexInMountainArray(int[] arr) {
+        //left side of array is increasing monotnously
+        //right side of array is decreasing mon0tonously
+        //Our focus should be on : arr[i-1]<arr[i]>arr[i+1]  --> the point which makes i a peak
+        //left side mountain logic - arr[i-1]<arr[i]
+        //right side mountain logic - arr[i]>arr[i+1]
+        //Alos, the peak will be the maximum elemnt in the array
+        //So all we need to do is pick up and check the condition where the first turn takes: arr[i]>arr[i+1]
+        //Now apply the condition to mid
+        int l=0;
+        int r=arr.length;
+        while(l<=r){
+            int mid = l + (r-l)/2;
+            //visualise this on the mountain to understand
+            if(arr[mid-1]<arr[mid] && arr[mid]>arr[mid+1]) return mid;  //peak element
+            if(arr[mid-1]<arr[mid] && arr[mid]<arr[mid+1]) l=mid; //mid on left side of mountain
+            else r=mid;    //mid on right side of mountain
+        }
+        return -1;
+    }
+}
+
+
+
+
+
+
+
+/* FORBIDDEN O(n) SOLUTION */
+class Solution {
+    public int peakIndexInMountainArray(int[] arr) {
+        for(int i=0;i<arr.length;i++){
+            if(arr[i]>arr[i+1]) return i;
+        }
+        return -1;
+    }
+}
+//The question asks us to do using O(logn) solution
