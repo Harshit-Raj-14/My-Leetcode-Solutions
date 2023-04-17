@@ -1,0 +1,54 @@
+/* DYNAMIC PROGRAMMING */
+class Solution {
+    public int maxProfit(int[] prices) {
+        int profit = 0;
+        int currMin=Integer.MAX_VALUE;
+        for(int i=1;i<prices.length;i++){
+            currMin = Math.min(currMin, prices[i-1]);
+            int currProfit=prices[i]-currMin;
+            profit=Math.max(profit,currProfit);
+        }     
+        return profit;
+    }
+}
+LOGIC- 
+What we are actually doing is this: 
+for every element, we are calculating the difference between that element and the minimum of all the values before that element and we are updating the maximum profit 
+if the difference thus found is greater than the current maximum profit.
+
+So, we keep moving forward in array thinking which day to sell and keep track of the minimal price behind it to know which day to buy
+
+We see the array from back, thinking if we sell on i th day we would buy it at a minimum price between (1st -> i-1) day
+
+
+/* DP ELEGANT SOLUTION */
+class Solution {
+    public int maxProfit(int[] prices) {
+        int maxProfit = 0;
+        int currMin=prices[0];      //the currrent min we can have now to buy stock is 1st day
+        for(int i=0;i<prices.length;i++){
+            int currProfit = prices[i]-currMin;
+            maxProfit = Math.max(currProfit, maxProfit);
+            currMin = Math.min(currMin, prices[i]); //we are updating currMin after doing calculation
+        }     
+        return maxProfit;
+    }
+}
+
+
+
+
+
+/* BRUTE FORCE O(n^2) TLE ERROR */
+class Solution {
+    public int maxProfit(int[] prices) {
+        int profit = 0;
+        for(int i=0;i<prices.length-1;i++){
+            for(int j=i+1;j<prices.length;j++){
+                int temp = prices[j]-prices[i];
+                profit = Math.max(temp,profit);
+            }
+        }
+        return profit;
+    }
+}
