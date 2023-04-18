@@ -1,0 +1,14 @@
+/* O(n) BEATS 100% */
+class Solution {
+    public int findMin(int[] nums) {
+        for(int i=1;i<nums.length;i++){
+            if(nums[i]<nums[i-1]) return nums[i];
+        }
+        return nums[0]; //case array rotated n times or not rotated
+    }
+}
+
+LOGIC -
+Since on rotating the array, we will get two monotonous lines on graph, the smallest will be the one with the first occurence of  nums[i-1]>nums[i]<nums[i+1]
+Just check where this occurs and return nums[i]
+Edge case will be n times rotated, so no equality found returnt the first elemtn becuase array would be compeltely sorted
