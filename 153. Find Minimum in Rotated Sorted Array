@@ -12,3 +12,6 @@ LOGIC -
 Since on rotating the array, we will get two monotonous lines on graph, the smallest will be the one with the first occurence of  nums[i-1]>nums[i]<nums[i+1]
 Just check where this occurs and return nums[i]
 Edge case will be n times rotated, so no equality found returnt the first elemtn becuase array would be compeltely sorted
+
+
+Another way to see the pivot is that it would be the smallest element in the rotated array,  so you can just search ofr the smallest element
