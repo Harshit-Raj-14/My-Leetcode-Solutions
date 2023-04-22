@@ -1,0 +1,54 @@
+/* DYNAMIC PRGORAMMING */
+class Solution {
+    public int firstUniqChar(String s) {
+        int count[]=new int[26];
+        for(int i=0; i<s.length();i++){
+            count[s.charAt(i)-'a']++;
+        }
+        //iterate in string and not count to maintain sequence of chars
+        for(int i=0;i<s.length();i++){
+            if(count[s.charAt(i)-'a']==1) return i;
+        }
+        return -1;
+    }
+}
+
+NOTE : The program runs faster if string is converted to array and then used - char[] arr =s.toCharArray();
+one thing need to notice that if the string contains any characters which are represented by ASCII, we'd better use int[256]
+
+
+/* USING HASHSET */
+class Solution {
+    public int firstUniqChar(String s) {
+        HashSet<Character> set = new HashSet<>();
+        String temp=s;
+        for(int i=0;i<s.length();i++){
+            if(!set.contains(s.charAt(i))) set.add(s.charAt(i));
+            else temp=temp.replace(""+s.charAt(i),"");
+        }
+        if(temp.length()>0) return s.indexOf(temp.charAt(0));
+        else return -1;
+    }
+}
+Note  : We take a seperate string temp, becuase we don't want to change the main string and cause discrepancy
+String.replace(char searchChar, char newChar)
+So, doing something like this would give error - temp=temp.replace(s.charAt(i),"");
+
+
+/* USING HASHMAP */
+class Solution {
+    public int firstUniqChar(String s) {
+        HashMap<Character,Integer> map = new HashMap<>();
+        for(int i=0;i<s.length();i++){
+            if(map.containsKey(s.charAt(i))) map.put(s.charAt(i),map.get(s.charAt(i))+1);
+            else map.put(s.charAt(i),1);
+        }
+        //do not loop in map but in string to keep the sequence of char and get the first unique char
+        for(int i=0;i<s.length();i++){
+            if(map.get(s.charAt(i))==1) return i;
+        }
+        return -1;
+    }
+}
+
+NOTE --- You cna shorten the code by -  map.put(s.charAt(i),map.getOrDefault(s.charAt(i),0)+1);
