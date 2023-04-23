@@ -1,0 +1,43 @@
+/* ACCEPTED SOLUTION HASHSET */
+class Solution {
+    public int firstMissingPositive(int[] nums) {
+        HashSet<Integer> set = new HashSet<>();
+        //Put all elements in hashset
+        for(int i=0;i<nums.length;i++){
+            set.add(nums[i]);
+        }
+        //find max in nums array
+        int max = 0;  //initialise max wiht 0 since we may get only negative array elements, so max would come -ve iff you write max=Integer.MIN_VALUE;
+        for(int i=0;i<nums.length;i++){
+            max = Math.max(nums[i],max);
+        }
+        //iterate from 1 to max to see which is not first present in set
+        for(int i=1;i<=max;i++){
+            if(!set.contains(i)) return i;
+        }
+        return max+1;
+    }
+}
+
+
+
+
+/* DP FAILS */
+class Solution {
+    public int firstMissingPositive(int[] nums) {
+        int max = Integer.MIN_VALUE;
+        for(int i=0;i<nums.length;i++){
+            max = Math.max(nums[i],max);
+        }
+        int count[]=new int [max+2];
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]>0) count[nums[i]]++;
+        }
+        for(int i=1;i<count.length;i++){
+            if(count[i]==0) return i;
+        }
+        return -1;
+    }
+}
+
+Fails at test case - [2147483647]
