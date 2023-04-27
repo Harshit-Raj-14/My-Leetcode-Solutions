@@ -1,0 +1,96 @@
+/* O(1) SOLUTION */
+class Solution {
+    public int bulbSwitch(int n) {
+      return (int)Math.sqrt(n);  
+    }
+}
+
+LOGIC ---
+no. of rounds = no. of bulbs
+
+Track of rounds in which each bulb is toggled:
+
+Bulb 1: Round 1 (odd number of toggles)
+Bulb 2: Round 1, Round 2
+Bulb 3: Round 1, Round 3
+Bulb 4: Round 1, Round 2, Round 4 (odd number of toggles)
+Bulb 5: Round 1, Round 5
+Bulb 6: Round 1, Round 2, Round 3, Round 6
+Bulb 7: Round 1, Round 7
+Bulb 8: Round 1, Round 2, Round 4, Round 8
+Bulb 9: Round 1, Round 3, Round 9 (odd number of toggles)
+Bulb 10: Round 1, Round 2, Round 5, Round10
+
+Hence we can see they are the factors of the bulb no. in the round in which they are toggled
+And the bulbs with odd no. of toggles will remain switched on (So, here you can just count the bulbs with odd no. of factos and maintain a count), but we will do better.
+
+We know, perfect squares have odd and non-perfect squares have an even number of factors
+
+So, we can count the number of perfect squares appearing between 1 to n.
+Thus we just need to find how many numbers from 1 to n are perfect squares.
+We can iterate on each number and check if it's a perfect square or not, (i.e. floor(sqrt(i)) * floor(sqrt(i)) == i)
+
+Or, we can directly find the square root of n and its floor value will be equal to the count of numbers whose squares exist in this range 1 to n.
+If we do sqaure root of n and take its floor(say we get x) then x will represent that the square of it is n. 
+IMP - And also that numbers ranging form 1 to x and their sqaueres are contaiend in n.
+eg sqrt(26) floor would be 5. So, squares of 1 to 5 will exist inside 26.
+
+So, taking the floor value of the square root of n will give us the number of perfect squares in the range 1 to n.
+Hence, floor(sqrt(n)) is our answer to this problem.
+
+
+
+/* BRUTE FORCE (MEMORY LIMIT EXCEEDED) */
+class Solution {
+    public int bulbSwitch(int n) {
+      int bulbs[]=new int[n];
+      Arrays.fill(bulbs,1); //first round
+      for(int i=2;i<=n;i++){  //maintaing other rounds
+        for(int j=i-1;j<n;j+=i){  //toggling the bubls on or off at their multiples
+          if(bulbs[j]==0) bulbs[j]=1;
+          else bulbs[j]=0;
+        }
+      }
+      int count=0;
+      for(int i=0;i<bulbs.length;i++){
+        if(bulbs[i]==1) count++;
+      }
+      return count;
+    }
+}
+
+
+//// USING BOOLEAN ARRAY WITH BRUTE FORCE ////
+public int bulbSwitch(int n) {
+    boolean[] bulbs = new boolean[n];
+    Arrays.fill(bulbs, true);
+    for (int i = 2; i <= n; i++) {
+        for (int j = i - 1; j < n; j += i) {
+            bulbs[j] = !bulbs[j];
+        }
+    }
+    int count = 0;
+    for (boolean bulb : bulbs) {
+        if (bulb) {
+            count++;
+        }
+    }
+    return count;
+}
+
+
+NOTE - 
+In the given code, j is initialized as i-1 because the goal is to toggle the bulbs that are multiples of i.
+
+Since the first bulb is already toggled on the first round (Arrays.fill(bulbs,1)), starting the loop from i=2 ensures that we are only toggling the bulbs that are multiples of 2 in the second round.
+
+To toggle the bulbs that are multiples of i, we need to start from the (i-1)th position because the bulbs are indexed from 0 to (n-1), and the first bulb is at position 0. Starting from j=i-1 ensures that we toggle every ith bulb in the jth position.
+
+For example, in the second round (i=2), we start toggling bulbs from position j=1 (which is the second bulb) and then toggle every second bulb until we reach the end of the array. Then, in the third round (i=3), we start toggling bulbs from position j=2 (which is the third bulb) and toggle every third bulb until we reach the end of the array, and so on.
+
+So, in summary, j=i-1 is used to start toggling bulbs at the correct position (i.e., the ith bulb).
+
+
+
+
+
