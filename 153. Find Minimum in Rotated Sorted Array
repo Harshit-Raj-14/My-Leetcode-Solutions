@@ -1,3 +1,49 @@
+/* BINARY SEARCH O(logn) */
+class Solution {
+    public int findMin(int[] nums) {
+        if(nums.length==0) return -1;
+        if(nums.length==1) return nums[0];
+
+        //Array sorted correct already(not rotated)
+        if(nums[nums.length-1]>nums[0]) return nums[0]; //first element will be minimum
+
+        int l=0;
+        int r=nums.length-1;
+        while(l<=r){
+            int mid = l + (r-l)/2;
+            if(mid == 0 && nums[mid] > nums[mid + 1]) return nums[mid + 1];
+            if(mid>0 && nums[mid-1]>nums[mid]) return nums[mid];        //this condition will not work for 2 element array so the above condition comes in play
+            if(nums[mid]>nums[0]) l=mid+1;  //mid lies on left rotated side of the array
+            else r=mid; //mid can be on the left edge of the second part of array so, r=mid
+        }
+        return -1;
+    }
+}
+
+
+
+/* BINARY SEARCH */
+class Solution {
+    public int findMin(int[] nums) {
+        if(nums.length==0) return -1;
+        if(nums.length==1) return nums[0];
+
+        //Array sorted correct already(not rotated)
+        if(nums[nums.length-1]>nums[0]) return nums[0]; //first element will be minimum
+
+        int l=0;
+        int r=nums.length-1;
+        while(l<=r){
+            int mid = l + (r-l)/2;
+            if(mid>0 && nums[mid-1]>nums[mid]) return nums[mid];
+            if(nums[l]<=nums[mid] && nums[mid]>nums[r]) l=mid+1;
+            else r=mid-1; 
+        }
+        return -1;
+    }
+}
+
+
 /* O(n) BEATS 100% */
 class Solution {
     public int findMin(int[] nums) {
