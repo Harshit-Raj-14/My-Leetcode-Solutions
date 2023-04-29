@@ -1,0 +1,16 @@
+/* O(n^2) */
+class Solution {
+    public int[] findThePrefixCommonArray(int[] A, int[] B) {
+    int[] C = new int[A.length];
+    HashSet<Integer> set = new HashSet<>();
+    for(int i = 0; i < B.length; i++) {
+        set.add(B[i]);
+        int count = 0;
+        for(int j = 0; j <= i; j++) {
+            if(set.contains(A[j])) count++;
+        }
+        C[i] = count;
+    }
+    return C;        
+    }
+}
