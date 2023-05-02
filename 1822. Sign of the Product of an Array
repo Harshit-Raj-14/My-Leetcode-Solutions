@@ -1,0 +1,54 @@
+/* O(n) ACCEPTED SOLUTION */
+class Solution {
+    public int arraySign(int[] nums) {
+        int product=1;
+        for(int i=0;i<nums.length;i++){
+            product*=signFunc(nums[i]);
+        }
+        return product;
+    }
+
+    public int signFunc(int n){
+        if(n>0) return 1;
+        else if(n<0) return -1;
+        else return 0;
+    }
+}
+
+LOGIC---
+To avoid overflow while multiplying make all the negative numbers -1 and all positive numbers 1 and calculate the product
+
+
+/* Beats 100% */
+class Solution {
+    public int arraySign(int[] nums) {
+        int product=1;
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]==0) return 0;
+            else{
+                if(nums[i]>0) product*=1;
+                else if(nums[i]<0) product*=-1;
+            }
+        }
+        return product;
+    }
+}
+
+
+
+/* Tracking the Sign of the Product */
+class Solution {
+    public int arraySign(int[] nums) {
+        int sign = 1;
+        for (int num : nums) {
+            if (num == 0) {
+                return 0;
+            }
+            if (num < 0) {
+                sign = -1 * sign;
+            }
+        }
+
+        return sign;
+    }
+}
