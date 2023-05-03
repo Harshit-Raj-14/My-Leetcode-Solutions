@@ -1,0 +1,33 @@
+/* BINARY SEARCH */
+class Solution {
+    public int search(int[] nums, int target) {
+        if(nums==null || nums.length==0) return -1;
+        int l=0;
+        int r=nums.length-1;
+        while(l<=r){
+            int mid = l+(r-l)/2;
+            if(nums[mid]==target) return mid;
+            if(nums[mid]>=nums[l]){ //searching in the left sorted part between l and mid
+                if(nums[l]<=target && target<=nums[mid]) r=mid-1;   //if it lies between l and mid
+                else l=mid+1; 
+            }
+            else{       //searching in the right sorted part between mid and r
+                if(nums[mid]<=target && target<=nums[r]) l=mid+1;   //if it lies between mid and r
+                else r=mid-1;
+            }
+        }
+        return -1;
+    }
+}
+
+
+
+/* Linear Search */
+class Solution {
+    public int search(int[] nums, int target) {
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]==target) return i;
+        }
+        return -1;
+    }
+}
