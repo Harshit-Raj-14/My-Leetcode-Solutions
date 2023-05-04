@@ -1,0 +1,21 @@
+
+
+
+
+
+
+
+
+
+
+READ LEETCODE'S TUTORIAL - IT'S SUPER GOOD === https://leetcode.com/problems/dota2-senate/editorial/
+LOGIC ---
+What then is the "best strategy" for a senator to ban an opponent senator? Click to Reveal.
+Using this "best strategy" we will be able to predict the only possible unique winner for a given senate string.
+Let's try to analyze. What if we ban the next opponent senator? Are we gaining anything?
+The answer intuitively is Yes. When we ban the next closest opponent senator, we are restricting one senator from the other party which they could have used to ban a senator from our party. 
+Thus, proceeding with this strategy, we are not only eliminating one opponent senator but also trying to preserve our own senators.
+Hence, the "best strategy" for a senator is to ban the next closest opponent senator.
+This falls under the category of Greedy, whereby the "best strategy" is greedily chosen at each step in hope of local optimum.
+
+
