@@ -18,4 +18,6 @@ Thus, proceeding with this strategy, we are not only eliminating one opponent se
 Hence, the "best strategy" for a senator is to ban the next closest opponent senator.
 This falls under the category of Greedy, whereby the "best strategy" is greedily chosen at each step in hope of local optimum.
 
+If the number of senators from one party becomes zero, we can return the other party as the winner.
+
 
