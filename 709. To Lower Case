@@ -1,0 +1,51 @@
+
+/* Beats 100% time and 76% space */ IMPORTANT
+class Solution {
+    public String toLowerCase(String s) {
+        char ch[] = s.toCharArray();
+        for(int i=0;i<ch.length;i++){
+            if(ch[i]>='A' && ch[i]<='Z'){
+                ch[i] = (char)(ch[i] - 'A' + 'a');
+            }
+        }
+        return new String(ch);
+    }
+}
+
+LOGIC -
+If the character is uppercase, it is converted to lowercase by subtracting the ASCII value of 'A' and adding the ASCII value of 'a'.
+Example : ch[i]=B, then 
+B-A = 66-65 = 1
+1+a = 1+97 = 98
+(char)98 = b
+
+
+/* O(n) BEATS 100% in time and 24% in space */
+class Solution {
+    public String toLowerCase(String s) {
+        return s.toLowerCase();
+    }
+}
+//TC - O(n)
+//SC - O(n)
+The toLowerCase() method iterates over each character in the input string s and converts it to its lowercase equivalent if it is an uppercase character. 
+Since each character in the input string is visited exactly once, the time complexity of this operation is proportional to the length of the input string, which is O(n).
+When the toLowerCase() method is called on a String object, a new String object is created that contains the lowercase version of the input string. 
+
+
+
+/* BEATS 17% in Time and 61% in space */
+class Solution {
+    public String toLowerCase(String s) {
+        StringBuilder sb = new StringBuilder(s);
+        for(int i=0;i<sb.length();i++){
+            if(sb.charAt(i)>='A' && sb.charAt(i)<='Z'){     //checking uppercase letter
+                sb.setCharAt(i, (char)(sb.charAt(i)-'A'+'a'));
+            }
+        }
+        return sb.toString();
+    }
+}
+
+LOGIC -
+If the character is uppercase, it is converted to lowercase by subtracting the ASCII value of 'A' and adding the ASCII value of 'a'.
