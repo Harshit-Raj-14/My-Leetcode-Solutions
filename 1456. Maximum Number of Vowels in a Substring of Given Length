@@ -1,0 +1,69 @@
+/* SLIDING WINDOW O(n) */
+class Solution {
+    public int maxVowels(String s, int k) {
+        int ans=0;
+        int count=0;
+        // Count the number of vowels in the first window 0,1,2,3...k
+        for(int i=0;i<k;i++){
+            if(check(s.charAt(i))) count++;
+        }
+        ans=count;
+        
+        // Slide the window and update the maximum number of vowels
+        int i=0;
+        int j=k;
+        while(j<s.length()){
+            if(check(s.charAt(i))) count--;
+            if(check(s.charAt(j))) count++;
+            ans = Math.max(ans, count);
+            i++;
+            j++;
+        }
+        return ans;
+    }
+
+    public boolean check(char c){
+        if(c=='a' || c=='e' || c=='i' || c=='o' || c=='u') return true;
+        else return false;
+    }
+}
+
+LOGIC ---
+The problem is that if we count the number of vowels in each window by iteration every time, it would result in a time complexity of O(length_of_s⋅k)O(\text{length\_of\_s}\cdot k)O(length_of_s⋅k) which could be expensive. 
+However, by observation, we can see that two adjacent windows only differ by two characters. 
+When we move the index of the right boundary of the window from i - 1 to i, only one character is added to the window while one is removed.
+Therefore, we can represent the new window by keeping track of the changes between adjacent windows.
+
+
+/* MORE ELGANT SOLUTION */
+class Solution {
+  private boolean isVowel(char c) {
+    return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
+  }
+  public int maxVowels(String s, int k) {
+    int cnt = 0, max = 0;
+    for (var i=0; i < s.length(); i++) {
+      if (isVowel(s.charAt(i))) cnt++;
+      if (i >= k && isVowel(s.charAt(i-k))) cnt--;  
+      max = Math.max(max, cnt);
+    }
+    return max;
+  }
+}
+
+
+
+/* BRUTE FORCE O(n^2) TLE */
+class Solution {
+    public int maxVowels(String s, int k) {
+        int ans = 0;
+        for(int i=0;i<=s.length()-k;i++){
+            int count = 0;
+            for(int j=i;j<i+k;j++){
+                if(s.charAt(j)=='a' || s.charAt(j)=='e' || s.charAt(j)=='i' || s.charAt(j)=='o' || s.charAt(j)=='u') count++;
+            }
+            ans = Math.max(count,ans);
+        }
+        return ans;
+    }
+}
