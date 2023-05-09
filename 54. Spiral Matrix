@@ -1,0 +1,65 @@
+/* O(m*n) */
+class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) {
+        ArrayList<Integer> list = new ArrayList<>();
+
+        int l=0, r=matrix[0].length-1, t=0, b=matrix.length-1;
+
+        while(l<=r || t<=b){
+            if(t<=b){       //moving left to right on upper side
+                for(int i=l;i<=r;i++){
+                    list.add(matrix[t][i]);
+                }
+                t++;
+            }
+
+            if(l<=r){       //moving top to down on right side
+                for(int i=t;i<=b;i++){
+                    list.add(matrix[i][r]);
+                }
+                r--;
+            }
+
+            if(t<=b){   //moving right to left on lower side
+                for(int i=r;i>=l;i--){
+                    list.add(matrix[b][i]);
+                }
+                b--;
+            }
+
+            if(l<=r){   //moving bottom to top on right side
+                for(int i=b;i>=t;i--){
+                    list.add(matrix[i][l]);
+                }
+                l++;
+            }
+        }
+        return list;
+    }
+}
+
+
+LOGIC ---
+Intuition
+Start with the outermost layer of the matrix and then move inward towards the center. 
+To traverse each layer in a spiral order, we make use of four pointers - top, bottom, left, and right. We start at the top-left corner of the matrix and move towards the right until we reach the top-right corner. 
+Then, we move downwards towards the bottom-right corner, then towards the bottom-left corner, and finally towards the top-left corner. We repeat this process for each layer until we reach the center of the matrix
+
+Approach
+    Initialize four pointers - l (left), r (right), t (top), and b (bottom) to represent the boundaries of the current layer of the matrix being traversed.
+    While the top and bottom boundaries do not cross each other and the left and right boundaries do not cross each other, do the following:
+    a. Traverse the top boundary from left to right and add the elements to the result list.
+    b. Traverse the right boundary from top to bottom and add the elements to the result list.
+    c. Traverse the bottom boundary from right to left and add the elements to the result list.
+    d. Traverse the left boundary from bottom to top and add the elements to the result list.
+    e. Update the pointers to move to the next layer of the matrix.
+    Return the result list.
+
+Complexity
+    Time complexity: O(mn)
+    Space complexity:O(1)
+
+
+
+Its like we are deleting the row or column as we travel it -
+image for simulation - https://leetcode.com/problems/spiral-matrix/solutions/3502677/explained-with-images-simple-traversal/
