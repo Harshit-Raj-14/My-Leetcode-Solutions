@@ -1,0 +1,61 @@
+/* O(n) BEATS 39% */
+class Solution {
+    public int getXORSum(int[] arr1, int[] arr2) {
+        int sum1=0, sum2=0;
+        for(int i=0;i<arr1.length;i++){
+            sum1^=arr1[i];
+        }
+        for(int i=0;i<arr2.length;i++){
+            sum2^=arr2[i];
+        }
+        return (sum1 & sum2);
+    }
+}
+
+LOGIC ---
+Think about (a&b) ^ (a&c).
+It is equal to a&(b^c). Then, (arr1[i]&arr2[0])^(arr1[i]&arr2[1]).. = arr1[i]&(arr2[0]^arr2[1]^arr[2]...).
+
+FORMULA -> a.(b+c) = a.b + a.c
+a&(b^c) = a&b ^ a&c
+
+
+We all know the distributive property that (a1+a2)*(b1+b2) = a1*b1 + a1*b2 + a2*b1 + a2*b2
+Distributive property is similar for AND and XOR here.
+(a1^a2) & (b1^b2) = (a1&b1) ^ (a1&b2) ^ (a2&b1) ^ (a2&b2)
+
+Example - 
+Well lets's take the 1st test case:
+arr1 = [1,2,3], arr2 = [6,5]
+
+(1&6)^(1&5)^(2&6)^(2&5)^(3&6)^(3&5)
+
+We can simplify it as:
+(1&(6^5))^(2&(6^5))^(3&(6^5))
+
+So finally we can write it as:
+(6^5)&(1^2^3)
+
+            
+            
+           
+
+
+/* O(n^2)  TLE */
+class Solution {
+    public int getXORSum(int[] arr1, int[] arr2) {
+        ArrayList<Integer> list = new ArrayList<>();
+
+        for(int i=0;i<arr1.length;i++){
+            for(int j=0;j<arr2.length;j++){
+                list.add(arr1[i] & arr2[j]);
+            }
+        }
+        int sum=0;
+        for(int i=0;i<list.size();i++){
+            //if(list.size()==1) return list.get(0);
+            sum^=list.get(i);
+        }
+        return sum;
+    }
+}
