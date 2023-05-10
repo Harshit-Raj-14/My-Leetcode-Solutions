@@ -1,0 +1,48 @@
+class Solution {
+    public int[][] generateMatrix(int n) {
+        int l=0,r=n-1,t=0,b=n-1;
+        int el=1;
+
+        int matrix[][] = new int [n][n];
+
+        while(l<=r && t<=b){
+            if(t<=b){
+                for(int i=l;i<=r;i++){
+                    matrix[t][i]=el;
+                    el++;
+                }
+                t++;
+            }
+
+            if(l<=r){
+                for(int i=t;i<=b;i++){
+                    matrix[i][r]=el;
+                    el++;
+                }
+                r--;
+            }
+
+            if(t<=b){
+                for(int i=r;i>=l;i--){
+                    matrix[b][i]=el;
+                    el++;
+                }
+                b--;
+            }
+
+            if(l<=r){
+                for(int i=b;i>=t;i--){
+                    matrix[i][l]=el;
+                    el++;
+                }
+                l++;
+            }
+        }
+        return matrix;
+    }
+}
+
+
+LOGIC---
+Traverse Layer by Layer in Spiral Form and fill the matrix
+Its like deleting the traversing path fo an imaginary matrix and forming a new matrix with it
