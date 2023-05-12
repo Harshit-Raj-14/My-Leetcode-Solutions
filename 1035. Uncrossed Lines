@@ -1,3 +1,16 @@
+Uncrossed Lines II ❌Greedy - Recursion - Memo - DP - DP Optimized || LCS Variation (LONGES COMMON SUBSEQUENCE
+While understanding this article readi it from bottom code
+
+/* DYNAMIC PROGRAMMING BEATS 100% */
+
+
+LOGIC -
+Why are we solving it with dp is becuase we have a repeating subproblem
+Consider at a point we are having i and j in each array at same index, now we have a choice to either move i or j just as we saw in the recursion.
+But at one point we will again alnd on the next index where i and j position will be same and we have again a choice to either move i or j. Use dynamic programming
+Alos, a memorization recursion can never be optimised. We have to conver the same solution to tabular method or bottom up approach
+
+
 /* RECURSION + MEMORIZATION => ACCEPTED */
 class Solution {
     public int maxUncrossedLines(int[] nums1, int[] nums2) {
@@ -12,7 +25,7 @@ class Solution {
 
     public int solve(int i, int j, int[]nums1, int[]nums2, int dp[][]){
         if(i==nums1.length || j==nums2.length) return 0;    //if any of the one reaches the end we have reached the solution
-        if(dp[i][j]!=-1) return dp[i][j];
+        if(dp[i][j]!=-1) return dp[i][j];           //checking if already calculated
         int count=0;
         if(nums1[i]==nums2[j]){ 
             count= 1 + solve(i+1, j+1, nums1, nums2, dp);   //we got a match so take both i and j and move to next one
@@ -20,9 +33,18 @@ class Solution {
         else{
             count+=Math.max(solve(i+1,j,nums1,nums2,dp), solve(i,j+1,nums1,nums2,dp));
         }
-        return dp[i][j]=count;
+        return dp[i][j]=count;  //storing value in dp
     }
 }
+
+LOGIC --- How memorisation is working
+We make a dp matrix array and intialise its content by -1.
+Each time we calculate count we put it inside dp[i][j].
+Now if the dp[i][j] is not equal to -1, that emnas we have already calculated it and don't need to calculate it again.
+TC - O(n*m) -> We have every combination of i and j
+SC - O(n*m) -> size of dp
+
+Hence, we have avoided the situation of calculating something more than once
 
 
 /* RECURSIVE SOLUTION - TIME LIMIT EXCEEDED */
@@ -51,7 +73,7 @@ To, overcome TLE we will use MEMORIZATION
 
 
 ⭐⭐⭐ IMPORTANT ⭐⭐⭐
-NOTE --- ❌Greedy -  ✅Recursion (DP)===> to get all cases and choose the maximum one
+NOTE --- ❌Greedy - ✅Recursion (DP)===> to get all cases and choose the maximum one
 
 /* A FAILED APPROACH */  ====> VERDICT THE PROBLEM CANNOT BE SOLVED BY GREEDY BUT DP ===> SAME SITUATION IN LONGEST COMMON SUBSEQUENCE THERE ALSO DO DP AND NOT GREEDY
 class Solution {
@@ -73,7 +95,7 @@ class Solution {
     }
 }
 
-THE REASON IT FAISL BECAUSE THIS PROGRAM DOES NOT RETURN THE MAXIMUM BUT ONLY THE FIRST KIND, SIMILAR TO GREEDY.
+THE REASON IT FAILS BECAUSE THIS PROGRAM DOES NOT RETURN THE MAXIMUM BUT ONLY THE FIRST KIND, SIMILAR TO GREEDY.
 Input
 nums1 =
 [1,1,2,1,2]
@@ -88,3 +110,4 @@ Expected
 
 
 So, greedy won't work
+Becuase, at every step we have an option to consider it or not -(something like a tree with two branches - recursion) - take it or leave it
