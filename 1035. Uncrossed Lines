@@ -2,13 +2,29 @@ Uncrossed Lines II ❌Greedy - Recursion - Memo - DP - DP Optimized || LCS Varia
 While understanding this article readi it from bottom code
 
 /* DYNAMIC PROGRAMMING BEATS 100% */
-
+class Solution {
+    public int maxUncrossedLines(int[] nums1, int[] nums2) {
+        int n = nums1.length, m = nums2.length;
+        if (n < m) return maxUncrossedLines(nums2, nums1);
+        int[] dp = new int[m + 1];
+        for (int i = 1; i <= n; i++){
+            int prev = 0;
+            for (int j = 1; j <= m; j++){
+                int curr = dp[j];
+                if(nums1[i-1] == nums2[j-1]) dp[j] = prev + 1;
+                else dp[j] = Math.max(dp[j-1], curr);
+                prev = curr;
+            }
+        }
+        return dp[m];
+    }
+}
 
 LOGIC -
 Why are we solving it with dp is becuase we have a repeating subproblem
 Consider at a point we are having i and j in each array at same index, now we have a choice to either move i or j just as we saw in the recursion.
 But at one point we will again alnd on the next index where i and j position will be same and we have again a choice to either move i or j. Use dynamic programming
-Alos, a memorization recursion can never be optimised. We have to conver the same solution to tabular method or bottom up approach
+Also, a memorization recursion can never be optimised. We have to conver the same solution to tabular method or bottom up approach
 
 
 /* RECURSION + MEMORIZATION => ACCEPTED */
@@ -33,7 +49,7 @@ class Solution {
         else{
             count+=Math.max(solve(i+1,j,nums1,nums2,dp), solve(i,j+1,nums1,nums2,dp));
         }
-        return dp[i][j]=count;  //storing value in dp
+        return dp[i][j]=count;  //storing value in dp and returning count
     }
 }
 
