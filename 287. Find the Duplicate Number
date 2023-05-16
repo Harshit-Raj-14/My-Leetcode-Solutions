@@ -1,15 +1,28 @@
+/* Floyd’s Tortoise and Hare - Cycle Detection - Fast and Slow pointer */
+
+class Solution {
+    public int findDuplicate(int[] nums) {
+        int slow=0, fast=0;
+        slow = nums[slow];
+        fast = nums[nums[fast]];
+        while (slow != fast) {
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+        }
+
+        slow = 0;
+        while (fast != slow) {
+            slow = nums[slow];
+            fast = nums[fast];
+        }
+
+        return fast;
+    }
+}
 
 
-2 MORE METHODS SOLUTION VIST - 
-
-https://keithschwarz.com/interesting/code/?dir=find-duplicate
-https://leetcode.com/problems/find-the-duplicate-number/solutions/1892921/9-approaches-count-hash-in-place-marked-sort-binary-search-bit-mask-fast-slow-pointers/
-https://leetcode.com/problems/find-the-duplicate-number/solutions/2899843/java-solution-98-faster/
-https://leetcode.com/problems/find-the-duplicate-number/solutions/72846/my-easy-understood-solution-with-o-n-time-and-o-1-space-without-modifying-the-array-with-clear-explanation/
-https://leetcode.com/problems/find-the-duplicate-number/solutions/72844/two-solutions-with-explanation-o-nlog-n-and-o-n-time-o-1-space-without-changing-the-input-array/
-https://leetcode.com/problems/find-the-duplicate-number/solutions/2872160/go-binsearch/
-
-Also, refer to the same problem on codestudio 4 approaches explaiend there
+TC : O(n)
+SC : O(n)
 
 
 /* DYNAMIC PROGRAMMING O(n) BEATS 98% */
@@ -52,6 +65,26 @@ LOGIC - We can use a set in python to store occurences of a number
 Time Complexity: O(n): Sets in Python rely on underlying hash tables so insertions and lookups have constant time complexities. The algorithm is linear as it only loops through list once.
 Space Complexity: O(n): Worst case scenario the duplicate element will appear 2x with one appearance at n-1. 
 In this case the set will have n-1 distinct values and occupy O(n) space becuase n-1 elements are stored in the set.
+
+
+/* Marking visited value within the array BEATS 62% */
+class Solution {
+    public int findDuplicate(int[] nums) {
+        for (int i = 0; i < nums.length; i++) {
+            int index = Math.abs(nums[i]);  //since some of the nums[i] could already turned -ve to continue iterating absolute
+            if (nums[index] < 0) {
+                return Math.abs(nums[i]);   //since its -ve means already visited hence duplicate
+            } else {
+                nums[index] *= -1;
+            }
+        }
+
+        return -1;
+    }
+}
+
+
+LOGIC - check if it is already negative before multiplying it by -1. If it's already negative, that means you've already visited that element before, so you don't need to update it again.
 
 
 
