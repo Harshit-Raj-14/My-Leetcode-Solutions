@@ -1,0 +1,19 @@
+class Solution {
+    public int[] circularGameLosers(int n, int k) {
+        HashSet<Integer> winners = new HashSet<>();
+        winners.add(1);  //1 will always have the ball so add it to set in start
+        int next=1;
+        ArrayList<Integer> losers = new ArrayList<>();
+        for(int i=1;i<=n;i++){
+            next = (next + (i*k)) % n;       //if one circulation happens it reaches back from n to 1
+            if(next==0) next=n;         //if the ball falls in hands of n, next value get 0 becuase of mod. So, to properly add it to set, make it back to n
+            if(!winners.contains(next)) winners.add(next);
+            else break;
+        }
+        for(int i=1;i<=n;i++){
+            if(!winners.contains(i)) losers.add(i);
+        }
+        int[] ans = losers.stream().mapToInt(i -> i).toArray();
+        return ans;
+    }
+}
