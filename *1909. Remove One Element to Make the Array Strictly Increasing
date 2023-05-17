@@ -1,0 +1,44 @@
+
+https://leetcode.com/problems/remove-one-element-to-make-the-array-strictly-increasing/solutions/1387010/java-easy-to-understand-solution-well-explained-with-picture-100-faster/
+
+/* BRUTE FORCE ACCEPTED O(n^2) BEATS 7% */
+class Solution {
+    public boolean canBeIncreasing(int[] nums) {
+        ArrayList<Integer> list = new ArrayList<>();
+        for(int i=0;i<nums.length;i++){
+            for(int j=0;j<nums.length;j++){
+                if(i!=j) list.add(nums[j]);     //creating new list without i each time
+            }
+            if(isSorted(list)) return true;     //check list is sorted without i
+            else list.clear();
+        }
+        return false;
+    }
+
+    public boolean isSorted(ArrayList<Integer> list){  //strictly sorted
+        for(int i=1;i<list.size();i++){
+            if(list.get(i-1)>=list.get(i)) return false;
+        }
+        return true;
+    }
+}
+
+
+
+/* FAILED APPROACH */
+class Solution {
+    public boolean canBeIncreasing(int[] nums) {
+        int count=0;
+        for(int i=1;i<nums.length;i++){
+            if(nums[i-1]>=nums[i]) count++;
+        }
+        if(count==0) return true;   //array already sorted
+        if(count==1) return true;   //only one number needs to be deleted since one poitn of inflection
+        else return false;      //count exceeds one that menas more than one inflections
+    }
+}
+
+LOGIC - FAILS at - 
+Input: nums =[2,3,1,2]
+Output: true
+Expected: false
