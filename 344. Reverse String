@@ -1,0 +1,52 @@
+/* BEATS 95% AND 6% IN SPACE */
+class Solution {
+    public void reverseString(char[] s) {
+        for(int i=0;i<s.length/2;i++){
+            char temp = s[i];
+            s[i]=s[s.length-1-i];
+            s[s.length-1-i]=temp;
+        }
+    }
+}
+
+TC - O(n)
+SC - O(1)
+NOTE - Don't forget to do s.length/2 otherwise, the array will reverse and rereverse giving the original array
+
+
+/* two pointer */
+class Solution {
+    public void reverseString(char[] s) {
+        int right = s.length-1;
+        int left = 0;
+        while(left < right){
+            char c = s[right];
+            s[right] = s[left];
+            s[left] = c;
+            left++;
+            right--;
+        }
+    }
+}
+TC - O(n)
+SC - O(1)
+
+
+/* RECURSIVE CALL */
+class Solution {
+    public void reverseString(char[] s) {
+        int i = 0;
+        int j = s.length - 1;
+        solve(s, i, j);
+    }
+    public void solve(char[] s, int i, int j){
+        if(i >= j) return;
+        char temp = s[i];
+        s[i] = s[j];
+        s[j] = temp;
+        solve(s, ++i, --j);
+    }
+}
+TC - O(n)
+SC - O(n)
+
