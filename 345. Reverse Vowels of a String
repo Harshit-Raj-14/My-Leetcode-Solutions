@@ -1,0 +1,68 @@
+/* TWO POINTERS */
+class Solution {
+    public String reverseVowels(String s) {
+        char[] arr = s.toCharArray();
+        int front =0;
+        int back = arr.length-1;
+        while(front<back){
+            while(front<arr.length && !isVowel(arr[front])) front++;    //find first vowel from front
+            while(back>=0 && !isVowel(arr[back])) back--;   //find first vowel from back
+            if(front<back){
+                swap(arr, front, back); //swap front and last
+                front++;
+                back--; //update front and back otherwise the loop will run endlessly
+            }
+        }
+        return new String(arr);
+    }
+
+    public boolean isVowel(char c){
+        if(c=='a' || c=='A') return true;
+        else if(c=='e' || c=='E') return true;
+        else if(c=='i' || c=='I') return true;
+        else if(c=='o' || c=='O') return true;
+        else if(c=='u' || c=='U') return true;
+        else return false;
+    }
+
+    public void swap(char[] arr, int i, int j) {
+        char temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+}
+
+LOGIC ---
+TC- O(n)
+SC - O(n)     //if had done in C++ O(1) becuase then no need of charArray
+
+To achieve this, we would initialize a left pointer to 0 and keep incrementing it until we get a vowel. 
+Similarly, we initialize the right pointer to the last index and keep decrementing it until it points to a vowel. 
+At each such iteration where both the pointers are pointing to the vowel, we would swap the characters at these pointers.
+
+
+NOTE-
+DON'T DO THIS
+
+public void swap(char a, char b){
+    char temp=a;
+    a=b;
+    b=temp;
+}
+
+The swap function takes two characters a and b as parameters. However, in Java, method parameters are passed by value, which means that the values of a and b inside the swap function are copies of the original values. 
+Therefore, modifying a and b inside the function does not affect the original variables or the array arr that you intended to swap.
+
+To correctly swap the characters in the array, you need to pass the array and the indices of the characters you want to swap. 
+Here's the revised swap function that takes an array arr, and indices i and j as parameters:
+
+public void swap(char[] arr, int i, int j) {
+    char temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+}
+
+In this modified swap function, we use the indices i and j to access the elements in the array arr and perform the swapping directly on the array itself. 
+By doing this, the changes made inside the function will affect the original array arr, which is what you intended to accomplish.
+
+By bringing arr we make this function pass by refrence and a chang ein array in fucntion reflects in the original array sinc etheyse are all pointer addresses.
