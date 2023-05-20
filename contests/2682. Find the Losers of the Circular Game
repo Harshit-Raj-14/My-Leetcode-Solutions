@@ -21,3 +21,28 @@ class Solution {
         return ans;
     }
 }
+
+
+
+/* WRITTEN MORE NICELY */
+class Solution {
+    public int[] circularGameLosers(int n, int k) {
+        HashSet<Integer> winners = new HashSet<>();
+        winners.add(1);  //1 will always have the ball so add it to set in start
+        int next=1;
+        for(int i=1;i<=n;i++){
+            next = (next + (i*k)) % n;       //if one circulation happens it reaches back from n to 1
+            if(next==0) next=n;     //if after modulus comes 0 then it means it had reached n%n=0
+            if(!winners.contains(next)) winners.add(next);
+            else break;
+        }
+        int losers[] = new int[n-winners.size()];
+        for(int i=1,j=0;i<=n;i++){
+            if(!winners.contains(i)){
+                losers[j]=i;
+                j++;
+            }
+        }
+        return losers;
+    }
+}
