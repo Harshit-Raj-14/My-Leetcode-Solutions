@@ -24,7 +24,9 @@ class Solution {
 
 
 LOGIC ---- Why sort the array first
-
+Because in every iteration we have to remove the maximum element from each row. 
+It is not mandatory that the maximum element will always be at column number i so we sort every row in order to make sure that the maximum number is at ith column.
+The question has specifically asked us to - From each row in the matrix, select the largest number and remove it. So first sort it rowwise to get the largest element first.
 
 Could also do this for sorting - 
 for (int[] row : nums) {
