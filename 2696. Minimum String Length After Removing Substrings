@@ -1,0 +1,59 @@
+/* USING STACK BEATS 83%*/
+class Solution {
+    public int minLength(String s) {
+        Stack<Character> stack = new Stack<>();
+        for(int i=0;i<s.length();i++){
+            char c = s.charAt(i);
+            if(stack.isEmpty()!=true && ((c=='B' && stack.peek()=='A') || (c=='D' && stack.peek()=='C'))){
+                stack.pop();
+            }
+            else stack.push(c);
+        }
+        return stack.size();
+    }
+}
+TC - O(n)
+SC - O(n)
+LOGIC - 
+For every element in string jsut check if stack top is equal to current character of string or not. If yes, then remove the elemet from stack, else push the character to the stack.
+At Last return stack size.
+
+/* BRUTE FORCE - O(n) BEATS 16.7% */
+class Solution {
+    public int minLength(String s) {
+        StringBuilder sb = new StringBuilder(s);
+        while (sb.toString().contains("AB") || sb.toString().contains("CD")) {  //we traverse until we make sure no AB or CD
+            for (int i=0; i+1<sb.length(); i++) {
+                if (sb.charAt(i) == 'A' && sb.charAt(i + 1) == 'B') {
+                    sb.deleteCharAt(i);
+                    sb.deleteCharAt(i); // after removing A, B will come to i
+                }
+                if (i+1<sb.length() && sb.charAt(i) == 'C' && sb.charAt(i + 1) == 'D') {  //we again need to check i+1<sb.length() becuase if we had deleted two i's above we need to make sure they are in bound
+                    sb.deleteCharAt(i);
+                    sb.deleteCharAt(i); // after removing C, D will come to i
+                }
+            }
+        }
+        return sb.length();
+    }
+}
+
+LOGIC - 
+Repeatedly traverse the string to find and remove the substrings “AB” and “CD” until no more occurrences exist.
+
+
+/* USING SUBSTRING METHOD BEATS 16% */
+class Solution {
+  public int minLength(String s) {
+    while (s.indexOf("AB") >= 0 || s.indexOf("CD") >= 0) {
+      var a = s.indexOf("AB");
+      var b = s.indexOf("CD");      
+      if (a >= 0)
+        s = s.substring(0, a) + s.substring(a+2, s.length());
+      else
+        s = s.substring(0, b) + s.substring(b+2, s.length());
+    }
+    return s.length();
+  }
+}
+
