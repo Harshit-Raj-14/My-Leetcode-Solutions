@@ -1,5 +1,6 @@
-
+O(n) solutions : 
 https://leetcode.com/problems/remove-one-element-to-make-the-array-strictly-increasing/solutions/1387010/java-easy-to-understand-solution-well-explained-with-picture-100-faster/
+https://leetcode.com/problems/remove-one-element-to-make-the-array-strictly-increasing/solutions/3152791/o-n-c-solution-100-beats-without-any-stack-or-lengthy-code/
 
 /* BRUTE FORCE ACCEPTED O(n^2) BEATS 7% */
 class Solution {
