@@ -1,0 +1,28 @@
+/* O(n) */
+class Solution {
+    public int buyChoco(int[] prices, int money) {
+        int min1 = Integer.MAX_VALUE;
+        int min2 = Integer.MAX_VALUE;
+        for(int i=0;i<prices.length;i++){
+            if(prices[i]<min1){
+                min2=min1;
+                min1=prices[i];
+            }
+            else if(prices[i]<min2) min2=prices[i];
+        }
+        if(money>=(min1+min2)) return money-(min1+min2);
+        else return money;
+    }
+}
+
+LOGIC---
+Findign the smallest and second smallest element of the array.
+
+/* O(nlogn) */
+class Solution {
+    public int buyChoco(int[] prices, int money) {
+        Arrays.sort(prices);
+        if(money>=(prices[0]+prices[1])) return money-(prices[0]+prices[1]);
+        else return money;
+    }
+}
