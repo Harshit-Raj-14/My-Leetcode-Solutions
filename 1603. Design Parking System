@@ -1,0 +1,45 @@
+class ParkingSystem {
+    int bigLimit, mediumLimit, smallLimit;  //parking limit for each type of car
+    int bigCount, mediumCount, smallCount;  //count of cars of each type 
+
+    public ParkingSystem(int big, int medium, int small) {
+        this.bigLimit = big;    //constructor - parking limit of each type
+        this.mediumLimit = medium;
+        this.smallLimit = small;
+        //initial count of cars of each type - the reason we declare here is becuase we are goign to make function calls so keep them global variable
+        this.bigCount = 0;
+        this.mediumCount = 0;
+        this.smallCount = 0;
+    }
+    
+    public boolean addCar(int carType) {
+        if(carType==1){
+            if(this.bigCount<this.bigLimit){
+                this.bigCount++;
+                return true;
+            }
+            else return false;
+        }
+        else if(carType==2){
+            if(this.mediumCount<this.mediumLimit){
+                this.mediumCount++;
+                return true;
+            }
+            else return false;
+        }
+        else if(carType==3){
+            if(this.smallCount<this.smallLimit){
+                this.smallCount++;
+                return true;
+            }
+            else return false;
+        }
+        else return false;  //invalid car type
+    }
+}
+
+/**
+ * Your ParkingSystem object will be instantiated and called as such:
+ * ParkingSystem obj = new ParkingSystem(big, medium, small);
+ * boolean param_1 = obj.addCar(carType);
+ */
