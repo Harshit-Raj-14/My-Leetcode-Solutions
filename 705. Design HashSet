@@ -1,0 +1,81 @@
+/* USING ARRAYLIST BEATS 6% */
+class MyHashSet {
+    ArrayList<Integer> list;
+    public MyHashSet() {    //constructor
+        list = new ArrayList<>();
+    } 
+    public void add(int key) {
+        if(!list.contains(key)) list.add(key);
+    }
+    public void remove(int key) {
+        while(list.contains(key)) list.remove(Integer.valueOf(key));
+    }
+    public boolean contains(int key) {
+        if(list.contains(key)) return true;
+        else return false;
+    }
+}
+
+LOGIC --- 
+list.remove(Integer.valueOf(key)) is used instead of list.remove(key) to remove the object with the specific value, rather than treating the key as an index.
+The reason for using Integer.valueOf(key) is to ensure that the key is treated as an Integer object rather than an int primitive. 
+The list.remove(Object obj) method expects an Object parameter, and since ArrayList stores objects, not primitives, we need to convert the int value to its corresponding Integer object.
+By using Integer.valueOf(key), we create an Integer object that represents the int value key. 
+This object is then passed to the list.remove(Object obj) method, allowing it to correctly find and remove the object from the list based on its value.
+
+/* BETTER WAY TO WRITE ABOVE */
+class MyHashSet {
+    ArrayList<Integer> list;
+    public MyHashSet() {    //constructor
+        list = new ArrayList<>();
+    } 
+    public void add(int key) {
+        if(!list.contains(key)) list.add(key);
+    }
+    public void remove(int key) {
+        if(list!=null){     //if()!list.isEmpty())
+            while(list.contains(key)){
+                list.remove(Integer.valueOf(key));
+            }
+        }
+    }
+    public boolean contains(int key) {
+        if(!list.isEmpty() && list.contains(key)) return true;
+        else return false;
+    }
+}
+
+
+/* USING BOOLEAN ARRAY BEATS 56% */
+class MyHashSet {
+    boolean arr[];
+    public MyHashSet() {
+        arr = new boolean[1000001]; //based on constraints
+    }
+    
+    public void add(int key) {
+        arr[key] = true;
+    }
+    
+    public void remove(int key) {
+        arr[key] = false;
+    }
+    
+    public boolean contains(int key) {
+        return arr[key];
+    }
+}
+
+LOGIC - THIS IS A SHORTCUT TRICK, NOT A REAL INTERVIEW SOLUTION.
+The array will be used to store the presence or absence of keys.
+How this code works is much explaiend by how the input is interpreted by our function code.
+Intuition
+At first to store the index values by add or remove operation we use boolean array, by default false i.e. empty.
+Also this well help us to maintain the set. i.e to store only unique index values.
+Now for every add operation we will make that index true that will make that index added, and
+For every remove operation we again make that index false.
+At last to check wheather key is present or not we return the index value wheather true or false.
+
+
+
+
