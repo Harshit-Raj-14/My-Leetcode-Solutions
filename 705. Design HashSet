@@ -77,5 +77,68 @@ For every remove operation we again make that index false.
 At last to check wheather key is present or not we return the index value wheather true or false.
 
 
+USING REAL HASHING
+https://leetcode.com/problems/design-hashset/solutions/3577240/java-solution-for-design-hashset-problem/
+https://leetcode.com/problems/design-hashset/solutions/768723/c-elegant-solution-explained-90-time-90-space/
 
+
+/* USING LINKEDLIST */ link - https://leetcode.com/problems/design-hashset/solutions/1968459/java-most-elegant-way-possible/
+class Node {
+    public int val;
+    public Node next;
+
+    public Node(int val) {
+        this.val = val;
+    }
+}
+
+class MyHashSet {
+
+    private static final int size = 10000;
+    
+    Node[] hashSet = new Node[size];
+    
+    public MyHashSet() {
+
+    }
+
+    public void add(int key) {
+        Node pointer = hashSet[key % size];
+        if (pointer == null) {
+            hashSet[key % size] = new Node(key);
+        } else {
+            Node current = pointer;
+            Node previous = current;
+            while (current != null) {
+                if (current.val == key) return;
+                previous = current;
+                current = current.next;
+            }
+            previous.next = new Node(key);
+        }
+
+    }
+
+    public void remove(int key) {
+
+        Node current = hashSet[key % size];
+
+        while (current != null) {
+            if (current.val == key) {
+                current.val = -1; // Simply replace with -1
+                return;
+            }
+            current = current.next;
+        }
+    }
+
+    public boolean contains(int key) {
+        Node current = hashSet[key % size];
+        while (current != null) {
+            if (current.val == key) return true;
+            current = current.next;
+        }
+        return false;
+    }
+}
 
