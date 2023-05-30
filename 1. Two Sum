@@ -11,7 +11,7 @@ class Solution {
         }
 
         for(int i=0;i<arr.length;i++){
-            if(map.containsKey(target-arr[i]) && map.get(target-arr[i])!=i){
+            if(map.containsKey(target-arr[i]) && map.get(target-arr[i])!=i){   //need to make sure we do not double consider the same element for the target.
                 ans[0] = i;
                 ans[1] = map.get(target-arr[i]);
             }
