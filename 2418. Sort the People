@@ -1,0 +1,71 @@
+/* O(nlogn) SOLUTION */
+class Solution {
+    public String[] sortPeople(String[] names, int[] heights) {
+        HashMap<Integer, String> map = new HashMap<>(); //given height has distinct integer so key
+        for(int i=0;i<names.length;i++){
+            map.put(heights[i], names[i]);
+        }
+        String ans[] = new String[names.length];
+        Arrays.sort(heights);
+        int j=0;
+        for(int i=heights.length-1;i>=0;i--){   //taking reverse for descending order
+            ans[j] = map.get(heights[i]);
+            j++;
+        }
+        return ans;
+    }
+}
+
+
+/* USING PAIR */
+    private static class Pair{
+        String name;
+        int height;
+        Pair(String name, int height){
+            this.name = name;
+            this.height = height;
+        }        
+    }
+    
+    public String[] sortPeople(String[] names, int[] heights) {
+        List<Pair> ans = new ArrayList<>();        
+        //adding pair into the list
+        for(int i = 0; i < heights.length; i++){
+            ans.add(new Pair(names[i], heights[i]));
+        }       
+        //sorting the list according to decending order of the height -- custom sorting order
+        ans.sort((a,b)->{
+            return b.height - a.height;
+        });        
+		//to store the result and return 
+        String [] str = new String[ans.size()];
+        
+        for(int i = 0; i < ans.size(); i++){
+            str[i] = ans.get(i).name;
+        }        
+        return str;        
+    }
+    
+    
+/* SWAPPING BUBBLE SORT */
+class Solution {
+    public String[] sortPeople(String[] names, int[] heights) {
+        for(int i=0;i<names.length;i++)
+        {
+            for(int j=0;j<names.length-i-1;j++)
+            {
+                if(heights[j]<heights[j+1])
+                {
+                String temp=names[j];
+                names[j]=names[j+1];
+                names[j+1]=temp;
+
+                int temp1=heights[j];
+                heights[j]=heights[j+1];
+                heights[j+1]=temp1;
+                }
+            }
+        }
+        return names;
+    }
+}
