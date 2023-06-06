@@ -1,0 +1,19 @@
+/*  O(nlogn) */
+class Solution {
+    public boolean canMakeArithmeticProgression(int[] arr) {
+        Arrays.sort(arr);
+        for(int i=0;i+2<arr.length;i++){
+            if(arr[i+1]-arr[i]!=arr[i+2]-arr[i+1]) return false;
+        }
+        return true;
+    }
+}
+
+SOMETHING IMPORTNANT
+•  Space complexity: O(n) or O(logn)
+•	Some extra space is used when we sort arr\text{arr}arr in place. The space complexity of the sorting algorithm depends on the programming language. 
+o	In python, the sort method sorts a list using the Timsort algorithm, which is a combination of Merge Sort and Insertion Sort and uses O(n)additional space.
+o	In C++, the sort() function is implemented as a hybrid of Quick Sort, Heap Sort, and Insertion Sort, with worst-case space complexity of O(logn).
+o	In Java, Arrays.sort() is implemented using a variant of the Quick Sort algorithm which has a space complexity of O(logn).
+•	We then traverse both arrays and calculate the cumulative product sum, this step takes O(1) extra space.
+•	To sum up, the overall space complexity is O(n) for Python and O(logn) for C++ and Java.
