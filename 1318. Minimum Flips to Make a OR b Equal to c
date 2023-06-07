@@ -1,0 +1,13 @@
+
+
+
+LOGIC ---
+OR
+a b    c
+1 1 -> 1
+1 0 -> 1
+0 1 -> 1
+0 0 -> 0
+
+Two cases : If we want 0 in c and a and b are 1. So, we need two changes(flip).
+Otherwise, in others just one change is enough for minimum flips.
