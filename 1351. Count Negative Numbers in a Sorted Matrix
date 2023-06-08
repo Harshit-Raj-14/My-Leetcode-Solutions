@@ -1,0 +1,70 @@
+/* O(n^2) */
+class Solution {
+    public int countNegatives(int[][] grid) {
+        int count=0;
+        for(int i=0;i<grid.length;i++){
+            for(int j=0;j<grid[0].length;j++){
+                if(grid[i][j]<0) count++;
+            }
+        }
+        return count;
+    }
+}
+
+/* O(nlogn) BINARY SEARCH */
+class Solution {
+    public int countNegatives(int[][] grid) {
+        int count=0;
+        for(int i=0;i<grid.length;i++){
+            int l=0;
+            int r=grid[0].length-1;
+            while(l<=r){
+                int mid=l+(r-l)/2;
+                if(grid[i][mid]<0) r=mid-1;
+                else l=mid+1;
+            }
+            count+=grid[0].length-l;
+        }
+        return count;
+    }
+}
+
+LOGIC ---
+Sorted rows, so binary search
+Iterate row wise and apply binary searh in each row to fidn from where negative number starts
+Then we find the middle position of the current search space mid to reduce the search space by half until only one element is left in the search space.
+
+
+/* O(n+m) LINEAR TRAVERSAL */
+class Solution {
+    public int countNegatives(int[][] grid) {
+        int count=0;
+        int currRowNegativeIndex=grid[0].length-1;  //to store the current row's first negative element's index
+        for(int i=0;i<grid.length;i++){
+            while(currRowNegativeIndex>=0 && grid[i][currRowNegativeIndex]<0){
+                currRowNegativeIndex--; //while loop stops when currRowNegativeIndex element becomes +ve, so down subtract one as well
+            }
+            count+=grid[0].length-currRowNegativeIndex-1;
+        }
+        return count;
+    }
+}
+
+LOGIC --- 
+In the problem description, it's given that the numbers are also sorted in column-wise order. 
+This implies that, if ith row has the first negative element at index x, then the first negative for i + 1th row can never be at indices greater than x.
+Thus, it means if we know the index of the first negative element of any row then the next row's first negative element will be present on the left side of the previous row's first negative index.
+
+So we traverse from right to left in each row starting from the previous row's first negative element's index to find the current row's first negative element index.
+
+
+
+
+
+
+
+
+
+
+
+
