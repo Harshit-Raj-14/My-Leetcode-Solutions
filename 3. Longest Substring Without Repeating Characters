@@ -1,0 +1,26 @@
+/* O(n^2) USING HASHSET */
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        HashSet<Character> set = new HashSet<>();
+        int count=0;
+        int maxSubstring=0;
+        for(int i=0;i<s.length();i++){
+            int flag=1;
+            count=0;
+            set.clear();    //restart our set
+            for(int j=i; j<s.length() && flag==1; j++){
+                if(!set.contains(s.charAt(j))){
+                    set.add(s.charAt(j));
+                    count++;
+                    maxSubstring = Math.max(count, maxSubstring);
+                }
+                else flag=0;
+            }
+        }
+        return maxSubstring;
+    }
+}
+
+LOGIC ---
+Checking from every character till a duplicate is reached and starting from the next one and outputting the maximum
+=> Gives us the idea to use sliding window for O(n) solution
