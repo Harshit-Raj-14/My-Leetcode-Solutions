@@ -14,3 +14,46 @@ class Solution {
         else return false;
     }
 }
+
+
+
+
+OTHER SOLUTIONS
+/* O(nlogn) */
+class Solution {
+public:
+    bool isFascinating(int n) {
+        string str= to_string(n)+to_string(2*n)+to_string(3*n);
+        sort(str.begin(),str.end());
+        return str == "123456789";
+    }
+};
+
+/* O(1) */
+class Solution {
+    public boolean isFascinating(int n) {
+        return n == 192 || n == 219 || n==273 || n==327;
+    }
+}
+
+LOGIC --- 
+There are just 4 numbers which satisfy this condition. TC->O(1)
+
+
+
+Approach
+
+Take a set to check total number of uniqe char in the final string.
+In the set check :
+
+    if the total unique char count is 9
+    if the total size of the string s is 9
+    if there is no '0' in the string
+
+Code
+
+bool isFascinating(int n) {
+    string s = to_string(n) + to_string(n*2) + to_string(n*3);
+    unordered_set<char> st(s.begin(), s.end());
+    return (st.size() == 9 && s.size() == 9 && st.find('0') == st.end() );
+}
