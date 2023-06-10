@@ -1,0 +1,16 @@
+class Solution {
+    public boolean isFascinating(int n) {
+        String str = Integer.toString(n) + Integer.toString(2*n) + Integer.toString(3*n);
+        int count[] = new int[10];
+        for(int i=0;i<str.length();i++){
+            count[Integer.parseInt(String.valueOf(str.charAt(i)))]++;
+        }    
+        int flag=1;
+        if(count[0]>0) return false;
+        for(int i=1;i<count.length;i++){
+            if(count[i]!=1) flag=0;
+        }
+        if(flag==1) return true;
+        else return false;
+    }
+}
