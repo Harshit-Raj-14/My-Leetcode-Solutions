@@ -1,0 +1,26 @@
+/* O(n^2) */
+class Solution {
+    public int longestSemiRepetitiveSubstring(String str) {
+        int maxcount = 0;
+        int flag=1;
+        for(int i=0;i<str.length();i++){
+            int repc=0;
+            int count=0;
+            flag=1;
+            for(int j=i;j<str.length() && flag==1 ;j++){
+                if(j+1<str.length() && str.charAt(j)==str.charAt(j+1)){
+                    if(repc==1) {flag=0; count++;}
+                    repc++;
+
+                }
+                if(flag==1) count++;
+                maxcount=Math.max(maxcount,count);
+            }
+        }
+        return maxcount;
+    }
+}
+
+
+
+Try sliding window other solutions
