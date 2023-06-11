@@ -1,0 +1,33 @@
+/* o(n) */
+class Solution {
+    public String smallestString(String s) {
+        char ch[] = s.toCharArray();
+        int i=0;
+        if(ch[0]=='a'){
+            while(i<ch.length && ch[i]=='a') i++;
+            if(i==ch.length){
+                ch[i-1]='z';
+                return String.valueOf(ch);  //e.g: aaaa -> aaaz
+            }
+        }
+        if(ch[i]!='a'){   //from where first non 'a' starts
+            while(i<ch.length && ch[i]!='a'){
+                ch[i]=(char)(ch[i]-1);
+                i++;
+            }
+        }
+        return String.valueOf(ch);
+    }
+}
+
+
+LOGIC --- Three condition
+I : a in prefix is good, skip all a in the beginning.
+
+II : If all characters are a, change the last char to z. ==> e.g: aaaa -> aaaz
+Why do the above - we have to select an non empty substring once so if all are a's in the given string we have to select atleast one character i.e. nonempty substring 
+so we are selecting the last a such that best lexicographically acceptable so that is the reason.
+
+III : From the first char not a, decrease them, until next a.
+
+We get our Lexicographically Smallest String
