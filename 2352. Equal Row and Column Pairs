@@ -1,0 +1,86 @@
+/* O(n^2) USING HASHMAP */
+class Solution {
+    public int equalPairs(int[][] grid) {
+        int count=0;
+        HashMap<String, Integer> map = new HashMap<>();
+        //Contruct hasmap data from row
+        for(int i=0;i<grid.length;i++){ //iteration over each row
+            String rowString = Arrays.toString(grid[i]);
+            if(!map.containsKey(rowString)) map.put(rowString, 1);
+            else map.put(rowString, map.get(rowString)+1);
+        }
+
+        //Now compare the array gained columnwise to the map key and count it
+        for(int i=0;i<grid.length;i++){
+            int colArray[] = new int[grid[0].length];
+            for(int j=0;j<grid[0].length;j++){
+                colArray[j]=grid[j][i]; //we are moving down the column
+            }
+            if(map.containsKey(Arrays.toString(colArray))) count+=map.get(Arrays.toString(colArray));
+        }
+        return count;
+    }
+}
+
+LOGIC --- we traverse each row of the grid and use it as a key and record its frequency in a hash map.
+Note that arrays cannot typically be used as keys, so we need to convert them into equivalent hashable objects, such as tuples in Python or strings in Java. 
+The converted object still maintains a one-to-one correspondence with the original object, allowing us to record the frequency of the original array by hash map.
+we can consider each row as the key and store it in a hash map. The corresponding value for each key would be the frequency of that row in the grid. 
+Then, we can traverse through each column of the grid and increment the answer by the frequency of the equivalent row in the hash map.
+Note - if frequency let's say is 2 and that of columnwise is 1. count+=2. reason then pairs will be - (r1,c)(r2,c)
+
+
+
+/* O(n^3) SOLUTION */
+class Solution {
+    public int equalPairs(int[][] grid) {
+        int count=0;
+        for(int i=0;i<grid.length;i++){ //iteration over each row
+            for(int j=0;j<grid[0].length;j++){  //iterating over each column
+                boolean match=true;
+                for(int k=0;k<grid.length;k++){ //checking elemnts of the curr row and col
+                    if(grid[i][k]!=grid[k][j]){
+                        match=false;
+                        break;
+                    }
+                }
+                if(match==true) count++;
+            }
+        }
+        return count;
+    }
+}
+
+LOGIC ---
+Initialize count to 0.
+Iterate over each row R in grid.
+For each row, iterate over each column C in grid.
+Check if row R equals column C by comparing each element at the same index i in both R and C. If row R equals column C, increment count by 1.
+Return count after iterating over all row-column pairs.
+
+
+
+/* O(n^2) USING TRANSPOSE PROPERTY */
+class Solution {
+    public int equalPairs(int[][] grid) {
+        int transpose[][] = new int[grid.length][grid.length];
+        for(int i=0;i<grid.length;i++){ //making transpose matrix
+            for(int j=0;j<grid[0].length;j++){
+                transpose[j][i]=grid[i][j];  //in trnaspose elements (i,j) is swapped with (j,i) 
+            }
+        }
+        int count=0;
+        for(int i=0;i<grid.length;i++){
+            for(int j=0;j<transpose.length;j++){
+                if(Arrays.equals(grid[i], transpose[j])) count++;
+            }
+        }
+        return count;
+    }
+}
+
+LOGIC ---
+to compare rows with columns , trasponse the grid.
+compare each row in grid with all the rows in the trasposed matrix.
+if same increase count.
+
