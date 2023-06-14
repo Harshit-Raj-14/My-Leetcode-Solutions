@@ -1,7 +1,11 @@
 
 
 LOGIC
-The next elemtn will have a longest prefix match
+Note : The largest permutation(array in descending order) will have no next permutation. In that case we will return the first starting permutation. that is the array in ascending order.
+eg :arr=[1,3,5,4,2] ===> Algorithm
+Step1: Travel backward from right to left till you reach - a[i]<a[i+1]. So we get i=1;
+Step2: Again travel backward from righ to left and find index where a[i]
+
 
 
 /* ONE LINER C++ SOLUTION - USING STL */
