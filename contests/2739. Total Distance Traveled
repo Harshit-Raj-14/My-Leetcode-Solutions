@@ -1,0 +1,50 @@
+class Solution {
+    public int distanceTraveled(int mainTank, int additionalTank) {
+        int ans=0;
+        int counter=0;  //to check when the fuel form additional tank is to be injected
+        while(mainTank>0){
+            mainTank--;
+            counter++;
+            ans+=10;
+            if(counter%5==0 && additionalTank>0){  //if there is fuel in additional tank and 5l has been used only then do this
+                mainTank++;
+                additionalTank--;
+            }
+        }
+        return ans;
+    }
+}
+
+
+/* USING FOR LOOP */
+class Solution {
+    public int distanceTraveled(int mainTank, int additionalTank) {
+        int result =0;
+        for(int i=1;i<=mainTank;i++){
+            if(additionalTank!=0 && i%5==0){
+                additionalTank-=1;
+                result+=10;
+                mainTank+=1;
+            }
+            else{
+                result+=10;
+            }
+        }
+        return result;
+     }
+}
+
+
+/* O(1) SOLUTION */
+    public int distanceTraveled(int a, int b) {
+        return (a + min((a - 1) / 4, b)) * 10;
+    }
+
+LOGIC ---
+A simple example explaining why it works: mainTank (M) = 13, additionalTank (A) = 3
+
+M  M  M  M  M   A  M  M  M  M   A   M  M  M  M   A
+1 [2  3  4  5]  6 [7  8  9 10]  11 [12 13 14 15] 16
+
+The first liter is outside of the cycle, and then we have a cycle of length 4, i.e., for every 4 liters from the mainTank we can add 1 liter from the additionalTank.
+F(M,A) = 10 * (M + min((M-1)/4, A))
