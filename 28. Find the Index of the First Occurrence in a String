@@ -1,0 +1,111 @@
+/* ELEGANT SOLUTION - USING INBUILT STRING METHOD BEATS 100% */
+class Solution {
+    public int strStr(String haystack, String needle) {
+        return haystack.indexOf(needle);
+    }
+}
+
+
+/* SLIDING WINDOW BEATS 34% */
+class Solution {
+    public int strStr(String haystack, String needle) {
+        int k=0;
+        int j=0;
+        int count=0;
+        int firstOccurence=0;
+        for(int i=0;i<haystack.length();i++){
+            if(haystack.charAt(i)==needle.charAt(j)){
+                firstOccurence=i;
+                while(i<haystack.length() && j<needle.length() && haystack.charAt(i)==needle.charAt(j)){
+                    i++;
+                    j++;
+                    count++;
+                    if(count==needle.length()) return firstOccurence;
+                }
+            }
+            j=0;
+            count=0;
+            i=k++;   //to go back to the next element from where we started when i++ happen. This is talking about the case shown in example
+        }
+        return -1;
+    }
+}
+
+
+Logic FOR USING - k
+"mississippi"
+"issip"
+As you can see without reverting to the next eelmtn just after failure m, if we were to consider till whole etting matched we might miss the i making up the answer at index 4.
+/* WRONG SOLUTION FOR UDNERSTANDING */
+class Solution {
+    public int strStr(String haystack, String needle) {
+        int j=0;
+        int count=0;
+        int firstOccurence=0;
+        for(int i=0;i<haystack.length();i++){
+            if(haystack.charAt(i)==needle.charAt(j)){
+                firstOccurence=i;
+                while(i<haystack.length() && haystack.charAt(i)==needle.charAt(j)){
+                    i++;
+                    j++;
+                    count++;
+                    if(count==needle.length()) return firstOccurence;
+                }
+            }
+            j=0;
+            count=0;
+        }
+        return -1;
+    }
+}
+
+This makes the correct solution beating 34% O(n^2). So, its similar to an approach of sliding window
+
+
+
+/* SLIDING WINDOW TWO POINTER BEATS 34% */
+class Solution {
+    public int strStr(String haystack, String needle) {
+        int j=0;
+        for(int i=0;i<haystack.length();i++){
+            if(haystack.charAt(i)==needle.charAt(j)) j++;
+            else{
+                i=i-j;  //start from the next index of previous start index
+                j=0;    //reset needle to 0
+            }
+            if(j==needle.length()) return i-j+1;    //return the first index (note j has been incremented by extra one in the previous check)
+        }
+        return -1;
+    }
+}
+LOGIC ---
+When, the characters are equal, increase the window. When they are not, reinitialize the window from the immediate next index of the previous window's start.
+haystack = "mississippi", needle = "issip"
+
+The window matching will start from first "i". Then it will proceed.
+Matching:
+-> m
+-> i
+not match, reinitialize window start to next index of m. 
+That is "i" from the word "mississipi"
+-> i s s i s
+-> i s s i p
+s and p mismatch
+so, reinitialize the window's start
+-> s
+-> i
+not match
+reinitialize
+-> s
+-> i
+not match
+reinitialize
+-> i s s i p
+-> i s s i p
+this time it was a match!
+
+    Time complexity: O(N∗M)
+    N is the length of haystack, M is the length of needle. In worst case, the haystack.charAt(i)==needle.charAt(nIndex) comparison runs for M-1 times. Where the last character of the needle mismatch.
+
+    Space complexity: O(1)
+    Well, guess what! We haven't performed substring.equals() or any other operation. The space complexity is really good in a sense.
