@@ -24,10 +24,9 @@ class Solution {
 }
 
 
+LOGIC ---
+refer this article for better explanation - https://leetcode.com/problems/search-insert-position/discuss/1596479/C%2B%2B-or-3-Solutions-or-Well-explained-with-example-and-concise-solution 
 
-/* refer this article for better explanation - https://leetcode.com/problems/search-insert-position/discuss/1596479/C%2B%2B-or-3-Solutions-or-Well-explained-with-example-and-concise-solution */
-
-/*
 Now lets understand why this works the way it works and why the bounds are set the way they are set. 
 The question says if we find the element we need to return the position of the element, hence we need the condition of low <= high.
 Initialize low = 0 and high as nums.length-1. while low <= high we iterate and change the bounds.
@@ -38,4 +37,14 @@ So we continue iterating, and finally when low and high cross each other, we bre
 If we consider carefully, low represents the lower bound of the potential positions where we can insert the elements. 
 Meaning the position must be atleast low or greater. Since low and high have already crossed each other, We cannot insert at high. 
 We have to insert at low. Hence we return low.
-*/
+
+
+/* O(n) SOLUTION */
+class Solution {
+    public int searchInsert(int[] nums, int target) {
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]>=target) return i;
+        }
+        return nums.length;
+    }
+}
