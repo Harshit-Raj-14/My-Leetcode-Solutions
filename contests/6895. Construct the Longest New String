@@ -1,0 +1,24 @@
+/* O(1) SOLUTION */
+class Solution {
+    public int longestString(int x, int y, int z) {
+        int ans=0;
+        ans+=2*z;   //attached at peripherals
+        if(x==y) ans+=2*(2*x);
+        else ans+=2*((2*Math.min(x,y)) + 1);    //central part of string
+        return ans;
+    }
+}
+
+LOGIC --
+We can put a=AA and b=BB in center against each other (central part)
+ababa or, babab or, abab or, baba
+Now we can concatenate as many AB=c we want at one of their ends(peripheral) If we start central string with a put all c in start else in end
+Taht means we can get all the c we want
+Note : cb will fail and ac will fail
+That means two case:
+Case I : a==b then we take them all and attach c to the peripheral as we see fit
+Case II : a!=b then we can take their min and do ababa as equal and we awil lstill be able to attach one more of the variable whose frequency is more according to condition like babab(b=3,a=2)
+Hence we write - 2*(Math.min(a,b)) + 1
+And multiply the above with 2 to get the length of characters
+
+Note : the above analysis only holds true when x,y,z>=1. We will need to work on some subcases if x,y,z any of them could be 0
