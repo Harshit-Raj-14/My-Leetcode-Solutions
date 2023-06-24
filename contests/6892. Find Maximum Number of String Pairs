@@ -1,0 +1,28 @@
+/* O(n^2) SOLUTION */
+class Solution {
+    public int maximumNumberOfStringPairs(String[] words) {
+        HashMap<String, String> map = new HashMap<>();
+        int pairs = 0;
+        for(int i=0;i<words.length;i++){
+            for(int j=0;j<words.length;j++){
+                String reversed = new StringBuilder(words[i]).reverse().toString();
+                if(i!=j && words[j].equals(reversed)) pairs++;      
+            }
+        }
+        return pairs/2;
+    }
+}
+
+
+/*
+LOGIC---
+Distinct String 
+And finding maximum pairs - use hashmaps
+making the string reversed, then check whether an equivalent of it exists or not
+Make sure to not check the same index  (to avoid cases like "xx") at same index would have been counted as 1 pair if i!=j is not used
+We are dividing pairs by 2 becuase using the eblow example we would have got two pairs - {cd(i=0), cd(reversed)(j=2)} and{dc(i=2), dc(reversed)(j=0)} --- So, in actuality they are the same pair
+
+Good example testcases :
+["cd","ac","dc","ca","zz"]
+["ff","tx","qr","zw","wr","jr","zt","jk","sq","xx"]
+*/
