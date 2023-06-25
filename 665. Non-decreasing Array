@@ -1,0 +1,38 @@
+/* O(n) SOLUTION */
+class Solution {
+    public boolean checkPossibility(int[] nums) {
+        int count=0;
+        for(int i=0;i<nums.length;i++){
+            if(i+1<nums.length && nums[i]>nums[i+1]){    //we have taken the condition of idnex her and not in for loop so as not to inconvenience the conditons in second if
+                count++;
+                if(i-1>=0 && i+2<nums.length && nums[i-1]<=nums[i] && nums[i-1]>nums[i+1] && nums[i+1]<=nums[i+2] && nums[i]>nums[i+2]) return false;    //YABY scenario on graph
+            }
+        }
+        if(count>1) return false;
+        else return true;
+    }
+}
+
+LOGIC --- the second if statment is for YABY scenario
+read thsi article to udnerstand  - https://dev.to/seanpgallivan/solution-non-decreasing-array-1m5c   
+see copy 
+
+/* ELEGANT SOLUTION */
+class Solution {
+    public boolean checkPossibility(int[] nums) {
+        int count=0;
+        for(int i=0;i<nums.length;i++){
+            if(i+1<nums.length && nums[i]>nums[i+1]){    //we have takenthe condition of idnex her and not in for loop so as not to inconvenience the conditons in second if
+                count++;
+                if(i-1>=0 && i+2<nums.length && nums[i-1]>nums[i+1] && nums[i]>nums[i+2]) return false;    //YABY scenario simplified
+            }
+        }
+        if(count>1) return false;
+        else return true;
+    }
+}
+
+
+LOGIC --- 
+Just the YABY scenario conditions simplified
+
