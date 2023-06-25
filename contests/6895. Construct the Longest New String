@@ -22,3 +22,32 @@ Hence we write - 2*(Math.min(a,b)) + 1
 And multiply the above with 2 to get the length of characters
 
 Note : the above analysis only holds true when x,y,z>=1. We will need to work on some subcases if x,y,z any of them could be 0
+
+
+
+
+/* DYNAMIC PROGRAMMING */
+class Solution {
+    int dp[][][][] = new int[51][51][51][4];
+    public int longestString(int x, int y, int z) {
+        return solve(x,y,z,0);
+    }
+    public int solve(int x, int y, int z, int last){
+        if(dp[x][y][z][last] != 0) return dp[x][y][z][last];
+        int ans = 0;
+        if(x>0 && last!=1) ans = Math.max(ans, 2+solve(x-1,y,z,1));
+        if(y>0 && last<=1) ans = Math.max(ans, 2+solve(x,y-1,z,2));
+        if(z>0 && last!=1) ans = Math.max(ans, 2+solve(x,y,z-1,3));
+        return dp[x][y][z][last] = ans;
+    }
+}
+
+LOGIC ---
+So lets iterate over and try to build all possible cases and take the max length possible as the answer.
+So to do so we can store the last added word to our answer and then check the next possible cases with following restrictions.
+
+    we can add AA if the last added is not AA ( we can add it if last = BB or AB)
+    we can add BB id if the last added is not BB or AB
+    we can add AB id if the last added is not AA.
+
+So with above constraint we can recursively track the largest length of string possible.
