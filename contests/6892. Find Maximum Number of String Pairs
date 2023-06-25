@@ -1,3 +1,29 @@
+/* O(n) SOLUTION */
+class Solution {
+    public int maximumNumberOfStringPairs(String[] words) {
+        HashMap<String, Integer> map = new HashMap<>();
+        int pairs=0;
+        for(int i=0;i<words.length;i++){
+            String revword = new StringBuilder(words[i]).reverse().toString();
+            if(map.containsKey(revword) && map.get(revword)!=0){    //contains revword and their frequency is not 0
+                map.put(revword, map.get(revword)-1);    //decreasing the frequency of those which already formed pair
+                pairs++;
+            }
+            map.put(words[i], 1);   //all are distinct so frequency 1
+        }
+        return pairs;
+    }
+}
+
+LOGIC ---
+Take a map with seen string as the index and its count frequency as its value.
+Iterate the words array and check if its reverse exist in the map or not.
+If exist in the map then update the ans and decrement the map value as we have considered this value for pairing.
+
+Pairs are unique so removing from HashMap is never needed.
+
+
+
 /* O(n^2) SOLUTION */
 class Solution {
     public int maximumNumberOfStringPairs(String[] words) {
