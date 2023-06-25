@@ -6,4 +6,15 @@
 
   ```last=n%10;```
 
-  *
+  *Convert a specific char of string to integer
+  
+    ```int age = (details[i].charAt(11) - '0')*10 + (details[i].charAt(12) - '0');```
+  ```
+      public int toInt(String s){
+        int n=0;
+        for(int i=0;i<s.length();i++){
+            n=n*10+(s.charAt(i)-'0');
+        }
+        return n;
+    }
+  ````
