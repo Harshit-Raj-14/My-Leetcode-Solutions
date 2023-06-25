@@ -1,0 +1,85 @@
+/* O(n) SOLUTION */
+class Solution {
+    public String addStrings(String num1, String num2) {
+        StringBuilder sb = new StringBuilder();
+        int i=num1.length()-1;
+        int j=num2.length()-1;
+        int carry=0;
+        while(i>=0 || j>=0){
+            int sum=carry;
+            carry=0;  //reinitialised carry after it had bene added from the previous calculation to be carried over to next sum
+            if(i>=0){
+                sum+=num1.charAt(i)-'0';
+                i--;
+            }
+            if(j>=0){
+                sum+=num2.charAt(j)-'0';
+                j--;
+            }
+            sb.append(sum%10);
+            if(sum>9) carry=1;
+        }
+        if(carry!=0) sb.append(carry);
+        return sb.reverse().toString();
+    }
+}
+
+
+LOGIC ---
+Made a simple logic of doing addition like teaching a kid
+We begin adding from back and taking carry over - the simple logic
+We keep on taking from the last element of each number and apply simple addition to a variable sum
+Then we check whether we need to make a carry over, while add the last element to our ans string(sb)
+Finall sinc ewe have been iterating form back and adding the ans to back of our ans we need to reverse it for the final time
+
+
+
+/* ELEGANT SOLUTION SAME AS ABOVE */
+class Solution {
+    public String addStrings(String num1, String num2) {
+        StringBuilder sb = new StringBuilder();
+        int i=num1.length()-1;
+        int j=num2.length()-1;
+        int carry=0;
+        while(i>=0 || j>=0){
+            int sum=carry;
+            if(i>=0){
+                sum+=num1.charAt(i)-'0';
+                i--;
+            }
+            if(j>=0){
+                sum+=num2.charAt(j)-'0';
+                j--;
+            }
+            sb.append(sum%10);
+            carry=sum/10;
+        }
+        if(carry!=0) sb.append(carry);
+        return sb.reverse().toString();
+    }
+}
+
+LOGIC ---
+Just simplified the carry calculation
+
+
+
+
+/* WRONG SOLUTION */
+class Solution {
+    public String addStrings(String num1, String num2) {
+        long n1 = toInt(num1);
+        long n2 = toInt(num2);
+        long ans = n1+n2;
+        return Long.toString(ans);
+    }
+    public long toInt(String s){
+        long n=0;
+        for(int i=0;i<s.length();i++){
+            n=n*10+(s.charAt(i)-'0');
+        }
+        return n;
+    }
+}
+
+LOGIC - Converted string to int and then tried to oslve but look at constraints length of stirng is amx to 10^4, it will just voerflow no matter what you use
