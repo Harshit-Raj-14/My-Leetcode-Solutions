@@ -18,3 +18,11 @@
         return n;
     }
   ````
+
+
+
+
+* How to know if a problem can be solved by a greedy method.?
+If you are able to find a strategy; which gives the best choice at your current position and is also guaranteed to give the best answer for the future then you can do the greedy technique.
+In Greedy problems; the trick is you find some way and then you successfully try to disprove it if you are not able to disprove it means your theory is correct.
+ 
