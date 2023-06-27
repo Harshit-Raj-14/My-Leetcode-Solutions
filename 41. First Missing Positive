@@ -1,4 +1,42 @@
-/* ACCEPTED SOLUTION HASHSET */
+/* USING SWAPPING SC-O(1) , TC-O(n) */
+class Solution {
+    public int firstMissingPositive(int[] nums) {
+        int n =nums.length;  //range in which to find missing positive is [1,n]
+        for(int i=0;i<nums.length;i++){
+            int element=nums[i];    //curr element eg:nums[i]=4
+            int chair=element-1;  //correct postion for above element, chair=3
+            if(element>0 && element<=n){    //only for these condtions we consider swapping otherwsie if(-ve or out of range we leave them be, no need to give them their correct chair)
+                if(nums[chair]!=element){    
+                    int temp = nums[i];
+                    nums[i]=nums[chair];
+                    nums[chair]=temp;
+                    i--;    //right now we send the current elemnt to its correct chair, but we again need to recheck for the new elemnt which came at i
+                }
+            }
+        }
+        for(int i=0;i<nums.length;i++){
+            System.out.print(nums[i]+",");
+        }
+        for(int i=0;i<nums.length;i++){
+            if(i+1!=nums[i]) return i+1;
+        }
+        return nums.length+1; //reason becuase if all the elements were right now in inclusive range then the first missing positve will become n+1 
+    }
+}
+
+LOGIC ----
+TC - O(n), SC - O(n)
+How to think of this approach? If we were using a hashset we used O(n) space. What we were doing was checking which number existed and which number not by storing them somewhere else.
+But what if we are able to make the array such that the elment goes there where they should be. The elements come at their indexes. And we are to make changes in the array itself to do so. 
+Hence we can acheive O(1).
+
+So, we are going to put the number in their respective position. So, 1 will got to 0 index.(our positive numbers start from 1) 
+2 will go to 1st index and so on.
+Formula will be to swap the element we start from with the element of which index it should be.
+swap(nums[i], nums[nums[i]-1])
+
+
+/* ACCEPTED SOLUTION HASHSET SC-O(n) , TC-O(n) */
 class Solution {
     public int firstMissingPositive(int[] nums) {
         HashSet<Integer> set = new HashSet<>();
@@ -19,7 +57,12 @@ class Solution {
     }
 }
 
-
+LOGIC --- 
+Put all numbers of array in hashset
+Find amx of array
+Now iterate from 1 to max and check which number is not in set.
+That will be our first misisng positive
+Note - It will fail one test case becuase of SC in codestudio
 
 
 /* DP FAILS */
