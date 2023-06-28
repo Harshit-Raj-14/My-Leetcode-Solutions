@@ -1,0 +1,61 @@
+/* O(n) SOLUTION DP */ 
+class Solution {
+    public boolean isAnagram(String s, String t) {
+        char s1[] = s.toCharArray();
+        char s2[] = t.toCharArray();
+        int count[] = new int[26];
+        for(int i=0;i<s1.length;i++){
+            count[s1[i]-'a']++;
+        }
+        if(s.length()!=t.length()) return false;
+        for(int i=0;i<s2.length;i++){
+            if(count[s2[i]-'a']==0) return false;
+            else count[s2[i]-'a']--;
+        }
+        return true;
+    }
+}
+
+LOGIC ---
+Also, note that if the length of the two string are not equal we can eliminate all such cases in beginning to ease the conditions later
+
+/* O(n) SOLUTION DP */
+class Solution {
+    public boolean isAnagram(String s, String t) {
+        char s1[] = s.toCharArray();
+        char s2[] = t.toCharArray();
+        int count[] = new int[26];
+        for(int i=0;i<s1.length;i++){
+            count[s1[i]-'a']++;
+        }
+        for(int i=0;i<s2.length;i++){
+            if(count[s2[i]-'a']==0) return false;
+            else count[s2[i]-'a']--;
+        }
+        for(int i=0;i<count.length;i++){
+            if(count[i]>0) return false;
+        }
+        return true;
+    }
+}
+
+
+
+/* O(n^2) */
+class Solution {
+    public boolean isAnagram(String s, String t) {
+        char s1[] = s.toCharArray();
+        char s2[] = t.toCharArray();
+        Arrays.sort(s1);
+        Arrays.sort(s2);
+        if(s.length()!=t.length()) return false;
+        for(int i=0;i<s1.length;i++){
+            if(s1[i]!=s2[i]) return false;
+        }
+        return true;
+    }
+}
+
+LOGIC ---
+Sort the array and then check equality
+Also, note that if the length of the two string are not equal we can eliminate all such cases in beginning to ease the conditions later
