@@ -20,9 +20,21 @@
   ````
 
 
-
-
 * How to know if a problem can be solved by a greedy method.?
 If you are able to find a strategy; which gives the best choice at your current position and is also guaranteed to give the best answer for the future then you can do the greedy technique.
 In Greedy problems; the trick is you find some way and then you successfully try to disprove it if you are not able to disprove it means your theory is correct.
+
+* Precision
+  ```
+  //M I
+  DecimalFormat df = new DecimalFormat("#.##");
+  double piValue = 3.14159265359;
+  System.out.println(df.format(piValue));  //o/p: 3.14    //this method will not add 0 if the decimal point is given greater in ###
+  ```
+  ```
+  //M II
+  Formatter f = new Formatter();
+  f.format("%1.9f", 29292929.98765432);
+  System.out.println(f);  //292929.987654320    //this method will also add 0 to decimal if the fromatter demands more decimal
+  ```
  
