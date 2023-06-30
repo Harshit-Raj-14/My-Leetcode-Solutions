@@ -37,4 +37,8 @@ In Greedy problems; the trick is you find some way and then you successfully try
   f.format("%1.9f", 29292929.98765432);
   System.out.println(f);  //292929.987654320    //this method will also add 0 to decimal if the fromatter demands more decimal
   ```
+  ```
+  //MIII
+  System.out.println(String.format("%1.3f", 2929.987654));  //2929.987
+  ```
  
