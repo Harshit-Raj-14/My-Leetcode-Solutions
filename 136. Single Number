@@ -1,0 +1,100 @@
+/* O(n) SOLUTION USING XOR */
+class Solution {
+    public int singleNumber(int[] nums){
+        int single=0;
+        for(int i=0;i<nums.length;i++){
+            single^=nums[i];
+        }
+        return single;
+    }
+}
+
+LOGIC---
+a^0=a
+a^a=0
+Since each elemnt appears twice their xor becoems xor while xor of the single number remaisn the number itself.
+TC - O(n)
+SC - O(1)
+
+
+/* USING HASHMAP */
+class Solution {
+    public int singleNumber(int[] nums) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for(int i=0;i<nums.length;i++){
+            if(!map.containsKey(nums[i])) map.put(nums[i],1);
+            else map.put(nums[i], map.get(nums[i])+1);
+        }
+        for(int i=0;i<nums.length;i++){
+            if(map.get(nums[i])==1) return nums[i];
+        }
+        return -1;
+    }
+}
+
+TC - O(n)
+SC - O(n)
+
+
+/* USING SORTING */
+class Solution {
+    public int singleNumber(int[] nums) {
+        Arrays.sort(nums);
+        for(int i=1;i<nums.length;i+=2){
+            if(nums[i]!=nums[i-1]) return nums[i-1];
+        }
+        return nums[nums.length-1]; //loop never reaches the last element, so if it didn't happen then the last element is single
+    }
+}
+
+LOGIC ---
+Sort the array.
+Traverse the array and check if one of the adjacent elements is equal to the current element or not.
+If yes , move ahead. Else return the current element.
+TC - O(nlogn)
+SC - O(1)
+
+
+/* USING SUM AND HASHSET */
+class Solution {
+    public int singleNumber(int[] nums) {
+        HashSet<Integer> set = new HashSet<>();
+        int fullsum=0;
+        int setsum=0;
+        for(int i=0;i<nums.length;i++){
+            set.add(nums[i]);
+            fullsum+=nums[i];
+        }
+        for (int num : set) {
+            setsum += num;
+        }
+        return 2 * setsum - fullsum;
+    }
+}
+
+LOGIC ---
+All the unique elements , in the array have a frequency of 2 , except one element.
+Store all the unique elements in set.
+Add the elements of the set and multiply by 2 (SUM_1).
+Add all the elements of the array(ARRAY_SUM).
+Return (SUM_1 - ARRAY_SUM) .
+
+Why does this work ?
+ARRAY_SUM = 2*(a1+a2+a3...+ak) + a(k+1)
+SUM_1 = 2*(a1+a2+a3+....+ak+ a(k+1))
+
+NOTE ---
+The HashSet class does not have a get() method. You cannot access elements from a HashSet using an index like an array or a list. 
+To iterate over the elements in the HashSet, you can use a for-each loop or convert it to an array or list.
+The size() method in a HashSet returns the number of elements in the set, not the maximum index. 
+
+
+
+/* JAVA ONE LINER */
+class Solution {
+    public int singleNumber(int[] nums) {
+        return Arrays.stream(nums).reduce(0,(a,b)->a^b);
+    }
+}
+
+
