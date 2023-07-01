@@ -1,0 +1,118 @@
+/* TC-O(n) SC-O(1) TWO POINTER */
+class Solution {
+    public void moveZeroes(int[] nums) {
+        int slow=0;
+        int fast=0;
+        while(fast<nums.length){
+            if(nums[fast]!=0){
+                nums[slow]=nums[fast];
+                slow++;
+            }
+            fast++;
+        }
+        while(slow<nums.length){    //fill left part with all 0s
+            nums[slow]=0;
+            slow++;
+        }
+    }
+}
+
+LOGIC---
+fast pointer skip all 0, slow pointer move 1 step each time to fill in the new array
+at the end we fill the remaining array with 0
+
+
+/* TC-O(n) SC-O(1) ROLLING SNOWBALL CODE */
+class Solution {
+    public void moveZeroes(int[] nums) {
+        int count0=0;
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]==0) count0++;
+            else if(count0>0){  //nums[i]!=0 && count0>0
+                int temp=nums[i];
+                nums[i]=0;
+                nums[i-count0]=temp;
+            }
+        }
+    }
+}
+
+LOGIC ---
+The idea is that we go through the array and gather all zeros on our road.
+Example: [0,1,0,3,12]
+the first step - we meet 0.
+Okay, just remember that now the size of our snowball is 1. Go further. count0=1
+Next step - we encounter 1. Swap the most left 0 of our snowball with element 1.
+[1,0,0,3,12]
+Next step - we encounter 0 again! count0=2, Now consider this (0,0) as one packet.
+Our ball gets bigger, now its size = 2.
+Next step - 3. Swap again with the most left zero.
+[1,3,0,0,12]
+Looks like our zeros roll all the time
+Next step - 12. Swap again:
+[1,3,12,0,0]
+We reached finish! 
+link - https://leetcode.com/problems/move-zeroes/solutions/172432/the-easiest-but-unusual-snowball-java-solution-beats-100-o-n-clear-explanation/
+
+
+
+/* TC-O(n) SC-O(n) USING LIST */
+class Solution {
+    public void moveZeroes(int[] nums) {
+        int count0=0;
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]==0) count0++;
+        }
+        ArrayList<Integer> list = new ArrayList<>();
+        for(int i=0;i<nums.length;i++){ //putting all array elements in list in sequence with 0 removed
+            if(nums[i]!=0)list.add(nums[i]);
+        }
+        for(int i=1;i<=count0;i++){ //adding the 0's at the end of list
+            list.add(0);
+        }
+        for(int i=0;i<nums.length;i++){ //putting back list element sin array nums iwht 0's now moved to the end
+            nums[i]=list.get(i);
+        }
+    }
+}
+
+LOGIC ---
+Count number of 0's
+copy elemnts of nums in an arraylist without 0's
+add 0's at the end of list
+put list elements back into nums
+
+
+LOGIC ---
+The 2 requirements of the question are:
+Move all the 0's to the end of array.
+All the non-zero elements must retain their original order.
+
+
+
+/* COMPLETELY FAILED APPROACH */
+class Solution {
+    public void moveZeroes(int[] nums) {
+        ArrayList<Integer> list = new ArrayList<>();
+        for(int i=0;i<nums.length;i++){
+            list.add(nums[i]);
+        }
+        for(int i=0, count=0;i<list.size();i++){
+            if(list.get(i)==0){
+                list.remove(i);
+                list.add(0);
+                i--;    //again need to check if possible 0 again came to i form i-1
+            }
+            count++;
+            if(count==nums.length-1) break;
+        }
+        for(int i=0;i<nums.length;i++){
+            nums[i]=list.get(i);
+        }
+    }
+}
+
+THE REAOSN THE ABOVE SOLUTION WILL TIME EXCEED BECUASE AFTER SHIFTING ALL 0's to end. 
+It will then keep iterating in the end agaian and again. also you will need lot of avariables to find a way to stop loop.
+If you were to remove i-- thinking it will just stop after n loops. 
+It will fail to check cases when the 0 gets copied from its next element but we have moved one character forward.
