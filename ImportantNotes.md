@@ -24,7 +24,26 @@
 If you are able to find a strategy; which gives the best choice at your current position and is also guaranteed to give the best answer for the future then you can do the greedy technique.
 In Greedy problems; the trick is you find some way and then you successfully try to disprove it if you are not able to disprove it means your theory is correct.
 
-* Precision
+
+
+# Conversions
+* char to int => ```Character.getNumericValue(c)```
+    
+* int to char
+```
+int a=1;    
+char c=(char)(a+'0');  //o/p: 1 => this will be character type
+```
+```
+int num1 = 1;
+int num2 = 13;
+char a = Character.forDigit(num1, 10);
+char b = Character.forDigit(num2, 16);
+System.out.println(a);    // 1
+System.out.println(b);    // d
+```
+
+#### Precision
   ```
   //M I
   DecimalFormat df = new DecimalFormat("#.##");
