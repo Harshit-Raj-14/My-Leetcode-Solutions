@@ -23,3 +23,23 @@ class Solution {
 
 LOGIC ---
 store even and odd eleemtns seperately in differnet list nad finally add them to an answer array
+
+/* SAME AS ABOVE TC - O(n) & SC - O(n) */ 
+class Solution {
+    public int[] sortArrayByParity(int[] A) {
+        int[] ans = new int[A.length];
+        int t = 0;
+
+        for (int i = 0; i < A.length; ++i)
+            if (A[i] % 2 == 0)
+                ans[t++] = A[i];
+
+        for (int i = 0; i < A.length; ++i)
+            if (A[i] % 2 == 1)
+                ans[t++] = A[i];
+
+        return ans;
+    }
+}
+
+LOGIC --- Write all the even elements first, then write all the odd elements.
