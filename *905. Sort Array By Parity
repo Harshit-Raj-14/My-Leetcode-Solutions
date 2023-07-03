@@ -1,0 +1,25 @@
+/* TC - O(n) & SC - O(n) */
+class Solution {
+    public int[] sortArrayByParity(int[] nums) {
+        ArrayList<Integer> even = new ArrayList<>();
+        ArrayList<Integer> odd = new ArrayList<>();
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]%2==0) even.add(nums[i]);
+            else odd.add(nums[i]);
+        }
+        int ans[] = new int[nums.length];
+        int index=0;
+        for(int i=0;i<even.size();i++){
+            ans[index]=even.get(i);
+            index++;
+        }
+        for(int i=0;i<odd.size();i++){
+            ans[index]=odd.get(i);
+            index++;
+        }
+        return ans;
+    }
+}
+
+LOGIC ---
+store even and odd eleemtns seperately in differnet list nad finally add them to an answer array
