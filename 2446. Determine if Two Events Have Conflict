@@ -1,0 +1,65 @@
+class Solution {
+    public boolean haveConflict(String[] event1, String[] event2) {
+        int s1 = Integer.parseInt(""+event1[0].charAt(0)+event1[0].charAt(1)+event1[0].charAt(3)+event1[0].charAt(4));
+        int e1 = Integer.parseInt(""+event1[1].charAt(0)+event1[1].charAt(1)+event1[1].charAt(3)+event1[1].charAt(4));
+        int s2 = Integer.parseInt(""+event2[0].charAt(0)+event2[0].charAt(1)+event2[0].charAt(3)+event2[0].charAt(4));
+        int e2 = Integer.parseInt(""+event2[1].charAt(0)+event2[1].charAt(1)+event2[1].charAt(3)+event2[1].charAt(4));
+        System.out.println(s1+", "+e1);
+        System.out.println(s2+", "+e2);
+        if((s1<s2 && e1<s2) || (s1>e2 && e1>e2)) return false;
+        else return true;
+    }
+}
+
+LOGIC ---
+You have converted the time into numbers like - 
+["01:15","02:00"]
+["02:00","03:00"]
+(115, 200) =>(s1,e1)
+(200, 300) =>(s2,e2)
+Now you can think of the clock as a single line strip from 0000 to 2400
+So, two cases possible for intersection
+s2,e2 lie within s1,e1
+Or, s1,e1, lie within s2,e2
+Intersection cases
+s1 s2 e1 e2
+s1 s2 e2 e1
+s2 s1 e1 e2
+s2 s1 e2 e1
+
+Non Intersection cases
+s1e1 s2e2
+s2e2 s1e1
+
+Since non -intersection cases are else we code that
+
+
+/* SIMPLIFIED SOLUTION SAME AS ABOVE */
+class Solution {
+    public boolean haveConflict(String[] event1, String[] event2) {
+        int start1 = Integer.parseInt(event1[0].substring(0,2) + event1[0].substring(3,5));
+        int end1 = Integer.parseInt(event1[1].substring(0,2) + event1[1].substring(3,5));
+        int start2 = Integer.parseInt(event2[0].substring(0,2) + event2[0].substring(3,5));
+        int end2 = Integer.parseInt(event2[1].substring(0,2) + event2[1].substring(3,5));            
+        if(start2 > end1  || start1 > end2) return false;        
+        return true;
+    }
+}
+
+
+/* WITHOUT CONVERTING TO INT AND COMPARING STRINGS */
+class Solution {
+    public boolean haveConflict(String[] event1, String[] event2) {
+        int endTime1StartTime2 = event2[0].compareTo(event1[1]);
+        int startTime1EndTime2 = event2[1].compareTo(event1[0]);
+        return (endTime1StartTime2 <= 0) && (startTime1EndTime2 >= 0);
+    }
+}
+
+
+/* ONE LINER SOLUTION SAME AS ABOVE */
+class Solution {
+    public boolean haveConflict(String[] event1, String[] event2) {
+        return event1[0].compareTo(event2[1]) <= 0 && event2[0].compareTo(event1[1]) <= 0;
+    }
+}
