@@ -1,0 +1,78 @@
+/* ACCEPTED SOLUTION USING PRIME FACTORISATION FORMULA */
+class Solution {
+    public int trailingZeroes(int n) {
+        int count=0;
+        int i=1;
+        while(Math.floor(n/Math.pow(5,i))>0){
+            count+=Math.floor(n/Math.pow(5,i));
+            i++;
+        }
+        return count;
+    }
+}
+
+LGOIC ---
+We know that [n/5]+[n/5^2]+....
+Will give us the number of zeroes.
+Since 10=5x2
+Between any rnage number of 2>number of 5
+So, number of 10' or trailing zeroes will be equal to occurences of multiple of 5 in that number
+
+/* ELEGANT SOLUTION SAME AS ABOVE BEATS 100% */
+class Solution {
+    public int trailingZeroes(int n) {
+        int count=0;
+        for(int i=5;n/i>0;i*=5){
+            count+=n/i;
+        }
+        return count;
+    }
+}
+
+
+/* O(log5n) SOLUTION */
+class Solution {
+    public int trailingZeroes(int n) {
+        int count=0;
+        while(n>0){
+            n/=5;
+            count+=n;
+        }
+        return count;
+    }
+}
+
+
+
+/* O(1) SOLUTION */
+class Solution {
+    public int trailingZeroes(int n) {
+        if(n<5) return 0;
+        else if(n<=9) return 1;
+        return n/5+n/25+n/125+n/625+n/3125+n/15625;
+        
+    }
+}
+
+
+
+/* BRUTE FORCE FAILS TO HANDLE MOST CASES OVERFLOWS */
+class Solution {
+    public int trailingZeroes(int n) {
+        long fact = factorial(n);
+        int count=0;
+        while(fact%10==0){
+            count++;
+            fact/=10;
+        } 
+        return count;
+    }
+    public long factorial(int n){
+        long factorial=1;
+        for(int i=n;i>0;i--){
+            factorial*=i;
+        }
+        return factorial;
+    }
+}
+
