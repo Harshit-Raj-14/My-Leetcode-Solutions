@@ -42,6 +42,15 @@ class Solution {
     }
 }
 
+LOGIC ---
+Intuition
+To get trailing zeroes we need to know how many times can the number be divided by 10.
+But doing it directly would lead to TLE. So what do we do now.
+We can simply count how many 5's can be extracted from the given number.
+Approach
+First divide the number by 5 and add it to sumsumsum.
+Now divide the number by 5.
+Repeat this process until the number is less than 5.
 
 
 /* O(1) SOLUTION */
