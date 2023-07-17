@@ -1,3 +1,31 @@
+/* O(nlogn) SORTING + SLIDING WINDOW */
+class Solution {
+    public int maximumBeauty(int[] nums, int k) {
+        Arrays.sort(nums);
+        int start=0;
+        int ans=0;
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]-k>nums[start]+k) start++;    //max of range of minimum element > min of range of max element  //we move start forward as we confirm it can be made beautiful
+            ans=Math.max(ans,i-start+1);
+        }
+        return ans;
+    }
+}
+
+LOGIC ---
+The beauty of the array is the length of the longest subsequence.
+So we don't care about the order of elements,
+so we can sort the input A first.
+Because we also need their min max respective values
+
+Algorithm:
+Based on the definition of beauty of an array, we want to find a window that max - min <= k * 2, which can cover as many elements as possible.
+So we can apply the sliding window to solve this problem.
+If the window valids max - min <= k * 2, we increase the size of window.
+If it doesn't valid, we simply slide the window.
+The window is increased for valid subarray, and the window never decreses.
+Finally we return the size of window, which is the length of biggest window valids.
+
 Example:- 
 [4,6,1,2], k = 2
 Question says that we can "Replace nums[i] with any integer from the range [nums[i] - k, nums[i] + k]".
@@ -11,6 +39,10 @@ for the above example ~
 Minimum Element = 1 and max of range of 1 = 3
 Maixium Element = 6 and min of range of 6 = 4
 
+What we are doing here is similar to saying - if I want to compare element 10 and element 50 lets say, then what will I check?
+If I want common numbers between [10-k,10+k] & [50-k,50+k]
+I need to check that 10+k>=50-k
+
 this means if we replace 1 with max of it's range i.e. 3 and we replace 6 with min of it's range i.e. 4,
 still we can't make 1 and 6 equal.
 
@@ -23,3 +55,40 @@ Maixium Element = 6 and min of range of 6 = 4
 this means if we replace 2 with max of it's range i.e. 4 and we replace 6 with min of it's range i.e. 4,
 we can make 2 and 6 equal.
 So the number of elements in the "Beautiful Subsequence" is 3 as we have ignored element '1'.
+
+NOTE --- in the coding like we discusse din the example we didn't do 
+nums[i]-k>=nums[start]+k XXXWRONGXXXX
+But did, nums[i]-k>nums[start]+k
+Why, the reason being the equality is correct telling that the element is beautiful and also that they are already equal. 
+But since the question has asked us to find the number of operations or changes we have to make we only need to check for ienquality telling us places 
+where we are going to apply the operation.
+
+
+
+/* O(n) SWEEP ALGORITHM */
+
+
+
+LOGIC ---
+Intution
+Because value at any index range from [a,b] we need to find the value which occur in most of the ranges.
+
+For nums = [4,6,1,2], k = 2
+Since 2,3,4 occurs in 3 ranges out of 4 starting hence we can achieve maximum of 3
+[2,6] [4,8] [-1,3] [0,4]
+
+Approach- Simple Line Sweep Alogrithm
+
+For nums = [4,6,1,2], k = 2
+
+for nums[0] ranges from [2,6] Hence setting mp[2]++ mp[7]--
+for nums[1] ranges from [4,8] Hence setting mp[4]++ mp[9]--
+for nums[2] ranges from [-1,3] Hence setting mp[-1]++ mp[4]--
+for nums[3] ranges from [0,4] Hence setting mp[0]++ mp[5]--
+
+image
+
+Answer is maximum prefix sum, find it simply using prefix sum technique
+
+TC - O(n)
+SC - O(n)
