@@ -1,12 +1,15 @@
 * Two integers x and y are coprime if there is no integer greater than 1 that divides both of them. In other words, x and y are coprime if gcd(x, y) == 1, where gcd(x, y) is the greatest common divisor of x and y.
 
+
 * Calculating first and last digit of a number.
   
   ```while(n>9){first=n/10;}```
 
   ```last=n%10;```
 
-  *Convert a specific char of string to integer
+  
+
+* Convert a specific char of string to integer
   
     ```int age = (details[i].charAt(11) - '0')*10 + (details[i].charAt(12) - '0');```
   ```
@@ -23,6 +26,19 @@
 * How to know if a problem can be solved by a greedy method.?
 If you are able to find a strategy; which gives the best choice at your current position and is also guaranteed to give the best answer for the future then you can do the greedy technique.
 In Greedy problems; the trick is you find some way and then you successfully try to disprove it if you are not able to disprove it means your theory is correct.
+
+
+
+* **Multiple of 3** - If sum of digits is ina multiple of 3 then number is multiple of 3.
+  Note : In case we are given a binary string - it is odd if the difference between the count of odd set bits and even set bits is divisible by 3.
+  ```
+  for(int i=s.length()-1;i>=0;i--){
+            if(s.charAt(i)=='1' && i%2==0) even++;  //found bitset at even posiiton
+            if(s.charAt(i)=='1' && i%2!=0) odd++;   //found bitset at odd position
+        }
+        if(Math.abs(even-odd)%3==0) return true;
+  ```
+  Note - The above problem can be solved using DFA.
 
 
 
