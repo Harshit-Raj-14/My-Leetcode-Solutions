@@ -22,7 +22,7 @@ class Solution {
     public boolean check(int[] nums) {
         int count=0 ;
         for(int i=0 ;i<nums.length;i++){
-            if(nums[i]>nums[(i+1)%nums.length])
+            if(nums[i]>nums[(i+1)%nums.length])   //to just compaire the last and first element 
                 count++;
         }
          return (count<=1);
@@ -32,6 +32,10 @@ class Solution {
 LOGIC ---
 nums[(i+1)%nums.length] represents the next element in the array, taking into account the circular nature of the array 
 (i.e., if i is the last index, it wraps around to the first index).
+
+If we comparing like arr[i]>arr[i+1] and traversing through the array
+but by this approach we will get array out of index error as we are not able to compare our last index with the frst index because this ia also a condition.
+So for this we will access our index using arr[(i+1) % n] this will help us to compare our last index with our 0th index and our condition will be full fill
 
 -->why am I doing %size?
 Consider this case: nums = [2,1,3,4]
