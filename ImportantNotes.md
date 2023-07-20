@@ -41,6 +41,29 @@ In Greedy problems; the trick is you find some way and then you successfully try
   Note - The above problem can be solved using DFA.
 
 
+* Left Rotation of Array
+  ```
+  public class Main{
+    public static void main(String args[]){
+        int A[] = {5, 9, 6, 10, 12, 7, 3, 5, 4, 2};
+        for(int x:A)
+            System.out.print(x + ",");
+        System.out.println("");
+        int temp = A[0];
+        for(int i=1; i<A.length; i++){
+            A[i-1] = A[i];
+        }
+        A[A.length-1] = temp;
+        for(int x:A)
+            System.out.print(x+",");
+        System.out.println("");
+    }
+}
+```
+In case of right rotation we simply travel backward in array.
+
+
+
 
 # Conversions
 * char to int => ```Character.getNumericValue(c)```
