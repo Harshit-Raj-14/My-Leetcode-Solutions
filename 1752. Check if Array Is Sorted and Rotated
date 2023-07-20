@@ -1,0 +1,74 @@
+/* O(n) SOLUTION */
+class Solution {
+    public boolean check(int[] nums) {
+        int rotation=0;
+        for(int i=1;i<nums.length;i++){
+            if(nums[i-1]>nums[i]) rotation++;
+        }
+        if(rotation>1) return false;
+        if(rotation==1 && nums[nums.length-1]>nums[0]) return false;
+        return true;
+    }
+}
+
+LOGIC ---
+the statement if(rotation==1 && nums[nums.length-1]>nums[0]) return false; 
+ensures that when there is exactly one rotation point and the rotation happened at the beginning of the original sorted array, 
+the method correctly identifies that the array is not a strictly increasing circular list and returns false.
+
+
+/* O(n) SOLUTION ELEGANT */
+class Solution {
+    public boolean check(int[] nums) {
+        int count=0 ;
+        for(int i=0 ;i<nums.length;i++){
+            if(nums[i]>nums[(i+1)%nums.length])
+                count++;
+        }
+         return (count<=1);
+    }
+}
+
+LOGIC ---
+nums[(i+1)%nums.length] represents the next element in the array, taking into account the circular nature of the array 
+(i.e., if i is the last index, it wraps around to the first index).
+
+-->why am I doing %size?
+Consider this case: nums = [2,1,3,4]
+This case will give you result true without %size but it is not sorted and rotated. So we have to check last and first element also.
+
+
+
+/* BRUTE FORCE ACCEPTED O(n^2) */
+class Solution {
+    public boolean check(int[] nums) {
+        int temp[] = new int[nums.length];
+        for(int i=0;i<nums.length;i++){
+            temp[i]=nums[i];
+        }
+        Arrays.sort(temp);
+        if(Arrays.equals(nums, temp)==true) return true;    //in case it is just sorted and not rotated
+        for(int k=1;k<nums.length;k++){
+            int lastelement=temp[temp.length-1];
+            for(int i=temp.length-1;i>0;i--){
+                temp[i]=temp[i-1];
+            }
+            temp[0]=lastelement;
+            if(Arrays.equals(nums, temp)==true) return true;
+        }
+        return false;
+    }
+}
+
+LOGIC ---
+Brute force, check every rotated array for sorted nums.
+Make a temp array
+Sort the temp array
+Compare nums and temp, in case nums was never rotated and already given as sorted so true
+Now, we each time rotate temp once and compare it with nums.
+If it matches that emans it is rotated and sorted
+If loops out, not possible
+
+
+
+
