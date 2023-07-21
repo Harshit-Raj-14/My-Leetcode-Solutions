@@ -1,0 +1,34 @@
+/* O(n) USING STACK */
+class Solution {
+    public int[] asteroidCollision(int[] asteroids){
+        Stack<Integer> s = new Stack<>();
+        for(int i=0;i<asteroids.length;i++){
+            boolean asteroidOk=true;
+            while(!s.isEmpty() && s.peek()>0 && asteroids[i]<0){ //both meteors moving in different direction
+                if(Math.abs(s.peek())<Math.abs(asteroids[i])){ s.pop(); continue;}  //asteroid is greater push out the meteor inside stack and we continue to check wha tis the situation of any other asteroid remaining in stack
+                else if(Math.abs(s.peek())==Math.abs(asteroids[i])){s.pop();}   //both asteroids get destroyed
+                asteroidOk=false;   //asteroid destroyed two cases : equal, lesser magnitude
+                break;  //break sinc ethe asteroid was destroyed ebcuase of the any of the above two cases
+            }
+            if(asteroidOk) s.push(asteroids[i]);    //if asteroid still survived push it in stack
+        }
+        int ans[]=new int[s.size()];    //ans->remaining asteroids
+        for(int i=s.size()-1;i>=0;i--){
+            ans[i]=s.pop();
+        }
+        return ans;
+    }
+}
+
+
+LOGIC ---
+The magnitude is size and sign is direction.
+Collision occurs only when two metors meet (two meteors in opposite direction)
+Now when collision happens we are told to eliminate the asteroid on given condtion -> pop
+Idea -> stack
+We have to calculate state after all collsions.
+
+We can't use the following condition s.peek()*asteroids[i]<0  to detect collision.
+Example : asteroids =[-2,-1,1,2]
+In this case the condition swill run and casue the meteors to collide, evne thoguh they aren't actually colldiing becuase they will just pass through.
+Correct Conditon of collision - s.peek()>0 && asteroids[i]<0
