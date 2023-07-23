@@ -1,0 +1,19 @@
+/* O(n^2) TLE BRUTE FORCE */
+class Solution {
+    public int countDigitOne(int n) {
+        long count=0;
+        for(int i=1;i<=n;i++){
+            String s=Integer.toString(i);
+            count+=digitone(s);
+        }
+        return (int)count;
+    }
+
+    public long digitone(String s){
+        long count1=0;
+        for(int i=0;i<s.length();i++){
+            if(s.charAt(i)=='1') count1++;
+        }
+        return count1;
+    }
+}
