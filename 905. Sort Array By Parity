@@ -43,3 +43,36 @@ class Solution {
 }
 
 LOGIC --- Write all the even elements first, then write all the odd elements.
+
+
+
+/* TWO POINTERS O(n) OPTIMISED SOLUTION BEATS 100% */
+class Solution {
+    public int[] sortArrayByParity(int[] nums) {
+        for(int i=0,j=1;i<nums.length && j<nums.length;){
+            if(nums[i]%2==0){   //i is even -> move froward
+                i++; 
+                j++;
+            }
+            else{
+                if(nums[j]%2==0){   //i is odd but j is even -> swap i and j
+                    int temp=nums[i];
+                    nums[i]=nums[j];
+                    nums[j]=temp;
+                    i++;
+                    j++;
+                }
+                else{   //both i and j are odd -> check next j to find any even to make a swap
+                    j++;
+                }
+            }
+        }
+        return nums;
+    }
+}
+
+LOGIC ---
+Using two pointer we try to code all the three cases
+where i is even, i is odd but j is even, i is odd and j is odd.
+TC - O(n)
+SC - O(1)
