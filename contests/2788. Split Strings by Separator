@@ -1,0 +1,19 @@
+class Solution {
+    public List<String> splitWordsBySeparator(List<String> words, char separator) {
+        ArrayList<String> list = new ArrayList<>();
+        for(int i=0;i<words.size();i++){
+            int j=0;
+            int k=0;
+            for(;j<words.get(i).length();j++){
+                if(words.get(i).charAt(j)==separator){
+                    String s=words.get(i).substring(k,j);
+                    if(!s.equals("")) list.add(words.get(i).substring(k,j));
+                    k=j+1;
+                }
+            }
+            String s=words.get(i).substring(k,j);
+            if(!s.equals("")) list.add(words.get(i).substring(k,j));
+        }
+        return list;
+    }
+}
