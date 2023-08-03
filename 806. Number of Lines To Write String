@@ -1,0 +1,56 @@
+/* O(n) SOLUTION */
+class Solution {
+    public int[] numberOfLines(int[] widths, String s) {
+        int line=1; //we actually start writing from line 1 and not 0
+        int currlinelength=0;
+        for(int i=0;i<s.length();i++){
+            if(currlinelength+widths[s.charAt(i)-'a']<=100){
+                currlinelength+=widths[s.charAt(i)-'a'];
+            }
+            else{
+                System.out.println(s.charAt(i));
+                line++;
+                currlinelength=0;
+                i--;    //need to again consider the character cuasing to move to next line
+            }
+        }
+        return new int[] {line,currlinelength};
+    }
+}
+
+
+/* A BETTER LOOKING SOLUTION OF ABOVE */
+class Solution {
+    public int[] numberOfLines(int[] widths, String s) {
+        int line=1; //we actually start writing from line 1 and not 0
+        int currlinelength=0;
+        for(int i=0;i<s.length();i++){
+            int w=widths[s.charAt(i)-'a'];
+            currlinelength+=w;
+            if(currlinelength>100){
+                line++;
+                currlinelength=0;
+                i--; //need to again consider the character cuasing to move to next line
+            }
+        }
+        return new int[] {line,currlinelength};
+    }
+}
+
+
+/* A STILL BETTER LOOKING SOLUTION FOR ABOVE BY NOT GOING A STEP BACK AT EACH TURN TO NEXTLINE BEATS 100% */
+class Solution {
+    public int[] numberOfLines(int[] widths, String s) {
+        int line=1; //we actually start writing from line 1 and not 0
+        int currlinelength=0;
+        for(int i=0;i<s.length();i++){
+            int w=widths[s.charAt(i)-'a'];
+            currlinelength+=w;
+            if(currlinelength>100){
+                line++;
+                currlinelength=w;
+            }
+        }
+        return new int[] {line,currlinelength};
+    }
+}
