@@ -40,7 +40,9 @@ In Greedy problems; the trick is you find some way and then you successfully try
   ```
   Note - The above problem can be solved using DFA.
 
+* The sums of the elements in both groups have the same parity (either both groups have an even sum or both groups have an odd sum).
 
+  
 * Left Rotation of Array
   ```
   public class Main{
