@@ -1,0 +1,25 @@
+/* TABULATION DP */
+class Solution {
+    public int minCostClimbingStairs(int[] cost) {
+        //steps 0 indexed
+        int n=cost.length;  //top=cost.length
+        int dp[] = new int[cost.length+1];  //dp will contain the cost to reach that stair
+        dp[0]=0;   //to reach 0 costs 0
+        dp[1]=0;   //to reach 1 cost 0 since we are starting from 1
+        if(cost.length>1) dp[2]=Math.min(dp[1]+cost[1], dp[0]+cost[0]);
+        if(cost.length>2) dp[3]=Math.min(dp[2]+cost[2], dp[1]+cost[1]);
+        for(int i=4;i<dp.length;i++){
+            dp[i]=Math.min(dp[i-1]+cost[i-1], dp[i-2]+cost[i-2]);
+        }
+        return dp[cost.length];
+    }
+}
+
+LOGIC ---
+You only pay when you have to climb from it
+
+GENERAL FORMULA---
+dp[i]=Math.min(dp[i-1]+cost[i-1], dp[i-2]+cost[i-2]);
+
+by jump of 1 => dp[i-1]+cost[i-1] => cost to reach i-1 stair and making a jump form it
+by jump of 2 => dp[i-2]+cost[i-2] => cost to reach i-2 stair and making a jump form it
