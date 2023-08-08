@@ -1,0 +1,50 @@
+/* TWO POINTER APPROACH O(n) */
+class Solution {
+    public int removeDuplicates(int[] arr){
+        int i=0;
+        for(int j=1;j<arr.length;j++){
+            if(arr[j]!=arr[i]){
+                i++;
+                arr[i]=arr[j];
+            }
+        }
+        return i+1; //size of array i is 0 indexed
+    }
+}
+
+LOGIC ---
+Given we have a sorted array. So, when we think where the duplicate elemtns would be. In fact they would be all clubbed together at one place.
+So, use two pointer, one iterates over first occurence and one over duplicates. 
+Copy the elements in the array start and we do not ened to care what's left at end as the question demands.
+
+
+/* USING ARRAYLIST TC-O(n) SC-O(n) */
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        ArrayList<Integer> list = new ArrayList<>();
+        for(int i=0;i<nums.length;i++){
+            if(!list.contains(nums[i])) list.add(nums[i]);
+        }
+        for(int i=0;i<list.size();i++){
+            nums[i]=list.get(i);
+        }
+        return list.size();
+    }
+}
+
+
+/* USING TREESET TC-O(n) SC-O(n) */
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        TreeSet<Integer> set = new TreeSet<>();
+        for(int i=0;i<nums.length;i++){
+            set.add(nums[i]);
+        }
+        int i=0;
+        for(Integer el:set){
+            nums[i]=el;
+            i++;
+        }
+        return set.size();
+    }
+}
