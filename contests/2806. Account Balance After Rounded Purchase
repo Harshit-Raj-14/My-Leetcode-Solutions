@@ -1,0 +1,19 @@
+class Solution {
+    public int accountBalanceAfterPurchase(int n) {
+        if(n%10==0) return 100-n;
+        int beforediff=(n/10)*10;
+        System.out.println(beforediff);
+        int afterdiff=beforediff+10;
+        if(Math.abs(n-afterdiff)<n-beforediff) return 100-afterdiff;
+        else if(Math.abs(n-afterdiff)==n-beforediff) return 100-afterdiff;
+        else return 100-beforediff;
+    }
+}
+
+
+/* ELEGANT ONE LINER */
+class Solution {
+    public int accountBalanceAfterPurchase(int purchaseAmount) {
+        return 100 - (purchaseAmount + 5) / 10 * 10;
+    }
+}
