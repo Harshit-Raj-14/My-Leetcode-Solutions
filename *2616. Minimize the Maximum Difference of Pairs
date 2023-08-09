@@ -1,3 +1,9 @@
+Question asks - Find the first p pairs with the smallest difference and then return the maximum difference out of these smallesst.
+Sinc ethe question also asks us to not use the same index twice for a pair formation, max no of pairs formed can be n/2. (seen in contraint p<=n/2)
+Why sort? 
+Choosing a non neighbour element for finding the least differences pair is to choose the next possible number in series.
+That's why sort.
+
 /* WRONG ANSWER BRUTE FORCE */
 class Solution {
     public int minimizeMax(int[] nums, int p) {
