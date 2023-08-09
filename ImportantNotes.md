@@ -1,5 +1,26 @@
 * Two integers x and y are coprime if there is no integer greater than 1 that divides both of them. In other words, x and y are coprime if gcd(x, y) == 1, where gcd(x, y) is the greatest common divisor of x and y.
 
+* When we have to sort some values and return their original indexes or want the original indexes to be attacehd to array.
+MI : Use pairs
+MII : Use matrix array
+```
+int monsters[][] = new int[n][2]; // health of monsters //n->rows ; 2->columns(health, index)
+for (int i = 0; i < monsters.length; i++) {
+  monsters[i][0] = sc.nextInt(); //storing health
+  monsters[i][1] = i + 1; //we make it one indexed
+}
+for (int i = 0; i < monsters.length; i++) {
+  if (monsters[i][0] % k == 0) monsters[i][0] = k; //Since, we want to sort the array and keep the ones killed first in order
+                                            //we need to bring them back to k to count them as greatest in health arr
+  else monsters[i][0] %= k;
+}
+Arrays.sort(monsters, (a, b) -> b[0] - a[0]);
+for (int i = 0; i < monsters.length; i++) {
+  System.out.print(monsters[i][1] + " ");
+}
+```
+Code example B. Monsters codeforces - Educational Codeforces Round 152 (Rated for Div. 2)
+  
 
 * Calculating first and last digit of a number.
   
