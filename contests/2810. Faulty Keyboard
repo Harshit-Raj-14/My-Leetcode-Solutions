@@ -8,3 +8,7 @@ class Solution {
         return sb.toString();
     }
 }
+
+TC - O(N^2) => n is for iteration and k is the occurence of i, since reverse() is O(n)
+
+It might optimise if convert string to character array or ArrayList
