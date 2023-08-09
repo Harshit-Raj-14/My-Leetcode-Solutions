@@ -35,3 +35,23 @@ class Solution {
         return false;
     }
 }
+
+
+/* SLIDING WINDOW */
+class Solution {
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
+        int n=nums.length;
+        HashSet<Integer> set=new HashSet<Integer>();    //will work as window of k size
+        int min=Math.min(k,n);
+        for(int i=0;i<min;i++){ //making a first window of k
+            if(set.contains(nums[i])) return true;  //if already found a match
+            set.add(nums[i]);
+        }
+        for(int i=k;i<n;i++){
+            if(set.contains(nums[i])) return true;
+            set.add(nums[i]);
+            set.remove(nums[i-k]);  //again removing the element k units back to maintain k size
+        }
+        return false;
+    }
+}
