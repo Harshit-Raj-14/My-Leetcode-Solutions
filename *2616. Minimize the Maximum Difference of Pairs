@@ -1,0 +1,30 @@
+/* WRONG ANSWER BRUTE FORCE */
+class Solution {
+    public int minimizeMax(int[] nums, int p) {
+        ArrayList<Integer> list = new ArrayList<>();
+        for(int i=0;i<nums.length;i++){
+            for(int j=i+1;j<nums.length;j++){
+                list.add(Math.abs(nums[i]-nums[j]));
+            }
+        }
+        int minmax=0;
+        Collections.sort(list);
+        for(int i=0;i<p;i++){
+            minmax = Math.max(minmax, list.get(i));
+        }
+        return minmax;
+    }
+}
+
+WHY FAILS---
+This method does not accomplish the conditon of using : no index appears more than once amongst the p pairs.
+Input : nums =[3,4,2,3,2,1,2]  p =3
+Output: 0
+Expected: 1
+
+Again what if we had sorted the array and found the first p difference.
+Since, sorting would now bring all minimum diffrences to start.
+But if something like this coems [1,8,9] and p=1 => In this case we will have to choose between the two differences since the second differnece will fetch us the first minimum.
+Since there is decision to be made at each step. We use Dynamic Programming.
+Since while we are using dp we will have to make the choice between the adjacent first two pairs only. Becuase the third will then surely exceed the second from the first.
+So, we will base our general equation like that as well.
