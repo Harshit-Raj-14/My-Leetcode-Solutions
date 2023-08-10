@@ -1,0 +1,109 @@
+/* SOLIUTION */
+class Solution {
+    public boolean search(int[] nums, int target) {
+        int l=0;
+        int r=nums.length-1;
+        while(l<=r){
+            int mid = l+(r-l)/2;
+            if(nums[mid]==target) return true;
+            if(nums[mid]==nums[l] && nums[mid]==nums[r]) { l++; r--; }  //new triming condition for duplicates on both sides equivalent to mid
+            else if(nums[mid]>=nums[l]){ //finding in left sorted part of rotated array
+                if(nums[mid]>=target && nums[l]<=target) r=mid-1;   //target is in left sorted part
+                else l=mid+1;   //or not
+            }
+            else{   //finding in right sorted part of rotated array
+                if(nums[mid]<=target && target<=nums[r]) l=mid+1;    //target is in right sorted part
+                else r=mid-1;
+            }
+        }
+        return false;
+    }
+}
+
+EXPLANATION ---
+This problem is an extension to 33. Search in Rotated Sorted Array. The only difference is that this problem allows duplicate elements.
+
+Intuition
+Recall that after rotating a sorted array, what we get is two sorted arrays appended to each other.
+Since we have duplicates they can exist in the following ways:
+[0,1,1,1,2,3] => sorted (all duplicates in right sorted part)
+[3,2,1,0,1,1] => duplicates in both sorted part
+[3,2,1,1,1,0] => duplicates in left sorted part
+
+What's the real problem is here?
+We used nums[l]<=nums[mid] to identify the left of the two sorted parts of array. and this automatically applies -> nums[mid]<nums[r]. Since there are no duplicates
+But becuase of existence of duplicate we come to know that we can have the same number in start, mid and end. Something like - e.g. {3, 1, 2, 3, 3, 3, 3}
+we have to deal this case separately.
+Becuase now we cannot know which sight might be the sorted part in which our nums[mid] could be by comparing either form the fornt or the end.
+
+SOLUTION ---
+In that case, it is guaranteed the condition arr[mid] == arr[l] == arr[r] can be checked before the original logic,
+if so then move left and right both towards the middle by 1 and repeat.
+
+
+EXAMPLE ---
+{3, 1, 2, 3, 3, 3, 3}
+3 1 2 3 is one half, and 3 3 3 is another half and our mid is element 3 also it at index '3'
+now, CAN we distingusih over which half we should minimize are search space, can we ?
+the answer is no because, if i compared it with nums[low] it is 3 and if i look for nums[high] it is again 3
+so our search space will not be divide correctly as both are same what is correct half we cannot determine and we cannot get to know which is our sorted half 
+so we have to get rid of the condition nums[low] == nums[mid] == nums[high] seperately.
+so that's why we trimmed our search space both from start and end so that we can determine the valid partition and get to determine the sorted half.
+
+
+TIME COMPLEXITY
+WORST CASE - O(n)
+AVERAGE CASE - O(logn)
+
+Worst case: This happens when all the elements are the same and we search for some different element. At each step, we will only be able to reduce the search space 
+by 1 since arr[mid] equals arr[start] and it's not possible to decide the relative position of target from arr[mid].
+Example: [1, 1, 1, 1, 1, 1, 1], target = 2.
+
+Best case: This happens when all the elements are distinct. At each step, we will be able to divide our search space into half just like a normal binary search.
+
+FOLLOW UP QUESTION:
+Would this (having duplicate elements) affect the run-time complexity? How and why?
+As we can see, by having duplicate elements in the array, we often miss the opportunity to apply binary search in certain search spaces. 
+Hence, we get O(n) worst case (with duplicates) vs O(log⁡n) best case complexity (without duplicates).
+
+By adding the following line to the code :-
+if( nums[0] == target or nums[nums.length-1] == target ) return true; //if target is either in the front or the back
+// this line is redundant it reduces only the worst case when all elements are same to O(1)
+
+
+/* BINARY SEARCH WITH LOGIC TO MOVE AHEAD WHEN if(nums[mid]==nums[l]) { l++; continue; } */
+class Solution {
+    public boolean search(int[] nums, int target) {
+        int l=0;
+        int r=nums.length-1;
+        while(l<=r){
+            int mid = l+(r-l)/2;
+            if(nums[mid]==target) return true;
+            if(nums[mid]==nums[l]) { l++; continue; }
+            else if(nums[mid]>=nums[l]){ //finding in left sorted part of rotated array
+                if(nums[mid]>=target && nums[l]<=target) r=mid-1;   //target is in left sorted part
+                else l=mid+1;   //or not
+            }
+            else{   //finding in right sorted part of rotated array
+                if(nums[mid]<=target && target<=nums[r]) l=mid+1;    //target is in right sorted part
+                else r=mid-1;
+            }
+        }
+        return false;
+    }
+}
+
+
+
+
+
+
+/* BRUTE FORCE LINEAR SEARCH */
+class Solution {
+    public boolean search(int[] nums, int target) {
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]==target) return true;
+        }
+        return false;
+    }
+}
