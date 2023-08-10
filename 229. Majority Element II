@@ -1,0 +1,38 @@
+/* USING HASHMAP O(n) */
+class Solution {
+    public List<Integer> majorityElement(int[] nums) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for(int i=0;i<nums.length;i++){
+            if(!map.containsKey(nums[i])) map.put(nums[i],1);
+            else map.put(nums[i], map.get(nums[i])+1);
+        }
+        ArrayList<Integer> list = new ArrayList<>();
+        for(Integer key : map.keySet()){
+            if(map.get(key)>nums.length/3) list.add(key);
+        }
+        return list;
+    }
+}
+
+LOGIC ---
+we cannot use count[] sicne we have negative numbers as well, in this cas eso it becoems best to use hashmap
+
+
+/* BRUTE FORCE O(n^2) */
+class Solution {
+    public List<Integer> majorityElement(int[] nums) {
+        ArrayList<Integer> list = new ArrayList<>();
+        for(int i=0;i<nums.length;i++){
+            int count=0;
+            for(int j=0;j<nums.length;j++){
+                if(nums[j]==nums[i]) count++;
+            }
+            if(count>nums.length/3 && !list.contains(nums[i])) list.add(nums[i]);
+        }
+        return list;
+    }
+}
+
+LOGIC---
+Find count of each number seperately and check for 
+
