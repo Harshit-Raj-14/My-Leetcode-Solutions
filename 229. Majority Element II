@@ -15,7 +15,65 @@ class Solution {
 }
 
 LOGIC ---
-we cannot use count[] sicne we have negative numbers as well, in this cas eso it becoems best to use hashmap
+we cannot use count[] since we have negative numbers as well, in this case so it becomes best to use hashmap
+
+
+/* Moore's Voting Algorithm O(n) */
+class Solution {
+  public List < Integer > majorityElement(int[] nums) {
+    // In the begining, both Trump and Biden don't get a vote
+    int firstMajor = Integer.MAX_VALUE, firstSum = 0;
+    int secondMajor = Integer.MIN_VALUE, secondSum = 0;
+    for (int i = 0; i < nums.length; i++) {
+      // case 1: I want to vote for Biden or Trump
+      if (nums[i] == firstMajor) firstSum++;
+      else if (nums[i] == secondMajor) secondSum++;
+      // case 2: I want to run for the president
+      else if (firstSum == 0) {
+        firstMajor = nums[i];
+        firstSum = 1;
+      } else if (secondSum == 0) {
+        secondMajor = nums[i];
+        secondSum = 1;
+      }
+      // case 3: fuck sleepy Joe and crazy Trump, let James be the president
+      else {
+        firstSum--;
+        secondSum--;
+      }
+    }
+    // After election, we need to count the vote again.
+    ArrayList < Integer > ans = new ArrayList < Integer > ();
+    firstSum = 0;
+    secondSum = 0;
+    for (int i = 0; i < nums.length; i++) {
+      if (nums[i] == firstMajor)
+        firstSum++;
+      else if (nums[i] == secondMajor)
+        secondSum++;
+    }
+    if (firstSum > nums.length / 3) ans.add(firstMajor);
+    if (secondSum > nums.length / 3) ans.add(secondMajor);
+    return ans;
+  }
+}
+
+LOGIC ---
+In majority element(another problem where it is required to find element with frequency>n/2) we applied this algorithm to find just one element 
+knowing full well that there can be only one element in an array with frequency > n/2.
+And when we consider that number as one of the candidate. And decrease count by one when we do not find it in next iteration 
+Or when count reaches zero we make another element the new candidate we will always end up with the majority elemnt as candidate in last
+
+Now in majority elment II - we are asked to find elemnts with freqiency >n/3.
+So if the length of array is n. What is the coutn of numbers that can have frequency >n/3.
+Case I we find no such number.
+Case II we find one number with frequecy >n/3.
+Case II : What about finding two such numbers. They alone would amount to length of 2 major >= n/3 + n/3 
+length of 2 major >= 2n/3 Lets write it as 2n/3^+ that means something greater than 2n/3
+Number of remaining elements : n-(2n/3^+) = n/3^- That means something less than n/3.
+Conclusion : At max in an array we can find only two major elments with frequnecy n/3
+So, this time we design our moore algorthm to fit two candidates.
+
 
 
 /* BRUTE FORCE O(n^2) */
