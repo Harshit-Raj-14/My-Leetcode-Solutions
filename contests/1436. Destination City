@@ -1,0 +1,65 @@
+/* USING HASHMAP TC-O(n) SC-O(n) */
+class Solution {
+    public String destCity(List<List<String>> paths) {
+        HashMap<String, String> map = new HashMap<>();
+        for(int i=0;i<paths.size();i++){
+            map.put(paths.get(i).get(0), paths.get(i).get(1));
+        }
+        for(int i=0;i<paths.size();i++){
+            if(map.get(paths.get(i).get(1))==null) return paths.get(i).get(1);  //the city which do not have a value i.e., the city without any path outgoing to another city
+        }
+        return "";
+    }
+}
+
+LOGIC---
+Start in any city and use the path to move to the next city.
+Eventually, you will reach a city with no path outgoing, this is the destination city.
+
+
+/* USING HASHSET TC-O(n) SC-O(n) */
+class Solution {
+    public String destCity(List<List<String>> paths) {
+        HashSet<String> set = new HashSet<>();
+        for(int i=0;i<paths.size();i++){
+            set.add(paths.get(i).get(1));
+        }
+        for(int i=0;i<paths.size();i++){
+            set.remove(paths.get(i).get(0));
+        }
+        return set.iterator().next();   //first element of set
+    }
+}
+LOGIC---
+first time, we add all the cities on the right side to a set
+second time, we check if the city occurs on the left side, if so, remove it from the set
+result will be the city left in the set
+
+/* BRUTE FORCE TC-O(n^2) SC-O(n) */
+class Solution {
+    public String destCity(List<List<String>> paths) {
+        HashSet<String> set = new HashSet<>();
+        HashMap<String, String> map = new HashMap<>();
+        for(int i=0;i<paths.size();i++){
+            map.put(paths.get(i).get(0), paths.get(i).get(1));  //putting all paths in map
+            for(int j=0;j<paths.get(i).size();j++){
+                set.add(paths.get(i).get(j));   //putting all places in hashmap
+            }
+        }
+        for (Map.Entry<String, String> entry : map.entrySet()){
+            if(set.contains(entry.getKey())) set.remove(entry.getKey());
+        }
+        String arr[] = new String[set.size()];
+        set.toArray(arr);
+        return arr[0];
+    }
+}
+
+LOGIC ---
+Obeservation : destination city will always be the right one
+From the question we know that we need to find the place that is not at position paths.get(i).get(0). that means its not a departure place.
+We put all palces in hashset and arrange all paths in a hashmap.
+Then we remove all the places which are the key in hashmap(departure places).
+The set will only remain with one place that is the place which could not become a departure places
+This method works becuase we know that the paths work in loops, so only one solution exist
+But note that the fact the places exist in loops is a information we did not use that effectively that's where the optimised solution comes in.
