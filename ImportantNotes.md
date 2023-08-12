@@ -28,7 +28,9 @@ Code example B. Monsters codeforces - Educational Codeforces Round 152 (Rated fo
 
   ```last=n%10;```
 
-  
+
+* HashSet to array
+```String[] array = set.toArray(new String[0]);```
 
 * Convert a specific char of string to integer
   
