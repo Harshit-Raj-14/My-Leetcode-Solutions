@@ -1,0 +1,27 @@
+/* O(1) */
+class Solution {
+    public int kItemsWithMaximumSum(int o, int z, int n, int k) {
+        if(o>=k) return k;
+        else{
+            k-=o;
+            if(z>=k) return o;
+            else{
+                return o-(k-z);
+            }
+        }
+    }
+}
+
+
+/* O(n) */
+class Solution {
+    public int kItemsWithMaximumSum(int numOnes, int numZeros, int numNegOnes, int k) {
+        ArrayList<Integer> list = new ArrayList<>();
+        for(int i=0;i<numOnes;i++) list.add(1);
+        for(int i=0;i<numZeros;i++) list.add(0);
+        for(int i=0;i<numNegOnes;i++) list.add(-1);
+        int ans=0;
+        for(int i=0;i<k;i++) ans+=list.get(i);
+        return ans;
+    }
+}
