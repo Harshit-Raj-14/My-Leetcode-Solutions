@@ -1,0 +1,53 @@
+/* USING HASHMAP O(n), O(n) */
+class Solution {
+    public String reorganizeString(String s) {
+        int count[]= new int[26];
+        int maxcharcount=0;
+        for(int i=0;i<s.length();i++){
+            count[s.charAt(i)-'a']++;
+            maxcharcount=Math.max(maxcharcount, count[s.charAt(i)-'a']);
+        }
+        // Check if reorganizing is possible
+        if(maxcharcount>(s.length()+1)/2) return "";
+        int maxcharindex=0;
+        for(int i=0;i<count.length;i++){
+            if(count[i]==maxcharcount) maxcharindex=i;
+        }
+        StringBuilder ans=new StringBuilder(s);
+        int index=0;
+        // Fill even positions with the most frequent character
+        while(count[maxcharindex]!=0){
+            ans.setCharAt(index, (char)(maxcharindex+'a'));
+            count[maxcharindex]--;
+            index+=2;
+        }
+        // Fill the remaining characters
+        for(int i=0;i<count.length;i++){
+            while (count[i] > 0) {
+                if (index >= ans.length()) index = 1; // Start filling odd positions
+                ans.setCharAt(index, (char)(i+'a'));
+                count[i]--;
+                index += 2;    
+            }
+        }
+        return ans.toString();
+    }
+}
+
+/*
+APPROACH ---
+Make a frequency table
+Find the most frequent letter and its index.
+Put the most frequent letters at even postion or at a distance of two from start index=0.
+
+And then you can start placing from there on all the other characters again at index/2.
+Don't forget to bring back the index back to 1 if it goes too far.
+
+Also, know this, otherwise you can just make a for loop check whether you got the desired string
+
+"Alternate placing the most common letters." Use this hint to know
+If there is some character c with freq(c)>(n+1)/2 then it is impossible.
+
+If n is odd, use both ends there are at most (n+1)/2 alternating places. If n is even, there are at most n/2 alternating places.
+Due to Pigeonhole principle, if some character c with freq(c)>(n+1)/2 , then there must be some place for the adjacent characters with c!
+*/
