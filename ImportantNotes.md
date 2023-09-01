@@ -1,3 +1,13 @@
+* What is the meaning of: n=n&(n-1)
+SIGNIFICANCE:
+Whenever you perform the above operation the fact that the number of steps it will take for n to become zero will be equal to the number of setbits in n.
+Special cases: if n&n-1 run once becomes zero => in one step that means there is only one set bit in n => n isi also a pwoer of two.
+Analysis:
+We can eliminate one '1' by executing "n = n & (n - 1);" each time. To make it clear, we break it down to two cases: A) The last bit is 1, and B) the last bit is 0.
+A) For any unsigned binary integer n = XXX...1, n = n & (n - 1) = XXX...1 & XXX...0 = XXX...0, the last 1 is eliminated;
+B) n = XXX100...0: n & (n - 1) = XXX100...0 & XXX011...1 = XXX000...0, so that the last 1 followed by suffixal zeros is eliminated.
+Repeating this process, all '1' are erased eventually, therefore the time of calling this statement is the number of '1's.
+
 * Two integers x and y are coprime if there is no integer greater than 1 that divides both of them. In other words, x and y are coprime if gcd(x, y) == 1, where gcd(x, y) is the greatest common divisor of x and y.
 
 * When we have to sort some values and return their original indexes or want the original indexes to be attacehd to array.
