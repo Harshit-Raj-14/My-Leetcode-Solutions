@@ -3,7 +3,7 @@ SIGNIFICANCE:
 Whenever you perform the above operation the fact that the number of steps it will take for n to become zero will be equal to the number of setbits in n.
 n -> is the number
 n-1 -> saying let's find a new number by subtracting a bit from n
-n7(n-1) -> lets eleminate the subtracted bit from n
+n=n&(n-1) -> let's eleminate the subtracted bit from n
 Special cases: if n&n-1 run once becomes zero => in one step that means there is only one set bit in n => n isi also a pwoer of two.
 Analysis:
 We can eliminate one '1' by executing "n = n & (n - 1);" each time. To make it clear, we break it down to two cases: A) The last bit is 1, and B) the last bit is 0.
