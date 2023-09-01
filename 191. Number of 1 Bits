@@ -1,0 +1,87 @@
+/* >>> UNSIGNED RIGHT SHIFT OPERATOR O(logn) */
+public class Solution {
+    // you need to treat n as an unsigned value
+    public int hammingWeight(int n) {
+        int count=0;
+        while(n!=0){
+            int bit=n&1;
+            if(bit==1) count++;
+            //n = n>>1;  //if use this you will get TLE Error 
+            n=n>>>1;    //>>> is an unsigned right shift operator, said in the question
+        }
+        return count;
+    }
+}
+
+LOGIC ---
+We'll check if we have bit "1" at the first position of given n (i.e. first position from right side) and will keep on shifting n towards right by 1
+NOTE -> Bitwise Zero Fill Right Shift Operator has to be used here.
+
+>> - Bitwise Right Shift Operator preserves the sign bit.
+>>> - Bitwise Zero Fill Right Shift Operator do not preserves the sign bit.
+
+Java supports two types of right shift operators. The >> operator is a signed right shift operator and >>> is an unsigned right shift operator. 
+The left operands value is moved right by the number of bits specified by the right operand.
+n = n>>1; //for Signed right shift
+n = n>>>1; //for Unsigned right shift
+
+Unsigned int means => only +ve numbers in int range (0 to 2147483647)
+Signed int means => +ve and -ve numbers both in int range (-2147483648 to 2147483647)
+
+In Java language, the maximum integer is 2147483647. int type in Java is signed means (-2147483648 to 2147483647) and there is no unsigned int means there you will not get only +ve numbers like (0 to 2147483647).
+So the input 2147483648 is represented in Java as -2147483648 (in java int type has a cyclic representation, that means Integer.MAX_VALUE+1==Integer.MIN_VALUE).
+This force us to use: n!=0
+in the while condition and we cannot use: n>0
+because the input 2147483648 would correspond to -2147483648 in java and the code would not enter the while if the condition is n>0 for n=2147483648. Because -2147483648 is less than 0.
+
+/* ELEGANT SOLUTION */
+public class Solution {
+    public int hammingWeight(int n){
+        int count =0;
+        for(int i=0; i<32;i++){
+            if((n&1)==1) count++;
+            n>>=1;
+        }
+        return count;
+    }
+}
+
+
+
+/* MOST OPTIMISED SOLUTION FLIP THE LSB */
+public class Solution {
+    // you need to treat n as an unsigned value
+    public int hammingWeight(int n) {
+        int count=0;
+        while(n!=0){
+            n=n&(n-1);  //flips the LSB
+            count++;
+        }
+        return count;
+    }
+}
+
+LOGIC---
+We can eliminate one '1' by executing "n = n & (n - 1);" each time. To make it clear, we break it down to two cases: 
+A) The last bit is 1, and B) the last bit is 0.
+
+A) For any unsigned binary integer n = XXX...1, n = n & (n - 1) = XXX...1 & XXX...0 = XXX...0, the last 1 is eliminated;
+B) n = XXX100...0: n & (n - 1) = XXX100...0 & XXX011...1 = XXX000...0, so that the last 1 followed by suffixal zeros is eliminated.
+Repeating this process, all '1' are erased eventually, therefore the time of calling this statement is the number of '1's.
+TC : O(no of set bits)
+
+
+
+
+/* INBUILT METHOD bitCount() */
+public class Solution {
+    // you need to treat n as an unsigned value
+    public int hammingWeight(int n) {
+        return Integer.bitCount(n);
+    }
+}
+
+LOGIC---
+bitCount() method of Integer class of java.lang package returns the count of the number of one-bits
+TC : 0(n)
+
