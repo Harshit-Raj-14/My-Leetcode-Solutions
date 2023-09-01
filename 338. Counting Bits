@@ -1,0 +1,96 @@
+/* O(nlogn) */
+class Solution {
+    public int[] countBits(int n) {
+        int ans[] = new int[n+1];
+        for(int i=0;i<=n;i++){
+            ans[i]=setbits(i);
+        }
+        return ans;
+    }
+
+    public int setbits(int n){
+        int count=0;
+        while(n!=0){
+            int bit=n&1;
+            if(bit==1) count++;
+            n=n>>1;
+        }
+        return count;
+    }
+}
+
+
+/* O(n) DYNAMIC PROGRAMMING FASTEST APPROACH */
+class Solution {
+    public int[] countBits(int n) {
+        int dp[] = new int[n+1];
+        dp[0]=0;
+        for(int i=0;i<=n;i++){
+            if(i%2==0) dp[i]=dp[i/2];   //i is even  //dp[i]=dp[i>>1]
+            else dp[i]=dp[i/2]+1;   //i is odd  //dp[i]=dp[i>>1] + 1
+        }
+        return dp;
+    }
+}
+
+LOGIC ---
+        dp[0]=0; -> 0
+        dp[1]=1; -> 1
+        dp[2]=1; -> 10
+        dp[3]=2; -> 11
+        dp[4]=1; -> 100
+        dp[5]=2; -> 101
+        dp[6]=2; -> 110
+        dp[7]=3; -> 111
+        dp[8]=1; -> 1000
+        dp[9]=2; -> 1001
+        dp[10]=2; -> 1010
+        dp[11]=3; -> 1011
+        dp[12]=2; -> 1100
+
+Observation:
+If i is an even number then the number of setbits in i is equal to the number of setbits in number i/2.
+If i is an odd number then the number of setbits in i is equal to the (number of setbits in number i/2) + (1).
+
+REASON:
+A number is expressed as
+half_number<<1 if number is even  -> i.e., (x/2)*2=x => even x
+(half_number<<1) +1 if number is odd -> i.e., ((x/2)*2) + 1 =x => odd x
+And we know that left shift will add just a zero at end, so same number of bits as half_number if even and add one more bit if odd
+
+Example:
+Let's take a closer look:
+0 -> 0000
+1 -> 0001
+2 -> 0010
+3 -> 0011
+----------
+4 -> 0100
+5 -> 0101
+6 -> 0110
+7 -> 0111
+
+you can see if we shift 5 to the right by 1, and it becomes 2, and 5&1 is 1(implying 5 is odd), so the number of 1's in 5, is actually the (number of 1's in 2) plus 1, because 5&1 == 1.
+similarly, 
+if we shift 4 to the right by 1, which becomes 2 as well, and 4&1 is 0, so number of 1's in 4, is the the number of 1's in 2 plus 0, because 4&1 == 0.
+Since we can contruct the numbe rof bits of a large number from smaller numbers hence, dp.
+
+
+
+/* O(n) USING C++ __builtin_popcount */
+class Solution {
+public:
+    vector<int> countBits(int n) {
+        vector<int> ans;
+        for (int i = 0; i <= n; i++){
+            ans.push_back(__builtin_popcount(i));
+        }
+        return ans;
+    }
+};
+
+LOGIC ---
+__builtin_popcount(int number) has a time complexity of O(1).
+
+Interesting things to remember
+Any number x has log(x) set bits.
