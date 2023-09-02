@@ -1,0 +1,26 @@
+class Solution {
+    public boolean canMakeSubsequence(String str1, String str2) {
+        int i2=0;
+        for(int i=0;i<str1.length() && i2<str2.length();i++){
+            if(str1.charAt(i)==str2.charAt(i2)) i2++;
+            else if((char)((((str1.charAt(i)-'a')+1)%26)+'a')==str2.charAt(i2)) i2++;
+        }
+        if(i2==str2.length()) return true;
+        else return false;
+    }
+}
+
+/*
+LOGIC---
+Since we are asked to find whether str2 can be a subsequence of str1 if we apply given operation to s1
+Now that we have been given freedom to apply operation anywhere and only once
+We loop over str1 and at the same time check whether element of str2 is there in str1 or not. Or, whether it is possible to use the given operation and then make it happen.
+If yes, then we move one index forward over str2.
+If we reach the end of str2 it means we were successfully find str2 as a subsequence in s1.
+
+(char)((((str1.charAt(i)-'a')+1)%26)+'a')
+This emans that first we subtract 'a' from our current character  of str1 to get a much simpler indexing like a=0, b=1,.... and so on.
+Then we add 1 to it as asked by the operation. 
+Then we again add 'a' to make it back to ascii indexing.
+And finally we typecast it back to being a character and check its equality with the character in str2.
+*/
