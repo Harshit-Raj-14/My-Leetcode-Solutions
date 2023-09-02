@@ -1,0 +1,18 @@
+class Solution {
+    public int minimumSum(int n, int k) {
+        ArrayList<Integer> list = new ArrayList<>();
+        HashSet<Integer> set = new HashSet<>();
+        int counter=0;
+        int sum=0;
+        for(int i=1;i<50*n;i++){
+            if(set.contains(k-i)) continue;
+            else{
+                set.add(i);
+                counter++;
+                sum+=i;
+            }
+            if(counter==n) return sum;
+        }
+        return sum;
+    }
+}
