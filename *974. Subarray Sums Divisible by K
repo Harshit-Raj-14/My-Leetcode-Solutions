@@ -1,0 +1,28 @@
+/* BRUTE FORCE O(n^3) TLE */
+class Solution {
+    public int subarraysDivByK(int[] nums, int k) {
+        int ans=0;
+        for(int i=0;i<nums.length;i++){
+            for(int j=i;j<nums.length;j++){
+                ArrayList<Integer> list = new ArrayList<>();
+                for(int index=i;index<=j;index++){
+                    list.add(nums[index]);
+                }
+                if(isDivisibleByK(list, k)) ans++;
+            }
+        }
+        return ans;
+    }
+
+    public boolean isDivisibleByK(ArrayList<Integer> list, int k){
+        int sum=0;
+        for(int i=0;i<list.size();i++){
+            sum+=list.get(i);
+        }
+        if(sum%k==0) return true;
+        else return false;
+    }
+}
+
+LOGIC ---
+Find all subarrays and check condition for them
