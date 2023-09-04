@@ -64,6 +64,10 @@ Code example B. Monsters codeforces - Educational Codeforces Round 152 (Rated fo
 If you are able to find a strategy; which gives the best choice at your current position and is also guaranteed to give the best answer for the future then you can do the greedy technique.
 In Greedy problems; the trick is you find some way and then you successfully try to disprove it if you are not able to disprove it means your theory is correct.
 
+* Count subarrays based on a condtion category questions
+Usually uses mod remainder strategy
+problem example - 523. Continuous Subarray Sum, 2845. Count of Interesting Subarrays
+
 
 
 * **Multiple of 3** - If sum of digits is ina multiple of 3 then number is multiple of 3.
