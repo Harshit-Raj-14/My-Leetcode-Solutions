@@ -1,0 +1,44 @@
+/* TC-O(n^2) SC-O(n) PREFIX SUM */
+class Solution {
+    public int subarraySum(int[] nums, int k) {
+        int prefixsum[] = new int[nums.length+1];
+        prefixsum[0]=0;
+        for(int i=1;i<=nums.length;i++){
+            prefixsum[i]=prefixsum[i-1]+nums[i-1];
+        }
+        int count=0;
+        for(int l=0;l<=nums.length;l++){
+            for(int r=l+1;r<=nums.length;r++){
+                if(prefixsum[r]-prefixsum[l]==k) count++;
+            }
+        }
+        return count;
+    }
+}
+
+LOGIC---
+Make a prefix sum of size n+1
+Reason it will help us to easily consdier single elemnt subarrays then
+And then by subtracting ranges of prefixsum you have access to sum of all subarrays.
+
+
+/* O(n^2) SOLUTION */
+class Solution {
+    public int subarraySum(int[] nums, int k) {
+        int count=0;
+        for(int i=0;i<nums.length;i++){
+            int sum=0;
+            for(int j=i;j<nums.length;j++){
+                sum+=nums[j];
+                if(sum==k) count++;
+            }
+        }
+        return count;
+    }
+}
+
+
+/* BRUTE FORCE O(n^3) TLE */
+GENERATE ALL SUBARRAYS
+FIND THEIR SUM
+CHECK THE CONDITION
