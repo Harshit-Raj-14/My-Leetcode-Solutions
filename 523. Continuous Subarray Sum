@@ -1,0 +1,82 @@
+
+
+
+LOGIC ---
+What we need to find is :
+the sum of a subarray starting at the index l and ending at index r (0-based) is a multiple of k when, its remainder modulo k is 0, i.e.
+(nums[l]+nums[l+1]+⋯+nums[r])%k=0
+
+To understand this question, you have to understand how remainders work. 
+If k = 5, then 6 % 5 = 1, which also means (6 + 5) % 5 = 1. 
+
+Remainders are essentially the distance above a multiple of a number. For example 8 % 7 = 1, as 8 is 1 above 7. 15 % 7 is also 1, because 15 is 1 above another multiple of 7.
+
+So keeping that in mind when you are taking a running sum and checking the remainder, the only way to get two of the same remainder is if the numbers between those two values add up to a multiple of 
+what you are getting the remainder of.
+
+Using the first example: [23, 2, 4, 6, 7] k = 6
+The running tally would be: 23, 25, 29, 35, 42
+And the remainder would be: 5, 1, 5, 5, 0
+
+When we start (23) we are 5 above a multiple of 6, and by the 3rd digit we are back to 5 above a multiple of 6. The only way for this to be possible is if the numbers in between add up to a multiple of 6. 
+Because how could you be the same distance above the multiple without that being true?
+The first number is 23, and the 3rd number (Which is the solution) is 29. Subtract and you get a multiple 29 - 23 = 6 because the numbers between add up to 6. 
+The next number 35 also results in a multiple, and 35 - 23 = 12, because the numbers between add up to 12, which is also a multiple.
+
+So you use a hash map to check if you have seen that remainder before. 
+If yes, then you know between both indexes, it is 5 (i.e. (6 + 5) - 6 = 5). 
+This question tests nothing other than knowing how remainders work.
+
+Conclusive points-
+=> If the the same keyValue (sum%k) is repeating then it means there are some values such that their sum is divisible by k. Only then we'll have the same keyValue.
+=> So if the map already contains that value then we check if the (currIndex - map.get(sum) >1 ) , because we are given a size constraint.
+=> If both of these two conditions are satisfied that means we've found one such sub array and we can return true.
+You can dry run this [5,0,0,0], k=3 and you'll understand it better.
+
+
+
+
+
+In the example:
+[23,2,6,4,7] k =12
+
+(23)%12 = 11
+(23+2)%12=1
+(23+2+6)%12 = 7
+(23+2+6+4)%12=11 -> seen before, so return true because:
+
+(23+2+6+4) - (23) = 12 -> 12 % 12 = 0
+
+
+
+/* BRUTE FORCE TLE O(n^3) */
+class Solution {
+    public boolean checkSubarraySum(int[] nums, int k) {
+        int ans=0;
+        for(int i=0;i<nums.length;i++){
+            for(int j=i;j<nums.length;j++){
+                ArrayList<Integer> list = new ArrayList<>();
+                for(int index=i;index<=j;index++){
+                    list.add(nums[index]);
+                }
+                if(isGood(list, k)) return true;;
+            }
+        }
+        return false;
+    }
+
+    public boolean isGood(ArrayList<Integer> list, int k){
+        if(list.size()<2) return false;
+        else{
+            int sum=0;
+            for(int i=0;i<list.size();i++){
+                sum+=list.get(i);
+            }
+            if(sum%k==0) return true;
+        }
+        return false;
+    }
+}
+
+LOGIC ---
+Find all subarrays and check condition for them
