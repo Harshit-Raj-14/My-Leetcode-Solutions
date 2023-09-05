@@ -1,0 +1,56 @@
+/* TC-O(nlogn) SC-O(n) */
+class Solution {
+    public int maxSum(int[] nums) {
+        int max=-1;
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for(int i=0;i<nums.length;i++){
+            int maxdigit=getMaxDigit(nums[i]);
+            if(map.containsKey(maxdigit)){
+                max=Math.max(max, map.get(maxdigit)+nums[i]);  //updating the max with new sum  //map.get(maxdigit) is the value of a previous number with same maxdigit
+                map.put(maxdigit, Math.max(map.get(maxdigit), nums[i]));  //updating the map for the key to now possess the array element whose value is greater for the maxdigit to next time form even a greater sum
+            }
+            else map.put(maxdigit, nums[i]);
+        }
+        return max;
+    }
+
+    public int getMaxDigit(int n){  //O(logn)
+        int max=0;
+        while(n!=0){
+            int r=n%10;
+            max=Math.max(max, r);
+            n/=10;
+        }
+        return max;
+    }
+}
+
+LOGIC---
+We keep traversing through the nums[] and keep storing the (maxdigit,element) as key-value pair in map,so when we again encounter the element with same max digit 
+we can check if it is giving the max sum with the current element.
+
+Note SC can still be considered O(1) becuase we have only size of 0 to 9
+
+
+/* O(n^2) SOLUTION */
+class Solution {
+    public int maxSum(int[] nums) {
+        int max=-1;
+        for(int i=0;i<nums.length;i++){
+            for(int j=i+1;j<nums.length;j++){
+                if(getMaxDigit(nums[i])==getMaxDigit(nums[j])) max=Math.max(max,nums[i]+nums[j]);
+            }
+        }
+        return max;
+    }
+
+    public int getMaxDigit(int n){
+        int max=0;
+        while(n!=0){
+            int r=n%10;
+            max=Math.max(max, r);
+            n/=10;
+        }
+        return max;
+    }
+}
