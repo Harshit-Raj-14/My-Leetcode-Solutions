@@ -1,0 +1,61 @@
+class Solution {
+    public int minimumMoves(int[][] grid) {
+        //BASE CASE
+        int count0=0;
+        for(int i=0;i<3;i++){
+            for(int j=0;j<3;j++){
+                if(grid[i][j]==0) count0++;
+            }
+        }
+        if(count0==0) return 0;  //all grids have stones
+        
+        //WORK
+        int minmoves=Integer.MAX_VALUE;
+        for(int i=0;i<3;i++){
+            for(int j=0;j<3;j++){
+                if(grid[i][j]==0){  //find the grid with 0 items
+                    for(int ni=0;ni<3;ni++){
+                        for(int nj=0;nj<3;nj++){
+                            if(grid[ni][nj]>1){
+                                grid[ni][nj]--; //make the 0 grid 1 by taking from the closest grid with more than 1
+                                grid[i][j]++;
+                                int d=Math.abs(ni-i) + Math.abs(nj-j);  //no of steps to move item
+                                minmoves=Math.min(minmoves, d+minimumMoves(grid));  //entering recursion to find next grid with 0 items
+                                grid[ni][nj]++; //getting back to start, to make another choice and leave this one
+                                grid[i][j]--;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return minmoves;
+    }
+}
+
+
+LOGIC---
+Conditions: Grid contains total 9 stones ina grid (3x3)
+Objective - Need to have atleast one stone in each box. Find minimum number of moves
+Move - Move one stoen from one box to another if share a side
+
+Our approach  -Each time we encounter a cell with grid[i][j]==0 then we can take 1 from any of the other 8 cells which have a value>1
+
+Why brute force - recursion -> If you observe the Constraints they are very minimum 3*3=9. So we can solve using Brute Force methods
+
+BASE CASE : The code should stop running when all the boxes in grid have 1 stone each
+
+Use recursion to first find the grid with 0 items
+Then fidn the next grid with more than 1 item
+Fidn the steps to move that extra item to empty box
+Finally enter recursion to find next grid with 0 item
+Otherwise, leave this choice of fixing this grid first and move to fixing another grid
+
+
+Time complexity:
+The maximum depth of recursion is O(n^2). For each recursive call, there are 3 possibilities for moves from empty cells.
+Therefore, the overall time complexity is O(3^(n^2)).
+
+Space complexity:
+The space complexity is O(D), where D is the maximum depth of the recursion 
+

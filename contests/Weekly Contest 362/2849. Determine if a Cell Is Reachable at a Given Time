@@ -1,0 +1,77 @@
+/* O(1) SOLUTION */
+class Solution {
+    public boolean isReachableAtTime(int sx, int sy, int fx, int fy, int t) {
+        int horizontaldifference=Math.abs(fx-sx); 
+        int verticaldifference=Math.abs(fy-sy); 
+        if(horizontaldifference==0 && verticaldifference==0 && t==1) return false;
+        int min_moves=0;
+        //let's move diagonally first to get min moves
+        min_moves+=verticaldifference;
+        horizontaldifference-=verticaldifference;   //since we moved diagonally subtract
+        if(horizontaldifference>0) min_moves+=horizontaldifference;  //walk the remaining distance straight if only need to walk becuase of above subtraction it could have een negative in case of same vertical striaght line
+        System.out.println(min_moves);
+        if(min_moves>t) return false;
+        //else if(min_moves==0 && t==1) return false;
+        else return true;
+    }
+}
+
+
+LOGIC---
+Here you  can move to choose diagonally or vertically or horizontally like a queen chess piece.
+
+Also, we can say that if the number of minimum moves required to reach final point <=t => we can fulfill th condtion {You can visit the same cell several times.} So, no worries if you are wondering maybe still some large numebr might exist that will not work.
+But if the minimum path itself is greater than t we annot fulfill the condtion.
+
+BASIC Conclusion:
+min steps>t => false
+min steps<=t => true
+
+Now let's see how the move works:
+diagonal move : x-axis++, y-axis--; or, x-axis++, y-axis++;
+horizontal move : x-axis++;
+vertical move : y-ais++; or, y-axis--;
+
+Also, finish can be behind start as well as ahead of start; because both start and finish are made up of positive integers. So, we will work with absolute differences of distance.
+
+Now there are cases we need to work on:
+Case I: Points on same horizontal straight line
+Case II Points on same vertical straight line
+Case III: Points are not on same striaght line, In that case we try to get the shortest path by first moving along the diagonal to nullify the vettical distance and then move again the number of time sleft to move horizontally.
+Here case III is general case and can handle both Case I and Case II.
+CasIV: if minimum number of moves exceeds t, we cannot fulfill the condition
+
+THE EDGE CASE :
+The answer is false if sx==fx and sy==fy at t=1 (in this case you make a move but cannot get back to final position)
+
+
+The above solution can also be writtne as O(n) solution but it would give you TLE.
+
+
+/* ELEGANT SOLUTION */
+class Solution {
+    public boolean isReachableAtTime(int sx, int sy, int fx, int fy, int t) {
+        if (sx == fx && sy == fy) return t!=1;
+        int dx = Math.abs(fx - sx);
+        int dy = Math.abs(fy - sy);
+        int min_moves = Math.max(dx, dy); 
+        return (t>=min_moves);
+    }
+}
+
+LOGIC---
+Given that you can move in 8 possible directions and also revisit cells, it indicates that there might be multiple ways to reach the destination (fx, fy). 
+But the key insight is that regardless of the path you take, the number of steps to directly reach from (sx, sy) to (fx, fy) forms a lower bound. 
+Additionally, the movement in diagonal direction allows one to cover two units of distance (one in x and one in y direction) in a single move, making it an optimal way to travel.
+
+Direct Path: First, calculate the direct distance in terms of x (dx) and y (dy) coordinates. 
+Since you can move diagonally, the number of moves required is determined by the larger difference of either dx or dy. 
+This gives us the minimum number of moves required to directly reach the destination.
+
+Checking Time: Once the minimum moves are calculated, we then compare it with the time t provided. 
+If t is greater than or equal to the min_moves, then it's possible to reach the destination, else it's not. 
+But there's a special case to handle: If sx and sy are the same as fx and fy respectively, the only time you cannot reach is when t is 1 because you can't stay stationary. 
+For all other times, you can move out and then back in.
+
+Time complexity: O(1)
+Space complexity: O(1)

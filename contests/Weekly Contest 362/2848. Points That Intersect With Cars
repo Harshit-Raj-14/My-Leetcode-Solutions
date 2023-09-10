@@ -1,0 +1,47 @@
+/* O(n) DIFFERNECE ARRAY TECHNIQUE */
+class Solution {
+    public int numberOfPoints(List<List<Integer>> nums) {
+        int prefixsum[] = new int[102]; //based on constraint we have indexing needed till 101
+        for(int i=0;i<nums.size();i++){
+            prefixsum[nums.get(i).get(0)]++;
+            prefixsum[nums.get(i).get(1)+1]--;
+        }
+        int ans=0;
+        for(int i=1;i<102;i++){
+            prefixsum[i]+=prefixsum[i-1];
+            if(prefixsum[i]>0) ans++;
+        }
+        return ans;
+    }
+}
+
+
+LOGIC---
+The question is similar to given to us like q queries (q=length of list) with ranges (l,r) and we need to identify total number of elements in all ranges
+
+We increase the count if we encounter that numebr in range and decrease it for the enxt elemnt
+Finding the prefixsum of this new array will lead to generation of a frequency table for each element.
+
+This is differnece array technique.
+
+TC - O(n)
+SC - O(n)
+
+
+
+
+/* O(n^2) SOLUTION */
+class Solution {
+    public int numberOfPoints(List<List<Integer>> nums) {
+        HashSet<Integer> set = new HashSet<>();
+        for(int i=0;i<nums.size();i++){
+            for(int j=nums.get(i).get(0);j<=nums.get(i).get(1);j++){
+                set.add(j);
+            }
+        }
+        return set.size();
+    }
+}
+
+LOGIC----
+Simple counting of elements
