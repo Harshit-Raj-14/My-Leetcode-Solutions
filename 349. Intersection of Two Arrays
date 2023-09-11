@@ -1,0 +1,95 @@
+/* TC-O(n) SC-O(n) SOLUTION */
+class Solution {
+    public int[] intersection(int[] nums1, int[] nums2) {
+        HashSet<Integer> set1 = new HashSet<>();
+        HashSet<Integer> set2 = new HashSet<>();
+        for(int i=0;i<nums1.length;i++) set1.add(nums1[i]);
+        for(int i=0;i<nums2.length;i++){
+            if(set1.contains(nums2[i])) set2.add(nums2[i]);
+        }
+        int arr[] = new int [set2.size()];
+        int index=0;
+        for(int ele : set2){
+            arr[index]=ele;
+            index++;
+        }
+        return arr;
+    }
+}
+
+LOGIC---
+Put elements of array 1 in set1.
+Elements of array 2 if available in set1 put in set2.
+Transfer elements of set2 to array
+
+FOLLOW UP QUESTIONS OF FACEBOOK & AMAZON INTERVIEW:
+They ask for the intersection, which has a trivial solution using a hash or a set.
+Then they ask you to solve it under these constraints:
+O(n) time and O(1) space (the resulting array of intersections is not taken into consideration).
+You are told the lists are sorted.
+Cases to take into consideration include: duplicates, negative values, single value lists, 0's, and empty list arguments.
+Other considerations might include: sparse arrays(array in which most of the elements have the same value(the default value is zero or null))
+
+
+
+/* TC-O(nlogn) SC-O(n) SORTING & TWO POINTER */
+class Solution {
+    public int[] intersection(int[] nums1, int[] nums2){
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
+        HashSet<Integer> set = new HashSet<>();
+        int i=0,j=0;
+        while(i<nums1.length && j<nums2.length){
+            if(nums1[i]>nums2[j]) j++;
+            else if(nums1[i]<nums2[j]) i++;
+            else if(nums1[i]==nums2[j]){
+                set.add(nums1[i]);
+                i++;j++;
+            }
+        }
+        int arr[] = new int [set.size()];
+        int index=0;
+        for(int ele : set){
+            arr[index]=ele;
+            index++;
+        }
+        return arr;
+    }
+}
+
+LOGIC---
+Sort both arrays
+use two pointers, for both the arrays
+increase second pointer if the element of first  array is greater
+increase first pointer if the element of second  array is greater
+if both the element are same then insert it into a result  set.
+
+
+
+/* TC-O(n^2) SC-O(n) BRUTE FORCE */
+class Solution {
+    public int[] intersection(int[] nums1, int[] nums2){
+        HashSet<Integer> set = new HashSet<>();
+        for(int i=0;i<nums1.length;i++){
+            for(int j=0;j<nums2.length;j++){
+                if(nums1[i]==nums2[j]) set.add(nums1[i]);
+            }
+        }
+        int arr[] = new int [set.size()];
+        int index=0;
+        for(int ele : set){
+            arr[index]=ele;
+            index++;
+        }
+        return arr;
+    }
+}
+
+LOGIC---
+Search every element of nums 1 in num2 and put them in a set if match found.
+
+
+/* TC-O(nlogn) SC-O(n) BINARY SEARCH */
+LOGIC---
+Iterate in first array and use binary search in second array to check whether the element of first array exist in it or not.
+If yes then add it to the set
