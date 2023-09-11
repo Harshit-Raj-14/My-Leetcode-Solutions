@@ -1,0 +1,10 @@
+/* JAVASCRIPT eval() method SOLUTION */
+var calculate = function(s){
+    return eval(s);
+};
+
+LOGIC---
+Use the javascript inbuilt method eval(String)
+Return type is number
+Note : why you should not use val in real life : eval() executes the code it's passed with the privileges of the caller. 
+If you run eval() with a string that could be affected by a malicious party, you may end up running malicious code on the user's machine with the permissions of your webpage/extension.
