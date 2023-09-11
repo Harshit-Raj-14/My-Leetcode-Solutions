@@ -1,0 +1,92 @@
+/* BRUTE FORCE O(n) SOLUTION */
+class Solution {
+    public int commonFactors(int a, int b) {
+        HashSet<Integer> set = new HashSet<>();
+        int i=1;
+        while(a>=i){
+            if(a%i==0) set.add(i);
+            i++;
+        }
+        i=1;    //reset i to 1
+        int ans=0;  //to check the common factors
+        while(b>=i){
+            if(b%i==0 && set.contains(i)) ans++;    //increment since it will be a common factor
+            i++;
+        }
+        return ans;
+    }
+}
+
+LOGIC---
+Store all the factors of first number in a set
+Now, check which factors matches for the second number and print the count.
+TC- O(n)
+SC- O(n)
+
+/* O(1000) SOLUTION USING CONSTRAINTS BEATS 40% */
+class Solution {
+    public int commonFactors(int a, int b) {
+        int ans=0;
+        for(int i=1;i<=1000;i++){
+            if(a%i==0 && b%i==0) ans++;
+        }
+        return ans;
+    }
+}
+
+LOGIC---
+For each integer in range [1,1000], check if it’s divisible by both a and b.
+
+
+/* ELEGANT SOLUTION TC-O(min(a,b)) BEATS 100% */
+class Solution {
+    public int commonFactors(int a, int b) {
+        int ans=0;
+        int range = Math.min(a,b);
+        for(int i=1;i<=range;i++){
+            if(a%i==0 && b%i==0) ans++;
+        }
+        return ans;
+    }
+}
+
+LOGIC---
+Instead of going all the way to 1000, we can just iterate till the minimum(a,b) becuase till there only we can have common factors.
+1<= common_factors <= Math.min(a,b)
+
+
+/* USING GCD */
+class Solution {
+    public int commonFactors(int a, int b) {
+        int gcd=GCD(a,b);
+        int ans=0;
+        for(int i=1;i<=gcd;i++){
+            if(a%i==0 && b%i==0) ans++;
+        }
+        return ans;
+    }
+
+    public int GCD(int a, int b){
+        if(a==b) return a;
+        while(a!=b){
+            if(a>b) a=a-b;
+            else b=b-a;
+        }
+        return a;
+    }
+}
+
+LOGIC---
+HCF of a number gives us the highest common factor basically the multiplication of all its common factors.
+The total numbers now that can be made from the prime factors of this hcf will be the the number of common factors.
+
+GCD(a,b) is the product of common prime factors of a and b. 
+For example, if a=2⋅2⋅2⋅3 and b=2⋅2⋅3⋅3, 
+then GCD(a,b)=2⋅2⋅3
+
+If a natural number is expressed as p1^x1⋅p2^x2⋅...⋅pi^xi, where p^i​ is a prime, then you can count the number of its factors by formula (x1+1)⋅(x2+1)⋅...⋅(xi+1). 
+For example, GCD(a,b)=2⋅2⋅3=2^2⋅3^1
+⇒number of factors=(2+1)⋅(1+1)=6
+
+You can make a coutn array to keep tab of the frequency of prime factors and then implement the above
+
