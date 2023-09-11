@@ -1,0 +1,26 @@
+class Solution {
+    public List<List<Integer>> groupThePeople(int[] groupSizes) {
+        ArrayList<List<Integer>> ans = new ArrayList<>();
+        HashMap<Integer, ArrayList<Integer>> map = new HashMap<>(); //map(groupsize, id's list)
+        for(int i=0;i<groupSizes.length;i++){
+            if(!map.containsKey(groupSizes[i])){
+                map.put(groupSizes[i], new ArrayList<>());
+            }
+            ArrayList<Integer> currGroup = map.get(groupSizes[i]);//retireves the arraylist associated witht he current groupsize
+            currGroup.add(i);
+            if(currGroup.size()==groupSizes[i]){
+                ans.add(currGroup);
+                map.remove(groupSizes[i]);
+            }
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+JUST DO WHAT THE QUESTION SAY
+TC-O(n)
+SC-O(n)
+*/
+
