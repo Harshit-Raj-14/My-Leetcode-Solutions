@@ -7,7 +7,7 @@ class Solution {
                 count++;
                 maxcount=Math.max(maxcount, count);
             }
-            else count=0;
+            else count=1;   //since a single digit will also be counted as an ans subsequence
         }
         return maxcount;
     }
