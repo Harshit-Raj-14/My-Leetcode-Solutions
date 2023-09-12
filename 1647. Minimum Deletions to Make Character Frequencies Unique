@@ -1,0 +1,31 @@
+/* TC-O(nlogn) SC-O(n) Sorting+GREEDY */
+class Solution {
+    public int minDeletions(String s) {
+        char arr[] = s.toCharArray();
+        Arrays.sort(arr);
+        HashSet<Integer> set = new HashSet<>();     //contaisn all present frequencies
+        int removed=0;
+        for(int i=0;i<arr.length;i++){
+            int count=1;
+            while(i+1<arr.length && arr[i]==arr[i+1]){  //note doing - arr[i]==arr[i-1] will cuase a lot of issue in indexing becuase then we will have getting problem in count of last item
+                count++;
+                i++;
+            }
+            if(set.contains(count)){
+                while(set.contains(count)){
+                    count--;
+                    removed++;
+                }
+                if(count!=0) set.add(count);  //We cannot have 0 in our set since that would mean there is no element of that character in string or otherwise compeltely deleted.
+            }
+            else set.add(count);
+        }
+        return removed;
+    }
+}
+
+LOGIC---
+As we can only delete characters, if we have multiple characters having the same frequency, we must decrease all the frequencies of them, except one.
+Sort the alphabet characters by their frequencies non-increasingly, to have an easy idea about freuqencies and at our disposal.
+Iterate on the alphabet characters, keep decreasing the frequency of the current character until it reaches a value that has not appeared before.
+Note : We cannot have 0 in our set since that would mean there is no element of that character in string or otherwise compeltely deleted.
