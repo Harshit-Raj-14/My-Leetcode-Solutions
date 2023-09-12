@@ -1,0 +1,18 @@
+class Solution {
+    public int findLengthOfLCIS(int[] nums) {
+        int maxcount=1;
+        int count=1;    //since a single digit will also be counted as an ans subsequence
+        for(int i=1;i<nums.length;i++){
+            if(nums[i]>nums[i-1]){
+                count++;
+                maxcount=Math.max(maxcount, count);
+            }
+            else count=0;
+        }
+        return maxcount;
+    }
+}
+
+
+LOGIC---
+Kadane's Algorithm
