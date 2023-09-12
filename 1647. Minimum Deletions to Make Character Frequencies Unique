@@ -1,4 +1,36 @@
-/* TC-O(nlogn) SC-O(n) Sorting+GREEDY */
+/* TC-O(n) SC-O(n) HASHING */
+class Solution {
+    public int minDeletions(String s) {
+        int count[] = new int[26];
+        for(int i=0;i<s.length();i++){
+            count[s.charAt(i)-'a']++;
+        }
+        HashSet<Integer> set = new HashSet<>();
+        int remove=0;
+        for(int i=0;i<count.length;i++){
+            if(count[i]!=0 && set.contains(count[i])){
+                while(set.contains(count[i])){
+                    count[i]--;
+                    remove++;
+                }
+                if(count[i]!=0) set.add(count[i]);    //We cannot have 0 in our set since that would mean there is no element of that character in string or otherwise compeltely deleted.
+            }
+            else if(count[i]!=0) set.add(count[i]);    //We cannot have 0 in our set since that would mean there is no element of that character in string or otherwise compeltely deleted.
+        }
+        return remove;
+    }
+}
+
+LOGIC---
+We create a frequency table of all characters in string
+Then we greedily remove the character which leads to a duplicated existence of frequency of a character same as below code.
+
+Space complexity: O(1)
+We will not store more than 26 different frequencies. Because we have constraint saying "s contains only lowercase English letters". 
+It does not grow with length of input string or something. In the worst case O(26) → O(1)
+
+
+/* TC-O(nlogn) SC-O(n) SORTING + GREEDY */
 class Solution {
     public int minDeletions(String s) {
         char arr[] = s.toCharArray();
@@ -7,7 +39,7 @@ class Solution {
         int removed=0;
         for(int i=0;i<arr.length;i++){
             int count=1;
-            while(i+1<arr.length && arr[i]==arr[i+1]){  //note doing - arr[i]==arr[i-1] will cuase a lot of issue in indexing becuase then we will have getting problem in count of last item
+            while(i+1<arr.length && arr[i]==arr[i+1]){  //note doing - arr[i]==arr[i-1] will cause a lot of issue in indexing becuase then we will have getting problem in count of last item
                 count++;
                 i++;
             }
@@ -29,3 +61,25 @@ As we can only delete characters, if we have multiple characters having the same
 Sort the alphabet characters by their frequencies non-increasingly, to have an easy idea about freuqencies and at our disposal.
 Iterate on the alphabet characters, keep decreasing the frequency of the current character until it reaches a value that has not appeared before.
 Note : We cannot have 0 in our set since that would mean there is no element of that character in string or otherwise compeltely deleted.
+
+
+/* TC-O(n) SC-O(n) USING HASHMAP */
+public class Solution {
+    public int minDeletions(String s) {
+        HashMap<Character, Integer> mp = new HashMap<>();
+        int deletions = 0;
+        HashSet<Integer> mySet = new HashSet<>(); 
+        for (char c : s.toCharArray()) {
+            mp.put(c, cnt.getOrDefault(c, 0) + 1);
+        }
+        
+        for (int freq : mp.values()) {
+            while (freq > 0 && mySet.contains(freq)) {
+                freq--;
+                deletions++;
+            }
+            mySet.add(freq);
+        }
+        return deletions;
+    }
+}
