@@ -1,0 +1,133 @@
+/* PERFECT ANSWER */
+class Solution {
+    public int myAtoi(String s){
+        int ans=0;
+        s=s.trim(); //remove whitespace
+        if(s.equals("")) return 0;
+        int sign=1;   //status=1 => +ve number default
+        if(s.charAt(0)=='-') sign=-1; //-ve number    //storing the -ve sign to report later
+
+        for(int i=0;i<s.length();i++){
+            if(i==0 && (s.charAt(i)=='+' || s.charAt(i)=='-')) continue; //skip the first +/- sign
+
+            else if(s.charAt(i)>='0' && s.charAt(i)<='9'){
+                int digit=s.charAt(i)-'0';
+                if(sign==1){
+                    if(ans<=Integer.MAX_VALUE/10 && (ans*10<Integer.MAX_VALUE-digit)) ans=ans*10+digit;    //it is same as checking reverse of : if (ans>=(Integer.MAX_VALUE/10) && digit>7))
+                    else return Integer.MAX_VALUE;
+                }
+                if(sign==-1){
+                    if(sign*ans>=Integer.MIN_VALUE/10 && (ans*10*sign>Integer.MIN_VALUE +digit)) ans=ans*10+digit;  //intiially it must have looked something like this sign*(ans*10*+digit)>Integer.MIN_VALUE, that's why it later turn +digit when moved to that side
+                    else return Integer.MIN_VALUE;
+                }
+            }
+
+            else break; //if encounter something else break
+        }
+        return sign*ans;
+    }
+}
+
+LOGIC---
+We have 2 main checks, one for positive sign and one for negative sign. 
+If number is positive (i.e. sign=1) then we check if the calculation does not cause integer overflow if it does then we return Integer MAX VALUE.
+To add the digit to our answer we would need to multiply by 10, so we have to check if this multiplication does not cause overflow.
+=> if(ans <= Integer.MAX_VALUE / 10).
+Next we need is to check when we add the digit to our answer, it does not overflow
+(ans * 10) < Integer.MAX_VALUE - num)
+
+MORE EXPLANATION----
+result > (Integer.MAX_VALUE / 10) means:
+    Suppose,
+    result = 214748365(9 digits)
+    Integer.MAX_VALUE = 2147483647(10 digits) and Integer.MAX_VALUE / 10 = 214748364(9 digits)
+    Here, it is clearly evident that result > Integer.MAX_VALUE / 10( i.e. 214748365 > 214748364) and if we try to add even 0(zero) in result 214748365(9 digits), the number will become 2147483650(10 digits) which is obviously greater than 2147483647(Integer.MAX_VALUE which is of 10 digits). So even before adding 0(zero) or any other digit, we return the Integer.MAX_VALUE or Integer.MIN_VALUE, according to the sign case, in order to avoid integer overflow.
+
+And, result == (Integer.MAX_VALUE / 10) && digit > 7 means:
+    Suppose,
+    result = 214748364(9 digits), and
+    Integer.MAX_VALUE / 10 = 214748364(9 digits)
+    Now, if the result is equal to the Integer.MAX_VALUE / 10 (214748364 == 214748364) and the digit is greater than 7 i.e. digit > 7 and if we try to add 8(assume the digit greater than 7 to be 8) to the result, then the number will become 2147483648(10 digits), which will result in integer overflow. So, even before adding the digit which is greater than 7, we return the Integer.MAX_VALUE or Integer.MIN_VALUE, according to the sign case, to avoid integer overflow.
+
+We do the same thing if number is negative (sign=-1), only difference here is we have to multiply our answer by sign -1 since number is negative.
+TC-O(n)
+SC-O(1)
+Honestly, its more easy to come up wiht the below approach using long data type.
+
+REFER THIS SOLUTION IF FINDING DIFFICULTY - https://leetcode.com/problems/string-to-integer-atoi/solutions/1402936/java-c-simple-pictorial-explanation-32-bit-int-easy/
+
+/* SOLUTION USING LONG */
+class Solution {
+    public int myAtoi(String s){
+        long ans=0;
+        s=s.trim(); //remove whitespace
+        if(s.equals("")) return 0;
+        int sign=1;   //status=1 => +ve number default
+        if(s.charAt(0)=='-') sign=-1; //-ve number    //storing the -ve sign to report later
+
+        for(int i=0;i<s.length();i++){
+            if(i==0 && (s.charAt(i)=='+' || s.charAt(i)=='-')) continue; //skip the first +/- sign
+
+            else if(s.charAt(i)>='0' && s.charAt(i)<='9'){
+                int digit=s.charAt(i)-'0';
+                ans = ans*10 + digit;
+                if(sign==-1 && -1*ans<=Integer.MIN_VALUE) return Integer.MIN_VALUE;
+                else if(sign==1 && ans>=Integer.MAX_VALUE) return Integer.MAX_VALUE;
+            }
+
+            else break; //if encounter something else break
+        }
+        return (int)(sign*ans);
+    }
+}
+
+LOGIC---
+Step I: remove whitespace
+Step II: Find whether +ve or -ve
+Step III: converting digits in character form to integer form. Iterate till non-digit character found.
+Step IV: At each step check whether it exceeds the integer range or not. 
+Step V: Also, make sure not to forget to check the condtions without sign.
+Step VI: Check if the value is less than INT_MIN or greater than INT_MAX. Return the product of sign and the stored value.
+Good Testcases : "-2147483647", "-2147483648"
+NOTE---
+But note you started this solution using long, but you shouldn't include longs in a solution when the problem describes a constraint of a signed 32 bit integer.
+
+
+
+
+/* A FAILED APPROACH */
+class Solution {
+    public int myAtoi(String s){
+        s=s.trim();
+        StringBuilder sb = new StringBuilder("");
+        int status=1;
+        if(s.charAt(0)=='-') status=-1; //-ve number
+        int numberenteredflag=0;
+        for(int i=0;i<s.length();i++){
+            if(s.charAt(i)>='0' && s.charAt(i)<='9') {
+                sb.append(s.charAt(i));
+                numberenteredflag=1;
+            }
+            else if(s.charAt(0)=='+' || s.charAt(0)=='-') continue;
+            else break;
+        }
+        s=sb.toString();
+        System.out.println(s);
+        if(s.equals("")) return 0;
+        else{
+            if(Long.parseLong(s)<Integer.MIN_VALUE) return Integer.MIN_VALUE;
+            else if(Long.parseLong(s)>Integer.MAX_VALUE) return Integer.MAX_VALUE;
+            else{
+                return Integer.parseInt(s)*status;
+            }
+        }
+    }
+}
+
+
+REASON OF FAILURE AND HOW TO OVERCOEM IT---
+Here you did just what the question asked but in the final part where we need to check ofr the overflow and udnerflow condtion.
+Its very dififcult when you consider the contraints over string. And the question eeds to be solved in int so you shouldn't be using long either.
+So, the verdict is that, its becuase you reached the final naswe and then checking for overflow and underflow the problem.
+We should be checking for overflow and underflow actually at each step.
+Hence, we can be sure that if the next step causes overflow we can clamp it to fixed values.
