@@ -1,0 +1,173 @@
+/* TC-O(n) SC-O(2n) 2-PASS GREEDY & USING 2 ARRAYS BEATS-40% */ 
+class Solution {
+    public int candy(int[] ratings) {
+        int candiesL2R[] = new int[ratings.length];
+        int candiesR2L[] = new int[ratings.length];
+        Arrays.fill(candiesL2R, 1);    //each child get one chocolate initially.
+        Arrays.fill(candiesR2L, 1);    //each child get one chocolate initially.
+        //Move let to right to compare with left neighbour
+        for(int i=1;i<ratings.length;i++){
+            if(ratings[i]>ratings[i-1]) candiesL2R[i]=candiesL2R[i-1]+1;
+        }
+        //Move right to left to compare with right neighbour
+        for(int i=ratings.length-2;i>=0;i--){
+            if(ratings[i]>ratings[i+1]) candiesR2L[i]=candiesR2L[i+1]+1;
+        }
+        int ans=0;  //sum of all candies
+        for(int i=0;i<ratings.length;i++){
+            if(candiesL2R[i]==candiesR2L[i]) ans+=candiesL2R[i];
+            else ans+=Math.max(candiesL2R[i], candiesR2L[i]);
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+Objective- 
+Distribute candy to all the children, ensuring that if a child has more ratings than their adjacent child, they receive extra candy 🍬👦🍭.
+
+If for any no. at index(i) if any of its neighbours(i+1,i-1) has lesser rating than it should have more candies than its neighbor.
+Otherwise do nothing.
+
+Algorithm:
+Traverse the children from left to right. Any child that has a higher rating than their LH neighbour gets 1 more candy than their LH neighbour. Otherwise they get 1 candy.
+Next, traverse the children from right to left. Any child that has a higher rating than their RH neighbour gets 1 more candy than their RH neighbour - unless they already have more candies than their RH neighbour in which case the number of candies is unchanged.
+Finally, add up all the candies and return the total to the caller.
+
+A child may have two neighboring children if s/he is in the middle.
+Then, two comparisons are made: one to the left neighbor and the other to the right neighbor.
+Whichever, or may be both, comparison(s) are successful, this child gets one more candy.
+That is, one child could get up to 2 candies if s/he has the highest ratings among his/her two neighboring children.
+
+Think of it like you are giving kids candy in a line and you check the person behind them and see what's in their bag. Then, you reverse their order and repeat to make sure you checked all possible neighbors.
+
+Approach:
+arr[i] : no of candies ith child have
+First give every child 1 candy so arr[i] = 1 for all i .
+
+Traverse from left to right and if :
+ratings[i] > ratings[i-1] : we must give ith child atleast one more candy than (i-1)th child :
+arr[i] = arr[i-1] +1 ;
+
+Traverse from Right to Left and if :
+ratings[i] > ratings[i+1] : we must give ith child atleast one more candy than (i+1)th child:
+if(arr[i]<=arr[i+1])arr[i]=arr[i+1]+1 ;
+
+During the second traversal , we can observe that changing the values of arr doesn't affects the relation maintained in the first traversal
+
+Hence, both the right and left neighbours relation are maintained, without affecting each other.
+
+We must observe that this is the minimum number of increament we can perform
+
+
+Good Test cases -
+[100, 80, 70, 60, 70, 80, 90, 100, 90, 80, 70, 60, 60]
+[6, 7, 6, 5, 4, 3, 2, 1, 0, 0, 0, 1, 0]
+[20000, 20000, 16001, 16001, 16002, 16002, 16003, 16003, 16004, 16004, 16005, 16005, 16006, 16006, 16007, 16007, 16008, 16008, 16009, 16009, 16010, 16010, 16011, 16011, 16012, 16012, 16013, 16013, 16014, 16014, 16015, 16015, 16016, 16016, 16017, 16017, 16018, 16018, 16019, 16019, 16020, 16020, 16021, 16021, 16022, 16022, 16023, 16023, 16024, 16024]
+
+
+
+WHY GREEDY APPROACH IS NOT APPROPRIATE?
+Why one pass fails where in the same loop we check first left neighbour and then right neighbour.
+eg: {1,2,10,10,10,2,1}
+Initialsie candy={1,1,1,1,1,1,1}
+one pass apply check both left and right neighbour at same time:
+candy={1,2,3,1,2,2,1}
+But you see you failed at the place where 10,2 exist sinc eeven thoguh 10 was supposed to have more than 2, now they have equal amount.
+The reason we faield is we acted greedy and moved forward without considering the past.
+
+To dodge this issue where we need to go back, instead we break into two parts.
+First we mark candies accordign to left neighbour.
+And only then we consdier right neighbour.
+
+Intialise candiesL2R={1,1,1,1,1,1,1}
+candiesL2R={1,2,3,1,1,1,1}
+Now 
+Initialise candiesR2L={1,1,1,1,1,1,1}
+candiesR2L={1,1,1,1,3,2,1}
+
+Now, we compare L2R and R2L. If elements same keep it as it is.
+Otheriwse take their max for the finale counting of candies for them to be minimum. 
+*/
+
+
+
+/* TC-O(n) SC-O(n) 2-PASS GREEDY & USING 1 ARRAYS BEATS-75% */ 
+class Solution {
+    public int candy(int[] ratings) {
+        int candies[] = new int[ratings.length];
+        Arrays.fill(candies, 1);    //each child get one chocolate initially.
+        //Move let to right to compare with left neighbour
+        for(int i=1;i<ratings.length;i++){
+            if(ratings[i]>ratings[i-1]) candies[i]=Math.max(candies[i], candies[i-1]+1);
+        }
+        //Move right to left to compare with right neighbour
+        for(int i=ratings.length-2;i>=0;i--){
+            if(ratings[i]>ratings[i+1]) candies[i]=Math.max(candies[i], candies[i+1]+1);
+        }
+        int ans=0;  //sum of all candies
+        for(int i=0;i<ratings.length;i++){
+            ans+=candies[i];
+        }
+        return ans;
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////
+MOST OPTIMISED APPROACH
+
+/* TC-O(n) SC-O(1) ARRAY ANALYSIS */ 
+class Solution {
+    public int candy(int[] ratings) {
+        int candy=ratings.length;   //each person given one candy intially
+        int i=1;
+        while(i<ratings.length){
+            if(ratings[i]==ratings[i-1]){i++; continue;}
+            int currPeak=0; //for every mountain we will initilise a new peak
+            while(i<ratings.length && ratings[i]>ratings[i-1]){ //encountering peak -> increasing slope
+                currPeak++;
+                candy+=currPeak;
+                i++;
+            }
+            int currDip=0;  //for every mountain we will initilise a new dip
+            while(i<ratings.length && ratings[i]<ratings[i-1]){ //encountering dip -> decreasing slope
+            currDip++;
+            candy+=currDip;
+            i++;
+            }
+            candy-=Math.min(currPeak, currDip);     //reached end of mountain
+        }
+        return candy;
+    }
+}
+
+
+/*
+LOGIC---
+Think of ratings[] as a mountain graph.
+
+If ratigns was monotonous:
+eg:     1   4   5   8
+Jump:     1   1   1
+Candy:  x->x+1->x+2->x+3
+This is the idea for incrementing when coming across a peak. Also, it fulfills the condition that the number who is greater than the neighbouring element will have a greater associated value(candy).
+
+So, as we move upwards in graph we increase by 1
+
+eg: 
+ratings: 1 2 5 7 8 4 2 5 2 2
+fill 1 : 1 1 1 1 1 1 1 1 1 1    
+peak   : 0 1 2 3 4     1         L2R
+dip    :           1 2   1       R2L (dip-> inverted peak -> negative peak)  
+
+Note: We see peak only from left to right as we traverse.
+Dips are in a way inverted peak if we had traveled right to left.
+
+Since we keep on adding peaks and dips to our answer.
+We also need to not that when we reach bottom of a mountain we should understand that the 
+*/
+
+
+
