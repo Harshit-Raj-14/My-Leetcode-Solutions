@@ -30,3 +30,23 @@ When n is even we can construct an array type={-c,-b,-a,a,b,c}
 When n is odd we can construct an array type={-c,-b,-a,0,a,b,c}
 Now we can also guarantee that their sum is zero and contaisn only distinct elements.
 */
+
+
+/* TWO POINTER APPROACH */
+class Solution {
+    public int[] sumZero(int n) {
+        int start=0;
+        int end=n-1;
+        int arr[]=new int[n];
+        if(n%2!=0) arr[n/2]=0;
+        int value=1;
+        while(start<end){
+            arr[start]=-value;
+            arr[end]=value;
+            start++;
+            end--;
+            value++;
+        }
+        return arr;
+    }
+}
