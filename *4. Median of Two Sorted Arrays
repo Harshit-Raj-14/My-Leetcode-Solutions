@@ -1,0 +1,54 @@
+/* TC-O(m+n) SC-O(m+n) MERGE + SORT SOLUTION  */
+class Solution {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2){
+        int i=0;    //index of num1
+        int j=0;    //index of nums2
+        int index=0;    //index of merged sorted array
+        int arr[] = new int[nums1.length + nums2.length];
+        while(i<nums1.length && j<nums2.length){
+            if(nums1[i]<nums2[j]){
+                arr[index]=nums1[i];
+                index++; i++;
+            }
+            else if(nums1[i]>nums2[j]){
+                arr[index]=nums2[j];
+                index++; j++;
+            }
+            else if(nums1[i]==nums2[j]){
+                arr[index]=nums1[i];
+                index++;
+                arr[index]=nums2[j];
+                index++; i++; j++;
+            }
+        }
+        while(i<=nums1.length-1){   //elements in nums1 were still left
+            for(;i<nums1.length;i++){
+                arr[index]=nums1[i];
+                index++;
+            }
+        }
+        if(j<=nums2.length-1){  //elements in nums2 were still left
+            for(;j<nums2.length;j++){
+                arr[index]=nums2[j];
+                index++;
+            }
+        }
+        //FINDING MEDIAN
+        double median=0;
+        if(arr.length%2==0){    //even length
+            median=((double)(arr[arr.length/2 -1] + arr[arr.length/2]))/(double)2;  //converting to double
+        }
+        else median = (double)arr[arr.length/2];    //odd length
+        return median;
+    }
+}
+
+LOGIC---
+Median is calculated for a sorted array.
+So first merge the two while keeping the arrays sorted.
+Use two pointers => reason the two arrays are already sorted
+Now use the merged sorted array to caculate median.
+
+
+
+
