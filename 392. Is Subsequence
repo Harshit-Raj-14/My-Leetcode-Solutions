@@ -1,0 +1,110 @@
+/* O(n) TWO POINTER APPROACH */
+class Solution {
+    public boolean isSubsequence(String s, String t) {
+        if(s.length()>t.length()) return false;
+        if(s.length()==0) return true;
+        int index=0;
+        for(int i=0;i<t.length();i++){
+            if(t.charAt(i)==s.charAt(index)){
+                if(index==s.length()-1) return true;
+                index++;
+            }
+        }
+        return false;
+    }
+}
+
+Follow up: QUESTION - https://leetcode.com/problems/number-of-matching-subsequences/
+Suppose there are lots of incoming s, say s1, s2, ..., sk where k >= 109, and you want to check one by one to see if t has its subsequence. In this scenario, how would you change your code?
+
+SOLUTION:
+Given there are k queries for checking s isSubsequence of t or not.
+
+Example:
+t="ahabgdc"
+char index
+a    {0,2}
+h    {1}
+b    {3}
+g    {4}
+d    {5}
+c    {6}
+
+Now we have s="aabc" and we have to check whether s is there in t or not as a subsequence.
+Now if we were to start tallying t with above map, and we maintain a prev index where we foudn the last match. the next match should be greater than the prev idnex. Otherwise not possible.
+
+Step I : Prepare a hashmap for string t -> done only once
+Step II : Use the map to tally with queries of s
+SC-O(26)
+
+
+MII:
+Since there are more than a billion string, time complexity is now not in any second but it just need to be as low as possible.
+In that case, we need to optimize the runtime to check 1 string to a prepared specific string. In most solution, time complexity is O(N) with N is the maximum size of string t and s. 
+The idea here is to use prefix sum and binary search:
+First, we need to prepare a 2D array size 26xN(~size of s) call T[x-'a'][i] = number of character x appear from start to i in string t.
+For example I have string t="abdeabcd" a part of my array should look something like this:
+x\i :0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
+a | 1 | 1 | 1 | 1 | 2 | 2 | 2 | 2 |
+b | 0 | 1 | 1 | 1 | 1 | 2 | 2 | 2 |
+c | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 1 |
+d | 0 | 0 | 1 | 1 | 1 | 1 | 1 | 2 |
+e | 0 | 0 | 0 | 1 | 1 | 1 | 1 | 1 |
+
+Next, with every character in string S, let say j is the position that we last found character S[i-1], to find S[i], we need to get the first position in T[S[i]] that have value greater than T[ S[i] - 'a' ][j], 
+if we don't found any return false.
+For example: With string t above and string S="add", let say we found character S[1]='d' and we need to find S[2] which is also d, in that case, we can find it in log2(N) by binary search the value T[d][2]+1, 
+in this case, we can find that position at j=7.
+
+
+
+With that, overall complexity of the follow up is:
+O( KSlog2(N) + N26 ) much better if we do the regular algorithm with time complexity : O(NS*K)
+
+
+
+
+
+
+/* FOLLOW UP USING TREEMAP */
+class Solution {
+    HashMap<Character, TreeMap<Integer, Integer>> h;
+    public boolean isSubsequence(String s, String t) {
+        int i = 0, j = 0;
+        int sl = s.length();
+        if(sl == 0) return true;
+        int tl = t.length();
+        char[] ta = t.toCharArray();
+        h = new HashMap<>();
+        while(j < tl) {
+            char key = ta[j];
+            if(h.containsKey(key)) {
+                h.get(key).put(j, 0);
+            } else {
+                TreeMap<Integer, Integer> tm = new TreeMap<>();
+                tm.put(j, 0);
+                h.put(key, tm);
+            }
+            j++;
+        }
+        return solve(s);
+    }
+
+    public boolean solve(String s) {
+        Integer prev = -1;
+        char[] sa = s.toCharArray();
+        for(char c : sa) {
+            if(!h.containsKey(c)) return false;
+            else {
+                TreeMap<Integer, Integer> t = h.get(c);
+                Integer higherKey = t.higherKey(prev);
+                if(higherKey != null) {
+                    prev = higherKey;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
