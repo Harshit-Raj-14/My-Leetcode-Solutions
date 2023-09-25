@@ -1,0 +1,60 @@
+/* TC-O(n) SC-O(n) USING HASHING */
+class Solution {
+    public char findTheDifference(String s, String t){
+        int count[] = new int[26];
+        for(int i=0;i<t.length();i++){
+            count[t.charAt(i)-'a']++;
+        }
+        for(int i=0;i<s.length();i++){
+            count[s.charAt(i)-'a']--;
+        }
+        for(int i=0;i<count.length;i++){
+            if(count[i]==1) return (char)(i+'a');
+        }
+        return 'a';
+    }
+}
+
+/* O(n) USING XOR  */
+class Solution {
+    public char findTheDifference(String s, String t){
+        char xor=0;
+        for(int i=0;i<t.length();i++){
+            xor^=t.charAt(i);
+            if(i<s.length()) xor^=s.charAt(i);
+        }
+        return xor;
+    }
+}
+
+
+/* TC-O(nlogn) SC-O(n) SORTING */
+class Solution {
+    public char findTheDifference(String s, String t) {
+        char arr1[] = s.toCharArray();
+        char arr2[] = t.toCharArray();
+        Arrays.sort(arr1);
+        Arrays.sort(arr2);
+        for(int i=0;i<arr1.length;i++){
+            if(arr1[i]!=arr2[i]) return arr2[i];
+        }
+        return arr2[arr2.length-1];
+    }
+}
+
+
+/* O(n) SUM OF ASCII VALUES DIFFERENCE */
+class Solution {
+    public char findTheDifference(String s, String t){
+        int sums=0;
+        int sumt=0;
+        for(int i=0;i<t.length();i++){
+            sumt+=t.charAt(i);
+            if(i<s.length()) sums+=s.charAt(i);
+        }
+        return (char)(sumt-sums);
+    }
+}
+
+LOIGC--- 
+ASCII_Sum(t) -ASCII_Sum(s)= answer
