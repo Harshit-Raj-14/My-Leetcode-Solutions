@@ -1,0 +1,13 @@
+/* O(n) SOLUTION */
+class Solution {
+    public boolean isMonotonic(int[] nums) {
+        int increasing=1;
+        int decreasing=1;
+        for(int i=1;i<nums.length;i++){
+            if(nums[i]<nums[i-1]) increasing=0;
+            if(nums[i]>nums[i-1]) decreasing=0;
+        }
+        if(increasing==1 || decreasing==1) return true;
+        else return false;
+    }
+}
