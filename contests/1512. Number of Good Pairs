@@ -1,4 +1,61 @@
 /* USING HASHMAP O(n) */
+class Solution {
+    public int numIdenticalPairs(int[] nums){
+        int max=0;
+        for(int i=0;i<nums.length;i++){
+            max = Math.max(max, nums[i]);
+        }
+        int count[] = new int[max+1];
+        for(int i=0;i<nums.length;i++){
+            count[nums[i]]++;
+        }
+        int pairs=0;
+        for(int i=0;i<count.length;i++){
+            if(count[i]>1) pairs+=count[i]*(count[i]-1)/2;
+        }
+        return pairs;
+    }
+}
+
+LOGIC---
+Count how many times each number appears. 
+If a number appears n times, then n * (n – 1) // 2 good pairs can be made with this number.
+
+REASON---
+arr: [1,2,1,1,1,1,5,6]
+ind: [0,1,2,3,4,5,6,7]
+1 exist at (0,2,3,4,5)
+For 1 : 0 pair exists
+For 2: (0,2) => 1 pair => one index exist before the current j
+for 3 : (0,3)(2,3) => 2 pair => two index exist before the current j
+for 4: (0,4)(2,4)(3,4) => 3 pair => 3 index exist before the current j
+In general, whenever we encounter a number, it can form k good pairs with previously traversed numbers, where k is the number of times we have seen the number previously.
+
+So, if at an index j, for element n, there are k previous occurences. for that j we will have k pairs.
+So, for k-1 th occurence there will be k-1 pairs.
+Hence total number of pairs for one kind of number occurence with k frequency = (k-1)+(k-2)+...+1
+=(k-1)(k-1+1)/2
+=k(k-1)/2
+This will be the total numbe rof pairs for one kind of element
+Now add for each element,
+where k-> the number of occurence of that element 
+
+
+/* SAME AS ABOVE ELEGANT SOLUTION */
+class Solution {
+    public int numIdenticalPairs(int[] nums) {
+        Map<Integer, Integer> counts = new HashMap<>();
+        int ans = 0;
+        for (int num: nums) {
+            ans += counts.getOrDefault(num, 0);
+            counts.put(num, counts.getOrDefault(num, 0) + 1);
+        } 
+        return ans;
+    }
+}
+
+LOGIC---
+Calculated the existenc eof pairs at each occurnece index
 
 
 /* BRUTE FORCE O(n^2) */
