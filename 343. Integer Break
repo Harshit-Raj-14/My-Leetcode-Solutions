@@ -1,0 +1,87 @@
+/* ADHOC SOLUTION O(logn) SOLUTION */
+class Solution {
+    public int integerBreak(int n){
+        if(n==1 || n==2) return 1;
+        if(n==3) return 2;
+        //Case I: n=3^m     //m=frequency of multiples of 3 in n => n/3
+        if(n%3==0) return (int)Math.pow(3,n/3);
+        //Case II: n=3m+1 => product=4*3^(m-1)
+        if(n%3==1) return 2*2*(int)Math.pow(3, n/3-1);
+        //Case III: n=3m+2 => product=283^m  
+        if(n%3==2) return 2*(int)Math.pow(3,n/3);
+        return -1;
+    }
+}
+
+/*
+Objective - Break n into the sum of k positive integers, k >= 2, and maximize the product.
+
+For all (x,y)>1, product(x,y) ≥ sum(x,y)
+It follows that it always makes sense to try to split the sum into the most components > 1 possible, as product > sum.
+We do this to as low as possible down to 2 and 3 can be considered as magical numbers for this problem.
+2 and 3 sum up to any number, so it always makes sense to break it down into 2s and 3s. The optimal answer will be comprised of only 2s and 3s.
+=>you can trivially prove this because 1 and 2 sum up to every number, and 3 is 2+1
+
+But why break in 2's and 3's?
+For example if we say we have the best list but it contaisn 17:
+17 = 8x9 = 2x2x2x3x3 = 72
+So, we can get a larger product just by factoring into 2's and 3's itself.
+Either it will turn into a larger product or it will remain same. Either way we can move to making a gneral solution out of 2's and 3s'.
+
+We don’t want any 1's, too. If N=1 then we have no choice, but for any larger N, keeping any 1's around isn’t a mark of high intelligence. Any 1 along with some other x can be replaced with an x+1
+Same sum, larger product.
+
+So: our optimal product is made up exclusively of 2's and 3's.
+
+Now, how many 2's and how many 3's do we want? Here’s the final key observation: if you have 2,2,2, you should replace them with 3,3. The sum stays intact but the product increases.
+2x2x2=8
+3x3 =9
+So we are allowed to keep some 2's around, but not too many: at most two of them. Everything else should be a 3. Once again, glimpses of that mystic e, closer to 3 than it is to 2.
+
+So do we want no 2's at all? Or one of them? Or two? Fun fact: we don’t need to figure that out, since N forces the number of 2's. If N is divisible by 3, the number of 2's cannot be one or two: it has to be none at all, or three, or six, and so on; but we already know that three 2's are useless, so we simply need none.
+
+Similarly, if n leaves a remainder of 2 upon division by 3, we will want a single 2, while if n leaves a remainder of 1 upon division by 3, we will need two 2's to make the sum work.
+
+GENERALISE:
+the maximal product of positive integers whose sum is N is obtained as follows.
+Case I: If N=3m => take m 3's to obtain a product of = 3m
+
+Case II: If N=3m+1 => take (m−1) 3's and two 2's, to get = 2x2x(3^(m-1))
+
+Case III: If N=3m+2 => take m 3's and a single 2 to get a product of 2×(3^m)
+
+
+BITTER PROOF :
+he best way to maximize a product given a fixed sum is to make all variables equal. So, if you decided to have k numbers, the maximal product will be (N/k)^k. 
+All that’s left to do is find the optimal k, which is a fun problem in and of itself. You can once again ignore the fact that k is an integer; for a real variable, this is maximized when N/k=e, Euler’s constant. 
+Our incorrect approach seems to give us a clue: we want the numbers to be close to e.
+
+factors of 2 and 3. But why these two magic numbers? Why other factors do not work?
+Let's study the math behind it.
+
+For convenience, say n is sufficiently large and can be broken into any smaller real positive numbers. We now try to calculate which real number generates the largest product.
+Assume we break n into (n / x) x's, then the product will be xn/x, and we want to maximize it.
+
+Taking its derivative gives us n * x^(n/x-2) * (1 - ln(x)).
+The derivative is positive when 0 < x < e, and equal to 0 when x = e, then becomes negative when x > e,
+which indicates that the product increases as x increases, then reaches its maximum when x = e, then starts dropping.
+
+This reveals the fact that if n is sufficiently large and we are allowed to break n into real numbers,
+the best idea is to break it into nearly all e's.
+On the other hand, if n is sufficiently large and we can only break n into integers, we should choose integers that are closer to e.
+The only potential candidates are 2 and 3 since 2 < e < 3, but we will generally prefer 3 to 2. Why?
+
+Of course, one can prove it based on the formula above, but there is a more natural way shown as follows.
+
+6 = 2 + 2 + 2 = 3 + 3. But 2 * 2 * 2 < 3 * 3.
+Therefore, if there are three 2's in the decomposition, we can replace them by two 3's to gain a larger product.
+
+All the analysis above assumes n is significantly large. When n is small (say n <= 10), it may contain flaws.
+
+
+TC - O(1)*O(logn) for Math.pow()
+SC - O(1)
+
+
+/* Bottom-Up DYNAMIC PROGRAMMING SOLUTION */
+
