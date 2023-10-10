@@ -1,0 +1,45 @@
+/* O(nlogn) SORTING+GREEDY */
+class Solution {
+    public int minProcessingTime(List<Integer> processorTime, List<Integer> tasks){
+        Collections.sort(processorTime);
+        Collections.sort(tasks);
+        int ans=0;
+        int index=0;
+        for(int i=tasks.size()-1;i>=0;){
+            for(int count=1; count<=4; count++){
+                ans=Math.max(ans, processorTime.get(index)+tasks.get(i));
+                i--;
+            }
+            index++;
+        }
+        return ans;
+    }
+}
+
+LOGIC---
+We know that any task can be given to any processor.
+Each processor will perform any of 4 tasks.
+So, the indexes and sequences of taks and processors doesnot matter.
+What we are sure of is that if we think greedily that the most time taking task should be given to the processor that starts first.
+So, for the most time taking 4 task give it to the first starting processor and find ans by finding maximum time as you continue to travel through array.
+
+
+/* SAME SOLUTION WHILE LOOP */
+class Solution {
+    public int minProcessingTime(List<Integer> processorTime, List<Integer> tasks) {
+        Collections.sort(tasks);
+        Collections.sort(processorTime);
+        int ans=0;
+        int index=0;
+        for(int i=tasks.size()-1;i>=0;){
+            int count=1;
+            while(count<=4){
+                ans=Math.max(ans, processorTime.get(index)+tasks.get(i));
+                count++;
+                i--;
+            }
+            index++;
+        }
+        return ans;
+    }
+}
