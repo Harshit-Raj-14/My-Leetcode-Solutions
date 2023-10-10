@@ -1,15 +1,57 @@
 /* O(logn) BINARY SEARCH */
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int first=firstBinary(nums, target);
+        int last=lastBinary(nums, target);
+        return new int[] {first, last};
+    }
+
+    public static int firstBinary(int nums[], int target){
+        int first=-1;
+        int l=0;
+        int r=nums.length-1;
+        while(l<=r){
+            int mid=l+(r-l)/2;
+            if(nums[mid]==target){
+                if(mid==0 || nums[mid-1]!=target) {first=mid; break;}   //condition for first
+                else r=mid-1;   //move to left side to find first
+            }
+            else if(nums[mid]<target) l=mid+1;
+            else r=mid-1;
+        }
+        return first;
+    }
+
+    public static int lastBinary(int nums[], int target){
+        int last=-1;
+        int l=0;
+        int r=nums.length-1;
+        while(l<=r){
+            int mid=l+(r-l)/2;
+            if(nums[mid]==target){
+                if(mid==nums.length-1 || nums[mid+1]!=target) {last=mid; break;}//condition for last
+                else l=mid+1;   //move to right side to find last
+            }
+            else if(nums[mid]<target) l=mid+1;
+            else r=mid-1;
+        }
+        return last;
+    }
+}
 
 
 LOGIC---
 At first use binary search to find target.
 When your mid value will be equal to the target, then use two different binary search on the left part and right part of the mid.
 
-Hence there are two binary check functions sarcastically :
-one to find target
-and one to find where it stops being target
+    Initialize two variables, first and last, to -1.
+    Perform a binary search to find the target element.
+    When you find the target element, update first to the current index and continue searching for the first occurrence in the left subarray.
+    Similarly, update last to the current index and continue searching for the last occurrence in the right subarray.
+    Continue until the binary search terminates.
+    Return first and last.
 
-TYPE : NNNNN....YYYYYY...NNNNN
+
 
 /* O(n) PARTIAL BINARY SEARCH */
 class Solution {
@@ -44,6 +86,7 @@ class Solution {
 LOGIC---
 For testcase : [8,8,8,8,8,8,8] target =mid
 The above will become binary search becomes a linear search becuase of your while step
+
 
 
 
