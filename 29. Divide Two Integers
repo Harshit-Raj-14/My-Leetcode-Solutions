@@ -19,6 +19,32 @@ class Solution {
     }
 }
 
+/* SAME ANSWER AS ABOVE */
+class Solution {
+    public int divide(int dividend, int divisor){
+        if (dividend==Integer.MIN_VALUE && divisor==-1) return Integer.MAX_VALUE; //Cornor case when -2^31 is divided by -1 will give 2^31 which doesnt exist so overflow 
+        if(dividend==Integer.MIN_VALUE && divisor==1) return Integer.MIN_VALUE;
+
+        boolean negative = (dividend<0) ^ (divisor<0); //Logical XOR will help in deciding if the results is negative only if any one of them is negative
+
+        dividend = Math.abs(dividend);
+        divisor = Math.abs(divisor);
+        int result=0;
+
+        while(dividend-divisor>=0){
+            int count=0;
+            while(dividend-(divisor<<1<<count)>=0){
+                count++;
+            }
+            result+=1<<count;
+            dividend-=divisor<<count;
+        }
+
+        return negative ? -result : result;
+    }
+}
+
+
 LOGIC---
 First of all, As we all know already the basic idea for solving the problem with out the mod operator is simply identifying the number of times the divisor can fully SUBSTRACT the dividend as a whole 
 but iterations are so costly and it will not work for large numbers. 
