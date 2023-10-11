@@ -1,0 +1,60 @@
+/* O((logn)^2) */
+class Solution {
+    public int divide(int dividend, int divisor){
+        if (dividend==Integer.MIN_VALUE && divisor==-1) return Integer.MAX_VALUE; //Cornor case when -2^31 is divided by -1 will give 2^31 which doesnt exist so overflow 
+        if(dividend==Integer.MIN_VALUE && divisor==1) return Integer.MIN_VALUE;
+
+        boolean negative = (dividend<0) ^ (divisor<0); //Logical XOR will help in deciding if the results is negative only if any one of them is negative
+
+        dividend = Math.abs(dividend);
+        divisor = Math.abs(divisor);
+        int quotient=0, subQuot=0;
+
+        while(dividend-divisor>=0){
+            for(subQuot=0; dividend-(divisor<<subQuot<<1)>=0; subQuot++);
+            quotient += 1<<subQuot; //Add to the quotient
+            dividend -= divisor<<subQuot; //Substract from dividend to start over with the remaining
+        }
+        return negative ? -quotient : quotient;
+    }
+}
+
+LOGIC---
+First of all, As we all know already the basic idea for solving the problem with out the mod operator is simply identifying the number of times the divisor can fully SUBSTRACT the dividend as a whole 
+but iterations are so costly and it will not work for large numbers. 
+The obvious secret is to identify effective way to reduce the number of substractions.
+
+The first approach that comes to mind is that we start from quotient = 0 and loop until the dividend is greater than divisor and in each iteration, we subtract divisor from dividend. 
+This seems to work fine and it also passes all the test cases but it is slow. Why? Let’s take an example — say, we have dividend = 2147483647 and divisor = 1. 
+In that case, the loop will run 2147483647 iterations which is obviously very slow.
+
+How can we improve this? 
+What if instead of decreasing the dividend linearly, we decrease it exponentially? This will definitely improve the performance drastically.
+
+1. Exponentially increase the divisor until before it surpass the dividend then substract with it.
+2. Add up the divisor and find the remainder.
+3. Repeat the same until it brings to 0.
+
+For an example, 116 divided by 3, Following is the way to gradually reduce the possibilities and idendify the final quotient
+Lets start with 3, then double it which is 6 then 12, 24,..until we stop at 96 because 192 cannot be subtracted if raised further. So here 96 == 3 * 2^5 == 3 << 5 and quotient = 32, remainder = 20
+Let start the same process again with 20, it can go upto which gets to 12 == 3 * 2^2 == 3 << 2 then the quotient is now 32 + 4 = 36, reminder = 8
+Lets start over again, i can go upto 6 which is again 6 == 3 * 2^1 == 3 << 1 the quotient is not 36+2 = 38, remainder = 2 which is less than divisor so we can not continue with the cycle and all ends here.
+
+Programmatic Rule:
+Left Shift (<<) shall be considered as multiplication by 2^N
+Similarly, Right Shift (>>) shall be considered as division by 2^N
+
+
+Somehow one of the most important part is dividend - divisor >= 0. It's crucial to use this statement instead of dividend >= divisor, because it uses integer overflow in cases when dividend = Integer.MIN_VALUE.
+
+
+
+/* FORBIDDEN METHOD */
+class Solution {
+    public int divide(int dividend, int divisor) {
+        long ans=(long)dividend/divisor;
+        if(ans>Integer.MAX_VALUE) return Integer.MAX_VALUE;
+        else if(ans<Integer.MIN_VALUE) return Integer.MIN_VALUE;
+        else return (int)ans;
+    }
+}
