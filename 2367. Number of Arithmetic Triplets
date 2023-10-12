@@ -1,0 +1,52 @@
+/* O(n) HASHING SOLUTION */
+class Solution {
+    public int arithmeticTriplets(int[] nums, int diff) {
+        int count=0;
+        HashSet<Integer> set = new HashSet<>();
+        for(int i=0;i<nums.length;i++) set.add(nums[i]);    //add elements in hashset
+        for(int i=0;i<nums.length;i++){
+            if(set.contains(nums[i]+diff) && set.contains((nums[i]+diff)+diff)) count++;
+        }
+        return count;
+    }
+}
+
+LOGIC---
+Put all elements in hashset
+Now arithmetic triplets exist in form : (x-d,x,x+d) or (x,x+d,x+2d)
+But which one to choose?
+To avoid duplicacy we choose -> (x, x+d, x+2d)
+Now we select x and check whether x+d and x+2d exist in the set or not
+
+
+/* EXTRA MODIFICATION BRUTE TO MAKE A LITTLE FASTER */
+class Solution {
+    public int arithmeticTriplets(int[] nums, int diff){
+        int count=0;
+        for(int i=0;i<nums.length-2;i++){
+            for(int j=i+1;j<nums.length-1;j++){
+                if(nums[j]-nums[i] == diff){    //extra check added to make more efficient
+                    for(int k=j+1;k<nums.length;k++){
+                        if(nums[k]-nums[j]==diff) count++;
+                    }
+                }
+            }
+        }
+        return count;
+    }
+}
+
+/* O(n^3) BRUTE FORCE SOLUTION */
+class Solution {
+    public int arithmeticTriplets(int[] nums, int diff){
+        int count=0;
+        for(int i=0;i<nums.length;i++){
+            for(int j=i+1;j<nums.length;j++){
+                for(int k=j+1;k<nums.length;k++){
+                    if(nums[j]-nums[i]==diff && nums[k]-nums[j]==diff) count++;
+                }
+            }
+        }
+        return count;
+    }
+}
