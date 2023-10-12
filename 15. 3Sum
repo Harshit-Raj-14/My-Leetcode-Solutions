@@ -1,3 +1,63 @@
+/* O(n62) SOLUTION */
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums){
+        Arrays.sort(nums);
+        ArrayList<List<Integer>> ans = new ArrayList<>();
+        int n=nums.length;
+        for(int i=0;i<nums.length;i++){
+            int target=0-nums[i];
+            int front=i+1;
+            int back=n-1;
+            while(front<back){
+                int sum = nums[front] + nums[back];
+                if(sum>target) back--;
+                else if(sum<target) front++;
+                else{
+                    int x = nums[front];
+					int y = nums[back];
+                    ArrayList<Integer> list = new ArrayList<>();
+                    list.add(nums[i]);
+                    list.add(nums[front]);
+                    list.add(nums[back]);
+                    ans.add(list);
+
+                    // Incrementing front pointer until we reach a different number.
+					while (front<back && nums[front]==x) front++;
+                    // Decrementing last pointer until we reach a different number.
+					while (front<back && nums[back]==y) back--;
+                }
+                // Ensuring that we don't encounter duplicate values for arr[i].
+			    while (i<n-1 && nums[i]==nums[i+1]) i++;
+            }
+        }
+        return ans;
+    }
+}
+
+LOGIC---
+Since we want elements we can first start by sorting the list.
+Now since three for loops give TLE.
+We need to do it in a way by doing less iteration that is fixing a number.
+Since our target is nothing but 0.
+If we iterate in first loop we can set target as (-nums[i]).
+
+Now since the array is already sorted. With the remaining numbers we need to make an equivalent sum of nums[i] in pairs of two. We can use two pointers to see which is the best choice of numbers in an ordered fashion.
+
+Set two pointers, j=i+1 and k=n-1.
+
+While j<k, check if nums[j]+nums[k]==target.
+
+If yes, add the triplet {nums[i], nums[j], nums[k]} to the result and move j to the right and k to the left.
+
+If no, move either j or k based on the comparison of nums[j]+nums[k] with target.
+To avoid duplicate triplets, skip the iterations where nums[i]==nums[i-1] and also skip the iterations where nums[j]==nums[j-1] or nums[k]==nums[k+1].
+
+
+
+
+
+
+
 /* BRUTE FORCE O(N^3) */
 class Solution {
     public List<List<Integer>> threeSum(int[] nums){
