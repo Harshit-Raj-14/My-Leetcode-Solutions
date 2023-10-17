@@ -1,3 +1,50 @@
+/* TC-O(numRows^2) DP */
+class Solution {
+    public List<List<Integer>> generate(int numRows) {
+        List<List<Integer>> ans = new ArrayList<>();
+        if (numRows == 0) return ans;
+        if (numRows == 1){
+            List<Integer> firstRow = new ArrayList<>();
+            firstRow.add(1);
+            ans.add(firstRow);
+            return ans;
+        }
+
+        ans = generate(numRows - 1);
+        List<Integer> prevRow = ans.get(numRows - 2);
+        List<Integer> currentRow = new ArrayList<>();
+        currentRow.add(1);
+
+        for (int i = 1; i < numRows - 1; i++) {
+            currentRow.add(prevRow.get(i - 1) + prevRow.get(i));
+        }
+
+        currentRow.add(1);
+        ans.add(currentRow);
+
+        return ans;
+    }
+}
+
+/*
+dp[i] -> the array of elements at that specific index/row
+So, we generate a dp[i] for each i store it in ans and then rewrite dp[i] for the enxt iteration
+
+dp[0] = 0;  
+dp[1] = 1;  (1)
+dp[2] = 2;  (1,1)
+dp[3] = 3;  (1,2,1)
+dp[4] = 4;  (1,3,3,1) 
+dp[5] = 5;  (1,4,6,4,1)
+....
+dp[i] -> always of length i
+
+Conclusion - 
+Initialize a 1D array to store the current row.
+Iterate through numRows and update the array for each row.
+
+
+
 /* TC-O(numRows^2) Combinatorial Formula */
 class Solution {
     public List<List<Integer>> generate(int numRows) {
@@ -64,3 +111,23 @@ class Solution {
 LOGIC----
 In Pascal's triangle, each element is the sum of the two elements directly above it. We can use a recursive approach to generate the triangle. The base case is when numRows is 1, 
 in which case we return [[1]]. Otherwise, we recursively generate the triangle for numRows - 1 and then calculate the current row by summing the adjacent elements from the previous row.
+
+
+
+
+
+A SIDE TRICK Good Observation:
+row
+1 -> 11^0 -> 1
+2 -> 11^1 -> 11
+3 -> 11^2 -> 121
+4 -> 11^3 -> 1331
+5 -> 11^4 -> 14641
+
+General formula -> i-th row => 11^(i-1)
+
+The only problem it is very hard to implement becuase you cannot convert the value to a list.
+reason :
+n=6
+got output - [[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1],[1,5,0,1,6,1]]
+expected output - [[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1],[1,5,10,10,5,1]]
