@@ -1,0 +1,66 @@
+class Solution {
+    public int countCollisions(String directions){
+        int collision=0;
+        char prev=directions.charAt(0);   //storing first state of road 
+        int Rpower=0;
+        for(int i=1;i<directions.length();i++){
+            if(prev=='R' && directions.charAt(i)=='L'){
+                collision += 2 + Rpower;
+                Rpower=0;   //reverts to 0
+                prev='S';   //the prev road car state enters stationary
+            }
+            else if((prev=='S' && directions.charAt(i)=='L') || 
+                    (prev=='R' && directions.charAt(i)=='S')){
+                    collision += 1 + Rpower;    
+                    prev='S';    //the prev road car state enters stationary
+                    Rpower=0;
+            }
+            else if(prev=='L' && directions.charAt(i)=='R') prev='R';
+            else if(prev=='L' && directions.charAt(i)=='S') prev='S';
+            else if(prev=='S' && directions.charAt(i)=='R') prev='R';
+            else if(prev=='R' && directions.charAt(i)=='R') Rpower++;
+        }
+        return collision;
+    }
+}
+
+/*
+LOGIC---
+
+Given: R->right; L->left; S->stationary
+two moving cars collide -> collision=2
+one moving car collide -> collision=1
+
+Imagine all cars on a striaght road like in an array:
+So, cases when collison can occur:
+Direction::: 
+<----L   R---->
+Types: LR, RL, LS, SL, RS, SR
+
+RL, SL, RS -> Collide
+LR, LS, SR -> no collision
+
+hence by knowing the previous state of the road, we can find whether collison will happen or not.
+
+After each reading we will update the previous road state.
+
+As we move formward we will always need to know of the previous state to decide whether collison will be occuring or not.
+
+Note : edge case
+Note as oserver you are travelling left to right.
+So, in cases of when: 
+SRRRRRL...
+occurs you need to take the continuous chain of R as well
+imagin it something like this being the state of road:
+| -> -> -> -> -> <-
+Well, now you see how many collision are going to occur here.
+collision = 2 + xR; 
+Here x=3
+As, RL will become S and you will need to retrack RRRRS scenario.
+
+Same goes for scenario : RRRRS : -> -> -> -> |
+Here also you iwll need to consider powerR
+
+You don''t kneed to owrry about LLLLLR type which won't happen.(only 1 collision value=2) 
+
+*/
