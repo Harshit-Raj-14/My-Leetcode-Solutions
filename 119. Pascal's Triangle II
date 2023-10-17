@@ -1,0 +1,23 @@
+/* O(n^2) DP */
+class Solution {
+    public List<Integer> getRow(int rowIndex) {
+        ArrayList<Integer> ans = new ArrayList<>();
+        if(rowIndex==0){
+            ans.add(1);
+            return ans;
+        }
+        if(rowIndex==1){
+            ans.add(1);
+            ans.add(1);
+            return ans;
+        }
+        // ans = getRow(rowIndex);
+        List<Integer> prevRow = getRow(rowIndex-1);
+        ans.add(1);  //the first index set to 1
+        for(int i=1;i<rowIndex;i++){
+            ans.add(i, prevRow.get(i-1)+prevRow.get(i));
+        }
+        ans.add(1); //the last index set to 1
+        return ans;
+    }
+}
