@@ -1,0 +1,66 @@
+/* TC-O(numRows^2) Combinatorial Formula */
+class Solution {
+    public List<List<Integer>> generate(int numRows) {
+        //Base Case
+        ArrayList<List<Integer>> ans = new ArrayList<>();
+        if(numRows==0) return ans;
+        ArrayList<Integer> firstRow = new ArrayList<>();
+        firstRow.add(1);
+        ans.add(firstRow);
+
+        for(int i=1;i<numRows;i++){ 
+            List<Integer> prevRow = ans.get(i-1);
+            List<Integer> currRow = new ArrayList<>();
+
+            currRow.add(1);
+
+            for(int j=1;j<i;j++){
+                currRow.add(prevRow.get(j-1) + prevRow.get(j));
+            }
+
+            currRow.add(1);
+            ans.add(currRow);
+        }
+        return ans;
+    }
+}
+
+LOGIC---
+Pascal's triangle can also be generated using combinatorial formula C(n, k) = C(n-1, k-1) + C(n-1, k), where C(n, k) represents the binomial coefficient. 
+We can calculate each element of the triangle using this formula. 
+This approach avoids the need for storing the entire triangle in memory, making it memory-efficient.
+
+
+
+/* TC-O(numRows^2) RECURSION */
+class Solution {
+    public List<List<Integer>> generate(int numRows){
+        //Base Case
+        if (numRows==0) return new ArrayList<>();
+        if (numRows==1) {
+            List<List<Integer>> result = new ArrayList<>();
+            result.add(Arrays.asList(1));
+            return result;
+        }
+
+        //recursive work -> storing all previous n-1 rows
+        List<List<Integer>> ans = generate(numRows-1);
+        ArrayList<Integer> newRow = new ArrayList<>();
+
+        //calculation the n-th row
+        for(int i=0;i<numRows;i++){ //filling the n-th row with 1
+            newRow.add(1);
+        }
+
+        for(int i=1;i<numRows-1;i++){   //first index already 1, last index 1
+            newRow.set(i, ans.get(numRows-2).get(i-1) + ans.get(numRows-2).get(i));
+        }
+
+        ans.add(newRow);
+        return ans;
+    }
+}
+
+LOGIC----
+In Pascal's triangle, each element is the sum of the two elements directly above it. We can use a recursive approach to generate the triangle. The base case is when numRows is 1, 
+in which case we return [[1]]. Otherwise, we recursively generate the triangle for numRows - 1 and then calculate the current row by summing the adjacent elements from the previous row.
