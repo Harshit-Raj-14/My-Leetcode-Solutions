@@ -1,0 +1,74 @@
+/* O(n), O(1) TWO POINTER */
+
+LOGIC---
+So we have to use two pointer approach.
+Hint: What is more beneficial traversing from last or first?
+Reason : backspace is always a move pulled backwards in reverse direction.
+So, characters after back are unaffected.
+When writing a character, it may or may not be part of the final string depending on how many backspace keystrokes occur in the future.
+If instead we iterate through the string in reverse, then we will know how many backspace characters we have seen, and therefore whether the result includes our character.
+Iterate through the string in reverse. If we see a backspace character, the next non-backspace character is skipped. If a character isn't skipped, it is part of the final answer.
+So, we think of two pointers, one being on the # character and the other being on non-backspace character.
+
+
+
+/* O(n), O(n) SOLUTION USING STACK */
+class Solution {
+    public boolean backspaceCompare(String s, String t){
+        String sb = solve(s);
+        String tb = solve(t);
+        if(sb.equals(tb)) return true;
+        else return false;
+    }
+
+    public static String solve(String s){
+        Stack<Character> stack = new Stack<>();
+        for(int i=0;i<s.length();i++){
+            if(s.charAt(i)=='#'){
+                if(!stack.isEmpty()) stack.pop();
+            }
+            else stack.push(s.charAt(i));
+        }
+        StringBuilder sb = new StringBuilder("");
+        while(!stack.isEmpty()){
+            sb.append(stack.pop());
+        }
+        return sb.reverse().toString();
+    }
+}
+
+LOGIC---
+If you find # and stack is not empty pop. else push in stack
+reversing the final stack will give us the string
+
+
+
+
+/* O(n), O(n) SOLUTION USING STRINGBUILDER */
+class Solution {
+    public boolean backspaceCompare(String s, String t){
+        String sb = solve(s);
+        String tb = solve(t);
+        if(sb.equals(tb)) return true;
+        else return false;
+    }
+
+    public static String solve(String s){
+        StringBuilder sb = new StringBuilder();
+        for(int i=0;i<s.length();i++){
+            if(s.charAt(i)=='#'){
+                if(sb.length()!=0) sb.deleteCharAt(sb.length()-1);
+            }
+            else sb.append(s.charAt(i));
+        }
+        return sb.toString();
+    }
+}
+
+
+/* JAVA ONE LINER SOLUTION */
+class Solution {
+    public boolean backspaceCompare(String s, String t) {
+        return s.chars().mapToObj(Character::toString).reduce("", (str, c) -> "#".equals(c) ? (str.isEmpty() ? "" : str.substring(0, str.length() - 1)) : str + c).equals(t.chars().mapToObj(Character::toString).reduce("", (str, c) -> "#".equals(c) ? (str.isEmpty() ? "" : str.substring(0, str.length() - 1)) : str + c));
+    }
+}
