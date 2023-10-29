@@ -1,0 +1,62 @@
+class Solution {
+    public int poorPigs(int buckets, int minutesToDie, int minutesToTest){
+        int r = minutesToTest/minutesToDie; //rounds
+        int x = 0;   //pigs
+        while((int)Math.pow((r+1), x) < buckets) x++;
+        return x; 
+    }
+}
+
+/* 
+LOGIC---
+Given : no of buckets (one poisonous), time it takes them to die and total time for us to test.
+Objective : to find number of pigs.
+
+Observation:
+We can always leave one bucket out as left out. If no pig dies. The not used bucket is poisonous.
+Since after feeding all pigs we need to wait for the time of result to pass to check on pigs.
+
+number of Attempts allowed = rounds = r = minutes to test / minutes to die
+
+So, each pig have r+1 options to drink in a round or not. (r rounds + 1 for never consuming from the bucket)
+
+Let's say we have x pigs then we have => (r+1) (r+1) (r+1)... x times = (r+1)^x
+
+(r+1)^x => signifies the number of unique ways we can feed the pigs
+
+
+EXAMPLE:
+No of Buckets: = B = 8
+No of Rounds = R = 2
+No of Pigs = P = X
+
+Let's assuming 3 pigs as we are not aware of the answer yet
+B1: { P1: Never, P2: Never, P3: Never} // Ans is B1 if no pig gets killed
+B2: { P1: R1, P2: Never, P3: Never} // Ans is B2 if P1 gets killed after round 1
+B3: {P1: Never, P2: R1, P3: Never} // Ans is B3 if P2 gets killed after round 1
+B4: {P1: Never, P2: Never, P3: R1}
+B5: {P1: R1, P2: R1, P3: Never}
+B6: {P1: R1, P2: Never, P3: R1} // Ans is B6 if P1 & P3 gets killed after round 1
+B7: {P1: Never, P2: R1, P3: R1}
+B8: {P1: R1, P2: R1, P3: R1} // Ans is B8 if all pigs get killed after round 1
+
+We can stop here as we have only 8 buckets, but we can make more such combinations using like {P1: R2, P2: Never, P3: Never}. 
+We have in total (r+1)^x = (2 + 1)^3 = 27 variations
+
+This is not necessary. Since we need the minimum no of pigs, the number of variations should be equal to or slightly higher than the number of buckets. 
+We can achieve the above mentioned problem with 2 pigs (2+1)^2 = 9 >= 8 buckets.
+
+Conclusion all we need to do is find power of x, where => (r+1)^x >= no of buckets
+This will give us the minimum number of pigs
+
+
+ANOTHER WAY OF LOOKING AT IT:
+If you have one bucket => you cna make a pig drink and check.
+If you have two bucket => you cna still use a bucket and check and find the poison bucket.
+
+ => (r+1) ways to make him drink or not and check whether the bucket is poisonous or not.
+Him drinking and not drinking can decide whether which is poisonous or not.
+
+So, means problem can be solved if the pig is given r+1 chance.
+
+*/
