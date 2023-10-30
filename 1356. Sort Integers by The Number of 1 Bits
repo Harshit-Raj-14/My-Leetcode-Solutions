@@ -1,0 +1,66 @@
+/* TC-O(32*n*logn) SC-O(n) BRUTE FORCE */
+class Solution {
+    public int[] sortByBits(int[] arr){
+        Arrays.sort(arr);
+        ArrayList<Integer> list = new ArrayList<>();
+        for(int i=0;i<32;i++){
+            for(int j=0;j<arr.length;j++){
+                if(countSetBit(arr[j])==i) list.add(arr[j]);
+            }
+        }
+        int ans[] = new int[list.size()];
+        for(int i=0;i<ans.length;i++){
+            ans[i]=list.get(i);
+        }
+        return ans;
+    }
+
+    public int countSetBit(int n){
+        int ans=0;
+        while(n!=0){
+            if((n&1)==1) ans++;
+            n=n>>1;
+        }
+        return ans;
+    }
+}
+
+LOGIC---
+Sort the array at elast even for the elements with same set bit count they will be already in sorted positions.
+Now find all elements with setbit count 0 and put it in ans arraylist.
+Now find for 1.
+Now find for 2.
+...do it till 31 and we have got ans array.
+In c++ we could have improved using popcount setbit.
+Taking it down a notch to O(32 n)
+
+
+Note : Leetcode editorial oslves it using comparator
+
+
+/* IMPORVED SPACE COMPLEXITY BY NOT USING ARRAYLIST BUT ADDING ELEMENTS DIRECTLY INTO ARRAY */
+class Solution {
+    public int[] sortByBits(int[] arr){
+        Arrays.sort(arr);
+        int ans[] = new int[arr.length];
+        int index=0;    //indexing for ans
+        for(int i=0;i<32;i++){
+            for(int j=0;j<arr.length;j++){
+                if(countSetBit(arr[j])==i){
+                    ans[index]=arr[j];
+                    index++;
+                }
+            }
+        }
+        return ans;
+    }
+
+    public int countSetBit(int n){
+        int ans=0;
+        while(n!=0){
+            if((n&1)==1) ans++;
+            n=n>>1;
+        }
+        return ans;
+    }
+}
