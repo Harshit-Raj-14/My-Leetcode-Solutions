@@ -1,0 +1,40 @@
+class Solution {
+    int memo[][];
+    public int lengthOfLongestSubsequence(List<Integer> nums, int target){
+        memo = new int[nums.size()+1][target+1];
+        for(int[] arr:memo) Arrays.fill(arr, -1);   //filling memo with -1
+        int ans = memoization(nums,0,target);   //(nums, i=0;, target)
+        if(ans<=0) return -1;   //no solution
+        return ans;
+    }
+    
+    public int memoization(List<Integer> nums, int i, int target){
+        if(target==0) return 0;
+        if(target<0||i>=nums.size()) return Integer.MIN_VALUE;  //base condition : you reached till end but not found sum equalling target
+        if(memo[i][target]!=-1) return memo[i][target];
+        int take = 1 + memoization(nums, i+1, target-nums.get(i));  //doing +1 means counting length of subsequence
+        int ignore = memoization(nums, i+1, target);
+        return memo[i][target] = Math.max(take, ignore); 
+    }
+}
+
+/* 
+LOGIC---
+This is classic dp 0/1 knapsack problem. => for every element we have two choices.
+a. either take that element or
+b. ignore that element.
+If our target becomes 0, means we have chosen correct subsequence.
+
+Hnece we have two oslutions here
+a = 1 + sol(i+1, k-arr[i]) => include
+b = sol(i+1, k) => exclude
+
+And since we are moving in forward direction by taking an element and not taking an element and then making a dp
+
+Time complexity:O(n^2)
+Space complexity: O(n^2)
+
+What makes it similar to knapsack?
+Think like this, having n elements and asked to put the maximum elements in a bag whci hcan handle target weight.
+
+*/

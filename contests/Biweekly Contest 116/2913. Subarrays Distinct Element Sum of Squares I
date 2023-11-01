@@ -1,0 +1,31 @@
+/* BRUTE FORCE O(n^3) */
+class Solution {
+    public int sumCounts(List<Integer> nums) {
+        int ans=0;
+        for(int i=0;i<nums.size();i++){
+            ArrayList<Integer> list = new ArrayList<>();
+            for(int j=i;j<nums.size();j++){
+                list.add(nums.get(j));
+                int val = distinct(list);
+                ans+=val*val;
+            }
+        }
+        return ans;
+    }
+    
+    public int distinct(List<Integer> list){
+        int max=0;
+        for(int i=0;i<list.size();i++){
+            max=Math.max(max, list.get(i));
+        }
+        int count[] = new int[max+1];
+        for(int i=0;i<list.size();i++){
+            count[list.get(i)]++;
+        }
+        int dist=0;
+        for(int i=0;i<count.length;i++){
+            if(count[i]>0) dist++;
+        }
+        return dist;
+    }
+}

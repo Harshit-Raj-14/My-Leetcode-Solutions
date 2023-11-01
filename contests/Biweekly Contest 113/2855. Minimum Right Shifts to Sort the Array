@@ -1,0 +1,34 @@
+/* O(n) SOLUTION BEATS 100% */
+class Solution {
+    public int minimumRightShifts(List<Integer> nums){
+        int k=0;    //k=no of points where rotation happened in array, points of rotation
+        int rotationAt=0;
+        for(int i=0;i<nums.size();i++){
+            if(nums.get(i)>nums.get((i+1)%nums.size())){    //condtion of the point where rotation occurs
+                k++;    //number of points where rotation happened
+                rotationAt=i;
+            }
+        }
+        if(k<=1) return nums.size()-rotationAt-1; //we cna make back sorted if rotation has been done only one time or no rotation
+        else return -1;
+    }
+}
+
+/* 
+Approach:
+Find the pivot point around which the array is rotated.
+If there is only one pivot point that means it was a vlaid rotation for a sorted array and it can be turned back into sorted one again.
+But if there are more than one point of rotation we cannot make that into a sorted array just by shifting.
+
+LOGIC---
+We are required to find the minimum number of right shifts to make the array sorted. If it stil lcan't be sorted return -1.
+
+Now conversely we can say that if from start we had a sorted array and we rotated it k times to get the current rotated array.
+
+Now we try to find by how many tiems is the current sorted array rotated.
+If both comes out to be k. That means we need to shift array k times to get sorted array.
+
+If the no of point of rotations did not match, that means the array cannot be sorted and was improper.
+
+*/
+

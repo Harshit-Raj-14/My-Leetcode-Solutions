@@ -1,0 +1,16 @@
+class Solution {
+    public int minChanges(String s) {
+        int move=0;
+        for(int i=0;i<s.length();i+=2){
+            if(i+1<s.length() && s.charAt(i)!=s.charAt(i+1)) move++;
+        }
+        return move;
+    }
+}
+
+/*
+LOGIC---
+Work in a window of 2.
+If window is as per required good.
+If not apply one operation.
+*/

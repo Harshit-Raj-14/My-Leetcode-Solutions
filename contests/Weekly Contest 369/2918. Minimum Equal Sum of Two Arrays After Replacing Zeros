@@ -1,0 +1,70 @@
+class Solution {
+    public long minSum(int[] nums1, int[] nums2) {
+        long sum1=0;
+        long zero1=0;
+        long sum2=0;
+        long zero2=0;
+        for(int i=0;i<nums1.length;i++){
+            sum1+=nums1[i];
+            if(nums1[i]==0) zero1++;
+        }
+        for(int i=0;i<nums2.length;i++){
+            sum2+=nums2[i];
+            if(nums2[i]==0) zero2++;
+        }
+        //CASE GENERALISATION
+        if(sum1==sum2){
+            if(zero1!=zero2 && (zero1==0 || zero2==0)) return -1;   //either zero1 or zero2 is 0 and other is not
+            else return sum1+Math.max(zero1, zero2);
+        }
+        if(sum1>sum2){
+            if(zero2==0) return -1; //there's no way we can make them equal now
+            if(sum1+zero1 >= sum2+zero2) return sum1+zero1;
+            else if(sum1+zero1 < sum2+zero2 && zero1!=0) return sum2+zero2; //array 2 is greater in temrs of having 0
+        }
+        if(sum2>sum1){
+            if(zero1==0) return -1; //there's no way we can make them equal now
+            if(sum2+zero2 >= sum1+zero1) return sum2+zero2;
+            else if(sum1+zero1 > sum2+zero2 && zero2!=0) return sum1+zero1; //array 1 is greater in temrs of having 0
+        }
+        return -1;
+    }
+}
+
+
+
+/* ELEGANT CODE */
+class Solution {
+  public long minSum(int[] nums1, int[] nums2) {
+    long c1=0, c2=0, s1=0, s2=0;
+    for (int ele: nums1) {
+      s1 += ele;
+      if (ele==0) c1++;
+    }
+    for (int ele: nums2) {
+      s2 += ele;
+      if (ele==0) c2++;
+    }
+    if (s1+c1>s2 && c2==0 || s2+c2>s1 && c1==0) return -1;
+    return (Math.max(s1 + c1, s2 + c2));
+  }
+}
+
+
+
+/*
+LOGIC---
+Operation : Replacement of 0 is only possible with positive integer. That menas minimum replacement value can be 1.
+
+Understand the constraint that the presence of zeroes adds a minimum of freq of zero to final sum of an array as per the operation.
+
+Cases:
+On a feeling that it will be much easier to write cases that pass we make cases on that :
+Case I: if(sum1==sum2 && zero1==zero2) finalsum equal possible = sum1+zero1
+Case II: if(sum1==sum2 && (zero1>zero2 || zero1<zero2)) finalsum can never become equal now
+Case III: if(sum1>=sum2 && zero1!=0 && zero2!=0 && zero1>=zero2) 
+mkae all cases
+
+else return false -1 not possible to make
+
+*/

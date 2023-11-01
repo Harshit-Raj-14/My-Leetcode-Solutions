@@ -1,0 +1,52 @@
+class Solution {
+    public int minLengthAfterRemovals(List<Integer> nums){
+        int n=nums.size();
+        int max=0;
+        for(int i=0;i<nums.size();i++){
+            max=Math.max(max, nums.get(i));
+        }
+        int count[] = new int[max+1];
+        for(int i=0;i<nums.size();i++){
+            count[nums.get(i)]++;
+        }
+        int freq_max=0;
+        for(int i=0;i<count.length;i++){
+            freq_max=Math.max(freq_max, count[i]);
+        }
+        if(freq_max>n/2){
+            long ans= (long)2 * (long)(freq_max) - (long)(n);
+            return (int)ans;
+        }
+        else if(n%2==0) return 0;
+        else return 1;
+    }
+}
+
+/*
+LOGIC---
+Given : Sorted Array : the next eleemtn will always be greater or equal to previous
+Operation: We can remove only when i < j, such that nums[i] < nums[j].
+Case I: All distinct
+if n-> even => ans=0; (no elements left)
+if n->odd => ans=1; (one element will always be left)
+
+Case II: Duplicate -> we need to think
+
+Approach:
+We create a count array for all the elements of array. We know that the next element will always be greater and can be removed by the previous element. In a way the condition of having distinct elements is more than enough to cancel out the elements.
+
+Since distinct are allowed to occur.
+Let's put up an element 'X' in considerations.
+Case I: Let's say this X in the array is => n/2<X<=n times. {More than half of the legnth of array}
+Something like: YYXXXXXXXXXXXZZZZQQQ
+Then what will be the number of elements left.
+Since any other elemnt will try to cancel out with all the X first to bring the size of array to minimum.
+Then number of elements left = freq(X)-(n-freq(X)) = 2*freq(X)-n
+
+Case II: Let's say X is now => 0<=X<=n/2.
+Now we are sure that there can be other elements which can cancel out all the elments of X in a way.
+So, this will be now depedned on:
+n-> even => NO elemnt will be left {XXXYYYYZZZQQQQ}
+n-> odd => ONE element will be left {XXXYYYYYZZZQQ}
+
+*/

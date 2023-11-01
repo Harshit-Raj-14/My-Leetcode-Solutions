@@ -1,0 +1,82 @@
+class Solution {
+    public int minimumOperations(String s) {
+        int indexof0=-1;
+        int skipfor0=Integer.MAX_VALUE;
+        int indexof5=-1;
+        int skipfor5=Integer.MAX_VALUE;
+        int secondreqindex=-1;
+        for(int i=s.length()-1;i>=0;i--){   //finding index of 0 form back
+            if(s.charAt(i)=='0'){indexof0=i; break;}
+        }
+        for(int i=s.length()-1;i>=0;i--){   //finding index of 5 form back
+            if(s.charAt(i)=='5'){indexof5=i; break;}
+        }
+        if(indexof0!=-1){   //checking for second digit we want if we consider 0 as last digit
+            for(int i=indexof0-1;i>=0;i--){
+                if(s.charAt(i)=='0' || s.charAt(i)=='5'){secondreqindex=i; break;}
+            }
+            skipfor0=(s.length()-1-indexof0)+(indexof0-secondreqindex-1);
+        }
+        if(indexof5!=-1){
+            for(int i=indexof5-1;i>=0;i--){
+                if(s.charAt(i)=='2' || s.charAt(i)=='7'){secondreqindex=i; break;}
+            }
+            skipfor5=(s.length()-1-indexof5)+(indexof5-secondreqindex-1);
+        }
+        if(secondreqindex==-1){
+            int removenum=0;
+            for(int i=0;i<s.length();i++){  //in that case we need to eliminate entire array except no need to remove zeroes
+                if(s.charAt(i)!='0') removenum++;
+            }
+            return removenum;
+        } 
+        else return Math.min(skipfor0, skipfor5);
+    }
+}
+
+
+LOGIC---
+According to the divisible rule of 25, if the last two digits of a number are zeroes or the number formed by the last two digits is a multiple of 25, then the number is divisible by 25.
+
+So, we move backwards and look for pattern either 00 or, the last two digits become divisible by 25.
+
+The choices we end up with are 00, 25, 50, 75. (these ar ethe only last two digits after this it repeats)
+
+So, we just need to find and make them the last two digits.
+If we choose 0 from last : then next digit we want would be : 0 or 5
+If we choose 5 from last : then next digit we want would be : 2 or 7
+
+Edge case:
+If 0 or 5 not present in our string, then that means we will remove all the elements of string to be left with 0 as said in question.
+Another edge case be like one of 5 or 0 is present but not a second digit to form 00,50,25,75
+eg: 33,35,..etc.
+
+Such edge cases can be handled simply by checking if we were able to find the secondreqindex or not and if not output the length of the string.
+And yet a third edge case is there something like "10" where we only need to remove 1 and not 0.
+So, we will proerly adjust our code accordingly.
+
+
+
+
+/* A MORE ELEGANT CODE */
+class Solution {
+    public int minimumOperations(String num){
+        boolean zerofound = false;
+        boolean fivefound = false;
+        for (int i =num.length()-1; i >=0;i--){ 
+            if (zerofound && num.charAt(i)=='0') return num.length()-2-i;
+            if (zerofound && num.charAt(i)=='5') return num.length()-2-i;
+            if (fivefound && num.charAt(i)=='2') return num.length()-2-i;
+            if (fivefound && num.charAt(i)=='7') return num.length()-2-i;
+            if (num.charAt(i)=='5') fivefound = true;
+            if (num.charAt(i)=='0') zerofound = true;   
+        }
+        if (zerofound) return num.length()-1;
+        return num.length();
+    }
+}
+
+
+LOGIC ---
+A number is divisible by 25 if its last two digits are 75, 50, 25, or 00.
+If num contains a single zero digit then the answer is at most n - 1.

@@ -1,0 +1,19 @@
+class Solution {
+    public boolean canBeEqual(String s1, String s2) {
+        if(s1.charAt(0)!=s2.charAt(0) && s1.charAt(0)!=s2.charAt(2)) return false;
+        if(s1.charAt(2)!=s2.charAt(0) && s1.charAt(2)!=s2.charAt(2)) return false;
+        if(s1.charAt(1)!=s2.charAt(1) && s1.charAt(1)!=s2.charAt(3)) return false;
+        if(s1.charAt(3)!=s2.charAt(1) && s1.charAt(3)!=s2.charAt(3)) return false;
+        return true;
+    }
+}
+
+/*
+Since we are given strings of only length 4;
+we have indices: 0,1,2,3
+Possible swap indices: (i,j) when j-i=2
+0,2
+1,3
+These are the only possible swaps
+So, the colelction of characters at these position at least needs to be the smae so that after swap we can have s1==s2.
+*/
