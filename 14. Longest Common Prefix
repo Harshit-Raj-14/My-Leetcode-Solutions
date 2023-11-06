@@ -1,0 +1,77 @@
+/* Horizontal Scanning */
+class Solution {
+    public String longestCommonPrefix(String[] strs){
+        if(strs.length==0) return "";
+        String prefix = strs[0];    //let the first strign be the prefix itself
+        for(int i=1;i<strs.length;i++){
+            while(strs[i].indexOf(prefix) != 0){    //string at index i of array does not have prefix string as prefix(starting form index 0); if it has that prefix then check next string
+                prefix = prefix.substring(0, prefix.length()-1);    //we try removing one elemnt from last of prefi and check again whether this could be our prefix
+                if(prefix.isEmpty()) return "";
+            }
+        }
+        return prefix;
+    }
+}
+
+/*
+LOGIC---
+We need to find Longest Common Prefix in a collection of strings.
+LCP(S) = LCP(s1,s2,s3,s4,s5,...) 
+This can also be rewritten as:
+LCP(LCP(LCP(s1,s2),s3)...)
+So, travel collection S, finding at each iteration i the longest common prefix between s1....si.
+Also, if at any point th LCP becomes empty string "" we will break and return that.
+Otherwise, at the end return LCP(s1,s2,....sn)
+
+Algorithm:
+eg : S = ["flower","flow","flight"]
+start with prefix string = S[0]; = flower
+For i=1:
+prefix = flower : indexOf(prefix) in s1!=0 (its -1) => it does not have prefix string as its prefix (0th position)
+remove last char from prefix and check again:
+prefix=flowe : indexOf(prefix) in s1=-1 => it does not have prefix 
+remove last char from prefix and check again:
+...
+keep on doing till 
+prefix=flow : indexOf(prefix) in s1=0 => we have now the prefix string as prefix
+
+So, now check for i=2
+If at any step prefix becoems empty print that.
+
+TC - O(sum of all characters of string)
+*/
+
+
+/* USING SORTING */
+class Solution {
+    public String longestCommonPrefix(String[] strs){
+        if(strs.length==0) return "";
+        Arrays.sort(strs);
+        String first = strs[0];    
+        String last = strs[strs.length-1];
+        int prefixlength=0;
+        for(int i=0;i<first.length();i++){
+            if(first.charAt(i)==last.charAt(i)) prefixlength++;
+            else break;
+        }
+        if(prefixlength==0) return "";
+        else return first.substring(0, prefixlength);
+    }
+}
+
+/*
+LOGIC---
+By sorting the array we make sure of one thing:
+Arrays.sort() sorts strings alphabetically, not by length
+So, we are sure the smallest strigns are in front and also arranged alphabetically order like a dictionary now.
+
+So, the lcp will now only can be accounted by comparing the first and last string in the lost.
+TC - O(l*nlogn) where l is the string length
+*/
+
+
+
+
+INTERVIEW FOLLOW UP QUESTION:
+Given a set of keys S = [S1,S2…Sn], find the longest common prefix among another string q and S. This LCP query will be called frequently maybe some kind of queries.
+SOLUTION: exist using trie
