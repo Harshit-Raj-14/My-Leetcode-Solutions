@@ -1,0 +1,76 @@
+/* USING HASHSET AND HASHMAP */
+class Solution {
+    public boolean isIsomorphic(String s1, String s2) {
+    if(s1.length()!=s2.length()) return false;
+      HashMap<Character, Character> map = new HashMap<>();
+      HashSet<Character> alreadymapped = new HashSet<>();   //keep tab on chars of s2 which are already used
+      for(int i=0;i<s1.length();i++){
+          if(!map.containsKey(s1.charAt(i))){
+              if(!alreadymapped.contains(s2.charAt(i))){
+                map.put(s1.charAt(i), s2.charAt(i));
+                alreadymapped.add(s2.charAt(i));
+              }
+              else return false;
+          }
+          else{
+              if(map.get(s1.charAt(i))!=s2.charAt(i)) return false;
+          }
+      }
+      return true;
+    }
+}
+
+/*
+LOGIC---
+We want a character to map to another character.
+And there can be only one unique character mapping.
+For the first occurence store in map.
+In the second occurnece you don't get the same mapping return false.
+
+Think of it like a one way isomorphism. p maps to t, t doesn't have to map to p. Sounds confusing, but it's because:
+
+Let letter "x" be any letter in string s.
+Let letter "y" be any letter in string t.
+And the question states each x can only map to a single y.
+Then we have P -> T, A -> I, P -> T, E -> L, R -> E, in which each input (x) equals one unique output (y).
+Therefore paper -> title is an isomorphism.
+
+s ="badc" & t ="baba" => need to be extra careful for cases like this and also use a hashset to make sure  character does not get used twice
+*/
+
+
+/* USING TWO HASHING ARRAY FOR ONE-ON-ONE MAPPING */
+class Solution {
+    public boolean isIsomorphic(String s1, String s2) {
+    if(s1.length()!=s2.length()) return false;
+      int map1[]=new int[200]; //map-from index mapping table
+      int map2[]=new int[200]; //map-to  frequency index mapping table
+      
+      for(int i=0;i<s1.length();i++){
+          if(map1[s1.charAt(i)] != map2[s2.charAt(i)]) return false;
+          map1[s1.charAt(i)]=i+1;
+          map2[s2.charAt(i)]=i+1;
+      }
+      return true;
+    }
+}
+
+/*
+LOGIC---
+It's easy to explain using an example. Imagine you have "foo" and "bar", they use two arrays, where the indexes represent ASCII codes of a single character, hence the length of 200. When they check the decimal representations of a char, number (for example the first 'o' from "foo") which would be 102th place in map1 array, will put 2 in there, since 'o' was on the 2nd position of the first string, whereas 'a' from "bar" would put 2 in 97th index of map2.
+
+So at this point you have
+map1[102] == 2 which means 102nd ascii character was already at 2nd pos of s string
+and
+map2[97] == 2 which means 97th ascii character was already at 2nd pos of t string
+
+But when you come to a 3rd pos in string, you have to compare 'o' with 'r', but 'o' is already mapped to the 'a' from 2nd string. That is where the comparison works.
+
+map1[102] == 2
+is compared to
+map2[114] == 0
+
+Where 114 is an ascii code for 'r' and 0 is assigned to this index by default when we create the array, so one of the chars is already mapped to a different char and we cannot remap them, therefore the strings aren't isomorphic.
+
+The i+1 thingy is there so that we don't compare chars that are at 0's positions in strings with 0's in int[] arrays.
+*/
