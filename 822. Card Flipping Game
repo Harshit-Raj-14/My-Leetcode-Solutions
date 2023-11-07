@@ -1,0 +1,37 @@
+class Solution {
+    public int flipgame(int[] f, int[] b) {
+        HashSet<Integer> same = new HashSet<>();
+        for (int i=0; i<f.length; i++){
+            if (f[i] == b[i]) same.add(f[i]);
+        }
+        int mingood=Integer.MAX_VALUE;  //the minimum good value we can have
+        for(int i=0;i<f.length;i++){
+            if(!same.contains(f[i])) mingood=Math.min(mingood, f[i]);
+        }
+        for(int i=0;i<b.length;i++){
+            if(!same.contains(b[i])) mingood=Math.min(mingood, b[i]);
+        }
+        if(mingood==Integer.MAX_VALUE )return 0;    //there was no good integer
+        else return mingood;
+    }
+}
+
+/*
+LOGIC---
+There are N numbers in fronts, N numbers in backs.
+So, an integer value on either side of a card is considered good 
+=>if it is facing down on one or more cards 
+=>and not facing up on any card.
+
+Objective => Can you find a minimum number in int Array Backs[] which can not be appered in the int Array Fronts[] ? If so, return this minium number. Other wise return 0.
+
+CASES:
+If fronts[i] == backs[i], it means that fronts[i] have to appear on the table, no matter how we flap this card. => Hence this kind of number can never be a good number from here.
+Store this kind of number in hashset same.
+
+If fronts[i] != backs[i] => then we can take either of these numbers by flipping it back and the lower number can be our good number.
+
+Hence make a hashset of same which will include number which cannot ever be good number becuase  they are on either side.
+
+Now from upper and lower we can check which can be our minimum value
+*/
