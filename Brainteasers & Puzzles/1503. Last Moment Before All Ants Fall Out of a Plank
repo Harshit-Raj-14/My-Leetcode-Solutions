@@ -1,0 +1,28 @@
+class Solution {
+    public int getLastMoment(int n, int[] left, int[] right){
+        int leftmax=Integer.MIN_VALUE;
+        int rightmin = Integer.MAX_VALUE;
+        for(int i=0;i<left.length;i++) leftmax = Math.max(leftmax, left[i]);
+        for(int i=0;i<right.length;i++) rightmin = Math.min(rightmin, right[i]);
+        int farthestfromleft=leftmax-0;
+        int farthestfromright=n-rightmin;
+        return Math.max(farthestfromleft, farthestfromright);
+    }
+}
+
+/*
+LOGIC---
+Plank length=n
+
+Observation : The ants change their way when they meet is equivalent to continue moving without changing their direction.
+Hence, answer is the max distance for one ant to reach the end of the plank in the facing direction.
+
+The collision rule doesn't matter at all, the effect is the same as if the ants just phased through each other.
+
+Since the ants will just pass through effect becuase collisona nd turn are immediate.
+
+The real solution lies in the fact, that which ant is the farthest distance from the edge.
+
+Farthes from left moving ants = (maximum of array left) - 0
+Farthest from right moving ants = n - (minimum of array right)
+*/
