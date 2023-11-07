@@ -1,0 +1,43 @@
+class Solution {
+    public String breakPalindrome(String palindrome) {
+        int n=palindrome.length();
+        if (palindrome.length()==1) return "";  //case I : singular length
+
+        StringBuilder sb = new StringBuilder(palindrome);
+        if(palindrome.length()%2==0){   //case II: even length
+            int tochangeindex=-1;
+            for(int i=0;i<palindrome.length();i++){
+                if(palindrome.charAt(i)!='a'){tochangeindex=i; break;}
+            }
+            if(tochangeindex==-1) sb.setCharAt(n-1,'b');
+            else sb.setCharAt(tochangeindex, 'a');
+        }
+
+        else{   //case III: odd length
+            int tochangeindex=-1;
+            for(int i=0;i<palindrome.length();i++){
+                if(palindrome.charAt(i)!='a' && i!=palindrome.length()/2){tochangeindex=i; break;}
+            }
+            if(tochangeindex==-1) sb.setCharAt(n-1,'b');
+            else sb.setCharAt(tochangeindex, 'a');
+        }
+        return sb.toString();
+    }
+}
+
+/*
+LOGIC---
+Operation : Change any one letter and break the palindorme and also make sure it is the lexicographically smallest.
+
+CASES:
+
+CASE I: palindrome length is one => we cannot break palindrome itself. Not posisble
+
+Case II: Even length palindrome : Just change any character and it will work
+To make sure you find the lexicographically smallest you travel form start and turn the first character which is not 'a' to 'a'.
+In case you reached the array and all were 'a' then make the last character 'b'.
+
+Case III: Odd length palindrome
+Works the same way as even number. but with one catch, you cannot break the palindrome if you tried to change the middle character. So, make sure you try with others and don't touch the middle element.
+
+*/
