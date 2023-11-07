@@ -25,4 +25,12 @@ The real solution lies in the fact, that which ant is the farthest distance from
 
 Farthes from left moving ants = (maximum of array left) - 0
 Farthest from right moving ants = n - (minimum of array right)
+
+
+
+How, to realise this?
+Consider you have only one ant on left and one ant on right.
+he time taken will be max length from each and their max will be final answer.
+Since, there collision would interchang etheir position in a way. The max distance still remains same and they keep moving forward like they passed over each other.
+
 */
