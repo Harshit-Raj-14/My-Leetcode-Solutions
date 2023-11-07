@@ -1,0 +1,34 @@
+class Solution{
+    public long minimumBuckets(int N, int arr[]){
+        if(arr.length==1) return 1;
+        int fullgcd = gcd(arr[0], arr[1]);    //this will be the minimum size of bucket needed
+        for(int i=2;i<arr.length;i++){
+            fullgcd= gcd(fullgcd, arr[i]);
+        }
+        long ans=0;
+        for(int i=0;i<arr.length;i++){
+            ans+=arr[i]/fullgcd;
+        }
+        return ans;
+    }
+    
+    public static int gcd(int a, int b){
+        if(b==0) return a;
+        else return gcd(b, a%b);
+    }
+}
+
+/*
+LOGIC---
+It is important to udnerstand that one bucket you can only use one time.
+Next we do not waste water so we want to fully utilise a bucket capacity.
+From testcase you visualise that the bucket size should actually be a multiple of all array elements.
+Plant requirements can be even, odd numbers or prime numbers.
+Instead of thinking in cases....
+
+Best is to find gcd of the entire array.
+
+This will give us the smallest bucket size needed 
+
+And then figure out the total number of buckets needed.
+*/
