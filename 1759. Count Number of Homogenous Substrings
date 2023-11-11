@@ -1,0 +1,74 @@
+class Solution {
+    public int countHomogenous(String s){
+        int m=(int)1e9+7;
+        int i=0;
+        long ans=0;
+        while(i<s.length()){
+            long count=1;
+            while(i+1<s.length() && s.charAt(i)==s.charAt(i+1)){
+                count++;
+                i++;
+            }
+            ans+=((count%m)*(count+1)/2)%m;
+            //System.out.print(count+" ");
+            i++;
+        }
+        return (int)(ans%m);
+    }
+}
+
+/*
+LOGIC---
+See testcase 3:
+zzzzz -> 15 homogeneous substring
+z->5
+zz->4
+zzz->3
+zzzz->2
+zzzzz->1
+
+5+4+3+2+1 = 15
+
+Notice that its a decreasing AP
+
+So, for a homogeneous substring of length k -> a total of k homogeneous substrigns are actually inside there.
+
+Hence, homogenous string "aaaaaaa" of length N contains N*(N+1)/2 homogenous substrings (sum of the AP).
+*/
+
+
+/* ELEGANT SOLUTION */
+class Solution {
+    public int countHomogenous(String s) {
+        int ans = 0;
+        int currStreak = 0;
+        int MOD = (int) 1e9 + 7;   
+        for (int i = 0; i < s.length(); i++) {
+            if (i == 0 || s.charAt(i) == s.charAt(i - 1)) {
+                currStreak++;
+            } else {
+                currStreak = 1;
+            }       
+            ans = (ans + currStreak) % MOD;
+        }        
+        return ans;
+    }
+}
+
+
+/* TWO POINTER APPROACH */
+class Solution {
+    public int countHomogenous(String s) {
+        int left = 0;
+        long res = 0;
+        for (int right = 0; right < s.length(); right++) {
+            if (s.charAt(left) == s.charAt(right)) {
+                res += right - left + 1;
+            } else {
+                res += 1;
+                left = right;
+            }
+        }
+        return (int) (res % (1000000007));       
+    }
+}
