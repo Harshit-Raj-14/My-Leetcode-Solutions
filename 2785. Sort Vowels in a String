@@ -1,0 +1,54 @@
+/* O(n) COUNTING SORT */
+class Solution {
+    public String sortVowels(String s){
+        int count[] = new int[1000];
+        for(int i=0;i<s.length();i++){
+            if(isVowel(s.charAt(i))) count[s.charAt(i)-'A']++;    //ASCII -> 'A'=65, 'a'=97
+        }
+        int index=0;    //for count
+        StringBuilder ans = new StringBuilder("");
+        for(int i=0;i<s.length();i++){
+            if(isVowel(s.charAt(i))){
+                while(index<count.length && count[index]==0) index++;
+                ans.append((char)(index+'A'));
+                count[index]--;
+            }
+            else ans.append(s.charAt(i));
+        }
+        return ans.toString();
+    }
+
+    public static boolean isVowel(char c){
+        if(c=='a' || c=='e' || c=='i' || c=='o' || c=='u') return true;
+        else if(c=='A' || c=='E' || c=='I' || c=='O' || c=='U') return true;
+        else return false;
+    }
+}
+
+
+/* O(nlogn) SORTING */
+class Solution {
+    public String sortVowels(String s) {
+        ArrayList<Character> vowels = new ArrayList<>();
+        for(int i=0;i<s.length();i++){
+            if(isVowel(s.charAt(i))) vowels.add(s.charAt(i));
+        }
+        Collections.sort(vowels);
+        int index=0;    //for vowel list
+        StringBuilder ans = new StringBuilder("");
+        for(int i=0;i<s.length();i++){
+            if(isVowel(s.charAt(i))){
+                ans.append(vowels.get(index));
+                index++;
+            }
+            else ans.append(s.charAt(i));
+        }
+        return ans.toString();
+    }
+
+    public static boolean isVowel(char c){
+        if(c=='a' || c=='e' || c=='i' || c=='o' || c=='u') return true;
+        else if(c=='A' || c=='E' || c=='I' || c=='O' || c=='U') return true;
+        else return false;
+    }
+}
