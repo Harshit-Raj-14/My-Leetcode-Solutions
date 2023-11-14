@@ -1,0 +1,130 @@
+/*ACCEPTED SOLUTION */
+class Solution {
+    public int countPalindromicSubsequence(String s){
+        HashSet<String> set = new HashSet<>();
+        HashMap<Character, Integer> map = new HashMap<>();  //store last occurence in map
+        for(int i=0;i<s.length();i++){
+            map.put(s.charAt(i), i);
+        }
+        int isVisited[] = new int[26];  //check for which character I have consdiered first na dlast occurnece character
+        for(int i=0;i<s.length();i++){
+            if(isVisited[s.charAt(i)-'a']==0){  //to avoid recounting extra occurences of first
+                char first=s.charAt(i);  //first occurence
+                isVisited[s.charAt(i)-'a']=1;
+                if(map.get(first)-i>=2){    //to get length atleast 3
+                    for(int j=i+1;j<map.get(first);j++){
+                        String temp=s.charAt(i)+""+s.charAt(j)+""+s.charAt(map.get(first));
+                        set.add(temp);
+                    }
+                }
+            }
+        }
+        return set.size();
+    }
+}
+
+/*
+LOGIC---
+A 3 size palindrome is of two types:
+TYPE I: 111, 000 => all three digits same
+TYPE II: 101, 010 => the side one's same and the middle can be different
+
+Conclusion:
+Any 3 letter word is a palindrome if 1st and 3rd character are same.
+
+Hence, since the palindrom only has the length of 3, we know that the 0th and 2nd character must be same. And the middle character is independent. 
+So for each character in the string s we can check if any of the lowercase letter is present inside the left and right portion of the string s.
+
+ALGORITHM---
+So, first find the first occurence of a letter and its last occurence.
+Then all the characters between it can be once taken to be a part of palindrome consisting of the fornt and back equal character.  eg: 1X1, where x can be anything.
+
+find first and last occurence of all the characters then simply for each character iterate between them, store all the chars in hash set, and count them and add those to the answer.
+
+OPTIMISATION TO AVOID TLE---
+When you are surfing between first occurnece and last occurence.
+eg:baaabaaaab
+For first occurnece of b at 0.
+You all find palindromic stirng between the first and last occurnece.
+But here you are in the code again trying to find palindromic substring between the middle b and last b.
+But you have already calculated the palindromic substrings that would occur fo the middle b in the first scenario itself.
+Hence just make sure you do not vist a character once you have already calclulated for it.
+
+Refer the example explained below in the TLE solution.
+*/
+
+
+
+/* TLE SOLUTION */
+class Solution {
+    public int countPalindromicSubsequence(String s){
+        HashSet<String> set = new HashSet<>();
+        HashMap<Character, Integer> map = new HashMap<>();  //store last occurence in map
+        for(int i=0;i<s.length();i++){
+            map.put(s.charAt(i), i);
+        }
+        for(int i=0;i<s.length();i++){
+            char first=s.charAt(i);  //first occurence
+            if(map.get(first)-i>=2){    //to get length atleast 3
+                for(int j=i+1;j<map.get(first);j++){
+                    String temp=s.charAt(i)+""+s.charAt(j)+""+s.charAt(map.get(first));
+                    set.add(temp);
+                }
+            }
+        }
+        return set.size();
+    }
+}
+
+LOGIC---
+When you are surfing between first occurnece and last occurence.
+eg:baaabaaaab
+For first occurnece of b at 0.
+You all find palindromic stirng between the first an dlast occurnece.
+But here you ar ein the code again trying to find palindromic substring between the middle b and last b.
+But you have already calculated the palindromic substrings that would occur in the first scenario itself.
+Hence just make sure you do not vist a character once you have already calclulated for it.
+
+EXAMPLE---
+suppose we have "bbcbaba" ,in here suppose we are finding unique combination for "bxb:.
+    So consider first b(idx:0) and last b(idx:5), from 0 to 5 running we get these possibilities : bbb,bcb,bbb,bab => unique are bbb,bcb,bab .
+        Now lets take like this first b(idx:0) and last b(idx:1)
+        no 3length strings possible
+        first b(idx:1) and last b(idx:3), from 1 to 3 ,
+        possibilities : bcb( unique )
+        Now,first b(idx:3) and last b(idx:5), from 3 to 5 ,
+        possibilities :bab ( unique )
+        now first b(idx:0) and last b(idx:3), from 0 to 3,
+        possibilities : bbb,bcb ( unique )
+        if any other different idx combinations will give reductant possibilities of bxb
+So doing from start to last index of a specific char, we always cover everything in between them,we can sure they are unique(middle elements) to minimise complexity
+
+
+
+
+/* O(n^3) BRUTE FORCE */
+class Solution {
+    public int countPalindromicSubsequence(String s){
+        HashSet<String> set = new HashSet<>();
+        for(int i=0;i<s.length();i++){
+            for(int j=i+1;j<s.length();j++){
+                for(int k=j+1;k<s.length();k++){
+                    String p = s.charAt(i)+""+s.charAt(j)+""+s.charAt(k);
+                    if(isPalindrome3(p)) set.add(p);
+                }
+            }
+        }
+        return set.size();
+    }
+
+    public static boolean isPalindrome3(String s){
+        if(s.charAt(0)==s.charAt(1) && s.charAt(1)==s.charAt(2)) return true;   //eg: 111,000
+        else if(s.charAt(0)==s.charAt(2)) return true;  //eg: 101, 010
+        else return false;
+    }
+}
+
+/*
+LOGIC---
+find all three length subsequence of string and check if they are palindrome or not
+*/
