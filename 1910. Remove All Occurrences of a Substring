@@ -1,0 +1,80 @@
+class Solution {
+    public String removeOccurrences(String s, String part){
+        StringBuilder sb = new StringBuilder(s);
+        while(sb.indexOf(part)!=-1){
+            int occurenceindex = sb.indexOf(part);
+            sb.delete(occurenceindex, occurenceindex+part.length());
+        }
+    return sb.toString();
+    }
+}
+
+
+LOGIC---
+We are required to remove the first occurence of string part from s.
+And we will continue this until we are sure part is not in s.
+
+We are aware of the nibuilt function :-
+indexOf whic will help us ascertain the occurence part and remove it every tiem until we are sure it no longer exist in s.
+
+
+TIME COMPLEXITY ANALYSIS---
+The while loop continues until there are no more occurrences of the part string in the sb (StringBuilder).
+Inside the loop, there are two operations: indexOf and delete.
+The indexOf method has a time complexity of O(n), where n is the length of the string.
+The delete method has a time complexity of O(n), where n is the number of characters to be deleted.
+In the worst case, the indexOf method will be called for every character in the sb (StringBuilder) because it's called within the loop condition, 
+and the delete method will be called for each occurrence of the part string.
+Let's denote:
+    m as the length of the original string s.
+    k as the length of the part string.
+
+In the worst case, the loop runs O(m) times, and for each iteration, both indexOf and delete operations are O(m) or O(k) (whichever is larger).
+Therefore, the overall time complexity of the removeOccurrences method is O(m^2) or O(mk) in the worst case. 
+This is because for each iteration of the loop, you may need to scan the entire string (O(m)) to find the occurrence of the part string. 
+The delete operation itself is also O(m) or O(k), but it happens within the loop, so the overall complexity is affected by the indexOf operation.
+
+
+
+/* USING STACK */
+class Solution {
+    public String removeOccurrences(String s, String part) {
+        Stack<Character> stack = new Stack<>();
+        for(char c : s.toCharArray()) {
+            stack.push(c);
+            if(stack.size()>=part.length() && stack.peek()==part.charAt(part.length()-1)) {
+                StringBuilder temp = new StringBuilder();
+                for(int i = 0; i < part.length(); i++) {
+                    temp.append(stack.pop());
+                }
+                temp.reverse();
+                if(!temp.toString().equals(part)) {
+                    for(char ch : temp.toString().toCharArray()) {
+                        stack.push(ch);
+                    }
+                }
+            }
+        }
+        StringBuilder ans = new StringBuilder();
+        while(!stack.isEmpty()) {
+            ans.append(stack.pop());
+        }
+        return ans.reverse().toString();
+    }
+}
+
+LOGIC---
+You can maintain a stack of characters and if the last character of the pattern size in the stack match the pattern remove them.
+Note that a new occurrence of pattern can appear if you remove an old one, For example, s = "ababcc" and pattern = "abc".
+he time complexity of this approach is O(n*m), where n is the length of string s and m is the length of substring part.
+
+
+/* OTHER SOLUTIONS */
+class Solution {
+    public String removeOccurrences(String s, String part) {
+        while(s.contains(part)){
+            s=s.replaceFirst(part,"");
+        }
+        return s;
+    }
+}
