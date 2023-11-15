@@ -1,0 +1,28 @@
+/* TWO POINTERS */
+class Solution {
+    public int compress(char[] chars){
+        int i=0;
+        int j=1;
+        if(chars.length<2) return chars.length;
+        StringBuilder sb = new StringBuilder("");
+        while(i<chars.length){
+            char currChar=chars[i];
+            int count=1;
+            while(j<chars.length && chars[i]==chars[j]){
+                count++;
+                j++;
+            }
+            if(count==1) sb.append(currChar);   //group length 1
+            else{   //group length more than 1
+                sb.append(currChar);
+                sb.append(Integer.toString(count)); //group length if more thna 1 digit convert to string
+            }
+            i=j;
+            j++;
+        }
+        for(int x=0;x<sb.length();x++){
+            chars[x]=sb.charAt(x);
+        }
+        return sb.length();
+    }
+}
