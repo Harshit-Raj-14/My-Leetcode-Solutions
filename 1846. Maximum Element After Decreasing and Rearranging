@@ -1,0 +1,24 @@
+/* USING SORTING O(nlogn) */
+class Solution {
+    public int maximumElementAfterDecrementingAndRearranging(int[] nums) {
+        Arrays.sort(nums);
+        if(nums[0]!=1) nums[0]=1; //making first elemnt 1
+        for(int i=1;i<nums.length;i++){
+            if(Math.abs(nums[i]-nums[i-1])>1){
+                nums[i]=nums[i-1]+1;    //we are taking +1 to bring maximum elemnt in existence
+            }
+        }
+        int max=0;
+        for(int i=0;i<nums.length;i++){
+            max = Math.max(max, nums[i]);
+        }
+        return max;
+    }
+}
+
+LOGIC---
+First of all it doens't matter how many operations you appky. You are free. You just need to find the larget element.
+Just need to fulfill condition. Making first element 1 and having adjacent elemnts with an absolute differnece of atmost 1.
+
+So, let's sort array first to bring 1 in front.
+This way we can have all the smallest elemtn sin front which could be modified if we wanted 1 and to calculate absolute differences properly.
