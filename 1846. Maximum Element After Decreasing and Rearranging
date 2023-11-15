@@ -22,3 +22,35 @@ Just need to fulfill condition. Making first element 1 and having adjacent elemn
 
 So, let's sort array first to bring 1 in front.
 This way we can have all the smallest elemtn sin front which could be modified if we wanted 1 and to calculate absolute differences properly.
+
+
+
+/* WITHOUT SORTING O(n) 8/
+class Solution {
+    public int maximumElementAfterDecrementingAndRearranging(int[] nums) {
+        int n=nums.length;
+        int count[] = new int[n+1]; //the max element can be n
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]>=n) count[n]++;
+            else count[nums[i]]++;
+        }
+        int ans=1;  //first element will be one, and the smallest max we can have is 1 in worst case of 1 elem
+        for(int i=2;i<=n;i++){
+            ans=Math.min(ans+count[i], i);
+        }
+        return ans;
+    }
+}
+
+
+/*
+LOGIC---
+READ LEETCODE EDITORIAL FOR BETTER EXPLANATION 
+
+THE BEST CASE SCENARIO---
+In the best-case scenario of an array of length n, our answer will be n. This is because the first element must be 1, and we can only increment by 1 for each additional element. Thus, we will never have any elements greater than n in our final array.
+
+Thus, we will never have any elements greater than n in our final array. Since our range of values is bounded by [1, n], we don't actually need to sort the array. Instead, we will iterate over its bounded values in a more efficient way.
+
+We will initialize an array counts as a counter, where counts[x] is equal to the frequency of x in arr. Because we don't care about values greater than n, if there are any numbers in arr that are greater than n, we will simply treat them as n. For example, if we had arr = [1, 100, 100, 100], then we would have counts[4] = 3. Here, we have n = 4, so we treat each of the 100 as 4, and thus the count of 4 is 3.
+*/
