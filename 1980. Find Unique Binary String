@@ -28,6 +28,19 @@ class Solution {
     }
 }
 
+/*
+LOGIC---
+For a binary string of length n:
+There are 2x2x2x...n times = 2^n possibilities
+Hence the number of strings of length n tha tmight not appear in array nums of length n = 2^n - n
+For n ==> not mentioned string
+1 ==> 2^1 - 1 = 1
+2 ==> 2^2 - 2 = 2
+3 ==> 2^3 - 3 = 5
+Now see the constraints : 1<=n<=16 ====> so small
+Generate all posisble permutation sof binary string using backtracking and check wich are not in nums
+*/
+
 
 /* O(n) Cantor's SOLUTION */
 class Solution {
@@ -56,19 +69,6 @@ Hence in simplification we are trying to deviate from each string at one step at
 TC - O(n)
 SC - O(1)
 */
-
-
-
-LOGIC---
-For a binary string of length n:
-There are 2x2x2x...n times = 2^n possibilities
-Hence the number of strings of length n tha tmight not appear in array nums of length n = 2^n - n
-For n ==> not mentioned string
-1 ==> 2^1 - 1 = 1
-2 ==> 2^2 - 2 = 2
-3 ==> 2^3 - 3 = 5
-Now see the constraints : 1<=n<=16 ====> so small
-Generate all posisble permutation sof binary string using backtracking and check wich are not in nums
 
 
 /* CONVERT TO BASE-10 INTEGER */
