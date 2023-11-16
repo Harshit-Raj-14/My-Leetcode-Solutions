@@ -1,0 +1,107 @@
+/* BACKTRACKING O(2^n) */
+class Solution {
+    public String findDifferentBinaryString(String[] nums) {
+        ArrayList<String> list = new ArrayList<>();     //store all binary strings of length n
+        int n = nums.length;    //length of binary string
+        StringBuilder sb = new StringBuilder("");
+        generateAllBinaryStrings(n, list, sb, 0);
+        //Now check which all are there in nums and remove them from list
+        for(int i=0;i<nums.length;i++){
+            if(list.contains(nums[i])) list.remove(nums[i]);
+        }
+        return list.get(0); //the first memerb of lsit not in nums
+    }
+
+    public static void generateAllBinaryStrings(int n, List<String> list, StringBuilder sb, int i){
+        if (i == n){
+            list.add(sb.toString());
+            return;
+        }
+        // First assign "0" at ith position and try for all other permutations for remaining positions
+        sb.append('0');
+        generateAllBinaryStrings(n, list, sb , i + 1);
+        sb.setLength(sb.length() - 1); // Undo the append operation
+        // And then assign "1" at ith position and try for all other permutations for remaining positions
+        sb.append('1');
+        generateAllBinaryStrings(n, list, sb, i + 1);
+        sb.setLength(sb.length() - 1); // Undo the append operation
+    }
+}
+
+
+/* O(n) Cantor's SOLUTION */
+class Solution {
+    public String findDifferentBinaryString(String[] nums) {
+        StringBuilder sb = new StringBuilder("");
+        int j=0;    //iterate over position of string
+        for(int i=0;i<nums.length;i++){
+            if(nums[i].charAt(j)=='0') sb.append('1');
+            else sb.append('0');
+            j++;
+        }
+        return sb.toString();
+    }
+}
+
+/*
+Cantor's Diagonal Argument
+We know that two strings are different, as long as they differ by at least one character. We can intentionally construct our ans based on this fact.
+
+For each index i, we will check the ithi^{th}ith character of the ithi^{th}ith string in ans. That is, we check curr = nums[i][i]. We then assign ans[i] to the opposite of curr. That is, if curr = "0", we assign ans[i] = "1". If curr = "1", we assign ans[i] = "0".
+
+What is the point of this strategy? 
+ans will differ from every string in at least one position.
+
+Hence in simplification we are trying to deviate from each string at one step at a time. Ultimately giving us a new string.
+TC - O(n)
+SC - O(1)
+*/
+
+
+
+LOGIC---
+For a binary string of length n:
+There are 2x2x2x...n times = 2^n possibilities
+Hence the number of strings of length n tha tmight not appear in array nums of length n = 2^n - n
+For n ==> not mentioned string
+1 ==> 2^1 - 1 = 1
+2 ==> 2^2 - 2 = 2
+3 ==> 2^3 - 3 = 5
+Now see the constraints : 1<=n<=16 ====> so small
+Generate all posisble permutation sof binary string using backtracking and check wich are not in nums
+
+
+/* CONVERT TO BASE-10 INTEGER */
+class Solution {
+    public String findDifferentBinaryString(String[] nums) {
+        HashSet<Integer> set = new HashSet();   //store all integer valeus of nums binary string
+        for(int i=0;i<nums.length;i++){
+            set.add(Integer.parseInt(nums[i], 2));   //convert all binary string to their respective integer
+        }
+        int n = nums.length;
+        for(int i=0;i<=n ;i++){
+            if(!set.contains(i)){
+                String ans = Integer.toBinaryString(i);
+                while (ans.length() < n) {  //adding extra 0's in front if length is less than n
+                    ans = "0" + ans;
+                }
+                return ans;
+            }
+        }
+        return "";
+    }
+}
+
+/*
+LOGIC---
+Convert binary string to base 10-integers.
+Since nums will have n binary strings.
+If we calcluate n+1 binary strings we will sure to find one that will not exist in nums.
+So, store integer values in set.
+n-> nums.length
+Now loop from 0 to n => n+1 values
+And check which of them is not in set.
+Note that in some cases, if a valid answer, when converted to a binary string, has a length shorter than n, we need to add "0"s to the beginning to make its length equal to n.
+TC - O(n^2)
+SC - O(n)
+*/
