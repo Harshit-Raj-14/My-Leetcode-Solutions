@@ -1,0 +1,29 @@
+class Solution {
+    public int minimumOperations(int[] nums){
+        HashSet<Integer> set = new HashSet<>();
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]!=0) set.add(nums[i]);
+        }
+        return set.size();
+    }
+}
+
+/*
+LOGIC---
+Everytime we are to choose smallest positive elemtn and subtract it from every positive element till array becoems zero.
+
+When you simulate, you realise that no matter what you do you that for every new kind of element you have to apply an operation.
+
+Elements with the same value will always take the same number of operations to become 0. Contrarily, elements with different values will always take a different number of operations to become 0.
+
+eg: you have elemnts 1 2 3 4 5
+First you subtract 1 from all elements.
+new array = [0 1 2 3 4]
+Then you subtract again 1 from all elements
+You, get it subtracting the minimum from unique elemtns would cause each uniuqe elemnts decreased to zero with one step increments.
+
+Hence no minimum operations required = no. of unique elements = size of a set of arrays
+
+Edge case : Mind that 0 itself should not be counted as a unqiue elemnts as they will no be part of operation.
+So an array having only zeroes will have 0 operations required.
+*/
