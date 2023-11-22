@@ -1,0 +1,43 @@
+/* O(n) SOLUTION BEATS 100% */
+class Solution {
+    public int countSegments(String s){
+        int count=0;
+        int i=0;
+        while(i<s.length()){
+            int isFoundWord=0;
+            while(i<s.length() && s.charAt(i)==' ') i++;
+            while(i<s.length() && s.charAt(i)!=' '){
+                i++;
+                isFoundWord=1;
+            }
+            if(isFoundWord==1) count++;
+        }
+        return count;
+    }
+}
+
+
+
+
+/* OTHER SOLUTIONS */
+
+/* USING INBUILT SPLIT */
+class Solution {
+    public int countSegments(String s) {
+        String trimmed = s.trim();  //trim the leading and backward spaces
+        if (trimmed.equals("")) return 0;  //already became empty becuase only had empty space
+        return trimmed.split("\\s+").length;  //put strings in a list seperated by spaces
+    }
+}
+
+
+
+/* REGEX SOLUTION */
+class Solution {
+    public int countSegments(String s) {
+        s = s.trim();
+        if(s.length() == 0) return 0;
+        String[] t = s.split("[ ]+");
+        return t.length;
+    }
+}
