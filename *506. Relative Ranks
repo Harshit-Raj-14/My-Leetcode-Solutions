@@ -1,0 +1,21 @@
+class Solution {
+    public String[] findRelativeRanks(int[] score) {
+        ArrayList<Integer> list = new ArrayList<>();
+        for(int i=0;i<score.length;i++){
+            list.add(score[i]);
+        }
+        Collections.sort(list);
+        Collections.reverse(list);
+        String ans[] = new String[score.length];
+        int index=0;
+        for(int i=0;i<score.length;i++){
+            int pos= list.indexOf(score[i]);
+            if(pos==0) ans[index]="Gold Medal"; 
+            else if(pos==1) ans[index]="Silver Medal"; 
+            else if(pos==2) ans[index]="Bronze Medal"; 
+            else ans[index]=Integer.toString(pos+1);
+            index++;
+        }
+        return ans;
+    }
+}
