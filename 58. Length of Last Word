@@ -1,0 +1,39 @@
+/* UNIQUE SOLUTION ITERATE FROM BACK BEATS 100% */
+class Solution {
+    public int lengthOfLastWord(String s) {
+        int i=s.length()-1;
+        int lastwordlength=0;
+        while(i>=0){
+            while(i>=0 && s.charAt(i)==' ') i--;
+            while(i>=0 && s.charAt(i)!=' '){
+                lastwordlength++;
+                i--;
+            }
+            return lastwordlength;
+        }
+        return -1;
+    }
+}
+
+LOGIC---
+iterate through the string in reverse and look for the first non-space character that is preceded by a space character. This will help in identify the beginning of the last word.
+
+
+
+/* ITERATING FROM FRONT BEATS-8% */
+class Solution {
+    public int lengthOfLastWord(String s) {
+        s=s.trim();
+        int i=0;
+        while(i<s.length()){
+            StringBuilder sb = new StringBuilder("");
+            while(i<s.length() && s.charAt(i)==' ') i++;
+            while(i<s.length() && s.charAt(i)!=' '){
+                sb.append(s.charAt(i));
+                i++;
+            }
+            if(i==s.length()) return sb.toString().length();
+        }
+        return -1;
+    }
+}
