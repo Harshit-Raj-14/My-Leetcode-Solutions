@@ -1,0 +1,63 @@
+/* TC-O(n*n!) SC-O(n) BACKTRACKING */
+class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> ans = new ArrayList<>();
+        Backtrack(ans, new ArrayList<>(), nums);
+        return ans;
+    }
+
+    public static void Backtrack(List<List<Integer>> ans, List<Integer> currlist, int nums[]){
+        if(currlist.size()==nums.length) ans.add(new ArrayList<>(currlist));
+        else{
+            for(int i=0;i<nums.length;i++){
+                if(currlist.contains(nums[i])) continue;
+                currlist.add(nums[i]);
+                Backtrack(ans, currlist, nums);
+                currlist.remove(currlist.size()-1);  //backtracking step
+            }
+        }
+    }
+}
+
+/* LOGIC---
+WHY?
+list.add(new ArrayList<>(tempList));
+why is it necessary to create a new ArrayList? Why can't you just do => list.add(currList)
+REASON : If you directly add tempList, Java will add a reference to the empty list declared in fucntion itself, which will get meddled with as the recursion goes on, hurting what was originally put in 'list'. Hence it makes a copy of tempList to preserve its state.
+
+Someone put it well about java's method of passing - "Imagine a balloon. Calling a fn is like tying a second string to the balloon and handing that second line to the fn."
+Also, because list will save templist pointer last address and last address is null .so the output is all null.it is necessary to create a new ArrayList to save templist each time.
+
+TC-> O(n!) for backtracking recursion * O(n) becuase of rmeove functiona t end which is heavy you can optimise here
+SC -> O(N) using list you cna optimise this as well
+
+
+
+/* TC-O(n!) SC-O(n) BACKTRACKING */
+class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> ans = new ArrayList<>();
+        Backtrack(ans, 0, nums);
+        return ans;
+    }
+
+    public static void Backtrack(List<List<Integer>> ans, int index, int nums[]){
+        if(index==nums.length){
+            ArrayList<Integer> currlist = new ArrayList<>();
+            for(int i=0;i<nums.length;i++) currlist.add(nums[i]);
+            ans.add(currlist);
+            return;
+        }
+        for(int i=index;i<nums.length;i++){
+            int temp=nums[i];
+            nums[i]=nums[index];
+            nums[index]=temp;
+
+            Backtrack(ans, index+1, nums);
+
+            temp=nums[i];
+            nums[i]=nums[index];
+            nums[index]=temp;
+        }
+    }
+}
