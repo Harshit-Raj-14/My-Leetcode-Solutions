@@ -1,0 +1,16 @@
+import java.util.*;
+class Codechef{
+	public static void main (String[] args){
+		Scanner sc = new Scanner(System.in);
+        int t=sc.nextInt();
+        while(t-->0){
+            int n=sc.nextInt();
+            int r=sc.nextInt();
+            int nr=2*n-r;
+            if(r==0) System.out.println(0);
+            else if(nr==0) System.out.println(r);
+            else if(nr>=r) System.out.println(0);
+            else System.out.println((r-nr));
+        }
+	}
+}
