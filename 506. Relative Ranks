@@ -1,3 +1,4 @@
+/* O(nlogn) USING SORTING */
 class Solution {
     public String[] findRelativeRanks(int[] score) {
         ArrayList<Integer> list = new ArrayList<>();
