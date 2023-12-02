@@ -1,0 +1,62 @@
+/* USING HASHING */
+class Solution {
+    public int countCharacters(String[] words, String s){
+        int count[] = new int[26];
+        for(int i=0;i<s.length();i++){
+            count[s.charAt(i) - 'a']++;
+        }
+        int ans=0;
+        for(int i=0;i<words.length;i++){
+            int freq[] = new int[26];
+            for(int j=0;j<words[i].length();j++){
+                freq[words[i].charAt(j) - 'a']++;
+            }
+            int possible=1;
+            for(int k=0;k<count.length;k++){
+                if(freq[k]>count[k]) possible=0;
+            }
+            if(possible==1) ans+=words[i].length();
+        }
+        return ans;
+    }
+}
+
+
+/* USING INDEXOF */
+class Solution {
+    public int countCharacters(String[] words, String s){
+        int count[] = new int[26];
+        for(int i=0;i<s.length();i++){
+            count[s.charAt(i) - 'a']++;
+        }
+        int ans=0;
+        for(int i=0;i<words.length;i++){
+            int freq[] = new int[26];
+            for(int j=0;j<words[i].length();j++){
+                freq[words[i].charAt(j) - 'a']++;
+            }
+            int possible=1;
+            for(int k=0;k<count.length;k++){
+                if(freq[k]>count[k]) possible=0;
+            }
+            if(possible==1) ans+=words[i].length();
+        }
+        return ans;
+    }
+}class Solution {
+    public int countCharacters(String[] words, String s) {
+        int count = 0;
+        for (int i = 0; i < words.length; i++) {
+            StringBuilder sb = new StringBuilder(s);
+            int possible = 1;
+            for (int j = 0; j < words[i].length() && possible == 1; j++) {
+                if (sb.indexOf(String.valueOf(words[i].charAt(j))) != -1) {
+                    sb.deleteCharAt(sb.indexOf(String.valueOf(words[i].charAt(j))));
+                } 
+                else possible = 0;
+            }
+            if (possible==1) count+=words[i].length();
+        }
+        return count;
+    }
+}
