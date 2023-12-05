@@ -1,0 +1,37 @@
+/* O(1) SOLUTION */
+class Solution {
+    public int numberOfMatches(int n){
+        return n-1;
+    }
+}
+
+LOGIC---
+Just simulate for any value n, and you iwll understand no of matches will be always n-1.
+When n=0 => matches=0 (no need we already have one winner)
+
+LOGIC BASED ANSWE APPROACH -
+Instead of simulating the entire tournament, here we will directly consider the beginning and end of the tournament.
+In this tournament, when a team loses, they are eliminated and will no longer play any matches.
+There are n teams, and 1 winner. Thus, n - 1 teams will be eliminated.
+Each match is played between two teams. One team wins, one team loses. Thus, each match eliminates exactly one team.
+As n - 1 teams will be eliminated, there will be n - 1 matches played, with each match eliminating a team.
+
+
+
+/* SIMULATED SOLUTION O(logn) */
+class Solution {
+    public int numberOfMatches(int n){
+        int matches=0;
+        while(n>1){
+            if(n%2==0){
+                matches+=n/2;  //no. of matches happened
+                n/=2;          //no of teams advancing to next round
+            }
+            else{
+                matches+=(n-1)/2;    //no. of matches happened
+                n = (n-1)/2 + 1;     //no of teams advancing to next round
+            }
+        }
+        return matches;
+    }
+}
