@@ -1,0 +1,30 @@
+SELECT a.name as Employee
+FROM Employee a 
+INNER JOIN Employee b
+ON a.managerID = b.id
+WHERE a.salary>b.salary;
+
+
+LOGIC---
+Here in inner join we need to connect from table one employee's manager to the id of the employees on the right table and then check whose salary is more, the employee or the manager.
+
+So, basically we have done something like this:
+form left table at manager id we joined it to the right table to its equivalent id.
+
+Employee table:
++----+-------+--------+-----------+
+| id | name  | salary | managerId |
++----+-------+--------+-----------+
+| 1  | Joe   | 70000  | 3         |
+| 3  | Sam   | 60000  | Null      |
+
+Now looks something like this after inner join:
+
++----+-------+--------+-----------+
+| id | name  | salary | managerId |  b.id    b.name     b.salary
++----+-------+--------+-----------+
+| 1  | Joe   | 70000  | 3         |    3      Sam        60000
+| 3  | Sam   | 60000  | Null      |
+
+So, now as you cna see you connected the two tables from managerid of table a to id of table b
+And now compare salary from table a(employee) to the salary in tbale b(their manager).
