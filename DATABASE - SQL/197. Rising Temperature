@@ -1,0 +1,26 @@
+SELECT a.id 
+FROM Weather a, Weather b 
+WHERE DATEDIFF(a.recordDate, b.recordDate)=1 AND a.temperature>b.temperature;
+
+
+LOGIC---
+First use inner join o make another table so that you can have two list of dates to easily compare today with yesterday.
+
+Intiution---
+By doing a self-join(cross join effect) on the Weather table, we create a Cartesian product of the table with itself, creating pairs of days. 
+We then use the DATEDIFF function to restrict these pairs to only include consecutive days. 
+Lastly, we filter these pairs of consecutive days further to only include pairs where the temperature is higher on the second day. 
+The resulting ids represent the days where the temperature was higher than the previous day.
+
+QUERY FLOW---
+So, first we creat  a cartesian product kind of thing using join.
+Next we find dates that differ with 1 => a.date - b.date = 1  => today-yesterday=1
+And in this temp(a)>temp(b) then only print a.id.
+
+
+/* SQL Server DATEDIFF() Function */
+Return the difference between two date values, in years:
+SELECT DATEDIFF(year, '2017/08/25', '2011/08/25') AS DateDiff; 
+
+Syntax : DATEDIFF(interval, date1, date2)
+interval can be -> year, month, hour,day
