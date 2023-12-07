@@ -1,0 +1,20 @@
+class Solution {
+    public String largestOddNumber(String num){
+        int rightmostoddindex=-1;
+        for(int i=num.length()-1;i>=0;i--){
+            if((num.charAt(i)-'0')%2!=0){
+                rightmostoddindex=i;
+                break;
+            }
+        }
+        return num.substring(0, rightmostoddindex+1);
+    }
+}
+
+/*
+LOGIC---
+For an odd number we just don't want an even number at its end.
+
+So. the longest odd nuber will be the substring having the rightmost odd digit that is not a multiple of 2.
+
+*/
