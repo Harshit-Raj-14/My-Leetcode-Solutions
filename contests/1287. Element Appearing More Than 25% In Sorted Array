@@ -1,0 +1,52 @@
+/* O(n), O(n) HASHING SOLUTION */
+class Solution {
+    public int findSpecialInteger(int[] arr) {
+        int req = (arr.length*25)/100;
+        int max = 0;
+        for(int i=0;i<arr.length;i++) max=Math.max(max, arr[i]);
+        int count[] = new int[max+1];
+        for(int i=0;i<arr.length;i++) count[arr[i]]++;
+        for(int i=0;i<count.length;i++){
+            if(count[i]>req) return i;
+        }
+        return -1;
+    }
+}
+
+
+/* O(n), O(1) SIMPLE ITERATION OPTIMISATION */
+class Solution {
+    public int findSpecialInteger(int[] arr) {
+        int req = (arr.length*25)/100;
+        for(int i=0;i<arr.length;i++){
+            int count=1;
+            while(i+1<arr.length && arr[i]==arr[i+1]){
+                count++;
+                i++;
+            }
+            if(count>req) return arr[i];
+        }
+        return -1;
+    }
+}
+
+
+/* O(logn) BINARY SEARCH */
+
+/*
+LOGIC---
+Sorted Array -> Binary Search
+
+Element should be 25% more.
+Array is sorted.
+Array can be divide into 4 parts: 0-25, 25-50, 50-75, 75-100
+If it is more than 25% it should occur in only 2 of the parts
+
+The answer should be in one of the ends of the intervals since array sorted.
+
+The answer block has a length greater than n / 4, and thus it must overlap at least one of the following positions in the array:
+    A quarter of the way through at index n / 4.
+    Halfway through at index n / 2.
+    Three-quarters of the way through at index 3n / 4.
+
+*/
