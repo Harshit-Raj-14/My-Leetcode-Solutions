@@ -1,0 +1,37 @@
+class Solution {
+    public int numSpecial(int[][] mat) {
+        int Rcount[] = new int[mat.length];   //horizontal layer freq
+        int Ccount[] = new int[mat[0].length];   //vertical layer freq
+
+        for(int i=0;i<mat.length;i++){
+            for(int j=0;j<mat[0].length;j++){
+                if(mat[i][j]==1){
+                    Rcount[i]++;
+                    Ccount[j]++;
+                }
+            }
+        }
+
+        int special=0;
+        for(int i=0;i<mat.length;i++){
+            for(int j=0;j<mat[0].length;j++){
+                if(mat[i][j]==1){
+                    if(Rcount[i]==1 & Ccount[j]==1) special++;
+                }
+            }
+        }
+        return special;
+    }
+}
+
+/*
+LOGIC---
+Find count(here prefix sum also works becuase binary matrix but for general case count is best) of 1 for all rows and columns seperately.
+
+If the ending has 1 -> on both column and row matrix => special
+else not special
+
+TC: O(mn)
+SC: O(m+n)
+
+*/
