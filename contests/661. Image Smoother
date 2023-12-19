@@ -1,0 +1,31 @@
+class Solution {
+    public int[][] imageSmoother(int[][] img) {
+        int [][] sm = new int[img.length][img[0].length];
+        for(int i=0;i<img.length;i++){
+            for(int j=0;j<img[0].length;j++){
+                sm[i][j] += img[i][j];  //a11
+                int freq=1;
+                if(i-1>=0){ sm[i][j] += img[i-1][j]; freq++;}    //a01
+                if(j-1>=0){ sm[i][j] += img[i][j-1]; freq++;}    //a10
+                if(i-1>=0 && j-1>=0){ sm[i][j] += img[i-1][j-1]; freq++;} //a00
+                if(i+1<img.length){ sm[i][j] += img[i+1][j]; freq++;}   //a21
+                if(j+1<img[0].length){ sm[i][j] += img[i][j+1]; freq++;}   //a12
+                if(i+1<img.length && j+1<img[0].length){ sm[i][j] += img[i+1][j+1]; freq++;}   //a22
+                if(i-1>=0 && j+1<img[0].length){ sm[i][j] += img[i-1][j+1]; freq++;}   //a02
+                if(i+1<img.length && j-1>=0){ sm[i][j] += img[i+1][j-1]; freq++;}   //a20
+                sm[i][j]/=freq; //averaging
+            }
+        }
+        return sm;
+    }
+}
+
+
+/*
+LOGIC---
+You have a grid filled with numbers, which we will call an "image". You are asked to create a new image where the value of each cell is the average of itself and its neighbors. 
+However, if a cell doesn't have a neighbor in any direction (because it's on the edge), just ignore that non-existing neighbor when computing the average.
+For instance, the cell at the top left corner has only three neighbors (right, down-right, down), while a cell in the middle of the image has eight neighbors 
+(up, down, left, right, and all the four diagonals).
+The goal is to create a new image with these averaged values. Round down the average if it's not an integer.
+*/
