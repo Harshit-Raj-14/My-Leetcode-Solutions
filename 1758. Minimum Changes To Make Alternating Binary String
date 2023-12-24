@@ -1,0 +1,33 @@
+class Solution {
+    public int minOperations(String s){
+        int move0=0, move1=0;
+        for(int i=0;i<s.length();i++){
+            //if string would start with 0
+                if(i%2!=0){ //odd position should have been 1
+                    if(s.charAt(i)!='1') move0++;
+                }
+                else{   //even posiiton should have been 0
+                    if(s.charAt(i)!='0') move0++;
+                }
+            //if string starts with 1
+                if(i%2!=0){ //odd position should have been 0
+                    if(s.charAt(i)!='0') move1++;
+                }
+                else{   //even posiiton should have been 1
+                    if(s.charAt(i)!='1') move1++;
+                }
+        }
+        return Math.min(move0, move1);
+    }
+}
+
+/*
+LOGIC---
+Their can be two ways to start string 0 or 1.
+Then only two final strings can exist.
+That means minimum no of operation would exist accoridng to only these two final strings.
+Find operations for both and return minimum of answer.
+
+It will either start with a '0' and be like '010101010..' or with a '1' and be like '10101010..'
+So, make sure these positions just have the right character.
+*/
