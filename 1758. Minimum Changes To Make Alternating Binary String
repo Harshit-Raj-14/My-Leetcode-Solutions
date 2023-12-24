@@ -31,3 +31,26 @@ Find operations for both and return minimum of answer.
 It will either start with a '0' and be like '010101010..' or with a '1' and be like '10101010..'
 So, make sure these positions just have the right character.
 */
+
+
+
+
+/* ONE PASS SOLUTION */
+class Solution {
+    public int minOperations(String s) {
+        int start0 = 0;
+        
+        for (int i = 0; i < s.length(); i++) {
+            if (i % 2 == 0) {
+                if (s.charAt(i) == '1') {
+                    start0++;
+                }
+            } else {
+                if (s.charAt(i) == '0') {
+                    start0++;
+                }
+            }
+        }
+        return Math.min(start0, s.length() - start0);
+    }
+}
