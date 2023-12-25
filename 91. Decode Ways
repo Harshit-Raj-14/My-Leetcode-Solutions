@@ -1,0 +1,119 @@
+/* TOP DOWN APPROACH */
+class Solution {
+    public int numDecodings(String s) {
+        int memo[] = new int[s.length()];
+        Arrays.fill(memo, -1);
+        return topDownDecode(s, 0, memo);
+    }
+
+    public int topDownDecode(String s, int index, int memo[]){
+        //base case
+        if(index==s.length()) return 1;     //if index reaches the end of string, valid decoding
+        if(memo[index]!=-1) return memo[index];    //emans we have already calculated answer
+        if(s.charAt(index)=='0') return 0;  //invalid decoding
+        //work
+        int ways = topDownDecode(s, index+1, memo); //decoded single digit, so go find next decoding
+        if(index+1<s.length() && Integer.parseInt(s.substring(index,index+2))<=26){
+            ways += topDownDecode(s, index+2, memo);    //decoded two digits, so go find the decoding after 
+        }
+        memo[index]=ways;   //memoize the result
+        return ways;
+    }
+}
+
+/*
+LOGIC--- Memoization of recursion
+Can use condition like these-> if (i < n - 1 && (s.charAt(i) == '1' || (s.charAt(i) == '2' && s.charAt(i + 1) < '7'))) {
+TC - O(n)
+SC - O(n) 
+*/
+
+/* RECURSION TLE */
+class Solution {
+    public int numDecodings(String s) {
+        return recursiveDecode(s, 0);
+    }
+
+    public int recursiveDecode(String s, int index){
+        //base case
+        if(index==s.length()) return 1;     //if index reaches the end of string, valid decoding
+        if(s.charAt(index)=='0') return 0;  //invalid decoding
+        //work
+        int ways = recursiveDecode(s, index+1); //decoded single digit, so go find next decoding
+        if(index+1<s.length() && Integer.parseInt(s.substring(index,index+2))<=26){
+            ways += recursiveDecode(s, index+2);    //decoded two digits, so go find the decoding after 
+        }
+        return ways;
+    }
+}
+
+/*
+LOGIC--- at a time choose only one digits or choose two digit and increase 1 if valid encoding else non-valid do not increase ways by 1
+TC - O(n^2)
+SC - O(n)  due to the maximum recursion depth.
+*/
+
+
+/* BOTTOM UP APPROACH */
+class Solution {
+    public int numDecodings(String s) {
+        int n=s.length();
+        int dp[] = new int[n+1];
+        dp[n]=1;    //1 way to decode an empty string
+        for(int i=n-1 ; i>=0; i--){
+            if(s.charAt(i)=='0') dp[i]=0;   //checking for leading 0's
+            else{
+                dp[i] += dp[i+1];   //decode single digit
+                if(i+1<n && Integer.parseInt(s.substring(i,i+2))<=26){
+                    dp[i] += dp[i+2];   //decode two strings
+                }
+            }
+        }
+        return dp[0];   //full string decoded
+    }
+}
+
+
+
+
+/*
+LOGIC---
+Note something like 06 is not possible.
+'A' -> "1"
+'B' -> "2"
+...
+'J' -> "10"
+...
+'T' -> "20"
+...
+'Z' -> "26"
+
+Things to take care of :
+=> That means the split can be of only one or two digits. Since range is 1 to 26.
+That means when considering two digit, the second digit should be <=6 when fist digit is 2.
+Inference : (s[i]=='1' || (s[i]=='2' && s[i+1]<='6'))   ...(I)
+
+=> Also, 0 can occur only after 1 or 2.
+=> things like 0, 06 are not possible.
+
+How to split?
+Example:
+226 [visualise in form of a tree]
+226 -> 2, 26 -> 2, (2, 6)
+226 -> 22, 6 -> (2, 2), 6
+We can't proceed taking 226 completely becuase 226>26
+
+Example:
+206
+206 -> 2, 06 => invalid
+206 -> 20, 6 => valid
+
+Example:
+276 => 2, 7, 6
+276 => 2, 76 => invalid
+276 => 27, 6 => invalid
+
+So, if you are on ith character and you know how many solutions it has
+Then you need to find is the solution when you will be on i+1 th char if the ith char is consdered single.
+Or, if you are cosidering i and i+1 th pair, then all you need to ifnd is the solution from i+2 th char.
+*/
