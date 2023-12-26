@@ -1,0 +1,89 @@
+/* RECURSION TLE */
+class Solution {
+    int mod=1000000007;
+    public int numRollsToTarget(int n, int k, int target) {
+        return recursiveRoll(n, k, target);
+    }
+
+    public int recursiveRoll(int n, int k, int target){
+        //base case kaha pe recursive tree ped banna khatam hoga
+        if(n==0 && target==0) return 1;         //the easiest work to do to get answer
+        if(target<n || n*k<target) return 0;    //not possible to make target sum
+        int ways=0;
+        for(int i=1;i<=k;i++){
+            if(target<i) break;
+            ways = (ways + recursiveRoll(n-1, k, target-i) % mod) % mod;
+        }
+        return ways;
+    }
+}
+/*
+First we are travelling all the number in first dice, thenw e will travel all the numbe rin second dice. And so on.
+Whenever we reach recursiveRoll(0, k, 0) it menas we have completed our target sum and 0 dices left.
+So, means we have found 1 way now do nothing.
+
+    Time Complexity: O(n ^ target)
+    Space Complexity: O(n ^ target)
+*/
+
+
+/* TOP DOWN APPROACH */
+class Solution {
+    int mod=1000000007;
+    public int numRollsToTarget(int n, int k, int target){
+        int memo[][] = new int[n+1][target+1];
+        return recursiveRoll(n, k, target, memo);
+    }
+
+    public int recursiveRoll(int n, int k, int target, int memo[][]){
+        //base case kaha pe recursive tree ped banna khatam hoga
+        if(n==0 && target==0) return 1;
+        if(target<n || n*k<target) return 0;    //not possible to make target sum
+        if(memo[n][target]!=0) return memo[n][target];  //return already calculated value
+        int ways=0;
+        for(int i=1;i<=k;i++){
+            if(target<i) break;
+            ways = (ways + recursiveRoll(n-1, k, target-i, memo)) % mod;
+        }
+        memo[n][target]=ways;
+        return ways;
+    }
+}
+/*
+2-D dp becuase two parameters are changing. Dice and Target. so need to keep tabs on both of them.
+    Time Complexity: O(n * target)
+    Space Complexity: O(n * target)
+*/
+
+
+
+
+
+/* BOTTOM UP APPROACH */
+class Solution {
+    int mod=1000000007;
+    public int numRollsToTarget(int n, int k, int target){
+        if(n==0 && target==0) return 1;
+        if(target<n || n*k<target) return 0;    //not possible to make target sum
+        int dp[][] = new int[n+1][target+1];
+
+        for (int i = 1; i <= k && i <= target; i++){    //base case values
+            dp[1][i] = 1;
+        }
+
+        for(int dice=1;dice<=n;dice++){
+            for(int x=1;x<=target;x++){
+                for(int i=1;i<=k && i<x;i++){
+                    dp[dice][x] = (dp[dice][x] + dp[dice-1][x-i]) % mod;
+                }
+            }
+        }
+        return dp[n][target];
+    }
+}
+
+/* 
+Bottom up means going opposite of top DOWNSo if 
+top down was: dice: n->0 and  target:x->0
+bottom up is : dice: 0->n and  target:0->x
+*/
