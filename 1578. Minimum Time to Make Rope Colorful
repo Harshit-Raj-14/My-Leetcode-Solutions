@@ -1,0 +1,54 @@
+/* TWO POINTER APPROACH */
+class Solution {
+    public int minCost(String colors, int[] neededTime) {
+        int time=0;
+        int i=0, j=0;
+        while(i<neededTime.length && j<neededTime.length){
+            int currmax=0;
+            int currtotaltime=0;
+            while(j<neededTime.length && colors.charAt(i)==colors.charAt(j)){
+                currtotaltime += neededTime[j]; //accumulating time for all equal element
+                currmax=Math.max(currmax, neededTime[j]);   //remember the time of the highest
+                j++;
+            }
+            time += currtotaltime - currmax;    //you dont want to remove the element with highest time
+            i=j;
+        }
+        return time;
+    }
+}
+
+/*
+LOGIC---
+Why two pointer, you see you need to update string dynamically and choose at the same time while colors being equal leading to removal and loss in string size.
+Hence you can do what in this type of problem is stay on first element and keep checking the next equal element behaviour and decide.
+Next update the intial element to next.
+
+Example:
+string - a a a a a
+time   - 1 2 3 4 5
+
+Mkae two pointer i and j.
+So when you reach an equal adjacent start movign secodn pointer till no longer eqaul.
+At the same time check which has minimum time and keep tab of it by adding ti to the current 
+
+While i iterate over array, j will iterate over the equals.
+*/
+
+
+
+/* CREATIVE SOLUTION BY UPDATING TIME 8/
+class Solution {
+    public int minCost(String colors, int[] neededTime) {
+        int cost = 0;
+        for(int i=1;i<colors.length();i++){
+            if(colors.charAt(i)==colors.charAt(i-1)){
+                cost += Math.min(neededTime[i],neededTime[i-1]);
+                if(neededTime[i]<neededTime[i-1]){
+                    neededTime[i] = neededTime[i-1];
+                }
+            }
+        }
+    return cost;
+    }
+}
