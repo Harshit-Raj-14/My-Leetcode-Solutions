@@ -1,4 +1,4 @@
-/* O(n62) SOLUTION */
+/* O(n^2) SOLUTION */
 class Solution {
     public List<List<Integer>> threeSum(int[] nums){
         Arrays.sort(nums);
@@ -22,12 +22,12 @@ class Solution {
                     ans.add(list);
 
                     // Incrementing front pointer until we reach a different number.
-					while (front<back && nums[front]==x) front++;
+		    while (front<back && nums[front]==x) front++;
                     // Decrementing last pointer until we reach a different number.
-					while (front<back && nums[back]==y) back--;
+		    while (front<back && nums[back]==y) back--;
                 }
                 // Ensuring that we don't encounter duplicate values for arr[i].
-			    while (i<n-1 && nums[i]==nums[i+1]) i++;
+		while (i<n-1 && nums[i]==nums[i+1]) i++;
             }
         }
         return ans;
