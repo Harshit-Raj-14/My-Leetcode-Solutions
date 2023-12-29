@@ -117,18 +117,16 @@ When count == 0 , it means nums[1...i ] doesn't have a majority, so nums[1...i ]
 I think it's kind of DP.
 
 //
-public class Solution {
-    public int majorityElement(int[] num) {
-
-        int major=num[0], count = 1;
-        for(int i=1; i<num.length;i++){
-            if(count==0){
-                count++;
-                major=num[i];
-            }else if(major==num[i]){
-                count++;
-            }else count--;
-            
+class Solution {
+    public int majorityElement(int[] nums) {
+        int major=nums[0], vote=1;  //vote is count of element
+        for(int i=1;i<nums.length;i++){
+            if(vote==0){
+                major=nums[i];
+                vote++;
+            }
+            else if(nums[i]==major) vote++;
+            else vote--;
         }
         return major;
     }
