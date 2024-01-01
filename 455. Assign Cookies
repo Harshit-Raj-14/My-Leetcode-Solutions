@@ -1,0 +1,25 @@
+class Solution {
+    public int findContentChildren(int[] g, int[] s) {
+        int ans=0;
+        Arrays.sort(g);
+        Arrays.sort(s);
+        int child=0;
+        int size=0;
+        while(size<s.length){
+            if(child<g.length && s[size]>=g[child]){
+                child++;
+                size++;
+                ans++;
+            }
+            else size++;
+        }
+    return ans;
+    }
+}
+
+/*
+LOGIC---
+To fulfill the greed of maximum children we would want the minimum possible acceptable size to got to the minimum possible greed it can fulfill.
+So, we better sort both arrays.
+Now use two pointer as you iterate through array to get children maximum who can be satisfied.
+*/
