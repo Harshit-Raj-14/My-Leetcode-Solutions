@@ -1,0 +1,22 @@
+class Solution {
+    public List<List<Integer>> findMatrix(int[] nums) {
+        int count[] = new int[nums.length+1];   //see constraints for size
+        for(int i=0;i<nums.length;i++){
+            count[nums[i]]++;
+        }
+        ArrayList<List<Integer>> ans = new ArrayList<>();
+        int allelements=0;  //to decide when to stop the loop when all elements has been accounted for
+        while(allelements!=nums.length){
+            ArrayList<Integer> list = new ArrayList<>();
+            for(int i=0;i<count.length;i++){
+                if(count[i]>0){
+                    list.add(i);
+                    count[i]--;
+                    allelements++;
+                }
+            }
+            ans.add(list);
+        }
+        return ans;
+    }
+}
