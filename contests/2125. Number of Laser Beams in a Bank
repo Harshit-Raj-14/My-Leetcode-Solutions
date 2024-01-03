@@ -1,0 +1,40 @@
+class Solution {
+    public int numberOfBeams(String[] bank){
+        int lasercount[] = new int[bank.length];
+        for(int i=0;i<bank.length;i++){
+            for(int j=0;j<bank[i].length();j++){
+                if(bank[i].charAt(j)=='1') lasercount[i]++;
+            }
+        }
+        int ans=0;
+        int index=0;
+        while(index<lasercount.length){
+            while(index<lasercount.length && lasercount[index]==0) index++;
+            int laserstart=index;
+            index++;
+            while(index<lasercount.length && lasercount[index]==0) index++;
+            if(index<lasercount.length){
+                int laserend=index;
+                ans += lasercount[laserstart] * lasercount[index];
+            }
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+The real objective is to find the number of lasers.
+So, we need a point from laser to start and a point for laser to end.
+Means we want security on two differnet rows for lasers to exist.
+
+First we find no of security in each row in a count frequency array.
+
+Then we consider a row with security as start point of laser.
+next we would want another row for our laser to end.
+
+Hence we need atleast two wo rows with secuirty to get lasers.
+
+So, start findign pairs in the count array and also their multiplication will be the number of lasers.
+
+*/
