@@ -1,0 +1,39 @@
+class Solution {
+    public int minOperations(int[] nums){
+        int max=0;
+        for(int i=0;i<nums.length;i++){
+            max=Math.max(max, nums[i]);
+        }
+        int count[] = new int[max+1];
+        for(int i=0;i<nums.length;i++){
+            count[nums[i]]++;
+        }
+        int op=0;
+        for(int i=0;i<count.length;i++){
+            if(count[i]==1) return -1;  //case I: not possible to apply operation
+            if(count[i]%3==0) op += count[i]/3; //case II
+            else if(count[i]%3==1) op += 2 + ((count[i]-4)/3);  //case III
+            else if(count[i]%3==2) op += 1 + ((count[i]-2)/3);  //case IV
+        }
+        return op;
+    }
+}
+
+
+/*
+LOGIC---
+We make a count frequency array.
+
+Case I: freq=1 => no operation possible to apply. Hence -1.
+
+Case II: freq is divisible by 3 => freq%3==0 => apply the second operation and you are done.
+
+Case III: freq is divisble by only 2 and not 3 => freq%3==1 => eg:1,4,7...
+=> we can write here any number n as => 3x+4
+eg: 3(1)+4 = 7 => for 7 freq we will require 1op + 2op(to handle 4)
+=> no of op = 2 + (n-4)/3
+
+Case IV: freq is may or may not be divisible by 2 and not divisible by 3 => freq%3==2 => eg: 5,8...
+=> 3(2) + 2 = 8 => for 8 freq we will require 2op + 1op(to handle 2)
+=> no of op = 1 + (n-2)/3
+*/
