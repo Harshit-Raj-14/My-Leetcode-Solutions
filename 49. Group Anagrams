@@ -1,0 +1,76 @@
+/* USING SORTING & HASHMAP SOLUTION */
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs){
+        HashMap<String, List<String>> map = new HashMap<>();
+        for(int i=0;i<strs.length;i++){
+            String currString = strs[i];
+            char[] arr = currString.toCharArray();
+            Arrays.sort(arr);
+            String key = new String(arr);  //will work as key
+            if(!map.containsKey(key)){
+                ArrayList<String> list = new ArrayList<>();
+                list.add(strs[i]);
+                map.put(key, list);
+            }
+            else{
+                map.get(key).add(strs[i]);  //If key is present, get the existing list and add curr str
+            }
+        }
+        ArrayList<List<String>> ans = new ArrayList<>();
+        for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+            String key = entry.getKey();
+            List<String> values = entry.getValue();
+            ans.add(values);
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC----
+The intuition behind this approach is to group anagrams together by using a unique key for each group. Two words are anagrams if and only if their sorted representations are the same. Therefore, we can create a mapping between the sorted string representations (keys) and the groups of anagrams. As we iterate through the input array, we generate a key for each string, and if the key is not present in the map, we create a new entry with an empty list. We then add the current string to the corresponding group. Finally, we return the values (lists of anagrams) from the map as the result.
+
+
+
+For two strigns to be anagram, we know that all the characters should be equal and also in frequency but can be in any order.
+So, the thing that will equate them will be that sorted anagram strigns will always be equal.
+eg: cat, tac are anagrams
+sort both -> act is the sorted anagram and will be equal.
+
+So, we can pick each strign 
+sort them 
+and the sorted strign can be used as a hashmap to group them together
+
+Time complexity: O(n * k * log(k)), where n is the number of strings in the input array and k is the maximum length of a string. The main time-consuming operation is the sorting of characters in each string.
+  
+Space complexity: O(n * k), where n is the number of strings in the input array and k is the maximum length of a string. The space is used to store the mapping between keys and groups of anagrams.
+*/
+
+
+
+/* WITHOUT SORTING MAKING SELF KEY */
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        Map<String, List<String>> map = new HashMap<>();
+        for(String s : strs){
+             int [] count = new int[26];
+             for(char c:s.toCharArray()){
+                count[c - 'a']++;
+            }
+            StringBuilder sb = new StringBuilder();
+            for(int i = 0 ;i < 26 ; i++){
+                sb.append(count[i]);
+                sb.append('#');  //key will be like : 1#2#0#1#0#1 => abbdf
+            }
+            String key = sb.toString();
+            if(!map.containsKey(key)){
+                map.put(key,new LinkedList<String>());
+            }
+            map.get(key).add(s);
+        }
+        return new LinkedList<>(map.values());
+    }
+}
+
+TC- O(n)
+SC - O(n)
