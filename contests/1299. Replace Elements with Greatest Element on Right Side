@@ -1,0 +1,34 @@
+/* TC-O(n) SC- O(1) SOLUTION */
+class Solution {
+    public int[] replaceElements(int[] arr){
+        int max=arr[arr.length-1];
+        for(int i=arr.length-2;i>=0;i--){
+            int temp=arr[i];    //save this state to make sure to update max properly becuase array is being modified
+            arr[i]=max;
+            max=Math.max(max, temp);
+        }
+        arr[arr.length-1]=-1;
+        return arr;
+    }
+}
+
+
+/* TC-O(n) SC- O(n) SOLUTION */
+class Solution {
+    public int[] replaceElements(int[] arr){
+        int ans[] = new int[arr.length];
+        int max=0;
+        for(int i=arr.length-2;i>=0;i--){
+            max=Math.max(max, arr[i+1]);
+            ans[i]=max;
+        }
+        ans[arr.length-1]=-1;
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+Loop through the array starting from the end.
+Keep the maximum value seen so far.
+*/
