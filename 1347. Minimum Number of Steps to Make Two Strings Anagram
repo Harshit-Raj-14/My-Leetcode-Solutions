@@ -1,0 +1,23 @@
+class Solution {
+    public int minSteps(String s, String t) {
+        int count[] = new int[26];
+        for(int i=0;i<s.length();i++){
+            count[s.charAt(i)-'a']++;
+            count[t.charAt(i)-'a']--;
+        }
+        int ans=0;
+        for(int i=0;i<count.length;i++){
+            ans+=Math.abs(count[i]);
+        }
+        return ans/2;
+    }
+}
+
+/*
+LOGIC---
+Maintain a count array for s first which will have all chars frequency.
+You can subtract all char frequency now using t.
+The remaining frequencies whether +ve or -ve are differneces that we need to overcome to make them anagrams.
+Since, we have the ability to replace, we can replace an unequal character to another desirable character.
+So, the frequency sum of the left count array should be divided by two representing the number of steps.
+*/
