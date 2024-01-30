@@ -1,0 +1,23 @@
+class Solution {
+    public boolean squareIsWhite(String s) {
+        int ans= (int)(s.charAt(0)-'a') + (int)(s.charAt(1)-'0');
+        if(ans%2==0) return true;
+        else return false;
+    }
+}
+
+/*
+LOGIC---
+Consider the coordinates of a square. Sum of coordinates square if even => white and if odd then black.
+a1
+
+a=0
+1=1
+
+0+1 => black => odd => false
+
+b=1
+1=1
+1+1 => white => even => true
+
+*/
