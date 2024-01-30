@@ -1,0 +1,80 @@
+/* HASHING */
+class Solution {
+    public int[] findErrorNums(int[] nums) {
+        int duplicate=0;
+        int missing = 0;
+        int count[] = new int[nums.length+1];
+        for(int i=0;i<nums.length;i++){
+            count[nums[i]]++;
+        }
+        for(int i=1;i<count.length;i++){
+            if(count[i]==2) duplicate = i;
+            if(count[i]==0) missing = i;
+        }
+        return new int[] {duplicate, missing};
+    }
+}
+
+
+/* HASHMAP */
+
+LOGIC---
+    Create an unordered_map mp to count the occurrences of numbers from 1 to n.
+    Iterate through numbers in the input vector nums:
+        Increment the count of each number in mp.
+        Decrement the count of each number in mp.
+    Iterate through the entries in mp:
+        Identify the number with a count of -1 as the duplicate.
+        Identify the number with a count of 1 as the missing number.
+
+
+/* BRUTE FORCE O(n^2) 8/
+class Solution {
+    public int[] findErrorNums(int[] nums) {
+        int n=nums.length;
+        int duplicate=0;
+        int missing = 0;
+        for(int i=1;i<=nums.length;i++){
+            int count=0;
+            for(int j=0;j<nums.length;j++){
+                if(nums[j]==i) count++;
+            }
+            if(count==2) duplicate=i;
+            if(count==0) missing=i;
+        }
+        return new int[] {duplicate, missing};
+    }
+}
+
+/*
+LOGIC---
+If the count is 2, set dup to the current number, indicating a duplicate.
+If the count is 0, set missing to the current number, indicating a missing number.
+*/
+
+
+/* SET + SUM */
+
+class Solution {
+    public int[] findErrorNums(int[] nums) {
+        int n = nums.length;
+        int actual_sum = n * (n + 1) / 2;
+        int array_sum = 0;
+        int unique_sum = 0;
+        HashSet<Integer> set = new HashSet<>();
+        for (int a : nums) {
+            array_sum += a;
+        }
+        for (int a : nums) {
+            set.add(a);
+        }
+        for (int a : set) {
+            unique_sum += a;
+        }
+        int missing = actual_sum - unique_sum;
+        int duplicate = array_sum - unique_sum;
+        return new int[] {duplicate, missing};
+    }
+}
+
+
