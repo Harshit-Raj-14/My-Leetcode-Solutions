@@ -5,6 +5,18 @@ class Solution {
     }
 }
 
+/* USING CHECKING SUBSTRING */
+class Solution {
+    public int strStr(String h, String n) {
+        int i=0;
+        while(i<h.length()-n.length()+1){
+            if(h.substring(i,n.length()+i).equals(n)) return i;
+            i++;
+        }
+        return -1;
+    }
+}
+
 
 /* SLIDING WINDOW BEATS 34% */
 class Solution {
