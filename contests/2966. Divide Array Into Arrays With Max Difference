@@ -1,0 +1,22 @@
+class Solution {
+    public int[][] divideArray(int[] nums, int k) {
+        int ans[][] = new int[nums.length/3][3];
+        Arrays.sort(nums);
+        int index=0;
+        int row=0;
+        while(index<nums.length-2){
+            if(index+2<nums.length && 
+            nums[index+1]-nums[index]<=k && 
+            nums[index+2]-nums[index+1]<=k && 
+            nums[index+2]-nums[index]<=k){
+                for(int c=0;c<3;c++){
+                    ans[row][c] = nums[index];
+                    index++;
+                }
+                row++;
+            }
+            else return new int[][] {};
+        }
+        return ans;
+    }
+}
