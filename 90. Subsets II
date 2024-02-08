@@ -1,0 +1,33 @@
+class Solution {
+    public List<List<Integer>> subsetsWithDup(int[] nums){
+        int n=nums.length;
+        Arrays.sort(nums);  //so that we get ordered list of subsets and easily identified as duplicate in set, different ordering of same subset can create differnet hashes
+        HashSet<List<Integer>> set = new HashSet<>();
+        for(int i=0; i<(1<<n);i++){
+            ArrayList<Integer> list = new ArrayList<>();
+            for(int j=0;j<n;j++){
+                if((i & (1<<j)) != 0) list.add(nums[j]);
+            }
+            set.add(list);
+        }
+        ArrayList<List<Integer>> ans = new ArrayList<>();
+        for (List<Integer> list : set) ans.add(list);
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+Each subset can be mapped as 0's and 1's taken or not taken.
+And this pattern will occur from 0 to (2^n)-1.
+eg : ABC
+0 -> 000 -> []
+1 -> 001 -> [C]
+2 -> 010 -> [B] 
+....
+7 -> 111 -> [A,B,C] and so on.
+
+So, first loop from 0 to (2^n)-1.
+And then loop in array to deicde patterns and put it in an array list which will be later put inside a hashset for comparison.
+
+*/
