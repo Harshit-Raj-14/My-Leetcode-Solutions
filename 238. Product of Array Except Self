@@ -1,14 +1,14 @@
-/* PREFIX SUFFIX APPROACH */
+/* PREFIX SUFFIX APPROACH O(n), O(n) */
 class Solution {
     public int[] productExceptSelf(int[] nums) {
         int prefix[] = new int[nums.length];
-        prefix[0]=1; prefix[1]=nums[0];
-        for(int i=2;i<nums.length;i++){
+        prefix[0]=1; 
+        for(int i=1;i<nums.length;i++){
             prefix[i]=prefix[i-1]*nums[i-1];
         }
         int suffix[] = new int[nums.length];
-        suffix[nums.length-1]=1; suffix[nums.length-2]=nums[nums.length-1];
-        for(int i=nums.length-3;i>=0;i--){
+        suffix[nums.length-1]=1; 
+        for(int i=nums.length-2;i>=0;i--){
             suffix[i]=suffix[i+1]*nums[i+1];
         }
         int ans[] = new int[nums.length];
@@ -22,8 +22,88 @@ For any nums[i], calculate its left product and calculate its right product, wit
 Then multiply these left and right product, This will give product of array excluding nums[i].
 
 
+/* PREFIX SUFFIX APPROACH O(n), O(1) */
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        int n = nums.length;
+        int ans[] = new int[n];
+        Arrays.fill(ans, 1);
+        for(int i = 1; i < n; i++) {
+            ans[i] = ans[i-1] * nums[i-1];
+        }
+        int curr = 1;
+        for(int i = n - 1; i >= 0; i--) {
+            ans[i] *= curr;
+            curr *= nums[i];
+        }
+        return ans;
+    }
+}
+
+
+/* BRUTE FORCE */
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        int n = nums.length;
+        int ans[] = new int[n];
+        
+        for(int i = 0; i < n; i++) {
+            int pro = 1;
+            for(int j = 0; j < n; j++) {
+                if(i == j) continue;
+                pro *= nums[j];
+            }
+            ans[i] = pro;
+        }        
+        return ans;
+    }
+}
+
+loop through the complete array using a pointer, say j, for every index i, and multiply all the elements at index j except when i == j. 
+This would ensure that I skip the element at index i from being multiplied.
+The Time Complexity for this solution would be O(n^2).
+
 /* WRONG APPROACH */
 To find full product and divide by nums[i] at each place.
 eg : Input: nums = [-1,1,0,-3,3]
 Output: [0,0,9,0,0]
 The above method won't work becuase at index 2 you will be dividng product by zero which will return java.lang.ArithmeticException: / by zero error.
+What we would do is, we would find the product of all the numbers of our Array and then divide the product with each element of the array 
+to get the new element for that position in our final answer array.
+Now after presenting the interviewer with this solution, here is our one more chance to shine out in the interview. 
+We would specifically tell the interviewer that one major con in going with this method is when we have an element as 0 in our array. 
+The problem is that, we can't perform a division by 0, as a result, we won't be able to get corresponding values in our final answer array 
+for the indices having 0 in our initial array at that position.
+The Time Complexity of this approach would be O(n).
+
+/* MAKING THE WRONG APPROACH RIGHT */
+        int n = nums.length;
+        int countZeroes = 0;
+        int indexZero = -1;
+        int productWithoutZero = 1;
+        for(int i = 0 ; i < n ; i++) {
+            if(nums[i] == 0) {
+                countZeroes++;
+                indexZero = i;
+            }
+            else productWithoutZero *= nums[i];
+        }    
+        int [] output = new int [n];
+        if(countZeroes == 0) {
+            for(int i = 0 ; i < n ; i++) {
+                output[i] = productWithoutZero / nums[i];
+            }
+        }
+        else if(countZeroes == 1) {
+            output[indexZero] = productWithoutZero;
+        }
+        return output;
+LOGIC---
+maintain the count of zeroes in the array.
+1.) If count of zeroes is greater than 1 so the array will be empty
+2.) If the count of zeroes is 0 then we need to just divide the product of array with every element
+3.) Lastly if the count of zeroes if 1, then we need to find the index of zero and product of array without zero and then just place the product at index of zero and we are done
+Refer to the code below - (Submitted it all tcs were passed)
+
+what if there is more than one zero??
+ans: read point no 1
