@@ -1,0 +1,29 @@
+/* PREFIX SUFFIX APPROACH */
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        int prefix[] = new int[nums.length];
+        prefix[0]=1; prefix[1]=nums[0];
+        for(int i=2;i<nums.length;i++){
+            prefix[i]=prefix[i-1]*nums[i-1];
+        }
+        int suffix[] = new int[nums.length];
+        suffix[nums.length-1]=1; suffix[nums.length-2]=nums[nums.length-1];
+        for(int i=nums.length-3;i>=0;i--){
+            suffix[i]=suffix[i+1]*nums[i+1];
+        }
+        int ans[] = new int[nums.length];
+        for(int i=0;i<nums.length;i++) ans[i]=prefix[i]*suffix[i];
+        return ans;
+    }
+}
+
+LOGIC---
+For any nums[i], calculate its left product and calculate its right product, without including nums[i] as prefix and suffix.
+Then multiply these left and right product, This will give product of array excluding nums[i].
+
+
+/* WRONG APPROACH */
+To find full product and divide by nums[i] at each place.
+eg : Input: nums = [-1,1,0,-3,3]
+Output: [0,0,9,0,0]
+The above method won't work becuase at index 2 you will be dividng product by zero which will return java.lang.ArithmeticException: / by zero error.
