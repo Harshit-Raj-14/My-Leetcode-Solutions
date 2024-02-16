@@ -1,0 +1,23 @@
+class Solution {
+    public int largestPerimeter(int[] nums){
+        Arrays.sort(nums);
+        for(int i=nums.length-1;i>=2;i--){
+            int a=nums[i];
+            int b=nums[i-1];
+            int c=nums[i-2];
+            if(a+b>c && c+b>a && a+c>b) return a+b+c;
+        }
+        return 0;
+    }
+}
+
+/*
+LOGIC---
+Condiiton of triangle: A,B,C
+A+B>C
+B+C>A
+C+A>B
+
+Sort array.
+Be greedy and take pair of 3 lengths from backwards.
+*/
