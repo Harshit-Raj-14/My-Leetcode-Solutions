@@ -1,0 +1,50 @@
+class Solution {
+    public long largestPerimeter(int[] nums) {
+        Arrays.sort(nums);
+        long prefix[] = new long[nums.length];    //make a prefix sum array that stores prefix sum before i
+        prefix[0]=0;
+        for(int i=1;i<nums.length;i++){
+            prefix[i]+=(prefix[i-1]+nums[i-1]);
+        }
+        for(int i=nums.length-1;i>=2;i--){  //the number of edges should not be less than 3.
+            if(nums[i]<prefix[i]) return nums[i]+prefix[i]; //total perimeter
+        }
+        return -1;
+    }
+}
+
+
+/*
+LOGIC---
+Sort the array. => to bring small sides in front an dlarge sides at back
+Use greedy algorithm. 
+If we select an edge as the longest side, it is always better to pick up all the edges 
+with length no longer than this longest edge.
+To ocnfirm ths we compare all the length sums before it and the length of a side form back.
+If polygon condiiton making is satisifed we add the prefix sum with curr side to form largest total perimeter.
+
+dry run testcase 2
+[1,12,1,2,5,50,3]
+sorted sides => [1, 1, 2, 3, 5, 12, 50]
+=>prefix sum => [0, 1, 2, 4, 7, 12, 24]
+Since 50>24 => no polygon
+12=12 => no polygon
+5<7 => polygon can be made => total perimeter = 5+7=12 (largest possible perimeter)
+*/
+
+
+/* MORE OPTIMIZED SOLUTION */
+class Solution {
+    public long largestPerimeter(int[] nums) {
+        Arrays.sort(nums);
+        long previousElementsSum = 0;
+        long ans = -1;
+        for (int num : nums) {
+            if (num < previousElementsSum) {
+                ans = num + previousElementsSum;
+            }
+            previousElementsSum += num;
+        }
+        return ans;
+    }
+}
