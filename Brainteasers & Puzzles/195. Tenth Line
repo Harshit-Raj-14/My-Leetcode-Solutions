@@ -1,0 +1,16 @@
+# Read from the file file.txt and output the tenth line to stdout.
+awk 'NR==10' file.txt
+
+
+###
+The command you provided, awk 'NR==10' file.txt, is an AWK command used to extract the 10th line from the file named file.txt. Let's break it down:
+awk: AWK is a versatile programming language primarily used for pattern scanning and text processing.
+
+'NR==10': This is the pattern or condition being checked. NR stands for "Number of Records," which is a built-in variable in AWK representing the current line number being processed. 
+NR==10 checks if the current line number is equal to 10.
+
+file.txt: This is the input file from which AWK is reading the lines.
+
+So, when you run awk 'NR==10' file.txt, AWK will process file.txt line by line, and when it reaches the 10th line, it will print that line to the standard output. 
+If file.txt has fewer than 10 lines, it won't produce any output.
+###
