@@ -1,0 +1,30 @@
+class Solution {
+    public boolean isBoomerang(int[][] p){
+        int x1=p[0][0], x2=p[1][0], x3=p[2][0];
+        int y1=p[0][1], y2=p[1][1], y3=p[2][1];
+        if((x1*(y2 - y3) + x2*(y3 - y1) + x3*(y1 - y2)) != 0) return true;
+        else return false;
+    }
+}
+
+
+/*
+LOGIC---
+What question is asking to return if all three points can be joined by a single straight line ( i.e we have to return if the given three points are non-collinear)
+
+So if three points are non collinear then they form triangle. So all we need to check if the area of the triangle formed is non-zero. If the area is zero it means all three points are collinear.
+
+Suppose the three points are (x1,y1), (x2,y2), (x3,y3).
+So area of triangle is given by : 0.5 * [x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)]
+
+Thus we just need to check the condition if [x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)] !=0
+
+area of triangle = (1/2) |x1(y2 − y3) + x2(y3 − y1) + x3(y1 − y2)|
+*/
+
+
+
+/* ANOTHER SOLUTION 8/
+    public boolean isBoomerang(int[][] p) {
+        return (p[0][0] - p[1][0]) * (p[0][1] - p[2][1]) != (p[0][0] - p[2][0]) * (p[0][1] - p[1][1]);
+    }
