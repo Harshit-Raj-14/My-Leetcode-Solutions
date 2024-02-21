@@ -1,0 +1,40 @@
+/* USING INCREMENT OPERATROR */
+class Solution {
+    public int getSum(int a, int b){
+        for (int i = 1; i <= Math.abs(b); i++){
+            if(b<0) a--;
+            if(b>=0) a++;
+        }
+        return a;
+    }
+}
+
+/*
+LOGIC---
+Make sure to remember a and b can be both positve or negative.
+TC - O(b)
+*/
+
+
+/* USING + */
+class Solution {
+    public int getSum(int a, int b) {
+        return a+b;
+    }
+}
+
+/* FAILED CODE */
+class Solution {
+    public int getSum(int a, int b){
+        return (int)Math.log10(Math.pow(10, a) * Math.pow(10, b));
+    }
+}
+
+/*
+LOGIC---
+a+b = log10(pow(10,a)*pow(10,b)); => return (int)Math.log10(Math.pow(10, a) * Math.pow(10, b));
+(a + b) = log(e^a * e^b) => return (int)Math.log(Math.exp(a) * Math.exp(b));
+FAILS ON TESTCASE - 
+a =-999
+b =0
+*/
