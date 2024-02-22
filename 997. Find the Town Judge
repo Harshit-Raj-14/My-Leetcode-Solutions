@@ -1,0 +1,23 @@
+/* O(n), O(n) SOLUTION */
+class Solution {
+    public int findJudge(int n, int[][] trust){
+        int count[] = new int[1001];
+        HashSet<Integer> trustothers = new HashSet<>();
+        for(int i=0;i<trust.length;i++){
+            count[trust[i][1]]++;
+            trustothers.add(trust[i][0]);
+        }
+        for(int i=1;i<count.length;i++){
+            if(count[i]==n-1 && !trustothers.contains(i)) return i;
+        }
+        return -1;
+    }
+}
+
+/*
+LOGIC---
+Town Judge -> everyone trusts him, he trusts no one not even himself
+Count frequency to maintain how many people trust them => for judge it should be n-1
+Another list/set to keep count of people who trusts other =. the judge does not trust anyone so his name wont be their
+The AND of above two condition will give us the judge
+*/
