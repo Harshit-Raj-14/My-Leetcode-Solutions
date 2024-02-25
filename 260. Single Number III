@@ -1,0 +1,58 @@
+class Solution {
+    public int[] singleNumber(int[] nums) {
+        int xor = 0;
+        for(int i=0;i<nums.length;i++){
+            xor^=nums[i];
+        }
+        int i=0;//store  rightmost setbit
+        for(i=0;i<32;i++){
+            if(((xor>>i) & 1) == 1) break;    //Find rightmost set bit of xor => where bit should differ in a and b
+        }
+        //Divide all elements into 2 set 
+        int xor1=0; // stores xor of all ele whose ith bit set
+        int xor2=0;//  stores xor of all ele whose ith bit not set
+        for (int x : nums) {
+            if (((x>>i) & 1) != 0) xor1 ^= x;
+            else xor2 ^= x;
+        }
+        return new int[]{xor1, xor2};
+    }
+}
+
+/*
+LOGIC---
+The two numbers that appear only once must differ at some bit, this is how we can distinguish between them. 
+Otherwise, they will be one of the duplicate numbers.
+
+One important point is that by XORing all the numbers, we actually get the XOR of the two target numbers 
+(because XORing two duplicate numbers always results in 0). 
+
+Consider the XOR result of the two target numbers; if some bit of the XOR result is 1, 
+it means that the two target numbers differ at that location.
+
+Let’s say at the ith bit, the two desired numbers differ from each other. 
+which means one number has bit i equaling: 0, the other number has bit i equaling 1.
+
+Thus, all the numbers can be partitioned into two groups according to their bits at location i.
+the first group consists of all numbers whose bits at i is 0.
+the second group consists of all numbers whose bits at i is 1.
+
+Notice that, if a duplicate number has bit i as 0, then, two copies of it will belong to the first group. 
+Similarly, if a duplicate number has bit i as 1, then, two copies of it will belong to the second group.
+
+by XoRing all numbers in the first group, we can get the first number.
+by XoRing all numbers in the second group, we can get the second number.
+
+
+
+
+BAAT SAMJHO
+Pehle ek array jisme sab duplicates hai bas do ko chod ke.
+Ab pure array ka xor nikale, toh xor=a^b. bacha
+Ab jaha xor ka bit 1 hai, vaha ek number pe 0 hoga agle pe 1 hoga. => confirmed.
+Abb do list banao array ke andar jaha ek list mei us index par sare bit 1 hai
+aur dusre list mei un array eleemnts ko xor karo jinka 0 bit hai uss index pe
+Kiyuki do hi unique hai aur humne unhe do alag list mei dal diya => baki duplicates
+matlab agar in dono list ke xor karenge toh akhir mei unme vo unique element bachega
+DONE
+*/
