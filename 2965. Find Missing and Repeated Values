@@ -1,0 +1,22 @@
+class Solution {
+    public int[] findMissingAndRepeatedValues(int[][] grid){
+        int n=grid.length;
+        int count[] = new int[n*n+1];
+        for(int i=0;i<=n*n;i++){
+            count[i]++;
+        }
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                count[grid[i][j]]++;
+            }
+        }
+        int duplicate=0;    //will be 3 tiems in count
+        int missing=0;      //will be 1 times in count => other normal elements will be 2 times
+        for(int i=0;i<count.length;i++){
+            if(count[i]==1) missing=i;
+            if(count[i]==3) duplicate=i;
+        }
+        return new int[] {duplicate, missing};
+    }
+}
