@@ -1,0 +1,31 @@
+class Solution {
+    public String lastNonEmptyString(String s) {
+        int count[] = new int[26];
+        for(int i=0;i<s.length();i++){
+            count[s.charAt(i)-'a']++;
+        }
+        int maxfreq=0;
+        for(int i=0;i<count.length;i++){
+            maxfreq=Math.max(maxfreq, count[i]);    //finding characters with max frequency
+        }
+        StringBuilder ans=new StringBuilder("");
+        for(int i=s.length()-1;i>=0;i--){
+            if(count[s.charAt(i)-'a']==maxfreq){
+                ans.append(s.charAt(i));
+                count[s.charAt(i)-'a']=-1;  //making sure we do not take the used character again
+            }
+        }
+        return ans.reverse().toString();    //since we are taking characters from behind and appending in front we need to reverse
+    }
+}
+
+/*
+LOGIC---
+Before the last operation, only the most frequent characters in the original string will remain.
+Keep only the last occurence of each of the most frequent characters.
+
+counting the occurrences of each character using a hashmap, finding the maximum occurrence count, 
+appending characters with the maximum occurrence count to the result string in reverse order, 
+processes the input string from back to front and appends a character if its occurrence 
+count matches maxCount and it hasn't been appended before, reversing the result string to get the final substring.
+*/
