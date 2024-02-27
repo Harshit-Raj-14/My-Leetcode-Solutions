@@ -1,0 +1,24 @@
+/* TWO POINTERS O(n), O(1) */
+class Solution {
+    public int removeDuplicates(int[] nums){
+        int i=0;    //to iterate over array
+        int j=0;    //to put the correct element in array
+        int k=0;
+        while(i<nums.length){
+            int el=nums[i];
+            int count=1;
+            while(i+1<nums.length && nums[i]==nums[i+1]){
+                if(count<2) count++;
+                i++;
+            }
+            i++;
+            k+=count;
+            while(j<nums.length && count!=0){
+                nums[j]=el;
+                j++;
+                count--;
+            }
+        }
+        return k;
+    }
+}
