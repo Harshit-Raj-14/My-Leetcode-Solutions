@@ -1,0 +1,32 @@
+/* TWO POINTER O(n) */
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        int front=0;
+        int back=nums.length-1;
+        while(front<back){
+            if(nums[front]+nums[back]==target) return new int[] {front+1, back+1};
+            else if(nums[front]+nums[back]>target) back--;
+            else front++;
+        }
+        return new int[] {front+1, back+1};
+    }
+}
+
+
+/* BINARY SEARCH O(n) */
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        for(int i=0;i<nums.length;i++){
+            int find = target-nums[i];  //we are going to find this in remaining array using binary search
+            int l=i+1;
+            int h=nums.length-1;
+            while(l<=h){
+                int mid=l+(h-l)/2;
+                if(find==nums[mid]) return new int[] {i+1, mid+1};
+                else if(nums[mid]<find) l=mid+1;
+                else h=mid-1; 
+            }
+        }
+        return new int[] {-1, -1};
+    }
+}
