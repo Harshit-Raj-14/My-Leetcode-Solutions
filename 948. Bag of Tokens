@@ -1,0 +1,8 @@
+WHY GREEDY but not DP or recursion?
+When current order of elements doesn't matter in calculating answer , i.e elements are independent from each other, we use greedy approach.
+
+if you read question well,you will understand that sorting is required in this question, and by common sense you will get to know that in DP there is no need of sorting, 
+so the last option to use here is the Greedy approach, its all about the intuition, there is no special trick.
+In the sample test case [200,100], they didn't consider 200 and they started with 100. In recursion we can't just use any token as we want, we have to follow the sequence. 
+Also, they've said "strategically play tokens". 
+So that means, you can play token at any index on any move (as long as given 2 conditions also satisfy).
