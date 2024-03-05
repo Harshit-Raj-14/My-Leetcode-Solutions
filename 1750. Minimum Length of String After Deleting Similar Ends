@@ -1,0 +1,47 @@
+/* TWO POINTER */
+class Solution {
+    public int minimumLength(String s) {
+        int n = s.length();
+        int start1=0;
+        int start2=n-1;
+        while(start1<n && start2>=0 && start1<start2){
+            if(s.charAt(start1)!=s.charAt(start2)) break;
+            else if(s.charAt(start1)==s.charAt(start1+1) || s.charAt(start2)==s.charAt(start2-1)){
+                //duplicates from front
+                while(start1+1<n && s.charAt(start1)==s.charAt(start1+1)) start1++;
+                //duplicates from back
+                if(start1==start2) return 0;    //eg case : "abbbbbbbbbbbbbbbbbbba" or "bbbbbbbbbbbbbbbbbbb"
+                while(start2-1>=0 && s.charAt(start2)==s.charAt(start2-1)) start2--;
+            }
+            else {
+                start1++;
+                start2--;
+            }
+        }
+        return n-(start1)-(n-start2-1);
+    }
+}
+
+/*
+LOGIC---
+If both ends have distinct characters, no more operations can be made. Otherwise, the only operation is to remove all of the same characters from both ends. 
+We will do this as many times as we can.
+*/
+
+
+/* TWO POINTER ELEGANT CODE */
+public class Solution {
+    public int minimumLength(String s) {
+        int begin = 0;
+        int end = s.length() - 1;
+        // Delete similar ends until the ends differ or they meet in the middle
+        while (begin < end && s.charAt(begin) == s.charAt(end)) {
+            char c = s.charAt(begin);
+            // Delete consecutive occurrences of c from prefix
+            while (begin <= end && s.charAt(begin) == c) begin++;
+            // Delete consecutive occurrences of c from suffix
+            while (end > begin && s.charAt(end) == c) end--;
+        }
+        return end - begin + 1;
+    }
+}
