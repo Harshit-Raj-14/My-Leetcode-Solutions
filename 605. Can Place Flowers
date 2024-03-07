@@ -1,0 +1,30 @@
+/* SIMPLE SCAN WITH NEIGHBOURS AND UPDATION */
+class Solution {
+    public boolean canPlaceFlowers(int[] flowerbed, int plants) {
+        int canplant=0;
+        int i=0;
+        while(i<flowerbed.length){
+            if(flowerbed[i]==0){    //when empty 0
+                int possible=1;
+                if(i-1>=0 && flowerbed[i-1]!=0) possible=0; //check the back neighbour
+                if(i+1<flowerbed.length && flowerbed[i+1]!=0) possible=0;   //check the front neighbour
+                if(possible==1){
+                    canplant++;
+                    flowerbed[i]=1; //need to update to make sure further calculations are right
+                }
+            }
+            i++;
+        }
+        if(canplant>=plants) return true;
+        else return false;
+    }
+}
+
+/*
+LOGIC---
+We can find out the extra maximum number of flowers, countcountcount, that can be planted for the given flowerbedflowerbedflowerbed arrangement. 
+To do so, we can traverse over all the elements of the flowerbedflowerbedflowerbed and find out those elements which are 0(implying an empty position). 
+For every such element, we check if its both adjacent positions are also empty.
+*/
+
+
