@@ -1,0 +1,34 @@
+/* O(n), O(n) SOLUTION */
+class Solution {
+    public int findShortestSubArray(int[] nums){
+        int max=0;
+        for(int i=0;i<nums.length;i++) max=Math.max(max, nums[i]);
+        int count[] = new int[max+1];
+        for(int i=0;i<nums.length;i++){
+            count[nums[i]]++;
+        }
+        int degree=0;
+        ArrayList<Integer> degreeat = new ArrayList<>();
+        for(int i=0;i<count.length;i++){
+            degree=Math.max(degree, count[i]);
+        }
+        for(int i=0;i<count.length;i++){
+            if(count[i]==degree) degreeat.add(i);
+        }
+        int subarraymin=Integer.MAX_VALUE;
+        for(int i=0;i<degreeat.size();i++){
+            int el=degreeat.get(i);
+            int start=0;
+            int end=nums.length-1;
+            while(nums[start]!=el) start++;
+            while(nums[end]!=el) end--;
+            subarraymin=Math.min(subarraymin, end-start+1);
+        }
+        return subarraymin;
+    }
+}
+
+LOGIC---
+First fidn the max frequency and elements with max frequency.
+The find the first occuring index of those elements and the last occuring index of the element from back.
+The differnece of these last-first occurnece will be the length of their required subarrays.
