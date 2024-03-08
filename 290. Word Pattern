@@ -1,0 +1,48 @@
+class Solution {
+    public boolean wordPattern(String pattern, String s) {
+        ArrayList<String> list = new ArrayList<>();
+        for(int i=0;i<s.length();i++){
+            StringBuilder sb = new StringBuilder("");
+            while(i<s.length() && s.charAt(i)!=' '){ sb.append(s.charAt(i)); i++;}
+            list.add(sb.toString());
+        }
+        if(list.size()!=pattern.length()) return false; //check this case of unequality
+        HashMap<Character, String> map = new HashMap<>();   //No two distinct characters in pattern can represent the same word 
+        HashSet<String> set = new HashSet<>();  //No single character in pattern can represent two distinct words
+        for(int i=0;i<pattern.length();i++){
+            if(!map.containsKey(pattern.charAt(i))){
+                if(!set.contains(list.get(i))) set.add(list.get(i));
+                else return false;
+                map.put(pattern.charAt(i), list.get(i));
+            }
+            else{
+                if(!map.get(pattern.charAt(i)).equals(list.get(i))) return false;
+            }
+        }
+        return true;
+    }
+}
+
+
+/*
+LOGIC---
+Each character in pattern can only represent one word from string
+So, if you find a string associated with a character which already has an assigned character, the pattern is incorrect
+
+Given a pattern and a string s, find if s follows the same pattern. pattern and s are same if:
+    each character in pattern represents a word in s
+    No two distinct characters in pattern can represent the same word in s => use hashmap
+    No single character in pattern can represent two distinct words in s. => use hashset to maintain which is already used
+
+e.g.:
+
+    pattern = 'abab'; s = 'dog cat dog cat'; return True
+    'a' represents 'dog' and 'b' represents cat
+
+    pattern = 'abcb'; s = 'dog cat dog cat'; return False
+    'a' represents 'dog', 'b' represents 'cat'. Then 'c' cannot represent 'dog' again as 'a' already represents 'dog' (#2 condition is: No two distinct characters in pattern i.e. 'a' and 'c' can represent same word i.e 'dog'.)
+
+    pattern = 'abcb'; s = 'dog cat hat cat'; return True
+    'a' represents 'dog'; 'b' represents 'cat'; 'c' represents 'hat'; and last 'cat' is already represented by 'b' and last character in pattern is also 'b'.
+
+*/
