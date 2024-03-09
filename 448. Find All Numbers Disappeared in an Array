@@ -1,0 +1,37 @@
+/* UPDATING ARRAY BY VISITNG INDEX AND MAKING NEGATIVE O(n), O(1) */
+class Solution {
+    public List<Integer> findDisappearedNumbers(int[] nums) {
+        for(int i=0;i<nums.length;i++){
+            int index=Math.abs(nums[i])-1;    //always need positive index
+            if(nums[index]>0) nums[index]*=-1;  //index-1 -> 0 indexing
+        }
+        ArrayList<Integer> ans = new ArrayList<>();
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]>0) ans.add(i+1); //again 0 indexing needs to be made from 1
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+Without using extra space---
+One thing for sure, the indexes are from 0->n-1
+
+If we go on each number and mark their respective index value as negative, that means that number was present in the array.
+And if that index is not marked negative it means it was not present in the array.
+*/
+
+
+/* USING HASHING O(n), O(n) */
+class Solution {
+    public List<Integer> findDisappearedNumbers(int[] nums) {
+        HashSet<Integer> set = new HashSet<>();
+        for(int i=0;i<nums.length;i++) set.add(nums[i]);
+        ArrayList<Integer> ans = new ArrayList<>();
+        for(int i=1;i<=nums.length;i++){
+            if(!set.contains(i)) ans.add(i);
+        }
+        return ans;
+    }
+}
