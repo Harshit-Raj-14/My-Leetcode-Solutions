@@ -1,0 +1,42 @@
+/* HASHING O(n), O(1) */
+class Solution {
+    public String customSortString(String order, String s) {
+        int count[] = new int[26];
+        for(int i=0;i<s.length();i++){
+            count[s.charAt(i)-'a']++;
+        }
+        StringBuilder sb = new StringBuilder("");
+        //putting chars in the following order decided by order string
+        for(int i=0;i<order.length();i++){
+            int index = order.charAt(i)-'a';
+            while(count[index]>0){
+                sb.append((char)(index+'a'));
+                count[index]--;
+            }
+        }
+        //now bring the remaining chars from the string s
+        for(int i=0;i<count.length;i++){
+            while(count[i]>0){
+                sb.append((char)(i+'a'));
+                count[i]--;
+            }
+        }
+        return sb.toString();
+    }
+}
+
+/*
+LOGIC---
+Store all string s eleemnts in count frequency table.
+The permutation we want shoudl be such that the matching chars in order should be in the same order.
+So, first put according to that.
+And remaining chars put in any sorted order.
+*/
+
+
+
+/* BRUTE FORCE O(n^2), O(1) */
+LOGIC---
+Iterate in order, find that element in string along with freuqency.
+then add as much frequency in result
+Finally, add the remaining elements of string in result
