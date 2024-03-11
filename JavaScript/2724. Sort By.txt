@@ -1,0 +1,7 @@
+var sortBy = function(arr, fn) {
+    return arr.sort((a, b) => fn(a) - fn(b));
+};
+
+/* 
+sort an array arr according to a function fn provided as input. 
+*/

@@ -1,0 +1,22 @@
+var createCounter = function(init) {
+    let count=init;
+    function increment(){
+        count++;
+        return count;
+    }
+    function decrement(){
+        count--;
+        return count;
+    }
+    function reset(){
+        count=init;
+        return count;
+    }
+    return {increment, decrement, reset};
+};
+
+/*
+You can return an object with methods.
+Initialize a variable for currentCount. 
+Inside these methods, add the appropriate logic which mutates currentCount.
+*/

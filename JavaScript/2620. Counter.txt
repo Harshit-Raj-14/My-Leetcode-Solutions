@@ -1,0 +1,16 @@
+var createCounter = function(n) {
+    let currentCount = n;
+    return function() {
+        return currentCount++;
+    };
+};
+
+
+
+
+var createCounter = function(n) {
+    return function() {
+        return n++;
+    };
+};
+

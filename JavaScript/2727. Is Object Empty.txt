@@ -1,0 +1,7 @@
+var isEmpty = function(obj) {
+    //console.log(Object.entries(obj).length);
+    return Object.entries(obj).length == 0;
+};
+/*
+Using Object you can check whether it contains any values in it or not.
+*/
