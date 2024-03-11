@@ -1,0 +1,24 @@
+class Solution {
+    public boolean isPossibleToSplit(int[] nums) {
+        int count[] = new int[101];
+        for(int i=0;i<nums.length;i++){
+            count[nums[i]]++;
+        }
+        for(int i=0;i<count.length;i++){
+            if(count[i]>2) return false;    //if there are other frequencies it wont be possible
+        }
+        return true;
+    }
+}
+
+/*
+It’s impossible if the same number occurs more than twice. So just check the frequency of each value.
+Means we would only need elements with frequency 1 or 2.
+
+Why needs distinct2?
+eg : [10,10]
+output : true
+You cna put one 10 in one array and other in another
+All you need to know that if there is a distinct2 element present you can still make two arrays splitting possible.
+
+*/
