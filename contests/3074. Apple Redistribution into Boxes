@@ -1,0 +1,15 @@
+class Solution {
+    public int minimumBoxes(int[] apple, int[] capacity) {
+        int totalapples = 0;
+        for(int i=0;i<apple.length;i++) totalapples+=apple[i];
+        int currboxcapacity=0;
+        Arrays.sort(capacity);
+        int ans=0;
+        for(int i=capacity.length-1;i>=0;i--){ //we want bigger boxes
+            currboxcapacity+=capacity[i];
+            ans++;
+            if(currboxcapacity>=totalapples) return ans;    //boxes required
+        }
+        return -1;
+    }
+}
