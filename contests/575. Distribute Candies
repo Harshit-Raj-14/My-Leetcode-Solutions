@@ -1,0 +1,26 @@
+/* HASHING */
+class Solution {
+    public int distributeCandies(int[] candyType){
+        int n=candyType.length;
+        HashSet<Integer> set = new HashSet<>();
+        for(int i=0;i<candyType.length;i++){
+            set.add(candyType[i]);
+        }
+        int needstoeat=n/2;
+        if(set.size()>=needstoeat) return needstoeat;
+        else return set.size();
+    }
+}
+
+
+/* ELEGANT SOLUTION */
+class Solution {
+    public int distributeCandies(int[] candyType){
+        int n=candyType.length;
+        HashSet<Integer> set = new HashSet<>();
+        for(int i=0;i<candyType.length;i++){
+            set.add(candyType[i]);
+        }
+        return Math.min(set.size(), n/2);
+    }
+}
