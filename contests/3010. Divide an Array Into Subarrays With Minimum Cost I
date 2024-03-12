@@ -1,0 +1,56 @@
+class Solution {
+    public int minimumCost(int[] nums) {
+        int firstmin=nums[0];
+        Arrays.sort(nums, 1, nums.length);   //sorting from index 1
+        int secondmin=nums[1];
+        int thirdmin=nums[2];
+        return firstmin + secondmin + thirdmin;
+    }
+}
+
+/*
+LOGIC---
+Note : We can't sort arrays.
+So, we need to find three places where we can find the minimum values.
+
+So, the firstmin will always be the first number.
+The rest two numbers can be found by sorting the remaining array from index 1 to n-1.
+
+secondmin=nums[1];
+thirdmin=nums[2];
+*/
+
+
+
+/* ELEGANT APPROACH */
+class Solution {
+    public int minimumCost(int[] nums) {
+        Arrays.sort(nums, 1, nums.length);   //sorting from index 1
+        return nums[0] + nums[1] + nums[2];
+    }
+}
+
+
+/* O(n) FINDING TWO MIN NUMBERS IN ARRAY */
+public class Solution {
+    public int minimumCost(int[] nums) {
+        int ans = 0;
+        int n = nums.length;
+        ans += nums[0];
+        int mini1 = Integer.MAX_VALUE;
+        int mini2 = Integer.MAX_VALUE;
+        int j = 1;
+        for (int i = 1; i < n; i++) {
+            if (nums[i] < mini1) {
+                mini1 = nums[i];
+                j = i;
+            }
+        }
+        for (int i = 1; i < n; i++) {
+            if (nums[i] < mini2 && i != j) mini2 = nums[i];
+        }
+        ans += mini1;
+        ans += mini2;
+        return ans;
+    }
+}
