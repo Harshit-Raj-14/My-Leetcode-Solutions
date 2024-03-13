@@ -1,0 +1,32 @@
+/* TWO POINTER APPROACH */
+class Solution {
+    public int pivotInteger(int n) {
+        int totalSum = n*(n+1)/2;
+        int frontSum = 0;
+        for (int i = 1; i <= n; i++) {
+            frontSum += i;
+            int backSum = totalSum - frontSum + i;
+            if (frontSum == backSum) return i;
+        }
+        return -1;
+    }
+}
+
+
+
+/* O(1) MATHS APPROACH */
+class Solution {
+  public int pivotInteger(int n) {
+        final int sum = (n * (n + 1) / 2);
+        final int pivot = (int) Math.sqrt(sum);
+        // If pivot * pivot is equal to sum (pivot found) return pivot, else return -1
+        return pivot * pivot == sum ? pivot : -1;
+  }
+}
+
+/*
+READ EDITORIAL FOR MATHS SOLUTION 
+[1+2+...+x=x+...+n]
+
+Using Arithmetic Progression: and find x as linear equaltion
+*/
