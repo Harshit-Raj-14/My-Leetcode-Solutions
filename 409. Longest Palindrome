@@ -1,0 +1,39 @@
+class Solution {
+    public int longestPalindrome(String s) {
+        int count[] = new int [125]; // A -> 65, z -> 122
+        for(int i=0;i<s.length();i++){
+            count[(int)s.charAt(i)]++;
+        }
+        int ans=0;
+        int isOneTaken=0;
+        for(int i=0;i<count.length;i++){
+            if(count[i]>=2){
+                while(count[i]>1){
+                    ans+=2;
+                    count[i]-=2;
+                }
+            }
+            if(count[i]==1 && isOneTaken!=1){
+                ans++;
+                isOneTaken=1;
+            }
+        }
+        return ans;
+    }
+}
+
+/*
+A palindrome is of two types:
+I : aaaaaaa  => every element occurs multiple of 2
+II : aaaabaaaaa => every element occurs multiple of 2 + one element occur only once
+
+Return the possibility.
+A -> 65
+z -> 122
+
+
+Note keep in mind---
+s =
+"ccc"
+Expected -> 3
+*/
