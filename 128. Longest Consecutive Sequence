@@ -1,0 +1,55 @@
+/* O(n) HASH SET */
+class Solution {
+    public int longestConsecutive(int[] nums) {
+        HashSet<Integer> set = new HashSet<>();
+        for(int i=0;i<nums.length;i++) set.add(nums[i]);
+        int max=0;
+        for(int x : nums){
+            int currel=x;
+            int currlen=0; //curr length
+            if(!set.contains(currel-1)){    //current element is the first element of the possible consecutive seq
+                while(set.contains(currel)){
+                    currlen++;
+                    currel++;
+                }
+            }
+            max=Math.max(max, currlen);
+        }
+        return max;
+    }
+}
+
+/*
+LOGIC---
+1. Create an empty hash.
+2. Insert all array elements to hash.
+3. Do following for every element arr[i]
+4. Check if this element is the starting point of a subsequence. To check this, simply look for arr[i] in the hash.
+5. if not found, then this is the first element a subsequence.
+6. If this element is the first element, then count the number of elements in the consecutive starting with this element. Iterate from arr[i] + 1 till the last element that can be found.
+7. If the count is more than the previous longest subsequence found, then update this.
+Since we check each streak only once, this is overall O(n).
+*/
+
+
+
+/* SORTING O(nlogn) */
+class Solution {
+    public int longestConsecutive(int[] nums) {
+        int n = nums.length;
+        if(n==0) return 0;
+        Arrays.sort(nums);
+        int cnt = 1;
+        int max = 0;
+        for (int i = 1; i < n; i++) {
+            if (nums[i] != nums[i - 1]) {
+                if (nums[i] == nums[i - 1] + 1) cnt++;
+                else{
+                    max = Math.max(max, cnt);
+                    cnt = 1;
+                }
+            }
+        }
+        return Math.max(max, cnt);
+    }
+}
