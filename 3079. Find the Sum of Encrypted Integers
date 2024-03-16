@@ -1,0 +1,29 @@
+class Solution {
+    public int sumOfEncryptedInt(int[] nums) {
+        int ans=0;
+        for(int n:nums){
+            int count=0, max=0;
+            int t=0; //the new number equal to length of number with each digit replaced by max
+            while(n!=0){
+                max=Math.max(max, n%10);
+                n/=10;
+                count++;
+            }
+            while(count!=0){
+                t=t*10+max;
+                count--;
+            }
+            ans+=t;
+        }
+        return ans;
+    }
+}
+
+
+/*
+LOGIC---
+Find the max digit in each number and count the number of digits
+Then create a new number consisting of only max digit with digit count equal to count
+Take sum of each new number formed
+
+*/
