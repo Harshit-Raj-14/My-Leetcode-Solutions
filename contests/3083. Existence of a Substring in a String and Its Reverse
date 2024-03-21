@@ -1,0 +1,17 @@
+class Solution {
+    public boolean isSubstringPresent(String s) {
+        StringBuilder sb = new StringBuilder("");
+        for(int i=s.length()-1;i>=0;i--){
+            sb.append(s.charAt(i));
+        }
+        int isPossible=0;
+        for(int i=0;i<s.length();i++){
+            if(i+1<s.length() && s.contains(sb.substring(i,i+2))){
+                isPossible=1;
+                break;
+            }
+        }
+        if(isPossible==1) return true;
+        else return false;
+    }
+}
