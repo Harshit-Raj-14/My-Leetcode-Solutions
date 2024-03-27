@@ -1,0 +1,16 @@
+/* BRUTE FORCE */
+class Solution {
+    public int numSubarrayProductLessThanK(int[] nums, int k) {
+        int ans=0;
+        for(int i=0;i<nums.length;i++){
+            int prod=1;
+            int possible=1;
+            for(int j=i;j<nums.length && possible==1;j++){
+                prod*=nums[j];
+                if(prod<k) ans++;
+                else possible=0;
+            }
+        }
+        return ans;
+    }
+}
