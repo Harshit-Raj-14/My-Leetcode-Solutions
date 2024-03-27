@@ -1,0 +1,16 @@
+class Solution {
+    public int returnToBoundaryCount(int[] nums) {
+        int ans=0;
+        int sumboundary=0;
+        for(int i=0;i<nums.length;i++){
+            sumboundary+=nums[i];
+            if(sumboundary==0) ans++;
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+To return to boundary if the sum reaches zero we reach boundary.
+*/
