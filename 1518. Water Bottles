@@ -1,0 +1,21 @@
+class Solution {
+    public int numWaterBottles(int numbottles, int numexchange) {
+        int ans=numbottles;
+        while(numbottles>=numexchange){
+            int notexchangedbottle=numbottles%numexchange;
+            numbottles/=numexchange;
+            ans+=numbottles;
+            numbottles+=notexchangedbottle;
+        }
+        return ans;
+    }
+}
+
+
+/*
+LOGIC---
+Simulate the process until there are not enough empty bottles for even one full bottle of water.
+Also see testcas 2 proerly.
+There cna be bottles left in the previous division so account those.
+
+*.
