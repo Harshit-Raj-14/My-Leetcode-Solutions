@@ -1,0 +1,81 @@
+/* ELEGANT ENCODING HASHSET SOLUTION */
+class Solution {
+    public boolean isValidSudoku(char[][] board) {
+        HashSet<String> seen = new HashSet<>();
+        for (int i=0; i<9; i++) {
+            for (int j=0; j<9; j++) {
+                char number = board[i][j];
+                if (number!='.') {
+                    if (!seen.add(number + " in row " + i) ||   //for row wise
+                        !seen.add(number + " in column " + j) ||    //for column wise
+                        !seen.add(number + " in block " + i / 3 + "-" + j / 3)) {   //for submatrix grid wise
+                        return false;
+                    }
+                }
+            }
+        }
+        System.out.println(seen);
+        return true;
+    }
+}
+
+/*
+LOGIC---
+Collect the set of things we see, encoded as strings. For example:
+
+    '4' in row 7 is encoded as "(4)7" or directly => 4 in row 7
+    '4' in column 7 is encoded as "7(4)".
+    '4' in the top-right block is encoded as "0(4)2". =>
+    this one i stricky as the subgrids can be divided by in 9/3 both row and column wise to form a code type. => to represent a common group of submatrix
+
+Scream false if we ever fail to add something because it was already added (i.e., seen before).
+
+*/
+
+/* SIMPLE BRUTE FORCE SOLUTION */
+class Solution {
+    public boolean isValidSudoku(char[][] board) {
+        for(int i=0;i<board.length;i++){    //travelling row-wise
+            HashSet<Character> set = new HashSet<>();
+            for(int j=0;j<board[0].length;j++){
+                if(board[i][j]!='.'){
+                    if(!set.contains(board[i][j])) set.add(board[i][j]);
+                    else return false;
+                }
+            }
+        }
+        for(int j=0;j<board[0].length;j++){ //travelling column-wise
+            HashSet<Character> set = new HashSet<>();
+            for(int i=0;i<board.length;i++){
+                if(board[i][j]!='.'){
+                    if(!set.contains(board[i][j])) set.add(board[i][j]);
+                    else return false;
+                }
+            }
+        }
+        for(int i=0;i<9;i+=3){    //matrix-wise Checking
+            for(int j=0;j<9;j+=3){
+                HashSet<Character> set = new HashSet<>();
+                for(int k=i;k<i+3;k++){
+                    for(int l=j;l<j+3;l++){
+                        if(board[k][l]!='.'){
+                            if(!set.contains(board[k][l])) set.add(board[k][l]);
+                            else return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+}
+
+
+/*
+LOGIC---
+Just need to check whether the given number forms a valid sudoku with the rules or not.
+Once check all row wise.
+Once check all column wise
+And once check all thee sub matrix grids.
+Nothing less nothing more.
+*/
