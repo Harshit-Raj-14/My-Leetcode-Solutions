@@ -1,0 +1,24 @@
+class Solution {
+    public String[] findWords(String[] words) {
+        ArrayList<String> list = new ArrayList<>();
+        String r1="qwertyuiop";
+        String r2="asdfghjklASDFGHJKL"; //has capslock to make capital
+        String r3="zxcvbnmZXCVBNM";     //has shift to make capital
+        for(int i=0;i<words.length;i++){
+            int gettingfrom1=0;
+            int gettingfrom2=0;
+            int gettingfrom3=0;
+            for(int j=0;j<words[i].length();j++){
+                if(r1.indexOf(words[i].charAt(j))!=-1) gettingfrom1=1;
+                if(r2.indexOf(words[i].charAt(j))!=-1) gettingfrom2=1;
+                if(r3.indexOf(words[i].charAt(j))!=-1) gettingfrom3=1;
+            }
+            if(gettingfrom1+gettingfrom2+gettingfrom3==1) list.add(words[i]);   //all words come from one word
+        }
+        String ans[] = new String[list.size()];
+        for(int i=0;i<list.size();i++){
+            ans[i]=list.get(i);
+        }
+        return ans;
+    }
+}

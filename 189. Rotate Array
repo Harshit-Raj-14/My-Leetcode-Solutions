@@ -1,0 +1,102 @@
+/* USING MODULUS OPERATOR */
+class Solution {
+    public void rotate(int[] arr, int k) {
+        int n = arr.length;
+        if (k > n) k = k % n;
+        int[] rotatedArr = new int[n];
+        for (int i = 0; i < n; i++) {
+            rotatedArr[(i + k) % n] = arr[i];
+        }
+        for (int i = 0; i < n; i++) {
+            arr[i] = rotatedArr[i];
+        }
+    }
+}
+
+
+/* USING INBUILT METHOD */
+class Solution {
+    public void rotate(int[] nums, int k) {
+        ArrayList<Integer> list = new ArrayList<>();
+        for(int i:nums) list.add(i);
+        Collections.rotate(list,k);
+        for(int i=0;i<nums.length;i++) nums[i]=list.get(i);
+        //since void leetcode is directly checking whether nums has been rotated or not
+    }
+}
+
+
+/* USING SPACE  O(n), O(n) */
+class Solution {
+    public void rotate(int[] nums, int k) {
+        int n = nums.length;
+        k = k % n; // to handle cases where k > n
+        int[] last = new int[k];
+        // Store the last k elements in the last array
+        for(int i = 0; i < k; i++) {
+            last[i] = nums[n - k + i];
+        }        
+        // Shift the first n - k elements to the right
+        for(int i = n - 1; i >= k; i--) {
+            nums[i] = nums[i - k];
+        }       
+        // Place the elements from last into their correct positions
+        for(int i = 0; i < k; i++) {
+            nums[i] = last[i];
+        }   
+        print(nums);
+    }
+
+    public static void print(int arr[]) {
+        for(int i = 0; i < arr.length; i++) {
+            System.out.print(arr[i] + " ");
+        }
+    }
+}
+
+
+
+/*
+LOGIC---
+One line of thought is based on reversing the array (or parts of it) to obtain the desired result. 
+Think about how reversal might potentially help us out by using an example.
+the reversing based solution which pretty much says:
+For k=2
+12345 -> 54321
+54321->45321
+45321->45123
+
+So why does this work?
+Let us understand the significance of k. k is nothing but a pivot point.
+What this means is, in case of 12345 with k = 2, your pivot point lies at 123|45.
+
+Let the array be - 123456789 and k = 4
+
+Step 1 - 12345 6789 ---> 54321 6789
+Step 2 - 54321 6789 ---> 54321 9876
+[reverse the first and second part seperately]
+Step 3 - 543219876 ---> 678912345
+[now reverse the full array]
+
+    678912345 !!
+
+*/
+
+
+
+
+/* BRUTE FORCE O(nk) TLE */
+class Solution {
+    public void rotate(int[] nums, int k) {
+        while(k-->0){
+            int last=nums[nums.length-1];
+            for(int i=nums.length-1;i>0;i--){
+                nums[i]=nums[i-1];
+            }
+            nums[0]=last;
+        }
+        for(int i=0;i<nums.length;i++){
+            System.out.print(nums[i]+" ");
+        }
+    }
+}

@@ -1,0 +1,47 @@
+/* O(n^2) SOLUTION */
+class Solution {
+    public int distributeCandies(int n, int limit) {
+        int ans = 0;
+        for(int ch1=0;ch1<=limit;ch1++){
+            for(int ch2=0;ch2<=limit;ch2++){
+                int ch3 = n-ch1-ch2;
+                if(ch3 >=0 && ch3<= limit) ans++;
+            }
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+For two loops:
+c=n-a-b
+AND c should be in bounds between 0 and limit
+
+*/
+
+
+/* O(n^3) SOLUTION */
+class Solution {
+    public int distributeCandies(int n, int limit) {
+        int ans=0;
+        for(int i=0;i<=limit;i++){
+            for(int j=0;j<=limit;j++){
+                for(int k=0;k<=limit;k++){
+                    if(i+j+k==n) ans++;
+                }
+            }
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+We have three boxes to fill the candies.
+_ _ _ 
+Since, we have a limit which we cannot cross and n candies.
+Use three nested for loops to check all the triplets.
+a+b+c=n
+
+*/

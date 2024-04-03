@@ -1,0 +1,36 @@
+ BRUTE FORCE 100% ACCEPTED 
+class Solution {
+    public boolean isPowerOfThree(int n) {
+        if(n=0) return false;
+        while(n!=1){
+            if(n%3!=0) return false;
+            n=3;
+        }
+        return true;
+    }
+}
+
+
+ RECURSIVE SOLUTION 
+class Solution {
+    public boolean isPowerOfThree(int n) {
+        if(n=0) return false;
+        else if(n==1) return true;
+        return n%3==0 && isPowerOfThree(n3);
+    }
+}
+
+
+ LOGARITHMIC SOLUTION 
+class Solution {
+    public boolean isPowerOfThree(int n) {
+        return (n  0 && (Math.log10(n)Math.log10(3))%1 == 0);
+    }
+}
+
+LOGIC---
+using a logarithm function to see if I get a whole number (integer).
+So, Math.log10(n)Math.log10(3) should be an integer and not a float
+So, modulus 1 should leave no remainder
+
+Note - remember to use the 10 in code otherwise you will get precision errors
