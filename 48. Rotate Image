@@ -1,0 +1,33 @@
+class Solution {
+    public void rotate(int[][] matrix){
+        //Step I : reverse all columns
+        for(int j=0;j<matrix[0].length;j++){    //travel each column
+            for(int i=0;i<matrix.length/2;i++){ //reverse each column
+                swap(matrix, i, j, matrix.length-1-i, j);
+            }
+        }
+        //Step II: take transpose of matrix
+        for(int i=0;i<matrix.length;i++){
+            for(int j=i+1;j<matrix[0].length;j++){
+                swap(matrix, i, j, j, i);
+            }
+        }
+    }
+
+    public void swap(int[][] matrix,int i,int j,int k,int l){
+        int temp = matrix[i][j];
+        matrix[i][j] = matrix[k][l];
+        matrix[k][l] = temp;
+    }
+}
+
+/*
+LOGIC---
+Reverse Each column
+Take transpose that's it (transpose => row becomes column, column becoems row => (i,j) <=> (j,i)
+
+Doing the above two steps in reverse works as well
+
+NOTE---
+In the second loop, we use for(int j=i+1;j<matrix[0].length;j++). This adjustment ensures that we only traverse the upper triangle of the matrix, preventing redundant swaps
+*/
