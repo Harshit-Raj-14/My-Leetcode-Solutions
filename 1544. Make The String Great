@@ -1,0 +1,19 @@
+/* USING STACK */
+class Solution{
+    public String makeGood(String s) {
+        Stack<Character> stack = new Stack<>();
+        for(int i=0;i<s.length();i++){
+            if(stack.isEmpty()) stack.add(s.charAt(i));
+            else if(s.charAt(i)!=stack.peek() && Character.toLowerCase(s.charAt(i))==Character.toLowerCase(stack.peek())){
+                stack.pop();
+            }
+            else stack.add(s.charAt(i));
+            System.out.println(stack);
+        }
+        StringBuilder sb = new StringBuilder(""); 
+        while(!stack.isEmpty()){
+            sb.append(stack.pop());
+        }
+        return sb.reverse().toString();
+    }
+}
