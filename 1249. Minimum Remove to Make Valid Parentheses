@@ -1,0 +1,40 @@
+class Solution {
+    public String minRemoveToMakeValid(String s){
+        Stack<Integer> stack = new Stack<>();   //to store the indexes of open bracket
+        int visited[] = new int[s.length()];    //to store the indexes of clsoed bracket which do not have open pair
+        for(int i=0;i<s.length();i++){
+            if(s.charAt(i)=='(') stack.push(i);
+            else if(s.charAt(i)==')'){
+                if(!stack.isEmpty()) stack.pop();
+                else visited[i]=1;
+            }
+        }
+        while(!stack.isEmpty()) visited[stack.pop()]=1; //left open brackets that do not have close pair 
+
+        StringBuilder sb = new StringBuilder("");
+        for(int i=0;i<s.length();i++){
+            if(visited[i]!=1) sb.append(s.charAt(i));
+        }
+        return sb.toString();
+    }
+}
+
+/*
+For creating a valid parentheses:
+String cannot have parantheses starting with )
+Also, ( should have equal existing ) and vice versa.
+
+Parentheses Properties:
+    For parentheses to be balanced, count of Opens must be equal to count of Closes. eg: for ( ( ( ) ) ), count = 3 and 3
+    Each Close must form a pair with previously encountered Open. eg: for ) ) ) ( ( (, though count = 3 and 3, each Close doesn't have a previous Open to be paired with.
+
+On encountering Open, it is pushed into stack, and on encountering Close, 
+the last Open (at the top of stack) is popped out. Now we have found a pair, 
+we just need to compute similarly for the rest of the brackets. Depending on the problem, 
+stack could either store the Open itslef or its index. 
+Here we need to remove the corresponding bracket from input string, so we store index.
+Extra Open: At the end of computation, if Opens are remaining, these are the extra brackets that make the parentheses unbalanced. These could be removed to make the parentheses balanced.
+Exra Close: If at any time during the computation, Close is encountered but stack is empty, 
+it means this Close is extra (no Open to pair with) and is making already encountered parentheses unbalanced. 
+This could be removed to continue the computation for the rest of the brackets.
+*/
