@@ -1,0 +1,44 @@
+class Solution {
+    public boolean checkValidString(String s){
+        int leftmin=0;
+        int leftmax=0;
+        for(int i=0;i<s.length();i++){
+            if(s.charAt(i)=='('){leftmin++; leftmax++;}
+            else if(s.charAt(i)==')'){leftmin--; leftmax--;}
+            else {leftmin--; leftmax++;}
+            if(leftmax<0) return false;
+            if(leftmin<0) leftmin=0;
+        }
+        if(leftmin==0) return true;
+        else return false;
+    }
+}
+
+/*
+LOGIC---
+For creating a valid parentheses:
+String cannot have parantheses starting with )
+Also, ( should have equal existing ) and vice versa.
+
+Parentheses Properties:
+    For parentheses to be balanced, count of Opens must be equal to count of Closes. eg: for ( ( ( ) ) ), count = 3 and 3
+    Each Close must form a pair with previously encountered Open. eg: for ) ) ) ( ( (, though count = 3 and 3, each Close doesn't have a previous Open to be paired with.
+
+Now we have an ambiguous defintion of a * => which can stand of anything (,),"".
+To add more content. '*' can be treat as '(', '', or ')'. '(' increase the maximum of open parenthesis, and ')' reduce it
+
+Approach to solve this problem....
+
+    Initialize leftMin and leftMax to 0.
+    Iterate through each character in the string s.
+    If the character is '(', increment both leftMin and leftMax by 1.
+    If the character is ')', decrement both leftMin and leftMax by 1.
+    If the character is '*', decrement leftMin by 1 and increment leftMax by 1.
+    If leftMax becomes negative at any point, return False since it means there are more closing parentheses than opening ones.
+    If leftMin becomes negative, reset it to 0 since we can't have negative open parentheses count.
+    After iterating through the string, check if leftMin is 0. If it is, return True; otherwise, return False.
+
+
+leftMax=maximumcount of open parenthesis
+leftMin=minimumcount of open parenthesis
+*/
