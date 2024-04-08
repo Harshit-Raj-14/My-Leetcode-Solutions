@@ -1,0 +1,53 @@
+class Solution {
+    public int countStudents(int[] students, int[] sandwiches) {
+        int circularsandwiches=0, squaresandwiches=0;
+        int circularstudent=0, squarestudent=0;
+        for(int i=0;i<students.length;i++){
+            if(students[i]==0) circularstudent++;
+            if(students[i]==1) squarestudent++;
+        }
+        for(int i=0;i<sandwiches.length;i++){ 
+            if(sandwiches[i]==0 && circularstudent==0) return squarestudent;    //No student wants the circle sandwich on top of the stack
+            if(sandwiches[i]==1 && squarestudent==0) return circularstudent;    //No student wants the square sandwich on top of the stack
+            if(sandwiches[i]==0) circularstudent--;
+            if(sandwiches[i]==1) squarestudent--;
+        }
+        return 0;
+    }
+}
+
+/*
+LOGIC---
+Only students who do not have the sandwhich they want will be unable to eat.
+*/
+
+
+
+/* BRUTE FORCE SIMULATION */
+class Solution {
+    public int countStudents(int[] students, int[] sandwiches) {
+        int len = students.length; 
+        Queue<Integer> studentQueue = new LinkedList<>();
+        Stack<Integer> sandwichStack = new Stack<>();
+        // Add students and sandwiches to the queue and stack
+        for (int i = 0; i < len; i++) {
+            sandwichStack.push(sandwiches[len - i - 1]);
+            studentQueue.offer(students[i]);
+        }
+        // Simulate the lunch process by serving sandwiches or sending students to the back of the queue.
+        int lastServed = 0;     //how many students ago the most recent sandwich was served.
+        while (studentQueue.size() > 0 && lastServed < studentQueue.size()) {
+            if (sandwichStack.peek() == studentQueue.peek()) {
+                sandwichStack.pop(); // Serve sandwich
+                studentQueue.poll(); // Student leaves queue
+                lastServed = 0;
+            } 
+            else{   // Student moves to back of queue
+                studentQueue.offer(studentQueue.poll()); 
+                lastServed++;
+            }
+        }
+        // Remaining students in queue are unserved students
+        return studentQueue.size();    
+    }
+}
