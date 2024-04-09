@@ -1,0 +1,25 @@
+/* SIMULATION */
+class Solution {
+    public int timeRequiredToBuy(int[] tickets, int k) {
+        Queue<Integer> queue = new LinkedList<>();
+        for(int i=0;i<tickets.length;i++){
+            queue.add(i);   //making a queue of indexes
+        }
+        int t=0;
+        while(tickets[k]!=0){       //can also do--- while(!queue.isEmpty())
+            t++;
+            int front=queue.poll(); //person standing in front buys ticket
+            tickets[front]--;
+            if(k==front && tickets[front]==0) return t;
+            if (tickets[front]!=0) queue.add(front);   //adding at the back if they still need to buy ticket
+        }
+        return t;
+    }
+}
+
+/*
+LOGIC---
+SIMULATE
+We can simulate the ticket-buying process by using a queue of indexes.
+
+*/
