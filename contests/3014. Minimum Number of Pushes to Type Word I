@@ -1,0 +1,29 @@
+class Solution {
+    public int minimumPushes(String word){
+        int n=word.length();
+        if(n<=8) return n;
+        else if(n<16) return 8 + (n-8)*2;
+        else if(n<24) return 8 + 8*2 + (n-16)*3;
+        else return 8 + 8*2 + 8*3 + (n-24)*4;
+    }
+}
+
+
+/* 
+LOGIC---
+Ordering and mapping of keys do not effect how it is done.
+We just wnat the distribution to be efficient.
+27 -> alphabets
+2 to 9 -> 8 buttons
+So, 6 buttons have 3 letters and 2 buttons have 4 letters
+
+For less taps, we would want the number be available on the first tap of each button
+So, we can have 8 characters on 1 taps
+we can have next 8 characters on 2 taps
+next 8 at 3 taps
+and last 2 at 4 taps
+
+GOOD THING---
+All letters in words are givin to be distinct
+So, we can just work out based on the number of chars available
+*/
