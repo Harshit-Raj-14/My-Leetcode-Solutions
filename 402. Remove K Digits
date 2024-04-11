@@ -1,0 +1,49 @@
+class Solution {
+    public String removeKdigits(String s, int k) {
+        Stack<Character> stack = new Stack<>();
+        for(int i=0;i<s.length();i++){
+            while(!stack.isEmpty() && k>0 && stack.peek()>s.charAt(i)){
+                stack.pop();
+                k--;
+            }
+            stack.push(s.charAt(i));
+        }
+        //In case k is left remove top digits of stack
+        while(k>0){
+            stack.pop();
+            k--;
+        }
+        StringBuilder ans = new StringBuilder();
+        while(!stack.isEmpty()) ans.append(stack.pop());
+        ans.reverse();  //this is our proper number
+        //Remove leading zeros
+        while(ans.length()>0 && ans.charAt(0)=='0') ans.deleteCharAt(0);
+        if(ans.length()==0) return "0";
+        else return ans.toString();
+    }
+}
+
+/*
+LOGIC---
+eg - 1432219
+greedy fails if we delete only largest numbers : 1221 > 1219(actual ans)
+
+If we want to make the smallest number form a collection of digits, we would place them in increasing order from left to right like : 12345
+
+IDEA--- 
+So, as we work on creating our smallest number ans we would want to keep digits in increasing order
+So, if we do not see an increasing order we can delete it.
+
+eg : collection = {1,2,3,4} => smallest number 1234
+So, if we have number 1432 => we can remove 4 first becuase 4 and 3 are not in creasing order to form a smallest numer
+
+Since, we will be using to delete the previous elemnt if it is becoming decreasing order, we use stack.
+Since, the stack contaisn elements only in a aparticular order(increasing here) its called a monotonic square.
+
+Note in case all numbers are put in stack and k is still left.
+We cna just pop the upper elements sinc eit is in increasing order.
+The remaining stack is ans.
+
+TC - O(n)
+SC - O(n)
+*/
