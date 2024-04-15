@@ -1,0 +1,53 @@
+/* USING HASHMAP O(n) , O(n) */
+
+
+
+LOGIC---
+In brute force everytime we needed to find nums[i]+1 or nums[i]-1.
+But what if we maintain their count and directly return their presence in the subsequence since order does not matter in subsequence.
+
+
+
+/* O(n^2) BRUTE FORCE */
+class Solution {
+    public int findLHS(int[] nums){
+        int maxsubarraylength=0;
+        for(int i=0;i<nums.length;i++){
+            int currsubarraylength=1;
+            //once considering nums[i] as min
+            int min=nums[i];    
+            int maxcount=0;
+            for(int j=i+1;j<nums.length;j++){
+                if(nums[j]==min)currsubarraylength++;  //there can be only min=nums[i] and max in subsequence
+                if(nums[j]==min+1){maxcount++; currsubarraylength++;}   //max can only be nums[i]+1 
+            }
+            if(maxcount>0) maxsubarraylength = Math.max(maxsubarraylength, currsubarraylength); //only when max is present valid subsequence
+
+            //once considering nums[i] as max
+            currsubarraylength=1;
+            int max=nums[i];
+            int mincount=0;
+            for(int j=i+1;j<nums.length;j++){
+                if(nums[j]==max)currsubarraylength++;  //there can be only min=nums[i] and max in subsequence
+                if(nums[j]==max-1){mincount++; currsubarraylength++;}   //max can only be nums[i]+1 
+            }
+            if(mincount>0) maxsubarraylength = Math.max(maxsubarraylength, currsubarraylength); //only when max is present valid subsequence
+
+        }
+        return maxsubarraylength;
+    }
+}
+
+/*
+LOGIC---
+Harmonious subsequence has min and max differnece elemtn as 1.
+That means the susbsequence only has min=x, the only other number in it can be x+1 that will be max.
+Only then differnece 1 is maintained.
+
+So, just make sure that subseuqence has both nums[i] and nums[i]+1 and tell their count in a continuous manner.
+So, from each number nums[i] consider it min and find subsequence length till you can count max.
+
+But you also need to consider case nums[i]-1 and nums[i]. see testcase 1.
+
+So, write code for both cases when nums[i] is max and when nums[i] is min.
+*/
