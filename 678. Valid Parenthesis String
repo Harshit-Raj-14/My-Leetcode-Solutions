@@ -1,3 +1,4 @@
+/* O(n), O(1) SOLUTION */
 class Solution {
     public boolean checkValidString(String s){
         int leftmin=0;
@@ -42,3 +43,27 @@ Approach to solve this problem....
 leftMax=maximumcount of open parenthesis
 leftMin=minimumcount of open parenthesis
 */
+
+
+/* O(n), O(n) SOLUTION */
+class Solution {
+    public boolean checkValidString(String s) {
+        Stack<Integer> openBrackets = new Stack<>();    //saving with their indexes
+        Stack<Integer> asterisks = new Stack<>();       //saving with their indexes
+        for (int i=0; i<s.length(); i++) {
+            char ch=s.charAt(i);
+            if (ch=='(') openBrackets.push(i);
+            else if (ch == '*') asterisks.push(i); 
+            else {
+                if (!openBrackets.isEmpty()) openBrackets.pop();
+                else if (!asterisks.isEmpty()) asterisks.pop();
+                else return false;
+            }
+        }
+        // Check if there are remaining open brackets and asterisks that can balance them
+        while (!openBrackets.isEmpty() && !asterisks.isEmpty()){    //If an open bracket appears after an asterisk, it cannot be balanced, return false
+            if (openBrackets.pop()>asterisks.pop()) return false; // '*' before '(' which cannot be balanced.
+        }
+        return openBrackets.isEmpty();
+    }
+}
