@@ -1,0 +1,68 @@
+/* TWO PASS SOLUTION */
+class Solution {
+    public String getHint(String secret, String guess) {
+        int bulls=0;    //same position
+        int cows=0;     //different position
+        int count1[] = new int[10];
+        int count2[] = new int[10];
+        for(int i=0;i<secret.length();i++){
+            if(secret.charAt(i)==guess.charAt(i)) bulls++; //matched position and values
+            else{   //these are frequencies of not matched
+                count1[secret.charAt(i)-'0']++;
+                count2[guess.charAt(i)-'0']++;
+            }
+        }
+        //no we will tally which unmatched can actually form pairs
+        for(int i=0;i<count1.length;i++){
+            cows+=Math.min(count1[i], count2[i]);
+        }
+        return bulls+"A"+cows+"B";
+    }
+}
+
+/*
+LOGIC---
+What are bulls?
+The digits in guess that are correct and are in right positions.
+
+What are cows?
+The digits that are correct but on wrong positions.
+
+The task is almost similar to "242. Valid anagrams". But this time we must return
+AT FIRST count of matched chars with source string s
+and AT SECOND count of matched chars with proper anagram of the source s. Proper means that position of symbol is different (cow)
+"ab" => "ab" it is a valid anagram but not proper. (2 bulls)
+"ab" => "ba" it is a proper anagram. (2 cows)
+"ab" => "bb" it is not an anagram. (1 bull as 1 matched, 0 cows).
+"abc" => "acb" it is a proper anagram. (1 bull as 1 matched, 2 cows).
+*/
+
+
+/* ONE PASS SOLUTION */
+class Solution {
+    public String getHint(String secret, String guess) {
+        int bulls=0;    //same position
+        int cows=0;     //different position
+        int count[] = new int[10];
+        for(int i=0;i<secret.length();i++){
+            if (secret.charAt(i) == guess.charAt(i)) bulls++;  //accurate match (same digit with same position)
+            else {
+                //if prev part of guess has curr digit in secret then we found a pair that has same digit with different position
+                if (count[secret.charAt(i)-'0'] < 0) cows++;
+                //if prev part of secret has curr digit in guess then we found a pair that has same digit with different position                
+                if (count[guess.charAt(i)-'0'] > 0) cows++;
+                count[secret.charAt(i)-'0']++;
+                count[guess.charAt(i)-'0']--;
+            }
+        }
+        return bulls+"A"+cows+"B";
+    }
+}
+
+/*
+LOGIC---
+Approach---
+The idea is to iterate over the numbers in secret and in guess and count all bulls right away. 
+For cows maintain an array that stores count of the number appearances in secret and in guess. 
+Increment cows when either number from secret was already seen in guest or vice versa.
+*/
