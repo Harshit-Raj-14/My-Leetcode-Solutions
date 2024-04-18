@@ -1,0 +1,73 @@
+/* SIMPLE MATHS O(n^2) */
+class Solution {
+    public int islandPerimeter(int[][] grid) {
+        int ans=0;
+        int donothing=0;
+        for(int i=0;i<grid.length;i++){
+            for(int j=0;j<grid[0].length;j++){
+                if(grid[i][j]==1){
+                    if(i+1<grid.length && grid[i+1][j]==1) donothing=1;
+                    else ans++;
+                    if(i-1>=0 && grid[i-1][j]==1) donothing=1;
+                    else ans++;
+                    if(j+1<grid[0].length && grid[i][j+1]==1) donothing=1;
+                    else ans++;
+                    if(j-1>=0 && grid[i][j-1]==1) donothing=1;
+                    else ans++;
+                }
+            }
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+Just find the squares that are edges, that is not surrounded by other squares, they will contribute to perimter.
+We could have also done it the other way around : 4sides-(occurences of 1(other squares around)== perimter contribution by 1 square
+DRAWBACK ---
+With this method we are travelling all squares even the once with water, even though we know all islands are connected. Also the connection is only horizontally or vertically not diagonally.
+*/
+
+
+/* DFS SOLUTION */
+class Solution {
+    public int islandPerimeter(int[][] grid) {
+        int ans=0;
+        for(int i=0;i<grid.length;i++){
+            for(int j=0;j<grid[0].length;j++){
+                if(grid[i][j]==1) ans+=dfs(grid, i, j);
+            }
+        }
+        return ans;
+    }
+
+    public static int dfs(int grid[][], int i, int j){
+        //BASE CASE
+        if(i<0 || i>=grid.length || j<0 || j>=grid[0].length) return 1; //the sqaure in consideration is on edge of grid
+        if(grid[i][j]==0) return 1; //square side surrounded by water
+
+        if(grid[i][j]==-1) return 0;    //already visited
+        grid[i][j]=-1;  //marking cell as visited now
+
+        //explore neighbours(up, down, left, right)
+        return (dfs(grid,i+1,j) + dfs(grid,i-1,j) + dfs(grid,i,j-1) + dfs(grid,i,j+1));
+    }
+}
+
+/*
+LOGIC---
+This method utilizes Depth-First Search (DFS) to traverse and count the perimeter of the island. 
+We define a helper function dfs(r, c) that recursively explores all adjacent cells of a given cell (r, c).
+
+If a cell is out of the grid bounds or is water (0), it contributes 1 to the perimeter.
+
+If a cell is land (1), we mark it as visited by changing its value to -1 to avoid recounting, 
+then recursively explore its four neighboring cells (up, down, left, right).
+
+The base case for the recursion is when the cell is out of bounds or is water, 
+which contributes 1 to the perimeter.
+
+By iterating through each cell of the grid and invoking the dfs function on unvisited land cells, 
+we can compute the total perimeter of the island.
+*/
