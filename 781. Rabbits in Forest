@@ -1,0 +1,40 @@
+class Solution {
+    public int numRabbits(int[] answers){
+        int count[] = new int[1001];
+        int unique=0;   //the rabbits with the only color
+        for(int i=0;i<answers.length;i++){
+            if(answers[i]!=0) count[answers[i]]++;
+            else unique++;
+        }
+        int sum=0;
+        for(int i=1;i<count.length;i++){
+            while(count[i]>0){
+                sum+=(i+1);
+                count[i]=count[i]-(i+1);    //if there are more than x x's => then x+1 have the same color and then the next
+                
+            }
+        }
+        return sum+unique;
+    }
+}
+
+/*
+LOGIC---
+To get the minimum no of rabbits---
+=> the rabbit that tells the same number could be put together in the same category color.
+=> but this will be only possible for ans 'x' there can e only x more x. if there are more than x x's, restart
+=> study testcase - [2,2,2,2,2], [10,10,10]
+
+eg: [2,2,2,2,2]
+first rabbit says 2 => there are 3 rabbits with same color => so two more rabbits can say 2
+now 2 more 2's left => 2 more rabbit can say 2
+=> 3 rabbits of same color + 3 rabbits of same color = 6
+
+eg: [10,10,10]
+first rabbit says 10 => there are 11 rabbits with same color => so 10 more rabbits can say 10
+
+
+becuase rabbit answers how many other rabbits have same color as his.
+
+EDGE CASE : When a rabbit answers 0 it means they are unique. So, handle it seperately.
+*/
