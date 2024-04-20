@@ -1,0 +1,58 @@
+/* HASHING O(n+m) */
+class Solution {
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+        int currgreater=nums2[nums2.length-1];
+        Stack<Integer> stack = new Stack<>();   //stack to maintain and check curr greater
+        stack.push(nums2[nums2.length-1]);
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for(int i=nums2.length-1;i>=0;i--){
+            if(nums2[i]>=stack.peek()){
+                int foundnextgreater=0;
+                while(!stack.isEmpty() && foundnextgreater==0){
+                    if(nums2[i]<stack.peek()){
+                        map.put(nums2[i], stack.peek());
+                        foundnextgreater=1;
+                    }
+                    else stack.pop();
+                }
+                if(stack.isEmpty()) map.put(nums2[i], -1);
+            }
+            else map.put(nums2[i], stack.peek());
+            stack.push(nums2[i]);
+        }
+        System.out.println(map);
+        //answering queries from 1
+        int ans[] = new int[nums1.length];
+        for(int i=0;i<nums1.length;i++){
+            ans[i]=map.get(nums1[i]);
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+nums1 is like queries to be made in num2 for the enxt greater element.
+
+Best is to calculate and make a nextGreater array with all the next greater of nums2 in it stored accordingly.
+Here hashmap is best for storage since all numbers are unqiue and then we can answer the queries in O(1).
+*/
+
+
+/* ELEGANT SOLUTION SAME AS ABOVE */
+public class Solution {
+    public int[] nextGreaterElement(int[] query, int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>(); // map from x to next greater element of x
+        Stack<Integer> stack = new Stack<>();
+        for (int num : nums) {
+            while (!stack.isEmpty() && stack.peek() < num){
+                map.put(stack.pop(), num);
+            }
+            stack.push(num);
+        }
+        for (int i = 0; i < query.length; i++){
+            query[i] = map.getOrDefault(query[i], -1);
+        }
+        return query;
+    }
+}
