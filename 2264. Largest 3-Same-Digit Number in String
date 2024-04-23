@@ -1,0 +1,35 @@
+/* ELEGANT SOLUTION */
+class Solution {
+    public String largestGoodInteger(String num) {
+        int max=-1;
+        for(int i=0;i<num.length();i++){
+            if(i+2<num.length() && num.charAt(i)==num.charAt(i+1) && num.charAt(i+1)==num.charAt(i+2)){
+                max=Math.max(max, num.charAt(i)-'0');
+            }
+        }
+        if(max==-1) return "";
+        else{
+            String n = Integer.toString(max);
+            return n+n+n;
+        }
+    }
+}
+
+/* BRUTE FORCE */
+class Solution {
+    public String largestGoodInteger(String num) {
+        HashSet<String> set = new HashSet<>();
+        for(int i=0;i<num.length();i++){
+            if(i+2<num.length() && num.charAt(i)==num.charAt(i+1) && num.charAt(i+1)==num.charAt(i+2)){
+                set.add(num.substring(i,i+3));
+            }
+        }
+        if(set.size()==0) return "";
+        int max=0;
+        for(String el:set){
+            max=Math.max(max, Integer.parseInt(el));
+        }
+        if(max==0) return "000";
+        else return Integer.toString(max);
+    }
+}
