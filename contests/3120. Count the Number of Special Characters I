@@ -1,0 +1,16 @@
+class Solution {
+    public int numberOfSpecialChars(String word) {
+        int a[] = new int[26];  //
+        int b[] = new int[26];
+        for(int i=0;i<word.length();i++){
+            char c = word.charAt(i);
+            if(c>='a' && c<='z') a[c-'a']++;
+            else b[c-'A']++;
+        }
+        int ans=0;
+        for(int i=0;i<a.length;i++){
+            if(a[i]>0 && b[i]>0) ans++;
+        }
+        return ans;
+    }
+}
