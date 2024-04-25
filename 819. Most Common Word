@@ -1,0 +1,35 @@
+class Solution {
+    public String mostCommonWord(String p, String[] banned){
+        p=p.toLowerCase();
+        HashMap<String, Integer> map = new HashMap<>();
+        int i=0;
+        while(i<p.length()){
+            if(p.charAt(i)>='a' && p.charAt(i)<='z'){
+                StringBuilder sb = new StringBuilder("");
+                while(i<p.length() && p.charAt(i)>='a' && p.charAt(i)<='z'){
+                    sb.append(p.charAt(i));
+                    i++;
+                }
+                if(!map.containsKey(sb.toString())) map.put(sb.toString(), 1);
+                else map.put(sb.toString(), map.get(sb.toString())+1);
+            }
+            else i++;
+        }
+        HashSet<String> set = new HashSet<>();
+        for(int j=0;j<banned.length;j++){
+            set.add(banned[j]);
+        }
+        //System.out.println(map);
+        int max = 0;
+        String mostCommon = "";
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            if(!set.contains(entry.getKey())){
+                if(entry.getValue() > max) {
+                    max = entry.getValue();
+                    mostCommon = entry.getKey();
+                }
+            }
+        }
+        return mostCommon;
+    }
+}
