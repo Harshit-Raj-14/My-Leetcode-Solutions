@@ -1,0 +1,20 @@
+class Solution {
+    public boolean canMakeSquare(char[][] grid) {
+        for(int i=0;i<grid.length;i++){
+            for(int j=0;j<grid.length;j++){
+                int countB=0;
+                int countW=0;
+                if(grid[i][j]=='B') countB++;
+                if(grid[i][j]=='W') countW++;
+                if(i+1<grid.length && grid[i+1][j]=='B') countB++;
+                if(i+1<grid.length && grid[i+1][j]=='W') countW++;
+                if(j+1<grid.length && grid[i][j+1]=='B') countB++;
+                if(j+1<grid.length && grid[i][j+1]=='W') countW++;
+                if(i+1<grid.length && j+1<grid.length && grid[i+1][j+1]=='B') countB++;
+                if(i+1<grid.length && j+1<grid.length && grid[i+1][j+1]=='W') countW++;
+                if(countW==3 || countB==3 || countW==4 || countB==4) return true;
+            }
+        }
+        return false;
+    }
+}

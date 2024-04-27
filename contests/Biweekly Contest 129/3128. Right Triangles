@@ -1,0 +1,31 @@
+class Solution {
+    public long numberOfRightTriangles(int[][] grid){
+        int row1[]= new int[grid.length];   //row frequency of 1
+        int column1[] = new int[grid[0].length];    //column frequency of 1
+        for(int i=0;i<grid.length;i++){
+            for(int j=0;j<grid[0].length;j++){
+                if(grid[i][j]==1){
+                    row1[i]++;
+                    column1[j]++;
+                }
+            }
+        }
+        long ans=0;
+        for(int i=0;i<grid.length;i++){
+            for(int j=0;j<grid[0].length;j++){
+                if(grid[i][j]==1){
+                    int samerow=row1[i]-1;
+                    int samecolumn=column1[j]-1;
+                    if(samerow>0 && samecolumn>0) ans+=samerow*samecolumn;
+                }
+            }
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+For each x, y with grid[x][y] = 1 if there are row[x] 1s in the row x and col[y] 1s in column y, the answer should be added by (row[x] - 1) * (col[y] - 1).
+Something, like permutation work.
+*/
