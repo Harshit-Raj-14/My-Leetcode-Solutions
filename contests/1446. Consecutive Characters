@@ -1,0 +1,19 @@
+class Solution {
+    public int maxPower(String s){
+        if(s.equals("")) return 0;
+        int ans=1;
+        int i=1;
+        while(i<s.length()){
+            int curr=1;
+            if(i<s.length() && s.charAt(i)==s.charAt(i-1)){
+                while(i<s.length() && s.charAt(i)==s.charAt(i-1)){
+                    i++;
+                    curr++;
+                }
+                ans=Math.max(ans, curr);
+            }
+            else i++;
+        }
+        return ans;
+    }
+}
