@@ -1,0 +1,19 @@
+class Solution {
+    public int minOperations(int[] nums, int k) {
+        int xor = 0;
+        for(int i=0;i<nums.length;i++){
+            xor^=nums[i];
+        }
+        int flips=0;    //flips will be equivalent to the difference in the bits of xor and k
+        for(int i=0;i<32;i++){
+            if(((xor>>i)&1)!=((k>>i)&1)) flips++;
+        }
+        return flips;
+    }
+}
+
+/*
+LOGIC---
+Calculate the bitwise XOR of all elements of the original array and compare it to k in their binary representation.
+For each different bit between the bitwise XOR of elements of the original array and k we have to flip exactly one bit of an element in nums to make that bit equal.
+*/
