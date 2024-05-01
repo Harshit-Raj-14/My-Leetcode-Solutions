@@ -1,7 +1,7 @@
 class Solution {
     public long wonderfulSubstrings(String word) {
         int count[] = new int[1024];
-        count[0]=1; //empty string is also wonderful
+        count[0]=1; //xor=000 => visited once as initial state => empty string is also wonderful (all even state actually)
         long ans=0;
         int xor=0;  //cumulative xor
         for(int i=0;i<word.length();i++){
@@ -9,11 +9,11 @@ class Solution {
             int mask = 1<<charIndex; //here we create the mask for a->j and then cumulatively xor
             xor^=mask;
             //Case I: all characters are even
-            ans+=count[xor];    //if we encountered a same already occured xor, it means the value in between was null => substring in between was all even => that counts as an answer and from each 
-            //Case II: one character is ood and others are even, if xoring once with the cumulative xor, the 
+            ans+=count[xor];    //if we encountered a same already occured xor, it means the value in between was null => substring in between was all even => that counts as an answer and from each, those who do not have will come out as 0 freq
+            //Case II: one character is odd and others are even, if xoring once with the cumulative xor, the 
             for (int j = 0; j<10; j++){
                 mask = 1<<j;
-                ans += count[xor^mask];
+                ans += count[xor^mask]; //by checking a xor against each char, we determine are there any substring that had one odd in between, those who do not have will come out as 0 freq
             }
             count[xor]++;
         }
