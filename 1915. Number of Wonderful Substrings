@@ -1,0 +1,77 @@
+class Solution {
+    public long wonderfulSubstrings(String word) {
+        int count[] = new int[1024];
+        count[0]=1; //empty string is also wonderful
+        long ans=0;
+        int xor=0;  //cumulative xor
+        for(int i=0;i<word.length();i++){
+            int charIndex = word.charAt(i)-'a';
+            int mask = 1<<charIndex; //here we create the mask for a->j and then cumulatively xor
+            xor^=mask;
+            //Case I: all characters are even
+            ans+=count[xor];    //if we encountered a same already occured xor, it means the value in between was null => substring in between was all even => that counts as an answer and from each 
+            //Case II: one character is ood and others are even, if xoring once with the cumulative xor, the 
+            for (int j = 0; j<10; j++){
+                mask = 1<<j;
+                ans += count[xor^mask];
+            }
+            count[xor]++;
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+Objective - find substrings with one or less character appearing odd times.
+Zero appearing odd characters -> means all characters are even occurences
+
+a^a=0   -> even times
+a^a^a!=0 -> odd times
+
+Let,
+a->0001
+b->0010
+c->0100
+d->1000 and so on => since 32 bits and we require to represent only a to j => 10 character so its doable.
+
+Now imagine -> xor=00000
+xor^a=0001 => string has only a
+xor^a^b=0011 => string has both a and b
+xor^a^c^b^b=0101 => string has both a and c and maybe 0 or even number of occurences of b
+
+So, with set bits in our xor we can predict => if bit is set it means odd occurences
+and if bit is 0 => it means 0 or even occurences
+
+APPROACH:
+Since we require to represent only a to j
+a->0000000001 => 2^0 == 1 == (1<<0)
+b->0000000010 => 2^1 == 2 == (1<<1)
+...
+j->1000000000 => 2^9 == 1024
+
+
+Also, let's consider an example : 1 -6 +4 +2 => the final prefix sum is again 1
+So, we started with one and ended with one.
+We, can say that from beyond -1 till end their summation must have been = 0
+
+So, if we start from one state and after some summation end with the same state, that means the portion beyond the first recorded state was null/zero.
+
+So,
+eg:
+a b b c c
+cummulative xor started with xor=000
+xor^a=001 (one odd)
+xor^a^b=011 
+xor^a^b^b=001 (one odd) achieved same state
+xor^a^b^b^c=101
+xor^a^b^b^c^c=001 (one odd) achieved same state
+
+So, 001 => occurs three times => as beautfiul string
+there caN be other possible cases too - 010, 100 => so we cna maintain these counts and pritn their freq sum as final answer.
+
+ALGORITHM---
+create array to keep track of how many times we have seen a given mask upto
+2^10 because we can have max 10 chars in a string, so if all chars are odd, then all bits are 1
+
+*/
