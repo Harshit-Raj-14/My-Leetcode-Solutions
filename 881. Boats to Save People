@@ -1,0 +1,46 @@
+/* TWO POINTER */
+class Solution {
+    public int numRescueBoats(int[] people, int limit) {
+        Arrays.sort(people);
+        int boat=0; //boat required
+        int i=0;    //the less heavier side people
+        int j=people.length-1;    //the heavier side people
+        while(i<=j){
+            if(people[i]+people[j]<=limit){i++; j--;}  //heaviest and lightest go alone
+            else j--;   //no match for heavier person so goes alone
+            boat++;
+        }
+        return boat;
+    }
+}
+
+/*
+LOGIC---
+The most effective way to fit a ship within its weight limit is to place the heaviest people and 
+the lightest people into one ship, if possible.
+
+
+APPROACH---
+I need at least n/2 boats for the job, so greedily I will try to fit two people in one boat. 
+At the same time I also have to make sure that the total weights of the two people I am pairing up does not 
+exceed limit. So if I pare up minimum and second minimum together, and keep on pairing them up like this, 
+then at some later stage I risk the combined weights of the two people exceeding limit.
+
+So for this let us remove all the people with weight >= limit, as they will take one complete boat. 
+For the remaining ones, the maximum one of them has to be paired up with someone. 
+So let us try to pair him up with the minimum weighted person. Now notice that if the maximum guy cannot be 
+paired with the minimum guy then he cannot be paired up with anyone else 
+
+Otherwise we assign one boat to the max guy and proceed like this till everyone has got at least one boat.
+
+
+FOLLOW UP QUESTION---
+if a boat could carry more than two people.?
+You just have to sort in ascending order, then put the heaviest person in one boat since that person is going anyway. 
+Then the remaining capacity can be filled - not by lightest people i.e smaller numbers because this way we 
+might destruct higher person carrying capacity. We should use binary search and find max possible person that 
+can be taken in the remaining capacity, and once that is taken we should again do BS until max limit is r
+eached or no viable person remains. The painful part here would be removing taken people, 
+i.e removing used numbers from array so maybe we can use a ordered set instead of array since that would 
+help with Binary Search more natively as well.
+*/
