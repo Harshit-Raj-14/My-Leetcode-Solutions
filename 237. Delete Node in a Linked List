@@ -1,0 +1,58 @@
+/* O(1) SOLUTION */
+class Solution {
+    public void deleteNode(ListNode node) {
+        node.val = node.next.val;   //copying data from next node to the node to be deleted
+        node.next = node.next.next; //make the updated current node point to the next node
+    }
+}
+
+/*
+OPTIMISATION LOGIC TO O(1) :
+Instead of copying the entire left portion from node just change the address to point to the next required node.
+eg:
+So, 1|A -> 2|B -> 3|C -> 4|D -> 5|E
+Now using address C we put data 4 in place of 3
+So, 1|A -> 2|B -> 4|C -> 4|D -> 5|E
+Now change address C directly to point to D. So, C becomes D
+So, 1|A -> 2|B -> 4|D |---| 4|D
+                -> 5|E Now 4D directly point to 5E instead of the second 4D
+*/
+
+/* O(n) ITERATIVE SOLUTION */
+class Solution {
+    public void deleteNode(ListNode node){
+        while(node.next.next!=null){
+            node.val = node.next.val;   //copying data from next node to the node to be deleted
+            node=node.next;  //moves the node pointer to the next node in the list, advancing it forward.
+        }
+        node.val=node.next.val;
+        node.next=null;
+    }
+}
+
+/*
+LOGIC---
+We don't know what head is and we only know the node to delete in LL.
+So, we don't have access to previous address that refers to data of that node. And we can only iterate forward from node.
+
+So, we cut paste the left part to one step back.
+
+So, we have LL : 1 2 3 4 5 => A B C D E null are the address block attached to them.
+Let's say we want to remove 3
+So, C points to data 4.
+If we copy that 4 and put it in place of 3. and keep on repeating it forward.
+the LL we are left with no longer has 3 in it.
+
+So, 1|A -> 2|B -> 3|C -> 4|D -> 5|E
+Now using address C we put data 4 in place of 3
+So, 1|A -> 2|B -> 4|C -> 4|D -> 5|E
+Now repeat this with 4 and 5 till we reach null.
+So, 1|A -> 2|B -> 4|C -> 5|D -> 5|E
+
+Now delete the last node tail. (by turning next of PREV(here D) to null)
+
+APPROACH---
+Since we are not given the previous node of the node to be deleted, we can only replace value of current node with 
+next node and keep doing till the previous node of tail node. Then just make the last node null.
+
+*/
