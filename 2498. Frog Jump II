@@ -1,0 +1,113 @@
+/* GREEDY */
+class Solution {
+    public int maxJump(int[] stones){
+        if(stones.length==2) return stones[1]-stones[0];
+        int max=0;
+        for(int i=2;i<stones.length;i++){
+            max=Math.max(max, stones[i]-stones[i-2]);
+        }
+        return max;
+    }
+}
+
+/*
+LOGIC---
+No matter how you try, the best approach is always going to be skipping the next stone and going to next stone 
+after that (if this step is possible).
+
+By skipping one stone in between to keep them remaining fro the return path, we minimise the max jump lengths.
+This is ebcuase if we do consecutive stoens in one way min jump can be made 1 but during returning it will be a problem.
+So, best is to jump by leaving one in between.
+
+TC: O(n), SC: O(1)
+*/
+
+
+/* BINARY SEARCH */
+class Solution {
+    public int maxJump(int[] stones) {
+        int l=1;
+        int r=stones[stones.length-1]-stones[0];
+        int ans=0;
+        while(l<=r){
+            int mid=l+(r-l)/2;
+            if(isPossible(stones, mid)){
+                ans=mid;
+                r=mid-1;
+            }
+            else l=mid+1;
+        }
+        return ans;
+    }
+
+    public static boolean isPossible(int stones[], int maxjump){
+        //  Let's jump by skipping one-one stone
+        int n=stones.length;
+        HashSet<Integer> visited = new HashSet<>();
+        // Travel from front to end
+        for(int i=0;i<n;i++){
+            if(i==n-1) break;   //reached last stone
+            else if(i==n-2){    //reached second last stone
+                if(stones[i+1]-stones[i]<=maxjump){ 
+                    if(i!=0) visited.add(i);
+                    break;
+                }
+                else return false;
+            }
+            else if(stones[i+2]-stones[i]<=maxjump){    //for a jump in between leaving a stone
+                if(i!=0) visited.add(i);    //  Marking the stone as visited
+                i++;
+            }
+            else return false;
+        }
+        
+        // Travel from end to start
+        for(int i=n-1;i>=0;i--){
+            if(i==0) break;
+            if(i==1){
+                if(stones[i]-stones[i-1]<=maxjump) break;
+                else return false;
+            }
+            else if(!visited.contains(i)){  //stepping on stones which we did not step on
+                if(stones[i]-stones[i-2]<=maxjump) i--;
+                else return false;
+            }
+        }
+        return true;
+    }
+}
+
+/*
+So, the smallest length can be 1. and the largest length will be differnece between first and large stone.
+So, we have got our search space from 1,......,stones[stones.length-1]-stones[0]
+
+Now, we need to ifnd the maximum minimum distance possible.
+
+So, let's assume 7. So, try to find is it possible to mkae 7 as our ans and so on.
+If 7 is possible we try to minimise our answer and look on left side.
+But if 7 turns out to be impossible we will mve towards looking for a larger number.
+
+So, we are looking at : NNNNNNNYYYYYYYY
+So, we need to ifnd the first valid Y.
+
+Time complexity: O(nlogn)
+Space complexity:o(n)
+*/
+
+
+/* DP */
+class Solution {
+    public int maxJump(int[] stones){
+        int n=stones.length;
+        if(n==2) return stones[1]-stones[0];
+        int dp[] = new int[n];
+        dp[n-1]=0;    //at last stone
+        dp[n-1]=stones[n-1]-stones[n-2];    //only when last and second last stone exists
+        for(int i=n-3;i>=0;i--){
+            int going=Math.max(stones[i+1]-stones[i], dp[i+1]);
+            int coming=Math.max(stones[i+2]-stones[i], dp[i+2]);
+            dp[i]=Math.max(going, coming);
+        }
+        return dp[0];
+    }
+}
