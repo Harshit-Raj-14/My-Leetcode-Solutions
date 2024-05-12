@@ -1,0 +1,22 @@
+class Solution {
+    public int[][] largestLocal(int[][] grid) {
+        int ans[][] = new int[grid.length-2][grid[0].length-2];
+        int r=0, c=0;
+        for(int i=1;i<grid.length-1;i++){
+            for(int j=1;j<grid[0].length-1;j++){
+                int u = Math.max(grid[i-1][j-1], Math.max(grid[i-1][j], grid[i-1][j+1]));
+                int m = Math.max(grid[i][j-1], Math.max(grid[i][j], grid[i][j+1]));
+                int l = Math.max(grid[i+1][j-1], Math.max(grid[i+1][j], grid[i+1][j+1]));
+                ans[i-1][j-1]=Math.max(u, Math.max(m,l));
+            }
+        }
+        return ans; 
+    }
+}
+
+/*
+LOGIC---
+New array has length n-2.
+One row is subtracted from start and one row is subtracted form last.
+Similary in case of column.
+*/
