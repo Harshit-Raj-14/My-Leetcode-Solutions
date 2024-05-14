@@ -1,0 +1,32 @@
+class Solution {
+    public int getMaximumGold(int[][] grid){
+        int ans=0;
+        for(int i=0;i<grid.length;i++){
+            for(int j=0;j<grid[0].length;j++){
+                if(grid[i][j]!=0) ans=Math.max(ans, solve(grid, i, j));
+            }
+        }
+        return ans;
+    }
+
+    public static int solve(int grid[][], int i, int j){
+        if(i<0 || j<0 || i>=grid.length || j>=grid[0].length || grid[i][j]==0) return 0; // no sum can come from these since these boxes don't exist or are empty(0 state) => so give off a effect that we did not travel them
+        int sum=grid[i][j];
+        int curr=grid[i][j];
+        grid[i][j]=0;   //marking as visited with 0
+        int upper = solve(grid, i+1, j);
+        int lower = solve(grid, i-1, j);
+        int left = solve(grid, i, j-1);
+        int right = solve(grid, i, j+1);
+        sum+=Math.max(upper, Math.max(lower, Math.max(left, right)));   //now updating to the next mining sum
+        grid[i][j]=curr;    //backtract to original value mark as unvisited
+        return sum;
+    }
+}
+
+/*
+LOGIC---
+Its a simple DFS problem where you explore all paths from a point with conddition not to go on 0.
+So, once you start travelling  apath mark the point already travelled as 0.
+Once path completes back track to tunr the 0 marked path back to their original values.
+*/
