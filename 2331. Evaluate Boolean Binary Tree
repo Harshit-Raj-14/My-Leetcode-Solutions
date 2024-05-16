@@ -1,0 +1,23 @@
+/* RECURSION */
+class Solution {
+    public boolean evaluateTree(TreeNode root) {
+        if(root.val==1) return true;
+        if(root.val==0) return false;   
+        if(root.val==2) return evaluateTree(root.left) || evaluateTree(root.right); //OR
+        return evaluateTree(root.left) && evaluateTree(root.right);  //final case -> root.val==3 => AND
+    }
+}
+
+/*
+TC - O(n)
+SC - O(n) 
+
+We make a recursive call on every node of the tree exactly once. Since we visit each node of the tree exactly once, the time complexity can be stated as O(n).
+The space complexity of the algorithm is primarily determined by two factors: the auxiliary space used and the recursion stack space. 
+The auxiliary space is O(1) because we have created two boolean variables.
+Additionally, the recursion stack space can grow up to O(n) in the worst case, constrained by the length of the path traversed up to a particular node, 
+as each recursive call may add a node to the stack.
+Therefore, the overall space complexity is the sum of these two components, resulting in O(1)+O(n), which simplifies to O(n).
+
+
+*/
