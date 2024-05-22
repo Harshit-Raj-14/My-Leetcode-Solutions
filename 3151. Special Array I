@@ -1,0 +1,17 @@
+class Solution {
+    public boolean isArraySpecial(int[] nums){
+        boolean toggle=true;
+        if(nums[0]%2!=0) toggle=false;
+        for(int i=1;i<nums.length;i++){
+            if(toggle==true){   //prev element even
+                if(nums[i]%2==0) return false;
+                toggle= !toggle;
+            }
+            else{
+                if(nums[i]%2!=0) return false;
+                toggle= !toggle;
+            }
+        } 
+        return true;
+    }
+}
