@@ -1,0 +1,55 @@
+class Solution {
+    public boolean[] isArraySpecial(int[] nums, int[][] q){
+        int ps[] = new int[nums.length];
+        for(int i=1;i<nums.length;i++){
+            ps[i]+=ps[i-1]; //prefix sum
+            if(nums[i-1]%2==nums[i]%2) ps[i]++; //when equal parity found as neighbour
+        }
+        boolean ans[] = new boolean[q.length];
+        for(int i=0;i<q.length;i++){
+            int l=q[i][0];
+            int r=q[i][1];
+            if(ps[r]-ps[l]>0) ans[i]=false;
+            else ans[i]=true;   //since prefix sum remains same from l to r means no equal parity
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+ps is a prefix sum array where ps[i] counts pairs of consecutive elements with the same parity up to index i
+P[i] = P[i-1] + isDifferentParity(A[i] , A[i-1])
+*/
+
+
+
+/* BRUTE FORCE TLE */
+class Solution {
+    public boolean[] isArraySpecial(int[] nums, int[][] q){
+        boolean ans[] = new boolean[q.length];
+        int k=0;
+        for(int i=0;i<q.length;i++){
+            int l=q[i][0];
+            int r=q[i][1];
+            ans[k++]=isSpecial(nums, l, r);
+        }
+        return ans;
+    }
+
+    public boolean isSpecial(int[] nums, int l, int r){
+        boolean toggle=true;
+        if(nums[l]%2!=0) toggle=false;
+        for(int i=l+1;i<=r;i++){
+            if(toggle==true){   //prev element even
+                if(nums[i]%2==0) return false;
+                toggle= !toggle;
+            }
+            else{
+                if(nums[i]%2!=0) return false;
+                toggle= !toggle;
+            }
+        } 
+        return true;
+    }
+}
