@@ -1,0 +1,74 @@
+/* OPTIMISED GREEDY SOLUTION O(n) */
+class Solution {
+    public int numSteps(String s) {
+        int ops=0;
+        int carry=0;
+        for(int i=s.length()-1;i>0;i--){
+            int digit = Character.getNumericValue(s.charAt(i)) + carry;
+            if(digit%2==1) {ops+=2; carry=1;}
+            else ops++;
+        }
+        return ops+carry;
+    }
+}
+
+/* LOGIC---
+If we closely observe the previous approach, we're essentially removing one bit from the right end each time. 
+When the number is even we are directly removing the bit at the rightmost position. 
+In case of an odd number, adding one will make it even, and then we will remove the rightmost bit. 
+Hence, it takes one step to remove the rightmost bit when the number is even, and it takes two steps when the number is odd.
+
+Also, the task of making a number equal to 1 is equivalent to removing the N - 1 last bits from the string as the most significant bit is always one. 
+Therefore, we will iterate the string from the right end to the leftmost 1 (as the bit at index 0 is 1 and we don't want to remove it). 
+For each bit, we will check if it's 1 or 0, i.e., odd or even, respectively. 
+If it's odd, we will add 2 to the answer operations, and if it's even, add 1 to operations.
+
+One important point is that when the current bit is 1, and we add 1 to it to make it 0 and then we divide by 2 to remove this bit, we will have an extra bit 1. 
+This extra bit, represented by the variable carry, needs to be passed one bit position to the left in the string. 
+Hence, while checking if the next bit is even or odd we should add carry as well to accommodate the extra bit from previous operations. 
+Initially, carry will be 0, and we will assign the value 1 when the current bit is odd to represent the overflow of one bit.
+
+*/
+
+
+/* BRUTE FORCE O(n^2) */
+class Solution {
+    public int numSteps(String s) {
+        StringBuilder sb = new StringBuilder(s);
+        int ops=0;
+        while(sb.length()>1){
+            if(sb.charAt(sb.length()-1)=='0'){  //right most bit is 0 -> even number
+                sb.deleteCharAt(sb.length()-1);   //effect of dividing by 2
+            }
+            else{   //odd number -> right most bit is 1
+                int i=sb.length()-1;
+                while(i>=0 && sb.charAt(i)=='1'){
+                    sb.setCharAt(i, '0');
+                    i--;
+                }
+                if(i<0) sb.insert(0, '1');  //the situation where s becomes 1,to restore
+                else sb.setCharAt(i, '1');
+            }
+            ops++;
+        }
+        return ops;
+    }
+}
+
+/*
+LOGIC---
+Dividing by 2:
+If the integer is even, divide the integer by 2.
+Example: If s is 1100, which is 12, we can apply this operation to make it 0110, which represents 6.
+Hence we just need to shift the string once to the right, or directly delete the last bit that is 0.
+Explanation - To divide the number the string represents by 2, we will remove the rightmost bit character from the string. 
+We can easily implement this using the right-shift operation, which shifts each bit by one place to the right, which is equivalent to dividing by two.
+
+
+ADDING 1:
+If the integer is odd, add 1 to the integer.
+Example: If s is 1101, which is 13, we can apply this operation to make it 1110, which represents 14.
+Explanation - To add one to the string, we will start from the right end and keep adding 1 while the carry doesn't become zero. 
+We can implement this by iterating from the right end and changing each 1 to 0 until we find the first 0. 
+If we don't find any 0s we will have to append a 1 at the start of the string.
+*/
