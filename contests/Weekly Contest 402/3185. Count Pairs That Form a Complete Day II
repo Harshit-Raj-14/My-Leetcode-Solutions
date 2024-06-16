@@ -1,0 +1,48 @@
+class Solution {
+    public long countCompleteDayPairs(int[] nums){
+        HashMap<Integer, Integer> map = new HashMap<>();
+        long ans=0;
+        for(int i=0;i<nums.length;i++){
+            int r = nums[i]%24;     //our first number
+            int comp = (24-r)%24;      //complement to reach the next multiple of 24
+            if(map.containsKey(comp)) ans+=map.get(comp);
+            map.put(r,map.getOrDefault(r, 0)+1);
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+The original condition would be: (nums[i]+nums[j])%24 == 0 
+
+Now, a%x = something and that something will be anything :--- 0,1,2,3,4,...x-1
+
+a%24 = {0,1,2,3,4....,23}
+
+(a+b)%m = (a%m + b%m) % m
+
+Since we can make pairs for 24,48,72... we need to reach common base value
+
+So, if we take a%m be the first number we put in hashmap
+Then the other number will be b%m
+
+(a+b)%24 = 0 => required condiiton
+(a%24 + b%24)%24 == 0
+(a%24 + b%24) %24 ==0
+That means sum of a%24 and b%24 should be divisible by 24
+
+(a%24 + b%24) %24 ==0
+  0      24
+  1      23
+  2      22
+  and so on
+
+  So, if a%24 is our first number r
+  then, b%24 => should be equivalent to (24-r) 
+  So, our equation reduces to (r +(24-r))%24
+
+  So, our target search should be (24-r)%24 => now apply two sum to it
+
+
+*/
