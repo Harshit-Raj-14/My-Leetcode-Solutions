@@ -1,3 +1,125 @@
+/* MANACHER'S ALGORITHM O(n), O(n) */
+public class Solution {
+    public String longestPalindrome(String s) {
+        int maxLen = 1;
+        String maxStr = s.substring(0, 1);
+        s = "#" + s.replaceAll("", "#") + "#";
+        int[] dp = new int[s.length()];
+        int center = 0;
+        int right = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (i < right) dp[i] = Math.min(right - i, dp[2 * center - i]);
+            while (i - dp[i] - 1 >= 0 && i + dp[i] + 1 < s.length() && s.charAt(i - dp[i] - 1) == s.charAt(i + dp[i] + 1)) {
+                dp[i]++;
+            }
+            if (i + dp[i] > right) {
+                center = i;
+                right = i + dp[i];
+            }
+            if (dp[i] > maxLen) {
+                maxLen = dp[i];
+                maxStr = s.substring(i - dp[i], i + dp[i] + 1).replaceAll("#", "");
+            }
+        }
+        return maxStr;
+    }
+}
+
+/*
+LOGIC---
+To avoid the unnecessary validation of palindromes, we can use Manacher's algorithm. The idea is to use palindrome property to avoid unnecessary validations. 
+We maintain a center and right boundary of a palindrome. We use previously calculated values to determine if we can expand around the center or not. 
+If we can expand, we expand and update the center and right boundary. Otherwise, we move to the next character and repeat the process. 
+We also maintain a variable max_len to keep track of the maximum length of the palindrome. We also maintain a variable max_str to keep track of the maximum substring.
+
+Algorithm---
+    We initialize a boolean table dp and mark all the values as false.
+    We will use a variable max_len to keep track of the maximum length of the palindrome.
+    We will iterate over the string and mark the diagonal elements as true as every single character is a palindrome.
+    Now, we will iterate over the string and for every character we will expand around its center.
+    For odd length palindrome, we will consider the current character as the center and expand around it.
+    For even length palindrome, we will consider the current character and the next character as the center and expand around it.
+    We will keep track of the maximum length and the maximum substring.
+    Print the maximum substring.
+
+*/
+
+/* O(n^2) EXPANDING AT CENTER */
+class Solution {
+    public String longestPalindrome(String s){
+        String ans=""+s.charAt(0);
+        int max=1;  
+        for(int i=1;i<s.length();i++){
+            //Case I: For odd length palindrome with center as c => XXXXYXXXX
+            int l=i-1, r=i+1;
+            int curr=1;
+            while(l>=0 && r<s.length()){
+                if(s.charAt(l)==s.charAt(r)){
+                    l--; r++;
+                    curr+=2;
+                }
+                else break;
+            }
+            if(max<curr){
+                max=curr;
+                ans=s.substring(l+1, r);
+            }
+            //Case II: For even length palindromes with centre as c => XXXXXXX
+            l=i-1; r=i;
+            curr=0;
+            while(l>=0 && r<s.length()){
+                if(s.charAt(l)==s.charAt(r)){
+                    l--; r++;
+                    curr+=2;
+                }
+                else break;
+            }
+            if(max<curr){
+                max=curr;
+                ans=s.substring(l+1, r);
+            }
+        }
+        return ans;
+    }
+}
+
+
+/*
+LOGIC---
+expandAroundCenter Technique
+There can be two center with current elemnt being the mid element of odd length palindrome or middle of an even lengt hpalindrome.
+But onc ew esay that the string we are trying to expand suddenly becomes non-palindromic, we can move to calculating to next character in string as center.
+*/
+
+
+/* ELEGANT EXPAND IN CENTER */
+class Solution {
+    public String longestPalindrome(String s) {
+        if (s == null || s.length() < 1) return "";
+        int start = 0, end = 0;
+        
+        for (int i = 0; i < s.length(); i++) {
+            int len1 = expandAroundCenter(s, i, i);       // Odd length palindrome
+            int len2 = expandAroundCenter(s, i, i + 1);   // Even length palindrome
+            int len = Math.max(len1, len2);
+            if (len > end - start) {
+                start = i - (len - 1) / 2;
+                end = i + len / 2;
+            }
+        }
+        return s.substring(start, end + 1);
+    }
+    private int expandAroundCenter(String s, int left, int right) {
+        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+            left--;
+            right++;
+        }
+        return right - left - 1;
+    }
+}
+
+
+
 /* BRUTE FORCE O(n^3) */
 class Solution {
     public String longestPalindrome(String s){
