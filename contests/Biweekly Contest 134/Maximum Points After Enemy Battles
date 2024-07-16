@@ -1,0 +1,23 @@
+class Solution {
+    public long maximumPoints(int[] nums, int currentEnergy) {
+        long ce = currentEnergy;
+        long points=0;
+        int min=Integer.MAX_VALUE;
+        long sum=0;
+        for(int i=0;i<nums.length;i++){
+            min=Math.min(min, nums[i]);
+            sum+=nums[i];
+        }
+        if(ce<min) return 0;
+        ce+= (sum-min); //mark all emenies except min one
+        points = ce/min;
+        return points;
+    }
+}
+
+/*
+LOGIC---
+The most optimsied way would be to kill the smalles value enmy each time.
+And if we have 1 point We mark all the other enemies.
+
+*/
