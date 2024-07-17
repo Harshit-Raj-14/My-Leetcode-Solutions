@@ -1,0 +1,81 @@
+/*
+LOGIC---
+P A Y P A L I S H I R  I  N  G
+0 1 2 3 4 5 6 7 8 9 10 11 12 13
+
+row = 4
+A matrix pattern of zig zag can be formed
+0     6          12
+1   5 7      11  13
+2 4   8  10 
+3     9 
+
+A generality sequence can be observed: (labelling based on row number)
+0 1 2 3 (2 1) 0 1 2 3 (2 1) 0 1 2 3 and so on
+
+0 1 2 3 -> vertically downward portion
+2 1 -> basically the zig-zag portion
+
+So, the matrix actually looks like this pattern
+
+0     0       0
+1   1 1    1  1
+2 2   2  2 
+3     3 
+
+That means our string can be labelled as:
+
+P A Y P A L I S H I R I N G
+0 1 2 3 2 1 0 1 2 3 2 1 0 1 
+
+So, the sequence can be read as first travelling 0 -> 3 downward row-wise and then again travelling upward in a zig-zag fashion 2->1 to go up
+and again reach 0 to restart pattern
+
+By this we have labeleld each stage with 0 1 2 3.
+
+So, first we print the 0's index(chars on 0th row) then 1 then 2 then 3 labelled.
+
+Now how to do this?
+Work on looping from 0 -> 3 then a decreasing loop 2 -> 0
+Now based on these indexing lables, first goes all the elements which are at 0 level, then 1 level and then 2 and so on in our answer.
+
+We make a string array of the required no of levels
+
+Infact for each level we make one temp string
+Level 0 occurs at a differnece of 5 (1,2,3,2,1) So, next occurence at +6
+Level 1 occurs at a difference of 3 (2,3,2) So, next occurence at +4
+Level 2 occurs at a difference of 1 (3)     So, next occurence at +2
+Level 3 occurs at a difference of 
+*/
+
+
+/* O(n^2) APPROACH LABELLING BY LEVELS */
+class Solution {
+    public String convert(String s, int r){
+        if(r==1) return s;  //one row only case
+        int label[] = new int[s.length()];  //label according to levels
+        int idx=0;
+        int currlevel=0;
+        int maxlevel = r-1;
+        while(idx<s.length()){
+            while(idx<s.length() && currlevel <= maxlevel){
+                label[idx] = currlevel;
+                currlevel++;    //putting labels say from 0 to 3
+                idx++;
+            }
+            currlevel = maxlevel-1;   //bringing it back to maxlevel-1 say here 2
+            while(idx<s.length() && currlevel!=0){
+                label[idx]=currlevel;
+                currlevel--;
+                idx++;
+            }
+        }
+        StringBuilder ans = new StringBuilder("");
+        for(int i=0;i<r;i++){   //start putting character level wise first all 0 labels then 1, then 2 and so on...
+            for(int j=0;j<s.length();j++){
+                if(label[j]==i) ans.append(s.charAt(j));
+            }
+        }
+        return ans.toString();
+    }
+}
