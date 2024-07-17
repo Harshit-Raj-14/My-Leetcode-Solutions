@@ -38,9 +38,11 @@ So, first we print the 0's index(chars on 0th row) then 1 then 2 then 3 labelled
 Now how to do this?
 Work on looping from 0 -> 3 then a decreasing loop 2 -> 0
 Now based on these indexing lables, first goes all the elements which are at 0 level, then 1 level and then 2 and so on in our answer.
+But this will take time complexity n^2
+
+So, let's think something better:
 
 We make a string array of the required no of levels
-
 Infact for each level we make one temp string
 Level 0 occurs at a differnece of 5 (1,2,3,2,1) So, next occurence at +6
 Level 1 occurs at a difference of 3 (2,3,2) So, next occurence at +4
