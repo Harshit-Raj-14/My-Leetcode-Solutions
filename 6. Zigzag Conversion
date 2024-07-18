@@ -1,3 +1,33 @@
+/* O(n) SOLUTION */
+class Solution {
+    public String convert(String s, int r){
+        if(r==1 || s.length()<=r) return s;  //edge case: one row only case
+        StringBuilder matrix[] = new StringBuilder[r];  //matrix we want to make
+        for(int i=0;i<r;i++) matrix[i] = new StringBuilder();   //making empty matrix by intiallizing strignbuilder, could have gone with a arraylist as well
+        int idx=0;
+        int currlevel=0;
+        int maxlevel = r-1;
+        while(idx<s.length()){
+            while(idx<s.length() && currlevel <= maxlevel){
+                matrix[currlevel].append(s.charAt(idx));
+                currlevel++;   
+                idx++;
+            }
+            currlevel = maxlevel-1;   //bringing it back to maxlevel-1 say here 2
+            while(idx<s.length() && currlevel!=0){
+                matrix[currlevel].append(s.charAt(idx));
+                currlevel--;
+                idx++;
+            }
+        }
+        StringBuilder ans = new StringBuilder("");
+        for(StringBuilder x : matrix){  
+            ans.append(x);
+        }
+        return ans.toString();
+    }
+}
+
 /*
 LOGIC---
 P A Y P A L I S H I R  I  N  G
@@ -36,18 +66,18 @@ By this we have labeleld each stage with 0 1 2 3.
 So, first we print the 0's index(chars on 0th row) then 1 then 2 then 3 labelled.
 
 Now how to do this?
-Work on looping from 0 -> 3 then a decreasing loop 2 -> 0
-Now based on these indexing lables, first goes all the elements which are at 0 level, then 1 level and then 2 and so on in our answer.
-But this will take time complexity n^2
+Work on looping from 0 -> 3 then a dcreasing loop 
 
-So, let's think something better:
+We make a string array of the required no of levels.
 
-We make a string array of the required no of levels
-Infact for each level we make one temp string
-Level 0 occurs at a differnece of 5 (1,2,3,2,1) So, next occurence at +6
-Level 1 occurs at a difference of 3 (2,3,2) So, next occurence at +4
-Level 2 occurs at a difference of 1 (3)     So, next occurence at +2
-Level 3 occurs at a difference of 
+HOW TO SAVE TIME COMPLEXITY FROM O(n^2) -> O(n) ?
+⭐️ Points -> Use 2d array instead of 1d array
+Why?
+That's because if we use 1d array, we have to concatenate all characters in the same row when we add a new character which is O(n). 
+We will repeat the process length of s times, so that is O(n^2). n is the length of the string s.
+To avoid O(n^2), we use 2d array so that we just append a new character to the last position of a target row which is O(1).
+
+This enables us to keep O(n) time instead of O(n^2).
 */
 
 
