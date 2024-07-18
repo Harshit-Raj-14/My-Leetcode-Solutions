@@ -1,0 +1,29 @@
+/* TLE O(n) */
+class Solution {
+    public int countGoodNumbers(long n) {
+        int m = 1000000007;
+        long ways = 1;   //for first space 0 index 5 ways
+        int currway=0;
+        for(int i=0;i<n;i++){
+            if(i%2==0) currway = 5;  //5 ways to fill at even indices
+            else currway = 4;    //4 ways to fill at even indices
+            ways = (ways*currway)%m;
+        }
+        return (int)ways;
+    }
+}
+
+/*
+LOGIC---
+They are asking for "good digit strings of length n" and not good numbers of length n, 
+hence the first digit can be a 0 even when n > 1.
+
+So when we say we need to make a n digit string.
+We can consider to have n boxes. (labelled from 0 to n-1)
+Now even indices have options -> 0,2,4,6,8 => 5 ways
+And odd indices have options -> 2,3,5,7 => 4 ways
+So, just apply permutation while filling according to number of ways.
+
+To make it efficient we know ways need to be multiplied by 5 for even indices and by 4 for odd indices.
+So, just find the number of even and odd indices directly.
+*/
