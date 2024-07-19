@@ -1,3 +1,51 @@
+/* EXPONENTIATION USING POW(x,n) */
+class Solution {
+    static int m = 1000000007;
+    public int countGoodNumbers(long n) {
+        long even=1, odd=1;
+        if(n%2==0){
+            even = myPow(5, n/2) % m;
+            odd = myPow(4, n/2) % m;
+        }
+        else{
+            even = myPow(5, (n/2+1));
+            odd = myPow(4, n/2);
+        }
+        return (int)((even * odd)%m);
+    }
+
+        public static long myPow(long x, long n) {
+        if(n==0) return 1;
+        if(n==1) return x;
+        if(n==-1) return 1/x;
+        if(n%2==0){
+            long pow = (myPow(x,n/2))%m;
+            return (pow*pow)%m;
+        }
+        else return myPow(x,n-1)*x;
+    }
+}
+
+/*
+LOGIC---
+They are asking for "good digit strings of length n" and not good numbers of length n, 
+hence the first digit can be a 0 even when n > 1.
+
+So when we say we need to make a n digit string.
+We can consider to have n boxes. (labelled from 0 to n-1)
+Now even indices have options -> 0,2,4,6,8 => 5 ways
+And odd indices have options -> 2,3,5,7 => 4 ways
+So, just apply permutation while filling according to number of ways.
+
+So, when odd n => (n/2+1) even indexes and n/2 odd indexes
+when even n => we have n/2 odd and n/2-1 even indexes
+
+if N is odd: ans = 5^(n/2+1) * 4^(n/2),
+if N is even: ans = 5^(n/2)*4^(n/2).
+*/
+
+
+
 /* TLE O(n) */
 class Solution {
     public int countGoodNumbers(long n) {
