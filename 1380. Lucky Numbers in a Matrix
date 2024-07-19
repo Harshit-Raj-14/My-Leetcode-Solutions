@@ -1,0 +1,46 @@
+/* O(n^2), O(n) SOLUTION */
+class Solution {
+    public List<Integer> luckyNumbers (int[][] matrix) {
+        int min_row[] = new int[matrix.length];
+        int max_column[] = new int[matrix[0].length];
+        int idx=0;
+        //iterating row-wise to find min
+        for(int arr[]:matrix){
+            int min=arr[0];
+            for(int i=1;i<arr.length;i++){
+                min=Math.min(min, arr[i]);
+            }
+            min_row[idx++] = min;
+        }
+        //iterating column-wise to find max
+        ArrayList<Integer> ans = new ArrayList<>();
+        idx=0;
+        for(int j=0;j<matrix[0].length;j++){
+            int max=matrix[0][j];
+            for(int i=1;i<matrix.length;i++){
+                max=Math.max(max, matrix[i][j]);
+            }
+            max_column[idx++] = max;;
+        }
+        //checking which numbers satisfy the condition, consider these two arrays merging to form a matrix themselves
+        for(int i=0;i<min_row.length;i++){
+            for(int j=0;j<max_column.length;j++){
+                if(min_row[i]==max_column[j]) ans.add(min_row[i]);
+            }
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+Use auxillary arrays to keep a store of min rows and max columns and later compare them.
+
+*/
+
+
+/* O(n) SOLUTION */
+
+LOGIC---
+observe a key observation that there can be at most one lucky number in the matrix.
+You can prove it by considering two close numbers in matrix as lucky and you will find that its not possible.
