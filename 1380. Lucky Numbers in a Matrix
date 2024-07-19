@@ -44,3 +44,9 @@ Use auxillary arrays to keep a store of min rows and max columns and later compa
 LOGIC---
 observe a key observation that there can be at most one lucky number in the matrix.
 You can prove it by considering two close numbers in matrix as lucky and you will find that its not possible.
+
+Hence, we can conclude that there can be at most one lucky number. If it exists, it can be found as follows: 
+the lucky number is the minimum element in its row and the maximum element in its column. 
+Therefore, we first find the minimum element of each row and then determine the maximum of these minimums as rowMinMax. 
+Similarly, we find the maximum of each column and then determine the minimum of these maximums as colMaxMin. 
+If rowMinMax equals colMaxMin, then this value is the lucky number; otherwise, we return an empty list.
