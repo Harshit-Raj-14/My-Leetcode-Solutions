@@ -1,0 +1,72 @@
+class Solution {
+    public List<String> readBinaryWatch(int on) {
+        int set = on;    //no of set bits
+        int n = 10;  //total no of bits
+        ArrayList<String> binary = new ArrayList<>();   //will have all permutations with on set bits
+        getAllPermutations(n, set, 0, 0, new StringBuilder(""), binary);
+        
+        ArrayList<String> ans = new ArrayList<>();
+        timeConverter(binary, ans);
+        return ans;
+    }
+
+    public static void getAllPermutations(int n, int set, int in, int iset, StringBuilder sb, ArrayList<String> binary){
+        if(in==n && iset==set && sb.length()==n){
+            binary.add(sb.toString());
+            return;
+        }
+        if(in>n || iset>set) return;
+        sb.append('1');
+        getAllPermutations(n, set, in+1, iset+1, sb, binary);
+        sb.deleteCharAt(sb.length()-1);
+        sb.append('0');
+        getAllPermutations(n, set, in+1, iset, sb, binary);
+        sb.deleteCharAt(sb.length()-1);
+    }
+
+    public void timeConverter(ArrayList<String> binary, ArrayList<String> ans){
+        for(int i=0;i<binary.size();i++){
+            int h = 0;
+            int min=0;
+            String curr = binary.get(i);
+            int idx=0;
+            for(int j=3;j>=0;j--){
+                if(curr.charAt(j)=='1') h += (int)(Math.pow(2, idx));
+                idx++;
+            } 
+            idx=0;
+            for(int j=curr.length()-1;j>=4;j--){
+                if(curr.charAt(j)=='1') min += (int)Math.pow(2, idx);
+                idx++;
+            }
+            if(h>=0 && h<=11){
+                if(min>=0 && min<=59){
+                    String time = Integer.toString(h);
+                    time+=":";
+                    if(min<10) time+="0";
+                    time+=Integer.toString(min);
+                    ans.add(time);
+                }
+            }
+        }
+    }
+}
+
+
+/*
+LOGIC---
+We have 4 bits to represent -> hours [0,11]
+We have 6 bits to represent -> minutes [0,59]
+size of binary string = 10
+
+Based on the number of given set bits we need to predict possible times.
+
+Now with backtracking we get a list of strigns which are all permutations of possible binary strigns with on set bits.
+
+Each binary string can be treated as:
+[XXXX][XXXXXX]
+the first four bits would be taken into account for hour and the rest six bits would go for minutes
+
+we try them to convert into possible hours and minutes and check which can yield correct possible conversions.
+*/
+
