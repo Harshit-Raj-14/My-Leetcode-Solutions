@@ -1,0 +1,122 @@
+/* BACKTRACKING */
+class Solution {
+    public static void solve(int n, int idx, StringBuilder temp, HashSet<String> set, ArrayList<String> ans){
+        if(idx==n){
+            String curr = temp.toString();
+            if(!set.contains(curr)) ans.add(curr);
+            set.add(curr);
+            return;
+        }
+        if(idx==0){
+            temp.append("()");   //this will be the first addition
+            solve(n, idx+1, temp, set, ans);
+        }
+        else{   //next we decide where to put next bracket in our temp string
+            for(int i=0; i<temp.length(); i++){
+                temp.insert(i, "()");
+                solve(n, idx+1, temp, set, ans);
+                temp.delete(i, i+2);    //you can also do this backtracking to previous state by storing the previous temp as another temporary string and bringing it back again
+            }
+        }
+    }
+    public List<String> generateParenthesis(int n){
+        ArrayList<String> ans = new ArrayList<>();
+        HashSet<String> set = new HashSet<>();
+        solve(n, 0, new StringBuilder(""), set, ans);
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+First we have an empty string.
+Now the first n use would always be ().
+From here we recursively need to explore where to put brackets.
+
+Now temp=()
+Think if in our hand we have another (), we cna put it anywhere in temp.
+=> ()(), (()), ()() n=2
+=> ()()(), (())(), ()(()), ((())) n=3
+=> duplicates will be removed by hashset. 
+But on observation we can form all substring by planting "()" anywhere in our temp and growing it.
+*/
+
+
+
+/* DFS - open parentheses AND close parentheses METHOD */
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        List<String> res = new ArrayList<>();
+        dfs(0, 0, "", n, res);
+        return res;        
+    }
+
+    public void dfs(int openP, int closeP, String s, int n, List<String> res) {
+        if (openP == closeP && openP + closeP == n * 2) {res.add(s); return;}   //another base condition can be s.length()==2*n
+        if (openP < n) dfs(openP + 1, closeP, s + "(", n, res);
+        if (closeP < openP) dfs(openP, closeP + 1, s + ")", n, res);
+    }    
+}
+
+/*
+LOGIC---
+The idea is to add ')' only after valid '('
+We have open parentheses before close parentheses. That's why the strategy is to increase number of open parentheses until n at first, then increase number of close parentheses until n whenever close paranthesis are less than open paranthesis.
+
+EXAMPLE---
+How it works
+First of all, we start
+
+number of open parenthese: 0
+number of close parenthese: 0
+Increase open until we reach n.
+
+open: 1
+close: 0
+parenthese: (
+Increase open until we reach n.
+
+open: 2
+close: 0
+parenthese: ((
+Now we reach n, then increase close until we reach n
+
+open: 2
+close: 1
+parenthese: (()
+Increase close until we reach n
+
+open: 2
+close: 2
+parenthese: (())
+Now we succeefully created one of well-formed parentheses.
+
+res = ["(())"]
+Now we have 2 open and 2 close, so let's go back to 1 open and 0 close, so that we can move in different way.
+
+open: 1
+close: 0
+parenthese: (
+Increase close to move in a different way.
+
+open: 1
+close: 1
+parenthese: ()
+Now we have 1 open. We will increase open until n.
+
+open: 2
+close: 1
+parenthese: ()(
+Now we reach n with 2 open. Then increase close until n.
+
+open: 2
+close: 2
+parenthese: ()()
+We successfully created one of well-formed parentheses.
+
+return res (= ["(())","()()"])
+
+Time complexity:O(2^(2n))
+Space complexity: O(n)
+
+*/
