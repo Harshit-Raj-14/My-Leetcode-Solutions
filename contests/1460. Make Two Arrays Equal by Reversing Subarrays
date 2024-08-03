@@ -1,0 +1,22 @@
+class Solution {
+    public boolean canBeEqual(int[] target, int[] arr) {
+        int count1[] = new int[1001];
+        int count2[] = new int[1001];
+        for(int i=0;i<target.length;i++){
+            count1[target[i]]++;
+            count2[arr[i]]++;
+        }
+        for(int i=0;i<count1.length;i++){
+            if(count1[i]!=count2[i]) return false;
+        }
+        return true;
+    }
+}
+
+/*
+LOGIC---
+For making equal it would be always possible to form any kind of order, just take any two number subarray and by reverse mena sjsut switching them and you can form any possible permutation.
+
+But you iwll not be able to di it if they have unequal elements.
+So, just look for that.
+*/
