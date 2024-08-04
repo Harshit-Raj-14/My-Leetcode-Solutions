@@ -1,0 +1,84 @@
+/* USING HEAP */
+class Solution{
+    private static class Pair { // Pair<sum, i> -> (subarray sum, till index i)
+        int sum;
+        int index;
+
+        Pair(int sum, int index) {
+            this.sum = sum;
+            this.index = index;
+        }
+    }
+
+    public int rangeSum(int[] nums, int n, int l, int r) {
+        PriorityQueue<Pair> pq = new PriorityQueue<>(new Comparator<Pair>() {
+            public int compare(Pair p1, Pair p2) {
+                return Integer.compare(p1.sum, p2.sum);
+            }
+        });
+        for (int i = 0; i < n; i++){    //putting all elemnts along with their index in heap first
+            pq.offer(new Pair(nums[i], i)); //the one length subarrays
+        }
+        int ans = 0;
+        int mod=1000000007;
+        for (int i = 1; i <= r; i++) {
+            Pair p = pq.poll();
+            // If the current index is greater than or equal to left, add the value to the answer.
+            if (i >= l) ans = (ans + p.sum) % mod;  //only when counter is l we start consdiering it as ans
+            // If index is less than the last index, increment it and add its value
+            if (p.index < n - 1) {  //forming the new pair
+                p.index++;  //the next element to form a subarray with popped element
+                p.sum += nums[p.index];
+                pq.offer(p);    //putting back the new subarray formed into heap
+            }
+        }
+        return ans;
+    }
+}
+
+
+/*
+LOGIC---
+We can use heap to find subarray sums of an array in increasing and decreasing order.
+
+By storing the currsum along with their last index of subarray [currsum, itslastindex]. 
+When repeatedly popped and queried and the new sum pushed in would generate the subarray sums in increasing order.
+
+Since the sums will be gernated in increasing order we can do it r times.
+
+TC - O(n^2)*logn
+In first for loop we loop n times and it takes logn to push in pq. So for first for loop its O(nlogn)
+The second for loop will kep on running the number of sybarray(n*(n+1)/2) times => O(n^2) and becuase we are pushing in priority queue it becomes O(n^2)*logn
+
+SC - O(n) 
+*/
+
+/* BRUTE FORCE */
+class Solution {
+    int m=1000000007;
+    public int rangeSum(int[] nums, int n, int l, int r) {
+        ArrayList<Integer> list = new ArrayList<>();
+        for(int i=0;i<nums.length;i++){
+            int curr=0;
+            for(int j=i;j<nums.length;j++){
+                curr=(curr+nums[j])%m;
+                list.add(curr);
+            }
+        }
+        Collections.sort(list);
+        int ans=0;
+        for(int i=l-1;i<=r-1;i++){
+            ans=(ans+list.get(i))%m;
+        }
+        return ans;
+    }
+}
+
+/*
+Time complexity: O(n^2⋅logn) - we have total n^2 elements in list
+We iterate through nums twice to store all the subarray sums. This operation takes O(n^2) time. Then, we sort this array storing all the subarray sums. 
+The time complexity for this operation is O(n2⋅logn). Iterating all indices between left and right also takes O(n2) time in the worst case.
+
+Space complexity: O(n^2)
+We create a storeSubarray array with size proportional to O(n^2)
+*/
