@@ -1,0 +1,40 @@
+class Solution {
+    public boolean divisorGame(int n){
+        if(n%2==0) return true;
+        else return false;   
+    }
+}
+
+/*
+LOGIC---
+n=1 => alice loses
+n=2 => alice wins
+n=3 => alice loses
+n=4 => alice wins
+n=5 => alice loses
+So, when n is evne alice wins and when n is odd bob wins
+*/
+
+
+
+
+/* RECURSION TLE */
+class Solution {
+    public boolean divisorGame(int n){
+        if(n==1) return false;
+        for(int x=1;x<n;x++){
+            if(n%x==0 && divisorGame(n-x)==false) return true;  //n-x goes to bob now, so he should lose at that only then can alice win
+        }   
+        return false;
+    }
+}
+
+/*
+LOGIC---
+n=1 => alice loses
+n=2 => alice wins
+n=3 => alice loses
+n=4 => alice wins
+n=5 => alice loses
+So, when n is evne alice wins and when n is odd bob wins
+*/
