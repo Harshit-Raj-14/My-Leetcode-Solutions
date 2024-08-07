@@ -1,0 +1,40 @@
+/* O(n),O(n) SOLUTION USING HASHMAP */
+class Solution {
+    public String kthDistinct(String[] arr, int k) {
+        HashMap<String, Integer> map = new HashMap<>();
+        // First pass: Populate the frequency map
+        for (String str : arr){ 
+            map.put(str, map.getOrDefault(str, 0) + 1);
+        }
+        // Second pass: Find the k-th distinct string
+        for (String str : arr) {
+            if (map.get(str) == 1) k--;    //the current string is distinct
+            if (k == 0) return str;   //When k reaches 0, we have found the k-th distinct string
+        }
+        return "";
+    }
+}
+
+
+
+/* O(n) SOLUTION */
+class Solution {
+    public String kthDistinct(String[] arr, int k) {
+        ArrayList<String> list = new ArrayList<>();
+        Set<String> distinctStrings = new HashSet<>();
+        Set<String> duplicateStrings = new HashSet<>();
+        for(int i=0;i<arr.length;i++){
+            if(duplicateStrings.contains(arr[i])) continue;
+            if(distinctStrings.contains(arr[i])){
+                distinctStrings.remove(arr[i]);
+                duplicateStrings.add(arr[i]);
+            }
+            else distinctStrings.add(arr[i]);
+        }
+        for(int i=0;i<arr.length;i++){
+            if(distinctStrings.contains(arr[i])) list.add(arr[i]);
+        }
+        if(list.size()<k) return "";
+        else return list.get(k-1);
+    }
+}
