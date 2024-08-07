@@ -1,13 +1,27 @@
+class Solution {
+    public int minFlips(int a, int b, int c) {
+        int flip=0;
+        for(int i=0;i<32;i++){
+            int bit_c=(c>>i)&1;
+            int bit_a=(a>>i)&1;
+            int bit_b=(b>>i)&1;
+            if(bit_c==1){
+                if(bit_a==1 || bit_b==1) continue;
+                else flip++;
+            }
+            else{
+                if(bit_a!=0) flip++;
+                if(bit_b!=0) flip++;
+            }
+        }
+        return flip;
+    }
+}
 
-
-
-LOGIC ---
-OR
-a b    c
-1 1 -> 1
-1 0 -> 1
-0 1 -> 1
-0 0 -> 0
-
-Two cases : If we want 0 in c and a and b are 1. So, we need two changes(flip).
-Otherwise, in others just one change is enough for minimum flips.
+/*
+LOGIC---
+For a | b == c
+If bit at c is 1 => either of a or b can be 1, or both can be 1
+If bit at c is 0 => we need both bits at a and b to be 0
+flip accordingly
+*/
