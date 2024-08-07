@@ -1,0 +1,46 @@
+class Solution {
+    public int minEatingSpeed(int[] arr, int h) {
+        int l=1;
+        int r = 1000000001;
+        int ans=0;
+        while(l<=r){
+            int mid = l+ (r-l)/2;
+            if(binarySearch(arr, mid, h)){
+                ans=mid;
+                r=mid-1;    //let's look for even a better solution on left
+            }
+            else l=mid+1;
+        }
+        return ans;
+    }
+
+    public boolean binarySearch(int arr[], int mid, int h){
+        int hoursNeeded=0;
+        for(int i=0;i<arr.length;i++){
+            hoursNeeded += (arr[i] + mid-1)/mid; // calculate ceiling of arr[i]/mid
+            //hoursNeeded += Math.ceil((double)arr[i]/mid);    //arr[i] and mid are integers so division still return a back int, so make one of them double to get fractions
+            if(hoursNeeded>h) return false; //police came even before finishing banana
+        }
+        return hoursNeeded<=h;
+    }
+}
+
+
+/*
+LOGIC---
+Now we need to decide on a number which is the eating speed of koko, x banana/hour.
+For the given number of hours we want the array elemtns (all banana in each pile) to become 0.
+
+Much easier to understand, if say each index is a box and contains arr[i] bananas in it. We have h hours. In 1 hr the monkey will only go for one box and no more. We need to find min x speed to finish all the bananas.
+
+Now the range of eating banana speed can vary from 1 to the largest element in the array.
+
+So, in search space range (1, max(arr)) => our solution exist
+=> the range space is sorted
+form => NNNNNNNNNNNYYYYYYYYYY => need to find the first Y
+
+BINARY SEARCH ON ANSWER
+
+Note - don't do the foolish mistake of updating original array and h in function, which you always did
+Use ciel values
+*/
