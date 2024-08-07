@@ -1,0 +1,71 @@
+class Solution {
+    public int findPeakElement(int[] nums) {
+        //edge cases
+        if (nums.length == 1) return 0;
+        if(nums[0]>nums[1]) return 0;   
+        if(nums[nums.length-1]>nums[nums.length-2]) return nums.length-1;
+        int l=0;
+        int r=nums.length-1;
+        while(l<=r){
+            int mid = l+(r-l)/2;
+            if(mid-1>=0 && mid+1<nums.length && nums[mid]>nums[mid-1] && nums[mid]>nums[mid+1]) return mid;
+            else if(nums[mid]<nums[mid+1]) l=mid+1;
+            else r=mid-1;
+        }
+        return -1;
+    }
+}
+/*
+LOGIC---
+we have any unsorted array.
+we need to find the element which is greater than all its neighbours.
+That means for element X element to its left and right will be less than X. => Peak element
+
+By using Binary search, check whether the middle element is peak or not. if not, the middle element right side is the greater, obviously right will be the peak element. or else, the middle element left side is the greater element, we can go to the left side of an array.
+
+
+HINTS---
+No adjacent two numbers are the same
+the two end of the arrays are -∞
+You can return any peak.
+
+For any given point the array, we can have below conditions:
+-If element at point is greater that neighbours, then return the element.
+-If element at point is greater than next element, then peak can occur on the left of this element.
+-If element at point is lesser than next element, then peak can occur on the right of this element.
+-If element at point is smaller than neighbours, then peak can occur on the right of this element.
+
+
+If you think how to apply Binary Search when the array is not sorted:
+-Find mid element and check whether it is greater than its neighbors.
+-If not, reduce search space (same as in binary search) and try recursively search in left side of mid.
+-Then similarly perform above step right side of mid.
+-Think about base cases.
+-So finally this runs in O(logn).
+
+
+SOME EXTRA THOUGHTS---
+Adjacent numbers are never equal. This is what makes binary search possible and ensures there is always a peak.
+The decision on which subarray to pick - left or right - is made by comparing the pivot to its neighbors, in an array like this [x, x, 3, 3, 3, x, x, x] it would not be possible.
+
+
+A graphical explanation for using binary search in this question:
+Starting off, the left and right bounds are negative infinities, thus the whole array is of shape: /--------\ . 
+
+The middle elements' conditions are:
+If nums[0] > nums[n-1], there would be a peak in the middle or at nums[0], because the height gap between nums[0] and nums[n - 1] needs to be covered by the middle nodes, resulting at least a peak at nums[0].
+If nums[0] < nums[n-1], same reason for a peak possibly in middle or at least a peak at nums[n - 1].
+If nums[0] == nums[n-1], then because there are no plateaus in the array, the range between nums[0] and nums[n – 1] needs to be covered by slopes, thus there will for sure be a peak.
+
+In conclusion: there will for sure be a peak in the initial nums.
+
+When we update the left and right pointers, we choose the middle pointer’s local slope:
+if it is a rising slope: /, then we update the former left bound rising slope:
+(/----------)/------\
+the same shape of array is retained, thus the update guarantees a slope in the new range.
+If it is a falling slope: , similar updated problem set:
+/--------\ (--------\ )
+thus a valid update.
+
+In the end, the two bounding slopes meet /\ , and a peak is found.
+*/
