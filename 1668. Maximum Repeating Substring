@@ -1,0 +1,47 @@
+/* TC-O(N^2) , SC-O(n) */
+class Solution {
+    public int maxRepeating(String sequence, String word) {
+        int count=0;
+        String repeat = word;
+        while(sequence.contains(repeat)){   //While the 'sequence' contains the current value of repeat
+            repeat+=word;
+            count++;
+        }
+        return count;
+    }
+}
+
+/*
+LOGIC--
+Time Complexity: The time complexity of this solution depends on how many times word can be repeated until it no longer forms a substring of sequence. In the worst case, if word forms a substring repeatedly until the length of sequence, the time complexity could be O(n^2), where n is the length of sequence.
+
+Space Complexity: The space complexity is O(n), where n is the length of sequence, due to the storage of repeat which grows linearly with respect to sequence.
+*/
+
+
+
+/* TC - O(n*m) SOLUTION */ 
+class Solution{
+    public int maxRepeating(String s, String t){
+        int max=0;
+        for(int i=0;i<s.length();i++){
+            int j=i;
+            int currmax=0;
+            if(s.charAt(j)==t.charAt(0)){
+                while(j+t.length()<=s.length() && s.substring(j, j+t.length()).equals(t)){
+                    j=j+t.length();
+                    currmax++;
+                }
+            }
+            max=Math.max(max, currmax);
+        }
+        return max;
+    }
+}
+
+/*
+LOGIC---
+It isn't that the sequence needs to contain k separate copies of word, it's that the sequence needs to contain the word concatenated k times -- meaning that the occurrences need to be consecutive, with nothing in between. 
+
+TC - O(n*m)
+*/
