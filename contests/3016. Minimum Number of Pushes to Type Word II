@@ -1,0 +1,86 @@
+/* SIMPLE SOLUTION DO WHAT QUESTION SAYS */
+class Solution {
+    public int minimumPushes(String s){
+        int count[] = new int[26];
+        for(int i =0;i<s.length();i++){
+            count[s.charAt(i)-'a']++;
+        }
+        Arrays.sort(count);
+        int req_press=1;
+        int eight_reached=1;
+        int ans=0;
+        for(int i=count.length-1;i>=0 && count[i]!=0;i--){   //we want decreasing order to get max freq in first place
+            if(count[i]>0){
+                ans+= count[i] * req_press;
+                System.out.println(count[i] +"*"+ req_press+"="+(count[i] * req_press));
+                eight_reached++;
+                if(eight_reached>8){
+                    eight_reached=1;
+                    req_press++;    //start putting in second place, then third and so on
+                }
+            }
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+There are 8 slots. and each can hold any number of letters.
+to get minimum presses, first put the required 8 in different.
+then again eight chars on different numbers. and so on.
+
+Note that the characters should be sorted in decreasing order as per their frequency to get minimum presses.
+*/
+
+
+
+/* USING PAIRS COMPARATIVE SORTING */
+class Solution {
+    private static class Pair { // Pair<char, freq>
+        char c;
+        int count;
+        Pair(char c, int count) {
+            this.c = c;
+            this.count = count;
+        }
+    }
+
+    public int minimumPushes(String s){
+        int count[] = new int[26];
+        for(int i =0;i<s.length();i++){
+            count[s.charAt(i)-'a']++;
+        }
+        ArrayList<Pair> list = new ArrayList<>();
+        for(int i=0;i<count.length;i++){
+            if(count[i]>0) list.add(new Pair((char)(i+'a'), count[i]));
+        }
+        //sort list based on frequencies
+        Collections.sort(list, new Comparator<Pair>(){
+            public int compare(Pair p1, Pair p2){
+                return Integer.compare(p2.count, p1.count); //sort in decreasing
+            }
+        });
+        int req_press=1;
+        int eight_reached=1;
+        int ans=0;
+        for(int i=0;i<list.size();i++){
+            ans+=list.get(i).count * req_press;
+            eight_reached++;
+            if(eight_reached>8){
+                eight_reached=1;
+                req_press++;    //start putting in second place, then third and so on
+            }
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+There are 8 slots. and each can hold any number of letters.
+to get minimum presses, first put the required 8 in different.
+then again eight chars on different numbers. and so on.
+
+Note that the characters should be sorted in decreasing order as per their frequency to get minimum presses.
+*/
