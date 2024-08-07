@@ -1,0 +1,43 @@
+/* O(n) SOLUTION */
+class Solution {
+    public boolean canJump(int[] nums) {
+        int reachable=nums[0];
+        for(int i=1;i<nums.length;i++){
+            if(i>reachable) return false;
+            reachable = Math.max(reachable, i+nums[i]);
+        }
+        return true;
+    }
+}
+
+/*
+LOGIC---
+The basic idea is this: at each step, we keep track of the furthest reachable index. The nature of the problem is that for an index to be reachable, each of the previous indices have to be reachable.
+
+Hence, it suffices that we iterate over each index, and If we ever encounter an index that is not reachable, we abort and return false. By the end, we will have iterated to the last index. If the loop finishes, then the last index is reachable.
+*/
+
+
+/* RECURSION TLE */
+class Solution {
+    public boolean canJump(int[] nums) {
+        if(solve(nums, 0)) return true;
+        else return false;
+    }
+
+    public boolean solve(int nums[], int idx){
+        if(idx==nums.length-1) return true;
+        if(idx>=nums.length) return false;
+        int ans=0;
+        for(int i=1;i<=nums[idx];i++){
+            int next_index=i+idx;
+            if(solve(nums, next_index)) return true;
+        }
+        return false;
+    }
+}
+
+/*
+We always need to make the jump throough the first element.
+So, if an element is x, our jump is possibl eof any type from 1 to x.
+*/
