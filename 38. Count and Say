@@ -1,0 +1,28 @@
+class Solution {
+    public String countAndSay(int n) {
+        String ans = "1";
+        StringBuilder curr= new StringBuilder("");
+        for(int i=2;i<=n;i++){
+            for(int j=0;j<ans.length();){
+                char c = ans.charAt(j);
+                int count=0;
+                while(j<ans.length() && c==ans.charAt(j)){
+                    count++;
+                    j++;
+                }
+                curr.append(Integer.toString(count));
+                curr.append(c);
+            }
+            ans=curr.toString();    //making our current calculated string the ans
+            curr= new StringBuilder("");    //resetting curr
+        }
+        return ans;
+    }
+}
+
+
+/* 
+LOGIC---
+Do what the question says.
+TC - O(2^n)
+*/
