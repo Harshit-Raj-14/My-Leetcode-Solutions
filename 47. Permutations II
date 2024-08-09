@@ -1,0 +1,40 @@
+class Solution {
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        ArrayList<List<Integer>> ans = new ArrayList<>();
+        HashSet<List<Integer>> set = new HashSet<>();
+        Arrays.sort(nums); // Sort the array to handle duplicates
+        solve(nums, 0, set, ans);
+        return ans;
+    }
+
+    public void solve(int nums[], int idx, HashSet<List<Integer>> set, ArrayList<List<Integer>> ans){
+        if(idx==nums.length){
+            ArrayList<Integer> list = new ArrayList<>();
+            for(int i=0;i<nums.length;i++) list.add(nums[i]);
+            if(!set.contains(list)){
+                ans.add(list);
+                set.add(list);
+            }
+            return;
+        }
+
+        for(int i=idx;i<nums.length;i++){
+            int temp = nums[i];
+            nums[i]=nums[idx];
+            nums[idx]=temp;
+
+            solve(nums, idx+1, set, ans);
+
+            temp = nums[i];
+            nums[i]=nums[idx];
+            nums[idx]=temp;
+        }
+    }
+}
+
+
+/*
+LOGIC---
+We choose one index and then start iterating array from their. And wonder what happens if we swap with each element while traversing. And then backtrack.
+
+*/
