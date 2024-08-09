@@ -1,0 +1,65 @@
+class Solution {
+    static int hello=0;
+    public int numMagicSquaresInside(int[][] grid){
+        int ans=0;
+        for(int i=0;i<grid.length;i++){
+            for(int j=0;j<grid[0].length;j++){
+                if(isMagic(grid, i ,j)) ans++;
+            }
+        }
+        System.out.println(hello);
+        return ans;
+    }
+
+    public boolean isMagic(int grid[][], int i, int j){
+        if (i+3>grid.length || j+3>grid[0].length) return false;
+        HashSet<Integer> set = new HashSet<>();
+        for(int r=i;r<i+3;r++){
+            for(int c=j;c<j+3;c++){
+                if(grid[r][c]>9 || grid[r][c]==0) return false;
+                if(!set.contains(grid[r][c])) set.add(grid[r][c]);
+                else{
+                    System.out.println("hi");
+                    return false;  //there is duplicate
+                }
+            }
+        }
+        int sum=15;
+        for(int r=i;r<i+3;r++){
+            int curr=grid[r][j]+grid[r][j+1]+grid[r][j+2];
+            if(curr!=sum){
+                    System.out.println("hi");
+                    return false;  
+                }
+        }
+        for(int c=j;c<j+3;c++){
+            int curr=grid[i][c]+grid[i+1][c]+grid[i+2][c];
+            if(curr!=sum){
+                    System.out.println("hi");
+                    return false;  
+                }
+        }
+        int dia1=grid[i][j]+grid[i+1][j+1]+grid[i+2][j+2];
+        int dia2 = grid[i+2][j] + grid[i+1][j+1] + grid[i][j+2];
+        if(dia1!=sum || dia2!=sum) {
+                    System.out.println("hi");
+                    return false;  
+                }
+                hello++;
+        return true;
+    }
+}
+
+/*
+LOGIC---
+sum==45 (from1 to 9). 
+Since there are 3 rows => 45/3 = 15
+hence sum of a row or col or diagonal must be 15 for a magic square.
+
+Set can be used for checking unique numbers 1-9.
+Sum = 15
+
+My approach was to consider that there are only a very limited number of valid 3x3 grids. Actually, there are only 8.
+Secondly, there are patterns in these 8 grids. For example, the middle number is always 5.
+You can convert the input grid into strings, as well as the 8 valid grids in a look-up structure.
+*/
