@@ -1,0 +1,35 @@
+class KthLargest {
+    PriorityQueue<Integer> pq;
+    int K;
+    public KthLargest(int k, int[] nums){  //Constructor method => O(n)*(O(log k) + O(log k)) => O(n * log k)
+        K=k;
+        pq = new PriorityQueue<>(k); //SC-O(k)
+        for(int num:nums){
+            pq.offer(num);  //O(log k)
+            if(pq.size()>k) pq.poll();  //O(log k)
+        }
+    }
+    
+    public int add(int val){    // O(log K)
+        pq.offer(val);  //O(log K)
+        if(pq.size()>K) pq.poll();  //O(log K)
+        return pq.peek();   //O(1)
+    }
+}
+
+/*
+LOGIC---
+Its obvious its heap.
+Largest k th element -> MIN HEAP
+
+Now, we have a array in beginning and then we have a stream of numbers being added to it.
+Each time we add we tell the kth largest element.
+
+Now let's make a pq of size k.
+Why size k we want to return the top element of the min heap which will be the kth largest element. Since min heap will have larger elements on bottom.
+
+Now if we put elements in heap, if it exceeds k we pop the top element since it was the (k+1)th largest and we don't need it.
+
+T.C : O(n*logK)
+S.C : O(K)
+*/
