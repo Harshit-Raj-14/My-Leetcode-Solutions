@@ -1,0 +1,102 @@
+/* Binary Search + Two-Pointer Technique */
+class Solution {
+    public int smallestDistancePair(int[] nums, int k) {
+        Arrays.sort(nums);
+        int l=0;
+        int r=nums[nums.length-1] - nums[0];    //max possible difference
+        int ans=0;
+        while(l<=r){
+            int mid=l+(r-l)/2;
+            int countpairs = slidingwindow(nums, mid);
+            if(countpairs<k) l=mid+1;  //we need more distance values so look ahead
+            else{
+                ans=mid;
+                r=mid-1;
+            }
+        }
+        return ans;
+    }
+
+    public int slidingwindow(int nums[], int mid){
+        int i=0;
+        int j=1;
+        int pair=0;
+        while(i<nums.length && j<nums.length){
+            while(nums[j]-nums[i]>mid) i++; //we want pairs that have distanc ebgreater than mid, if not possilbe check pairs from next index
+            pair+=j-i;
+            j++;    //keeping i constant, check for next indexes to form pair with i
+        }
+        return pair;
+
+    }
+}
+
+/*
+LOGIC---
+Binary Search on answer
+Use binary search on possible pair distances (from 0 to the maximum difference in the sorted array). For each midpoint in the binary search, count pairs with distances ≤ this midpoint. Adjust the search range based on whether the count is less than or greater than k. This method efficiently narrows down to the k-th smallest distance by leveraging sorting and binary search.
+
+So, from 0 till the max possible difference is a range space.
+
+Each distance could have possible multiple pairs having same distance.
+
+eg: [1,4,5,10] => sorted arr
+
+Now when having i=1, j=10 and we say we need distance of pairs to be less than 50.
+So, if 10-1=9<50 => it menas that other number between 1 and 10 would form a pair with 10 and still have distance less than 50.
+Hnece j-i = no of pairs have distance less than x
+
+So, what we are seeking is for the distance to have x value => x pairs basically the distance index should have k in its value only then it will be ou answer
+
+=> its kind of like saying, there are k pairs having distance less than equal to x (0->x)
+
+
+*/
+
+
+/* BRUTE FORCE MAXHEAP TLE O(n^2 logk) */
+class Solution {
+    public int smallestDistancePair(int[] nums, int k) {
+        PriorityQueue<Integer> maxheap = new PriorityQueue<>(Collections.reverseOrder());
+        ArrayList<Integer> dif= new ArrayList<>();
+        for(int i=0;i<nums.length;i++){
+            for(int j=i+1;j<nums.length;j++){
+                maxheap.add(Math.abs(nums[j]-nums[i]));
+                if(maxheap.size()>k) maxheap.poll();
+            }
+        }
+        return maxheap.peek();
+    }
+}
+
+/*
+LOGIC---
+use a Max-Heap (PriorityQueue in Java) to keep track of the smallest k distances.
+we need smallest k dist => MAX-HEAP
+
+Steps:
+    - Iterate over all possible pairs (i, j) where i < j in      the array.
+    - For each pair, calculate the absolute difference abs(nums[i] - nums[j]).
+    - Add the difference to a Max-Heap.
+    - If the size of the Max-Heap exceeds k, remove the largest element (this ensures that the heap only contains the k smallest differences).
+    - Finally, return the top element of the Max-Heap, which is the k-th smallest distance.
+
+Why TLE?
+    - The approach is O(n^2 log k) where n is the length of the array.
+    - The double loop over the pairs (i, j) makes it O(n^2).
+    - Since you’re using a heap, each insertion and deletion operation is O(log k)
+*/
+
+/* BRUTE FORCE FREQUENCY COUNT TABLE O(n^2), O(m) */
+Make a frequency table ranging from 0 to max_el(arr)-min_el(arr)
+Find all pairs diff and put inside the above frequency table.
+FInally find the kth term through freq table.
+
+
+/* BRUTE FORCE O(N^2) */
+Find all pair distances.
+Put them in a list of ditances => sort them
+return the kth element.
+
+From here, you can have a thinking that what if we already had the list of distances in a sorted fashion. => like a count table showing no of pairs for each distance.
+Would make life easy for us. => BINARY SEARCH ON ANSWER ON THIS VERY LIST => Something like applying binary search on answer
