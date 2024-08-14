@@ -1,0 +1,20 @@
+class Solution {
+    public List<List<Integer>> combinationSum3(int k, int t) {
+        ArrayList<List<Integer>> ans = new ArrayList<>();
+        solve(k, t, 1, new ArrayList<Integer>(), ans);  
+        return ans;
+    }
+
+    public static void solve(int k, int t, int start, ArrayList<Integer> temp, ArrayList<List<Integer>> ans){
+        if(t==0 && k==0){
+            ans.add(new ArrayList<>(temp));
+            return;
+        }
+        if(t<0 || k<=0) return;
+        for(int i=start;i<=9;i++){  // Iterate from the current start => we need start for unique combination
+            temp.add(i);
+            solve(k-1, t-i, i+1, temp, ans);    // Recurse with reduced k, t, and incremented start
+            temp.remove(temp.size()-1); //backtrack
+        }
+    }
+}
