@@ -1,0 +1,53 @@
+/* BEST BACKTRACKING SOLUTION */
+class Solution {
+    public List<List<Integer>> combinationSum2(int[] arr, int t) {
+        ArrayList<List<Integer>> ans = new ArrayList<>();
+        Arrays.sort(arr);
+        solve(arr, t, 0, new ArrayList<Integer>(), ans);
+        return ans;
+    }
+
+    public void solve(int arr[], int k, int idx, ArrayList<Integer> temp, ArrayList<List<Integer>> ans){
+        if(k==0){
+            ans.add(new ArrayList<>(temp));
+            return;
+        }
+        if(idx>arr.length-1 || k<0) return;
+        for(int i=idx; i<arr.length;i++){
+            if(i>idx && arr[i]==arr[i-1]) continue; // skip duplicates
+            temp.add(arr[i]);
+            solve(arr, k-arr[i], i+1, temp, ans);
+            temp.remove(temp.size() - 1);   //think without selecting element
+        }
+    }
+}
+
+
+/* SIMPLE BACKTRACKING TLE */
+class Solution {
+    public List<List<Integer>> combinationSum2(int[] arr, int t) {
+        ArrayList<List<Integer>> ans = new ArrayList<>();
+        HashSet<List<Integer>> set = new HashSet<>();
+        solve(arr, t, 0, new ArrayList<Integer>(), set, ans);
+        return ans;
+    }
+
+    public void solve(int arr[], int k, int idx, ArrayList<Integer> temp, HashSet<List<Integer>> set, ArrayList<List<Integer>> ans){
+        if(k==0){
+            ArrayList<Integer> list = new ArrayList<>(temp);
+            Collections.sort(list);
+            if(!set.contains(list)){
+                ans.add(list);
+                set.add(list);
+            }
+            return;
+        }
+        if(idx>arr.length-1 || k<0) return;
+        solve(arr, k, idx+1, temp, set, ans);
+        if(idx<arr.length) {
+            temp.add(arr[idx]);
+            solve(arr, k-arr[idx], idx+1, temp, set, ans);
+            temp.remove(temp.size() - 1);
+        }
+    }
+}
