@@ -1,0 +1,51 @@
+/* MORE EFFICIENT BACKTRACKING */
+class Solution {
+    public List<List<Integer>> combinationSum(int[] nums, int target) {
+        ArrayList<List<Integer>> ans = new ArrayList<>();
+        Arrays.sort(nums);
+        solve(nums, target, 0, new ArrayList<Integer>(), ans);
+        return ans;
+    }
+
+        public void solve(int[] nums, int target, int idx, List<Integer> list, ArrayList<List<Integer>> ans){
+        if(target==0){
+            ans.add(new ArrayList<>(list));   //Create a new list to avoid modification issues
+            return;
+        }
+        if(idx>=nums.length || target<0) return;
+        for(int i=idx; i<nums.length;i++){
+            list.add(nums[i]);
+            solve(nums, target-nums[i], i, list, ans);   // not i + 1 because we can reuse same elements
+            list.remove(list.size()-1);
+        }
+    }
+}
+
+
+/* LESS EFFICIENT BACKTRACKING */
+class Solution {
+    public List<List<Integer>> combinationSum(int[] nums, int target) {
+        ArrayList<List<Integer>> ans = new ArrayList<>();
+        HashSet<List<Integer>> set = new HashSet<>();
+        solve(nums, target, 0, new ArrayList<Integer>(), set, ans);
+        return ans;
+    }
+
+        public void solve(int[] nums, int target, int idx, List<Integer> list, HashSet<List<Integer>> set, ArrayList<List<Integer>> ans){
+        if(target==0){
+            ArrayList<Integer> temp = new ArrayList<>(list); //Create a new list to avoid modification issues
+            Collections.sort(temp);
+            if(!set.contains(temp)){
+                set.add(temp);
+                ans.add(temp); 
+            }
+            return;
+        }
+        if(idx>=nums.length || target<0) return;
+        for(int i=idx; i<nums.length;i++){
+            list.add(nums[i]);
+            solve(nums, target-nums[i], idx, list, set, ans);   
+            list.remove(list.size()-1);
+        }
+    }
+}
