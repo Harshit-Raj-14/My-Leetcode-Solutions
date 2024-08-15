@@ -1,0 +1,29 @@
+class Solution {
+    public boolean lemonadeChange(int[] bills) {
+        if(bills[0]!=5) return false;   //since we can't give change
+        int change5=0, change10=0;   //count of bill changes
+        for(int i=0;i<bills.length;i++){
+            if(bills[i]==5) change5++;
+            else if(bills[i]==10){
+                if(change5>0){change5--; change10++;}
+                else return false;
+            }
+            else{
+                if(change5>0 && change10>0){change5--; change10--;}
+                else if(change5>=3) change5-=3; //even if we don't have $10, give three $5 bill
+                else return false;
+            }
+        }
+        return true;
+
+    }
+}
+
+/*
+LOGIC---
+bill = 5 => take it as change, nothing to return
+bill = 10 => you need atleast 1 change of $5 and get back 1 $10 bill
+bill=20 => you need atleast 1 $10 and atleast 1 $5 bill OR atleast 3 $5 bill and get back 1 $20 as change
+And anything else situation would return false
+Note : the $20 is useless change
+*/
