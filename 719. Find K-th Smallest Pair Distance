@@ -51,6 +51,20 @@ So, what we are seeking is for the distance to have x value => x pairs basically
 => its kind of like saying, there are k pairs having distance less than equal to x (0->x)
 
 
+APPROACH---
+    Binary Search:
+        Calculate mid as the average of left and right.
+        Use the issmallpairs() function to determine if there are at least k pairs with a distance less than or equal to mid.
+        If issmallpairs() returns true, move right to mid to search for potentially smaller distances.
+        f issmallpairs() returns false, move left to mid + 1 to search for larger distances.
+        When the loop terminates, left will hold the k-th smallest distance.
+
+    issmallpairs() function:
+        This function counts how many pairs have a distance less than or equal to mid.
+        Use a two-pointer technique where right iterates over the array and left advances when the distance exceeds mid.
+
+
+TC - O(nlogn + nlog(max distance))
 */
 
 
