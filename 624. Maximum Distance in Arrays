@@ -1,0 +1,34 @@
+class Solution {
+    public int maxDistance(List<List<Integer>> list) {
+        int min1=Integer.MAX_VALUE, min2=Integer.MAX_VALUE;
+        int max1=Integer.MIN_VALUE, max2=Integer.MIN_VALUE;
+        int idxmin1=-1, idxmax1=-1;
+        for(int i=0;i<list.size();i++){
+            int l=list.get(i).get(0);   //smallest element in that array
+            int r=list.get(i).get(list.get(i).size()-1);    //largest element in that array
+            //find the two smallest number
+            if(l<min1){
+                if(min2!=min1) min2=min1;
+                min1=l; idxmin1=i;}
+            else min2=Math.min(min2, l);
+            //find the two largest number
+            if(r>max1){
+                if(max2!=max1) max2=max1;
+                max1=r; idxmax1=i;
+            }
+            else max2=Math.max(max2,r);
+        }
+        System.out.println(min1);
+        System.out.println(min2);
+        if(idxmin1==idxmax1) return Math.max(max1-min2, max2-min1); //if min1 and max1 occur insame array don't use them together
+        else return max1-min1;
+    }
+}
+
+/*
+LOGIC---
+just keep 2 pairs of max-min variables instead of 1.
+Keep track of greatest 2 , and smallest 2 numbers. 
+Keep track of which index max1 and min1 occur, if same use max2 and min2
+if not max1-min1 is the ans
+*/
