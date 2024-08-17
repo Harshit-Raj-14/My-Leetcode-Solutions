@@ -1,0 +1,80 @@
+/* OPTMISED SOLUTION GCD MATHS O(m+n) */
+class Solution {
+    public String gcdOfStrings(String s1, String s2){
+        if(!(s1+s2).equals(s2+s1)) return "";   //no GCD substring
+        int gcdlength = gcd(s1.length(), s2.length());
+        return s1.substring(0, gcdlength);
+    }
+
+    public int gcd(int a, int b){
+        if(b==0) return a;
+        return gcd(b, a%b);
+    }
+}
+
+
+/* 
+LOGIC---
+REMEMBER: if str1+str2 == str2+str1 -> divisible strings Exists and vice versa
+So, a divisbile string exists when:
+str1 = "ABCABC", str2 = "ABC"
+str1+str2 = str2+str1 = "ABCABC(ABC)" = "(ABC)ABCABC"
+
+Proof - Suppose there exists a divisible string base, we can write str1 and str2 in the form of multiples of base. Since both strings contains multiples of the identical segment base, their concatenation must be consistent, regardless of the order (str1 + str2 = str2 + str1).
+
+Therefore, we need to check if two concatenations made by str1 and str2 in both orders are the same. If they are not consistent, it means there is no divisible strings and we should return "" as required. Otherwise, there exists a GCD string of str1 and str2.
+
+Now that we have established we have a GCD string, we need that GCD string.
+
+The GCD string will be equal to the length of gcd(len of s1, len of s2).
+
+Return the prefix string with a length of gcdLength of either str1 or str2 as the answer.
+
+
+Time complexity: O(m+n)
+    We need to compare the two concatenations of length O(m+n), it takes O(m+n) time.
+    We calculate the GCD using binary Euclidean algorithm, it takes log(m⋅n) time.
+    To sum up, the overall time complexity is O(m+n).
+
+Space complexity: O(m+n)
+    We need to compare the two concatenations of length O(m+n).
+
+*/
+
+
+/* BRUTE FORCE O(n^2), O(n) */
+class Solution {
+    public String gcdOfStrings(String s1, String s2){
+        String ans = "";
+        StringBuilder sb = new StringBuilder("");
+        for(int i = 0; i < s1.length(); i++){
+            sb.append(s1.charAt(i));
+            if(possible(s1, s2, sb)) ans = sb.toString();
+        }
+        return ans;
+    }
+
+    public boolean possible(String s1, String s2, StringBuilder sb){
+        System.out.println("hello1");
+        String pattern = sb.toString();
+        int len = pattern.length();
+        // Check if s1 can be fully constructed by repeating the pattern
+        for(int i=0; i <s1.length(); i+=len){
+            if(i+len>s1.length() || !s1.substring(i, i+len).equals(pattern)) return false;
+        }
+        System.out.println("hello");
+        // Check if s2 can be fully constructed by repeating the pattern
+        for(int i=0; i<s2.length(); i+=len){
+            if(i+len>s2.length() || !s2.substring(i, i+len).equals(pattern)) return false;
+        }
+        return true;
+    }
+}
+
+
+/* 
+LOGIC---
+We need the longest string that can make up the both string.
+So, start checking which pattern works by increasing prefix size
+*/ 
+
