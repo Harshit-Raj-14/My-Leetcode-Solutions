@@ -1,0 +1,18 @@
+class Solution {
+    public boolean isStrictlyPalindromic(int n) {
+        return false;
+    }
+}
+
+/*
+LOGIC---
+
+I think the solution is indeed always False.... Lets see why this simple hit and trial soultion works. It works because of the mathematics going behind. 
+
+The question says that number N has to be palindromic for every base b from 2 to N-2...
+
+Lets take the case when base b is N-2. Its very clear that if you try to represent N in base N-2, you will always get quotient as 1 and remainder as 2, thus the representation of number N in base N-2 is always (12) which is as can be seen non-palindromic. 
+
+THUS THE ANSWER TO THIS PROBLEM FOR ANY INTEGER N is always False and thats why this one liner works 😄
+
+*/
