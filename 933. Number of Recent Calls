@@ -1,0 +1,34 @@
+
+class RecentCounter {
+    private Queue<Integer> queue;
+
+    public RecentCounter() {
+        this.queue = new LinkedList<>();
+    }
+
+    public int ping(int t) {
+        int x = t - 3000;
+        queue.add(t);
+        while (queue.peek() < x) {
+            queue.poll();
+        }
+        return queue.size();
+    }
+}
+
+/*
+LOGIC---
+Let's go through the provided example to see how it works:
+
+1.First, you create an instance of RecentCounter called recentCounter using RecentCounter().
+
+2.Then, you call recentCounter.ping(1), which adds a new request at time 1 and returns the number of requests in the range [-2999, 1]. Since there's only one request (1) in that range, the return value is 1.
+
+3.Next, you call recentCounter.ping(100), which adds another request at time 100 and returns the number of requests in the range [-2900, 100]. Now there are two requests (1 and 100) in that range, so the return value is 2.
+
+4.Then, you call recentCounter.ping(3001), adding a request at time 3001 and calculating the number of requests in the range [1, 3001]. At this point, there are three requests (1, 100, and 3001) within that range, so the return value is 3.
+
+5.Finally, you call recentCounter.ping(3002), adding a request at time 3002 and calculating the number of requests in the range [2, 3002]. Since all the requests fall within this range (1, 100, 3001, and 3002), the return value is still 3.
+So, as you can see, the ping method keeps track of the requests made within the past 3000 milliseconds and returns the count of requests within the specified range.
+
+*/
