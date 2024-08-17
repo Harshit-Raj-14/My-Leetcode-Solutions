@@ -1,0 +1,53 @@
+class Solution {
+    public String mergeAlternately(String w1, String w2){
+        int i=0, j=0;
+        boolean alternate=true;
+        StringBuilder sb = new StringBuilder("");
+        while(i<w1.length() || j<w2.length()){
+            if(j>w2.length()-1){   //w2 is over, w1 still left
+                sb.append(w1.charAt(i));
+                i++;
+            }
+            else if(i>w1.length()-1){   //w1 is over, w2 still left
+                sb.append(w2.charAt(j));
+                j++;
+            }
+            else{
+                if(alternate){sb.append(w1.charAt(i)); i++;}
+                else {sb.append(w2.charAt(j)); j++;}
+                alternate = !alternate;
+            }
+        }
+        return sb.toString();
+    }
+}
+
+
+
+/* ELEGANT SOLUTION */
+class Solution {
+    public String mergeAlternately(String word1, String word2) {
+        int i = 0, j = 0;
+        StringBuilder sb = new StringBuilder();
+        
+        // Loop through both strings while either has characters left
+        while (i < word1.length() && j < word2.length()) {
+            sb.append(word1.charAt(i));
+            sb.append(word2.charAt(j));
+            i++;
+            j++;
+        }
+        // Append any remaining characters from word1
+        while (i < word1.length()) {
+            sb.append(word1.charAt(i));
+            i++;
+        }
+        // Append any remaining characters from word2
+        while (j < word2.length()) {
+            sb.append(word2.charAt(j));
+            j++;
+        }
+        
+        return sb.toString();
+    }
+}
