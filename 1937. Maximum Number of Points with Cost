@@ -1,0 +1,59 @@
+/* RECURSION TLE */
+class Solution {
+    public long maxPoints(int[][] arr) {
+        return solve(arr, 0, 0);
+    }
+
+    public long solve(int[][] arr, int r, int prevc) {
+        if (r >= arr.length) return 0;
+        long ans = 0;
+        // For every column, try all possible choices
+        for (int j = 0; j<arr[0].length; j++) {
+            long curr;
+            if (r==0) curr=arr[r][j]+solve(arr, r+1, j); // For the first row, no need to consider prevc
+            else curr = arr[r][j] - Math.abs(j-prevc) + solve(arr, r+1, j); // For subsequent rows, consider the previous column
+            ans = Math.max(ans, curr);
+        }
+        return ans;
+    }
+}
+
+
+/*
+The row index r is incremented in the recursive call.
+Time complexity: O((n∗m)^2)
+Space complexity: O(n∗m)
+*/
+
+
+/* MEMOIZATION DP TLE+MLE */
+class Solution {
+    public long maxPoints(int[][] arr){
+        long dp[][] = new long[arr.length+1][arr[0].length+1];
+        for(long row[] : dp) Arrays.fill(row, -1);
+        return solve(arr, 0, 0, dp);
+    }
+
+    public long solve(int[][] arr, int r, int prevc, long dp[][]) {
+        if (r >= arr.length) return 0;
+        if(dp[r][prevc]!=-1) return dp[r][prevc];
+        long ans = 0;
+        // For every column, try all possible choices
+        for (int j = 0; j<arr[0].length; j++) {
+            long curr;
+            if (r == 0) curr=arr[r][j]+solve(arr, r+1, j, dp); // For the first row, no need to consider prevc
+            else curr = arr[r][j] - Math.abs(j-prevc) + solve(arr, r+1, j, dp); // For subsequent rows, consider the previous column
+            ans = Math.max(ans, curr);
+        }
+        return dp[r][prevc]=ans;
+    }
+}
+
+/*
+LOGIC---
+We notice that the solution again gives TLE on memoization and that is obviously going to be the case due to the constraints:
+1 <= m, n <= 10^5
+he dp array is defined as long dp[][] = new long[100001][100001];, which creates an extremely large 2D array of size 100,001 x 100,001. 
+This will require a massive amount of memory (approximately 80 terabytes), which is impractical and will cause the program to crash due to insufficient memory.
+Hence in case of large matrices take it as a thumb rule to always go for tabulation form of DP.
+*/
