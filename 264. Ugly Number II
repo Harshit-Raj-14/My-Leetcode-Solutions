@@ -1,4 +1,4 @@
-/* DYNAMIC PROGRAMMING O(n) */
+/* TABULATION DP O(n), O(n) */
 class Solution {
     public int nthUglyNumber(int n) {
         int dp[] = new int[n+1];
@@ -9,17 +9,26 @@ class Solution {
             dp[i]=Math.min(Math.min(dp[x]*2, dp[y]*3), dp[z]*5);    //general: min(dp[x]*2, dp[y]*3, dp[z]*5)
             //Now to check which of the above got chosen
             if(dp[i]==dp[x]*2) x++;
-            if(dp[i]==dp[y]*3) y++; // now don't use else if : reason explained
+            if(dp[i]==dp[y]*3) y++; // now don't use else reason explained
             if(dp[i]==dp[z]*5) z++;
         }
         return dp[n];
     }
 }
 
+
+/* 
 LOGIC---
+1 is the first ugly number. And we can make other ugly numbers from it like a tree. With three option at each step to either multiply it with 2,3 or 5. => all these will give us ugly numbers. this is our formula to generate ugly number.
+
+Now we only need the nth ugly number.
+So, while producing ugly numbers we would like to keep them producing in increasing order. So, while multiplying for each possiblity we would move to next number which produces minimum result.
+
 dp[0] = 0;
-dp[1] = 1;
+dp[1] = 1; // (2^0 * 3^0 * 5^0)
 dp[2] = 2; //(2*1) => min(dp[1]*2, dp[1]*3, dp[1]*5) => since dp[1]*2 is selected i++ but we only want for that happen for x.
+
+dp[i] => ith ugly number
 
 Hence we get a general idea that perhaps we should maintain and treat this as three different kind of lists. Since we want nth number we need to find all ugly numbers in order. But we will be multiplyign them in different combinations of 2,3,5 causing them not being ascending. Hence we need to take minimum first giving us the general formula:
 dp[i]=min(dp[k]*2, dp[k]*3, dp[k]*5)
@@ -37,14 +46,7 @@ dp[4] = 4; //(2*2) => min(dp[2]*2, dp[2]*3, 5*dp[1]) => (4,6,5) => 4 is chosen a
 dp[5] = 5; //(5*1) => min(dp[3]*2, dp[2]*3, 5*dp[1]) => (8,6,5) => 5 i chosen and ++ => z=2
 and so on...
 dp[6] = 6;
-
-
-Note : don't use else if
-Reason: Consider a situation dp[3]*2; dp[2]*3 => both gives 6
-If you would have used else if, then only one of x or y gets incremented and in the next iteration we get a duplicate.
-If two or more prime factors result in the same value, each corresponding counter is incremented, avoiding the duplicacy.
-So, we will actually be incrementing both x and y together.
-
+*/
 
 
 /* BRUTE FORCE TLE O(nlogn)*/
@@ -71,9 +73,10 @@ class Solution {
     }
 }
 
-
+/*
 LOGIC ---
 We keep finding ugly numbers until we get to the nth number.
 Call isUgly for every number until you reach the nth one.
 O(n) -> loop
 O(logn) -> isUgly()
+*/
