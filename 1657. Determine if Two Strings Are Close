@@ -1,0 +1,49 @@
+class Solution {
+    public boolean closeStrings(String s1, String s2){
+        if(s1.length()!=s2.length()) return false;
+        int count1[] = new int[26];
+        int count2[] = new int[26];
+        for(int i=0;i<s1.length();i++){
+            count1[s1.charAt(i)-'a']++;
+        }
+        for(int i=0;i<s2.length();i++){
+            count2[s2.charAt(i)-'a']++;
+        }
+        //Check if both words have same alphabets (you can also use set)
+        for(int i=0;i<count1.length;i++){
+            if(count1[i]!=0 && count2[i]==0 || count1[i]!=0 && count2[i]==0) return false;
+        }
+        Arrays.sort(count1);
+        Arrays.sort(count2);
+        for(int i=0;i<count1.length;i++){
+            if(count1[i]!=count2[i]) return false;
+        }
+        return true;
+    }
+}
+
+/*
+LOGIC---
+Since swap is allowed in same word, if frequency of each character are same they are close.
+
+In case there is discrepancy in frequency. We do have a savior of transforming one character to another and vice versa. 
+=> aacabb -> bbcbaa (all a's turn into b's, and all b's turn into a's) 
+=> basically we are interchanging their frequency
+=> aacabb => a=3, b=2
+=> bbcbaa => a=2, b=3
+We can swap the freq of a and b in s1. to get s2.
+
+Basically, count1 and count2 after being sorted should be same. If we have verified that they are of equal length. Now we cna use 2nd operation to make them close by this.
+
+
+Trick-
+Strings word1 and word2 are close ⟺ the following 2 conditions are satisfied:
+Both strings consist of the same letter set.
+The frequency of alphabets of 2 strings are mutual permutations.
+
+Approach =>
+Check if both words are of same length, if not return False
+Check if both words have same alphabets (by comparing set(word1) and set(word2)
+Make two lists having count of all alphabets one for word1 and one for word2, sort the lists, check if the lists are equal, if yes return True, else return False
+
+*/
