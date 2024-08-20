@@ -1,39 +1,38 @@
-/* O(n) HASH SET */
+/* USING HASHSET O(n), O(n) */
 class Solution {
     public int longestConsecutive(int[] nums) {
         HashSet<Integer> set = new HashSet<>();
         for(int i=0;i<nums.length;i++) set.add(nums[i]);
-        int max=0;
-        for(int x : nums){
-            int currel=x;
-            int currlen=0; //curr length
-            if(!set.contains(currel-1)){    //current element is the first element of the possible consecutive seq
-                while(set.contains(currel)){
-                    currlen++;
-                    currel++;
-                }
+        int ans=0;
+        for(int i=0;i<nums.length;i++){
+            int curr=nums[i];
+            if(!set.contains(curr-1)){
+                int count=1;
+                while(set.contains(curr+count)) count++;
+                ans = Math.max(ans, count);
             }
-            max=Math.max(max, currlen);
         }
-        return max;
+        return ans;
     }
 }
 
 /*
-LOGIC---
-1. Create an empty hash.
-2. Insert all array elements to hash.
-3. Do following for every element arr[i]
-4. Check if this element is the starting point of a subsequence. To check this, simply look for arr[i] in the hash.
-5. if not found, then this is the first element a subsequence.
-6. If this element is the first element, then count the number of elements in the consecutive starting with this element. Iterate from arr[i] + 1 till the last element that can be found.
-7. If the count is more than the previous longest subsequence found, then update this.
-Since we check each streak only once, this is overall O(n).
+Why hashset?
+The equal elements were causing us a problem.
+Hashset quickly allow us to access element so it will help us to tell whetehr there is a consecutive elent or not.
+
+Once put everything in hahset.
+We start iterating from first element and think to check whether next consecutive exist or not in hahsset. But that sounds just like bruteforce. Checking from every element.
+
+Trick: Instead of looking for next consecutive we try looking whether our curr is the start of a consecutive series or not. So, we look backward till we find the start.
+
+And from there we start looking in front.
+
+So, when we encounter a mid elemnt of a consecutive series, we don't reiterate till we say its start of a consecutive series.
 */
 
 
-
-/* SORTING O(nlogn) */
+/* USING SORTING O(nlogn) */
 class Solution {
     public int longestConsecutive(int[] nums) {
         int n = nums.length;
@@ -42,14 +41,21 @@ class Solution {
         int cnt = 1;
         int max = 0;
         for (int i = 1; i < n; i++) {
-            if (nums[i] != nums[i - 1]) {
-                if (nums[i] == nums[i - 1] + 1) cnt++;
-                else{
-                    max = Math.max(max, cnt);
-                    cnt = 1;
-                }
+            if (nums[i] == nums[i-1]) continue;   //don't forget this step to skip consecutive term
+            if (nums[i] == nums[i-1] + 1) cnt++;
+            else{
+                max = Math.max(max, cnt);
+                cnt = 1;
             }
         }
         return Math.max(max, cnt);
     }
 }
+
+/*
+LOGIC---
+Why skip consecutive terms?
+Input: nums =[1,2,0,1]
+got Output: 2
+Expected output: 3
+*/
