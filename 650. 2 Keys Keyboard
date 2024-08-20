@@ -1,0 +1,45 @@
+/* RECURSION O(2^n) */
+class Solution {
+    public int minSteps(int n) {
+        if (n == 1) return 0;
+        int ans=1;  // we need to do first operation copy => 1 step always
+        return solve(n, 1, ans, "A", "A");
+    }
+
+    public int solve(int n, int len, int ans, String sb, String c) {
+        if (len == n) return ans;
+        if (len > n) return Integer.MAX_VALUE;
+        // Only Paste operation
+        int only_paste = solve(n, len + c.length(), ans+1, sb + c, c);  //we directly paste, what's already copied as c
+        // First Copy then Paste operation
+        int copy_paste = solve(n, len+sb.length(), ans+2, sb+sb, sb);   //we copy sb, and it is added to len as sb
+        return Math.min(only_paste, copy_paste);
+    }
+}
+
+/*
+LOGIC---
+sb -> what is written on notepad
+c -> string in clipboard
+
+We always need to first make as tep of copy, so, sb="A", c="A" => initial states
+*/
+
+/* ANOTHER RECURSION */
+/* RECURSION O(2^n) */
+class Solution {
+    public int minSteps(int n) {
+        if (n == 1) return 0;
+        return 1 + solve(n, 1, "A", "A");   //need to make the first copy operation
+    }
+
+    public int solve(int n, int len, String sb, String c) {
+        if(len==n) return 0;    //no need of more operations
+        if (len > n) return 1000;
+        // Only Paste operation
+        int only_paste = 1+ solve(n, len + c.length(), sb + c, c);  //we directly paste, what's already copied as c
+        // First Copy then Paste operation
+        int copy_paste = 2+ solve(n, len+sb.length(), sb+sb, sb);   //we copy sb, and it is added to len as sb
+        return Math.min(only_paste, copy_paste);
+    }
+}
