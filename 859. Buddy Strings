@@ -1,0 +1,45 @@
+class Solution {
+    public boolean buddyStrings(String s, String t) {
+        if(s.length()!=t.length()) return false; //s can never become t
+        int count1[] = new int[26];
+        int count2[] = new int[26];
+        for(int i=0;i<s.length();i++){
+            count1[s.charAt(i)-'a']++;
+            count2[t.charAt(i)-'a']++;
+        }
+        //need to have same freq of char to think of applying swap
+        for(int i=0;i<count1.length;i++){
+            if(count1[i]!=count2[i]) return false;
+        }
+        //Now we can think of applying swap
+        //Case I:if both already equal check whether we can make move by swapping an eleemnt with frequency more than 1 like aa
+        if(s.equals(t)){  
+            for(int i=0;i<count1.length;i++){
+                if(count1[i]>1) return true;
+            }
+        }
+        else{
+            //for one swap we want to notice change at only two places
+            int swapneeded=0;
+            for(int i=0;i<s.length();i++){
+                if(s.charAt(i)!=t.charAt(i)) swapneeded++;
+            }
+            if(swapneeded==2) return true;
+        }
+        return false;
+    }
+}
+
+/*
+LOGIC---
+We need to tell whether we are able to make a swap in s and still get t.
+
+You have to perform swap operation exactly once.
+eg: s = "abcd" goal = "abcd" | output : false (because you cannot swap any character here)
+eg: s = "aabb" goal = "aabb" | output: true (because you can swap either "aa" or "bb"
+eg: s = "abc" goal = "ab" | output: false (because sizes are not equal)
+eg: s = "abcd" goal = "abed" | output: false (because "c" is not present in goal)
+eg: s = "abdcgf" goal = "abcdfg" | output: false (cannot perform swap operation two times)
+
+Handle these cases.
+*/
