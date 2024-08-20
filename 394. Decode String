@@ -1,0 +1,56 @@
+/* STACK O(n) */
+class Solution {
+    StringBuilder ans = new StringBuilder("");
+    public String decodeString(String s){
+        StringBuilder ans = new StringBuilder("");
+        Stack<String> stack = new Stack<>();
+        for(int i=0;i<s.length();i++){
+            if(s.charAt(i)!=']') stack.push(s.charAt(i)+"");    //Step I: push elements to the stack until meet ']'
+            else{
+                //Step II: pop elements from the stack until meet '[' => contents => take in the inside string
+                String curr="";
+                while(!stack.isEmpty() && !stack.peek().equals("[")){
+                    curr= stack.pop() + curr;
+                }
+                stack.pop();    //remove the open bracket
+                //Step III: pop elements digitals from the stack => number => take in the number
+                String n="";
+                while(!stack.isEmpty() && Character.isDigit(stack.peek().charAt(0))){
+                    n = stack.pop() + n;
+                }
+                if(!n.equals("")){  //we dont have an empty string number
+                    int no = Integer.parseInt(n);
+                    String originalCurr = curr;
+                    for(int j=1; j<no; j++){    //n times append curr string to ans, once already done above
+                        curr += originalCurr;
+                    }
+                }
+                //Step IV: push to the stack and then repeat step 1 to 4
+                stack.push(curr);
+            }
+        }
+        String leftover=""; //stack still has some characters left
+        while(!stack.isEmpty()) leftover = stack.pop() + leftover;
+        ans.append(leftover);
+        return ans.toString();
+    }
+}
+
+/*
+LOGIC---
+Remember in a bracket storing question of stack. You keep ons toring character ins stack. and the moment you encounter ']' start popping out till you po out '['. Means you got inside string.
+
+This helps us to get deep into string and access the last bracket contaiend part.
+
+Approach:-
+1.If the character is a closing square bracket ']', we pop characters off the stack until we find the corresponding opening square bracket '['. We then pop the opening bracket, the number before it (which specifies how many times the substring inside the brackets should be repeated), and the characters we just popped off the stack. We repeat this process until we have processed the entire string.
+2.Otherwise, if the character is not a closing square bracket ']', we push it onto the stack.
+
+Steps:
+    push elements to the stack until meet ']'
+    pop elements from the stack until meet '[' => contents
+    pop elements digitals from the stack => number
+    repeat "contents" by "number" times and push to the stack   => important
+    repeat step 1 to 4
+
+*/
