@@ -1,0 +1,25 @@
+/* SAME AS BUY AND SELL STOCKS O(n) */
+class Solution {
+    public int maximumDifference(int[] nums){
+        int ans=-1;
+        int curr=nums[0];
+        for(int i=1;i<nums.length;i++){
+            if(nums[i]>curr) ans=Math.max(ans, nums[i]-curr);
+            curr=Math.min(curr, nums[i]);
+        }
+        return ans;
+    }
+}
+
+/* BRUTE FORCE O(n^2) */
+class Solution {
+    public int maximumDifference(int[] nums){
+        int ans=-1;
+        for(int i=0;i<nums.length;i++){
+            for(int j=i+1;j<nums.length;j++){
+                if(nums[i]<nums[j]) ans=Math.max(ans, nums[j]-nums[i]);
+            }
+        }
+        return ans;
+    }
+}
