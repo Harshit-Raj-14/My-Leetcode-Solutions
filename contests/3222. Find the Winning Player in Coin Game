@@ -1,0 +1,20 @@
+class Solution {
+    public String losingPlayer(int x, int y) {
+        if(x<1 || y<4) return "Bob";    //bob wins, alice cannot make first move
+        boolean alice_turn=true;
+        while(x>0 && y>0){
+            if(x<0 || y<4) break;
+            x-=1;
+            y-=4;
+            alice_turn = !alice_turn;
+        }
+        if(alice_turn==true) return "Bob";  //Alice loses at her turn, a sshe cannot play
+        else return "Alice";
+    }
+}
+
+/*
+LOGIC---
+10 alone cannot make 115. You need to have one 75.
+115 = 1(75) + 4(10)
+*/
