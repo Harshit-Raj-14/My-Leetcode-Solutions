@@ -1,0 +1,75 @@
+class Solution {
+    public String addBinary(String a, String b) {
+        StringBuilder sb = new StringBuilder();
+        int carry=0;
+        int i=a.length()-1;
+        int j=b.length()-1;
+        while(i>=0 && j>=0){
+            if(a.charAt(i)=='1' && b.charAt(j)=='1'){
+                if(carry==0){
+                    sb.append('0');
+                    carry=1;
+                }
+                else{
+                    sb.append('1');
+                    carry=1;
+                }
+            }
+            else if(a.charAt(i)=='0' && b.charAt(j)=='0'){
+                if(carry==0) sb.append('0');
+                else{
+                    sb.append('1');
+                    carry=0;
+                }
+            }
+            else{   //either of them is 1 and other is 0
+                if(carry==0) sb.append('1');
+                else{
+                    sb.append('0');
+                    carry=1;
+                }
+            }
+            i--;
+            j--;
+        }
+        //append the remaining string a
+        while(i>=0){
+            if(carry==1){
+                if(a.charAt(i)=='1'){
+                    sb.append('0'); 
+                    carry=1;
+                }
+                else{
+                    sb.append('1');
+                    carry=0;
+                }
+            }
+            else sb.append(a.charAt(i));
+            i--;
+        }
+        //append the remaning string b
+        while(j>=0){
+            if(carry==1){
+                if(b.charAt(j)=='1'){
+                    sb.append('0'); 
+                    carry=1;
+                }
+                else{
+                    sb.append('1');
+                    carry=0;
+                }
+            }
+            else sb.append(b.charAt(j));
+            j--;
+        }
+        if(carry==1) sb.append('1');    //If there's still a carry left, append it
+        return sb.reverse().toString(); //we are appending in front, but the calculations are being made backwards => so reverse
+    }
+}
+
+/*
+LOGIC---
+Addition starts from back => start iterating from backward
+
+Implement logically how the add string operation goes
+*/
