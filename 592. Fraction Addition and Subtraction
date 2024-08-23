@@ -1,0 +1,46 @@
+class Solution {
+    public String fractionAddition(String s) {
+        int den=1;
+        if(s.charAt(0)!='-') s="+"+s;
+        for(int i=0;i<s.length();i++){
+            if(s.charAt(i)=='/'){
+                if(i+2<s.length() && s.charAt(i+2)=='0'){den*=10; i++;} //range is till 10
+                else den*=(s.charAt(i+1)-'0');
+            }
+        }
+        int num=0;
+        int curr=1;
+        for(int i=0;i<s.length();i++){
+            if(s.charAt(i)=='+'){
+                if(i+2<s.length() && s.charAt(i+2)=='0'){curr=den*10; i++;} //range is till 10
+                else curr=den*(s.charAt(i+1)-'0');
+            }
+            else if(s.charAt(i)=='-'){
+                if(i+2<s.length() && s.charAt(i+2)=='0'){curr=den*-10; i++;} //range is till 10
+                else curr=den*-(s.charAt(i+1)-'0');
+            }
+            else if(s.charAt(i)=='/'){
+                if(i+2<s.length() && s.charAt(i+2)=='0'){curr/=10; i++;} //range is till 10
+                else curr=curr/(s.charAt(i+1)-'0');
+                num+=curr;
+                curr=1; //reset current numerator to ready for next calculation
+            }
+        }
+        String ans="";
+        int gcd=GCD(Math.abs(num),Math.abs(den));   //num can be negative
+        num/=gcd;
+        den/=gcd;
+        ans=Integer.toString(num)+"/"+Integer.toString(den);
+        return ans;
+    }
+
+    public static int GCD(int a, int b){
+        if(b==0) return a;
+        else return GCD(b, a%b);
+    }
+}
+
+/*
+LOGIC---
+Just do what question says
+*/
