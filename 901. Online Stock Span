@@ -1,0 +1,19 @@
+class StockSpanner {
+    static Stack<Integer> stack; //store the day no.
+    static ArrayList<Integer> prices;  //store the prices as they come by
+    public StockSpanner() {
+        stack = new Stack<>(); 
+        prices = new ArrayList<>();  
+    }
+    
+    public int next(int curr_price) {
+        prices.add(curr_price);
+        while(!stack.isEmpty() && prices.get(stack.peek())<=curr_price) stack.pop();
+        int span=0;
+        if(!stack.isEmpty()) span = prices.size()-1-stack.peek();  //number of days between the curr and the day it becoems greater than curr in past
+        else if(stack.isEmpty()) span = prices.size(); //all the days before it and including itself will be part of span
+        stack.push(prices.size()-1);
+        return span;
+    }
+}
+
