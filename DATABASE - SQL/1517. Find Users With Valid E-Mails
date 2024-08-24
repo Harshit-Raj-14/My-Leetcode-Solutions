@@ -1,0 +1,16 @@
+select * FROM Users WHERE mail REGEXP '^[a-zA-Z]+[a-zA-Z0-9\-\.\_]*@leetcode[\.]com$'
+
+
+
+Here's a breakdown of the regex pattern:
+^: Asserts the start of the string.
+[a-zA-Z]+: Matches one or more alphabetic characters (both uppercase and lowercase).
+[a-zA-Z0-9\-\.\_]*: Matches zero or more alphanumeric characters, dashes (-), dots (.), or underscores (_).
+@leetcode: Matches the literal string @leetcode.
+[\.]com$: Matches the string .com at the end of the email address. The backslash before the dot is used to escape the dot, so it is treated as a literal character rather than a wildcard.
+
+
+[]: Denotes a character class, which matches any one of the characters inside the brackets.
+
++: Indicates that the preceding element (the character class [a-zA-Z]) must appear one or more times. So, the email must start with at least one letter.
+*: Means that the preceding element (the entire character class) can appear zero or more times. This allows the part before @leetcode.com to be a mix of letters, numbers, dashes, dots, or underscores, or even be empty.
