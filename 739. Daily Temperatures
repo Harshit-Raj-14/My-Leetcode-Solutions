@@ -1,0 +1,23 @@
+class Solution {
+    public int[] dailyTemperatures(int[] arr){
+        int ans[] = new int[arr.length];
+        Stack<Integer> stack = new Stack<>(); 
+        for(int i=arr.length-1; i>=0; i--){
+            while(!stack.isEmpty() && arr[stack.peek()]<=arr[i]) stack.pop();  //we want the latest element where we have the closes higher temeprature to curr
+            if(stack.isEmpty()) ans[i]=0;   //there was no day where we got higher temp
+            else ans[i]=stack.peek()-i;
+            stack.push(i);
+        }  
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+We store the index of temperatures in our stack from backward.
+Reason, its much quicker to predict the last day's temp because it wil always be 0 for the last day.
+To predict answer for present we ened to know what we holdin the future and act accordignly.
+
+Compare the current day value with the value of index avaialble in stack.
+
+*/
