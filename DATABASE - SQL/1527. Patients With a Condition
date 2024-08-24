@@ -1,0 +1,14 @@
+SELECT * FROM Patients WHERE conditions LIKE 'DIAB1%' OR conditions LIKE '% DIAB1%';
+
+
+SELECT * FROM patients WHERE conditions REGEXP '\\bDIAB1';
+
+
+LOGIC---
+\b is a regular expression token that represents a word boundary, which means it matches the position where a word starts or ends.
+In MySQL, you need to escape the backslash, so \\b is used to correctly denote the word boundary.
+
+The expression conditions REGEXP '\\bDIAB1' is actually the same as conditions LIKE '% DIAB1%' OR conditions LIKE 'DIAB1%';, but it is obviously shorter. 
+The reason they are the same is that \b matches either a non-word character (in our case, a space) or the position before the first character in the string. 
+Also, you need to escape a backslash with another backslash, like so: \\b. Otherwise, the regular expression won't evaluate.
+P.S. \b also matches the position after the last character, but it doesn't matter in the context of this problem.
