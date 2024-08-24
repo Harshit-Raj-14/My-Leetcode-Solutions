@@ -1,4 +1,75 @@
-/* BRUTE FORCE TLE */
+/* ALL POSSIBLITIES O(n), O(n) */
+class Solution {
+    public String nearestPalindromic(String s) {
+        long firsthalf=0;
+        int len=s.length();
+        if(len%2==0) firsthalf=Long.parseLong(s.substring(0, len/2));
+        else firsthalf=Long.parseLong(s.substring(0, len/2 + 1));
+        List<Long> possiblities = new ArrayList<>();
+        possiblities.add(makePalindrome(firsthalf, len%2==0));
+        possiblities.add(makePalindrome(firsthalf+1, len%2==0));
+        possiblities.add(makePalindrome(firsthalf-1, len%2==0));
+        possiblities.add((long)Math.pow(10, len-1)-1);   //type: 9999
+        possiblities.add((long)Math.pow(10, len)+1); //type 100001
+        // Find the palindrome with minimum difference, and minimum value.
+        long diff = Long.MAX_VALUE, ans = 0, n = Long.parseLong(s);
+        for(long x : possiblities){
+            //System.out.println(x);
+            if(x==n) continue;  //we don't wna the same number back
+            if(Math.abs(x-n)<diff){
+                diff=Math.abs(x-n);
+                ans=x;
+            }
+            else if(Math.abs(x-n)==diff) ans=Math.min(ans, x);  //we want the smaller ans
+        }
+        return Long.toString(ans);
+    }
+
+    public static long makePalindrome(long half, boolean even){ //convert given half to palindrome
+        String ans=Long.toString(half);
+        int start=ans.length()-1;
+        if(!even) start=ans.length()-2;
+        StringBuilder otherhalf=new StringBuilder("");
+        for(int i=start;i>=0;i--) otherhalf.append(ans.charAt(i));
+        return Long.parseLong(ans+otherhalf.toString());
+    }
+}
+
+/*
+LOGIC---
+To solve this, we can think of a palindrome as a number where the first half is mirrored to create the second half. 
+For example, the palindrome for 12321 is formed by reversing the first half (12) and appending it to itself (12(3) + 21 -> 12321). 
+This observation is key to finding the closest palindrome.
+
+Edge case : if(n<=10) return n-1; => simple inference
+
+We need either the closest palindrome on left side or on right side of string s
+
+we need to check the following five candidates:
+=> Palindrome formed from the first half of n.
+=> Palindrome formed from the first half incremented by 1. => why we need this think of 129 => 121, 131 => 131 is our ans => this coems into effect becuase 129 is closer to being 0 at one's position
+=> Palindrome formed from the first half decremented by 1.  => some kind of a similar effect as above
+=> Nearest palindrome of the form 99, 999, etc. => in case we are getting a palindore beyond like for 101 => we again get 101 but our answer is stting at 99
+=> Nearest palindrome of the form 101, 1001, etc. => in case we have 99 => we are goign to again return 99 but our answer was sitting at 101
+
+After generating these candidates, we compare them to n and choose the one with the smallest absolute difference.
+
+Case I: Palindrome formed from the first half of n.
+odd palindrome => abcde => abcba
+even palindrome
+
+Case II: Create a palindrome by decrementing the first half by 1 and mirroring it. => abc - 1 then mirror it
+
+Case III: Create a palindrome by incrementing the first half by 1 and mirroring it. => abc + 1 then mirror it
+
+Case iV: Nearest palindrome of the form 99, 999, etc. => 99999
+
+Case V: Nearest palindrome of the form 101, 1001, etc. => 10001
+*/
+
+
+
+/* BRUTE FORCE O(n^2) TLE */
 class Solution {
     public String nearestPalindromic(String s) {
         long left=-1;
