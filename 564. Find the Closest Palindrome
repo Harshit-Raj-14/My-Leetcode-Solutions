@@ -1,0 +1,30 @@
+/* BRUTE FORCE TLE */
+class Solution {
+    public String nearestPalindromic(String s) {
+        long left=-1;
+        long right=-1;
+        long n=Long.parseLong(s);
+        //checking on left of n
+        for(long i=n-1;i>=0;i--){
+            if(isPalindrome(i)){left=i;break;}
+        }
+        //checking on right of n, but stop if it exceeds difference of n and left
+        for(long i=n+1;i<n-1+(n-left);i++){
+            if(isPalindrome(i)){right=i;break;}
+        }
+        return Long.toString(Math.max(left, right));
+    }
+
+    public static boolean isPalindrome(long n){
+        String s= Long.toString(n);
+        for(int i=0;i<s.length()/2;i++){
+            if(s.charAt(i)!=s.charAt(s.length()-1-i)) return false;
+        }
+        return true;
+    }
+}
+
+/*
+LOGIC---
+Do what question says check on both left and right side
+*/
