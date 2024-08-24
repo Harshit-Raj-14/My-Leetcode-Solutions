@@ -1,0 +1,38 @@
+/* DP MEMOISATION */
+class Solution {
+    public int minPathSum(int[][] grid) {
+        int dp[][] = new int [grid.length+1][grid[0].length+1];
+        for(int row[]:dp) Arrays.fill(row, -1);
+        return solve(grid, 0, 0, dp);
+    }
+
+    public static int solve(int grid[][], int i, int j, int dp[][]){
+        if(i==grid.length-1 && j==grid[0].length-1) return grid[i][j];  //last box to reach to be added
+        if(i>=grid.length || j>=grid[0].length) return 1000000; // Out of bounds- make it too big to not be an answer
+        if(dp[i][j]!=-1) return dp[i][j];
+        int right= grid[i][j] + solve(grid, i , j+1, dp);
+        int down = grid[i][j] + solve(grid, i+1, j, dp);
+        return dp[i][j]=Math.min(right, down);
+    }
+}
+
+/*
+LOGIC---
+TC - O(m*n)
+SC -O(m*n)
+*/
+
+/* RECURSION TLE */
+class Solution {
+    public int minPathSum(int[][] grid) {
+        return solve(grid, 0, 0);
+    }
+
+    public static int solve(int grid[][], int i, int j){
+        if(i==grid.length-1 && j==grid[0].length-1) return grid[i][j];  //last box to reach to be added
+        if(i>=grid.length || j>=grid[0].length) return 1000000; // Out of bounds- make it too big to not be an answer
+        int right= grid[i][j] + solve(grid, i , j+1);
+        int down = grid[i][j] + solve(grid, i+1, j);
+        return Math.min(right, down);
+    }
+}
