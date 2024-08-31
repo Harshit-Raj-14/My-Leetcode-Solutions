@@ -1,0 +1,48 @@
+class Solution {
+    public int generateKey(int n1, int n2, int n3) {
+        String s1 = Integer.toString(n1);
+        String s2 = Integer.toString(n2);
+        String s3 = Integer.toString(n3);
+        for(int i=1;i<=4;i++){
+            if(s1.length()<i) s1="0"+s1;
+            if(s2.length()<i) s2="0"+s2;
+            if(s3.length()<i) s3="0"+s3;
+        }
+        int ans=0;
+        for(int i=0;i<4;i++){
+            int a = Integer.parseInt(String.valueOf(s1.charAt(i)));
+            int b = Integer.parseInt(String.valueOf(s2.charAt(i)));
+            int c = Integer.parseInt(String.valueOf(s3.charAt(i)));
+            ans = ans*10+Math.min(a, Math.min(b,c));
+        }
+        return ans;
+    }
+}
+
+
+/* O(1) ELEGANT SOLUTION */
+class Solution {
+    public int generateKey(int num1, int num2, int num3) {
+        int f1 = num1 % 10, f2 = num2 % 10, f3 = num3 % 10;
+        num1 /= 10;
+        num2 /= 10;
+        num3 /= 10;
+        
+        int s1 = num1 % 10, s2 = num2 % 10, s3 = num3 % 10;
+        num1 /= 10;
+        num2 /= 10;
+        num3 /= 10;
+        
+        int t1 = num1 % 10, t2 = num2 % 10, t3 = num3 % 10;
+        num1 /= 10;
+        num2 /= 10;
+        num3 /= 10;
+        
+        int ans = Math.min(f1, Math.min(f2, f3)) * 1 
+                + Math.min(s1, Math.min(s2, s3)) * 10 
+                + Math.min(t1, Math.min(t2, t3)) * 100 
+                + Math.min(num1, Math.min(num2, num3)) * 1000;
+        
+        return ans;
+    }
+}

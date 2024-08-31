@@ -1,0 +1,59 @@
+class Solution {
+    public long minDamage(int power, int[] damage, int[] health) {
+        int timetokill[] = new int[health.length];
+        for(int i=0;i<health.length;i++){
+            timetokill[i]=(health[i]+power-1)/power;    //same as (int)Math.ceil(health[i]/(power*1.0))
+        }
+        List<Integer> indexes = new ArrayList<>();  //indexes of monsters
+        for(int i=0;i<health.length;i++) indexes.add(i);
+        Collections.sort(indexes, (i, j) -> Integer.compare(timetokill[i] * damage[j], timetokill[j] * damage[i]));
+        // indexes.sort((i,j) -> {
+        //     return Integer.compare(timetokill[i]*damage[j], timetokill[j]*damage[i]);
+        // });
+        long ans=0;
+        long timepassed=0;
+        for(int i=0;i<indexes.size();i++){
+            timepassed += timetokill[indexes.get(i)]; //timepasssed is the total time taken while killing all enemies
+            ans+=timepassed*damage[indexes.get(i)];
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+We ened to know of a way to decide which enemy is more beneficial to kill first.
+We need to somehow comparatively sort their health and damage values.
+
+For any two enemies i and j with damages damage[i] and damage[j], 
+and time to take each of them down ti and tj,  
+it is better to choose enemy that have more damage per second on us to be killed first.
+
+Case I: All enemies have same damage => we kill the one with the smallest health to kill first
+Case II: All enemies have same health => we kill the one with the highest damage first
+Case III: General Case
+All enemies have different health and damages
+The best option is to take big damage but for lessr time on a whole.
+So, we prioritize factor damage/timetokill in decreasing order.
+
+Approach---
+Convert enemy's health into the time it takes Bob to kill them, and sort the indexes by ti​dj
+
+
+PROOF---
+The damage Bob takes is related to the time it takes him to kill each enemy. Let the damage per second dealt by each enemy be represented as [...,di​,...,dj​,...], and the time required to kill each enemy as [...,ti​,...,tj​,...].
+
+Consider two scenarios:
+Bob kills the i-th enemy first and the j-th enemy second. The total damage Bob takes in this case is:
+=> ti​di ​+ (ti​+tj​)dj ​+ others = ti​di ​+ tj​dj ​+ others + ti​dj​
+
+Bob kills the j-th enemy first and the i-th enemy second. The total damage Bob takes here is:
+=>tj​dj ​+ (ti​+tj​)di​ + others = ti​di ​+ tj​dj​ + others + tj​di​
+
+The difference between the two scenarios is the last term. If ti​dj​<tj​di​, then Bob should kill the i-th enemy first, and vice versa.
+*/
+
+/*
+ * APPROACH -2
+ * Make a priority queue on basis of damage/lowest time to kill
+ */

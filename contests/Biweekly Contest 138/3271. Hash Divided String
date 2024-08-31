@@ -1,0 +1,15 @@
+class Solution {
+    public String stringHash(String s, int k) {
+        StringBuilder sb = new StringBuilder("");
+        for(int i=0;i<s.length();){
+            int sum=0;
+            for(int j=1;j<=k;j++){
+                sum+=s.charAt(i)-'a';
+                i++;
+            }
+            sum=sum%26;
+            sb.append((char)('a'+sum));
+        }
+        return sb.toString();
+    }
+}
