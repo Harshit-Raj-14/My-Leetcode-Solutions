@@ -1,0 +1,17 @@
+class Solution {
+    public int[][] construct2DArray(int[] arr, int m, int n) {
+        // Return an empty 2D array if it's not possible to construct the array
+        if (arr.length!=m*n) return new int[0][0];
+        int[][] grid = new int[m][n];
+        int i=0;
+        int r=0;
+        while(i<arr.length){
+            for(int j=0;j<n;j++){
+                grid[r][j]=arr[i];
+                i++;
+            }
+            r++;
+        }
+        return grid;
+    }
+}
