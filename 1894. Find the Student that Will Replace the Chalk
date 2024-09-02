@@ -1,0 +1,95 @@
+/* O(n+ logn) PREFIX ARRAY + BINARY SEARCH */
+class Solution {
+    public int chalkReplacer(int[] chalk, int k){
+        int n=chalk.length;
+        long prefix[] = new long[n];
+        prefix[0]=chalk[0];
+        for(int i=1;i<chalk.length;i++){
+            prefix[i]=prefix[i-1]+chalk[i];
+        }
+        long sum=prefix[n-1];
+        long remainingchalk=k%sum;
+        //binary search on answer => prefixsum sorted array, remainingchalk target, nature: YYYYYYYNNNNN, return first N
+        int l=0;
+        int r=n-1;
+        int ans=-1;
+        while(l<=r){
+            int mid=l+(r-l)/2;
+            if(remainingchalk>=prefix[mid]) l=mid+1;
+            else r=mid-1;
+        }
+        return l;
+    }
+}
+
+/*
+LOGIC---
+//binary search on answer 
+=> prefixsum sorted array, remainingchalk target, nature: YYYYYYYNNNNN, return first N
+
+Why first N? => return l => where the condition fails first time
+The binary search logic should return the first index where the remainingchalk is less than prefix[mid]. If the remainingchalk is equal to or greater than prefix[mid], you need to search the right half. If it’s less, you should search the left half.
+
+Why ans!=mid?
+We can't set ans to the index where the remainingchalk is greater than or equal to prefix[mid]. However, we want to return the first index where the remaining chalk runs out, which is the first prefix[i] that exceeds remainingchalk.
+That's why we return first N, or rather first failed l. So, when binary search fails return l.
+
+O(n+ logn) is better than O(2n).
+*/
+
+/* O(2n) */
+class Solution {
+    public int chalkReplacer(int[] chalk, int k) {
+        long sum=0;
+        for(int i=0;i<chalk.length;i++){
+            sum+=chalk[i];
+            if(sum>k) break;
+        }
+        long remainingchalk=k%sum;
+        int idx=0;
+        while(remainingchalk>0){
+            if(remainingchalk>=chalk[idx]){
+                remainingchalk-=chalk[idx];
+                idx++;
+                if(idx>=chalk.length) idx=0;
+            }
+            else break;
+        }
+        return idx;
+    }
+}
+
+/*
+LOGIC----
+Event his is not the optimised approach. We know that the chalk array is not sorted and accoridng to problem we can't sort it.
+But how we progress and move forward each time, we search for index where we need new chalk
+Search index => search algorithm => BINARY SEARCH
+sorted array => can be expressed as prefix sum => sorted nature
+use this to find the correct index
+*/
+
+
+/* BRUTE FORCE O(k) */
+class Solution {
+    public int chalkReplacer(int[] chalk, int k) {
+        int idx=0;
+        while(k>0){
+            if(k>=chalk[idx]){
+                k-=chalk[idx];
+                idx++;
+                if(idx>=chalk.length) idx=0;
+            }
+            else break;
+        }
+        return idx;
+    }
+}
+
+/*
+LOGIC---
+The reason I say its brute force, is becuase the TC- O(k) as it loops k times in worst case on array. and constraint wise => 1 <= k <= 10^9
+
+So, its bad, in fact you can stop looping k times on array, if you can directly find at once how many times you loop on array. 
+This can be done by knowing the final sum of array.
+
+*/
