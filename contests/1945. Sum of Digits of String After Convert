@@ -1,0 +1,22 @@
+class Solution {
+    public int getLucky(String s, int k) {
+        int sum=0;
+        for(int i=0;i<s.length();i++){
+            sum+=reduce(s.charAt(i)-'a'+1); //a starts from 1
+        }
+        k--;
+        while(k-->0){
+            sum=reduce(sum);
+        }
+        return sum;
+    }
+
+    public static int reduce(int n){
+        int sum=0;
+        while(n!=0){
+            sum+=n%10;
+            n/=10;
+        }
+        return sum;
+    }
+}
