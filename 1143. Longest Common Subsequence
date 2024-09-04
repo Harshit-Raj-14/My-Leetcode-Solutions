@@ -1,0 +1,55 @@
+class Solution {
+    public int longestCommonSubsequence(String s1, String s2) {
+        int dp[][] = new int[s2.length()+1][s1.length()+1];
+        return solve(s1, s2, dp);
+    }
+
+    public static int solve(String s1, String s2, int dp[][]){
+        for(int i=1;i<=s2.length();i++){    //the first column and rows will be filled with 0 so leave them out
+            for(int j=1;j<=s1.length();j++){
+                if(s2.charAt(i-1)==s1.charAt(j-1)){
+                    dp[i][j] = dp[i-1][j-1]+1;
+                }
+                else dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+            }
+        }
+        return dp[s2.length()][s1.length()];
+    }
+}
+
+/*
+DP on Strings
+s1 - > horizontally -> column
+s2 -> vertically -> row
+dp[s2.length()+1][s1.length()+1]
+
+    "" X Y Z
+""  0  0 0 0
+A   0
+B   0
+C   0
+
+you cannot have any common subsequence with empty string"" and s2 or s1 and empty string""
+So, first row and first column will be 0
+
+Now if A and X matches we can put it as 1
+If A and Y matches we can put it as 1
+If A and Z matches we can put it as 1.
+
+Now if B matches with X we can put it as 1.
+Now of B matches Y we cna put it as 1. But this time there's a twist.
+AB and XY are of length 2. If A=X and B=Y you should have put 2 there. because that would be the largest common subsequence..
+
+In fact dp[i][j] cell would contain the length of largest common subsequence till i and j.
+
+    "" X Y Z
+""  0  0 0 0
+A   0       
+B   0    P Q
+C   0    R S
+
+S will be our final longest common subsequence
+
+IF(Z==C) S=P+1           => dp[i][j] = dp[i-1][j-1] + 1 => the prev max value + 1
+IF(Z!=C) S=Math.max(R,Q) => dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]), since no equal character best to take the max len which previously occured upward or leftward 
+*/
