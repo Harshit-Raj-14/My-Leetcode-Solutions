@@ -1,0 +1,46 @@
+class Solution {
+    public int robotSim(int[] commands, int[][] obstacles){
+        // Use a HashSet to store obstacles, encoded as "x_y"
+        HashSet<String> set = new HashSet<>();
+        for (int[] obstacle : obstacles) {
+            set.add(obstacle[0] + "_" + obstacle[1]);
+        }
+        int x=0, y=0;
+        int direction = 0; // Initially facing north (0: north, 1: east, 2: south, 3: west)
+        int[][] dir = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}}; // Direction vectors
+        int maxDistance=0;
+        for(int i=0;i<commands.length;i++){
+            int c=commands[i];
+            //if(set.contains(x+"_"+y)) continue; //robot on onstacle cannot move
+            if(c==-1) direction = (direction+1)%4;  //turn right
+            if(c==-2) direction = (direction+3)%4;  //turn left
+            else{
+                for(int step=0;step<c;step++){
+                    int nextX = x+dir[direction][0];
+                    int nextY = y+dir[direction][1];
+                    if (!set.contains(nextX + "_" + nextY)) {
+                        x = nextX;
+                        y = nextY;
+                        maxDistance = Math.max(maxDistance, x * x + y * y);
+                    } 
+                    else break; // Stop if there's an obstacle
+                }
+            }
+        }
+        return maxDistance;
+    }
+}
+
+/*
+LOGIC---
+Once started the question you realise you need a way to know whether our robot will encounter obstacle or not.
+Since we have onstacles matrix it is difficult to know when x and y are same without iteration.
+But that would give TLE.
+Infact we can use hashset to see whether x and y exist in hashset or not. Don't use hashmap becuase there cna be multiple obstacle with same x and different y and vice versa.
+
+dir logic in code
+Start at (0, 0), facing north.
+Use direction vectors to handle movement: North (0,1), East (1,0), South (0,-1), West (-1,0).
+
+Also, note answer can occur anytime even between our caculation so keep tab on answers during operations as well.
+*/
