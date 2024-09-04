@@ -1,0 +1,24 @@
+class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        return isSameTree(root.left, root.right);
+    }
+
+    public boolean isSameTree(TreeNode p, TreeNode q){
+        if(p==null && q==null) return true;
+        else if((p!=null && q==null) || (p==null && q!=null)) return false;
+        return (p.val==q.val && isSameTree(p.left, q.right) && isSameTree(p.right, q.left));
+    }
+}
+
+/*
+LOGIC---
+Symmetric binary tree is checking like the two halves of trees are same or not.
+So, we think of the two halves as two seperate trees divided in half. 
+If these two divided trees are same they are symmetric.
+
+But just a small differnece, becuase we are checking for mirror => the nodes will be laterally inverted.
+So, left will become right and right will become left.
+Meaning, left subtree's right node should be same as right subtree's left node.
+
+Recursive conditon will be - isSameTree(p.left, q.right) && isSameTree(p.right, q.left)
+*/
