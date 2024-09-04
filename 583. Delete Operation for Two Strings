@@ -27,3 +27,46 @@ So, no of deletion steps = s1.length() - dp[s2.length()][s1.length()] + s2.lengt
 I want to make two strings equal in min delete operations. Hmm...Let's not delete the common characters between both the strings.
 So, solve for LCS and return the above value
 */
+
+/* RECURSION */
+class Solution {
+    public int minDistance(String s1, String s2) {
+        return solve(s1,s2,0,0);
+    }
+
+    public static int solve(String s1, String s2, int i, int j){
+        if(i==s1.length()) return s2.length()-j;  //s1 got over before s2, delete remaning char from s2
+        else if(j==s2.length()) return s1.length()-i;    //s2 got over before s1, delete remaning char from s1
+        if(s1.charAt(i)==s2.charAt(j)) return solve(s1,s2,i+1,j+1); //same character encountered
+        else{
+            int deleteins1= 1 + solve(s1,s2,i+1,j);
+            int deleteins2= 1 + solve(s1,s2,i,j+1);
+            return Math.min(deleteins1, deleteins2);
+        }
+    }
+}
+
+/* STRING ON DP */
+class Solution {
+    public int minDistance(String s1, String s2) {
+        int m = s1.length();
+        int n = s2.length();
+        int[][] dp = new int[m + 1][n + 1];
+        for (int i = 0; i <= m; i++) {
+            dp[i][0] = i; // If s2 is empty, delete all characters from s1
+        }
+        for (int j = 0; j <= n; j++) {
+            dp[0][j] = j; // If s1 is empty, delete all characters from s2
+        }
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (s1.charAt(i - 1) == s2.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1]; // Characters match, no additional deletions needed
+                } else {
+                    dp[i][j] = 1 + Math.min(dp[i - 1][j], dp[i][j - 1]); // Delete from either string
+                }
+            }
+        }
+        return dp[m][n];
+    }
+}
