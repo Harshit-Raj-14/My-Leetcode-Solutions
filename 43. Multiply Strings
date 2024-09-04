@@ -1,0 +1,72 @@
+class Solution {
+    public String multiply(String s1, String s2) {
+        String ans="";
+        int append0=0;
+        for(int i=s2.length()-1;i>=0;i--){
+            int carry=0;
+            String mult="";
+            for(int j=s1.length()-1;j>=0;j--){
+                int curr= (s1.charAt(j)-'0')*(s2.charAt(i)-'0') + carry;
+                mult = (curr%10) + mult;
+                carry = curr/10;
+            }
+            if(carry>0) mult = carry + mult;
+            for(int k=0;k<append0;k++) mult = mult+"0";
+            append0++;  //increase the space in next addition
+            ans=addStrings(ans, mult);
+        }
+        if(ans.charAt(0)=='0') return "0";  //otherwise our ans would return soemthing like eg: 9133 x 0 = 0000
+        else return ans;
+    }
+
+    public String addStrings(String num1, String num2) {
+        StringBuilder sb = new StringBuilder();
+        int i=num1.length()-1;
+        int j=num2.length()-1;
+        int carry=0;
+        while(i>=0 || j>=0){
+            int sum=carry;
+            if(i>=0){
+                sum+=num1.charAt(i)-'0';
+                i--;
+            }
+            if(j>=0){
+                sum+=num2.charAt(j)-'0';
+                j--;
+            }
+            sb.append(sum%10);
+            carry=sum/10;
+        }
+        if(carry!=0) sb.append(carry);
+        return sb.reverse().toString();
+    }
+}
+
+/*
+LOGIC---
+We do s1xs2
+*/
+
+
+/* ELEGANT SOLUTION *
+class Solution {
+    public String multiply(String s1, String s2) {
+        if (s1.equals("0") || s2.equals("0")) return "0";
+        int n1 = s1.length();
+        int n2 = s2.length();
+        int[] result = new int[n1 + n2];
+        for (int i = n1 - 1; i >= 0; i--) {
+            for (int j = n2 - 1; j >= 0; j--) {
+                int mul = (s1.charAt(i) - '0') * (s2.charAt(j) - '0');
+                int sum = mul + result[i + j + 1];
+                result[i + j + 1] = sum % 10;
+                result[i + j] += sum / 10;
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int num : result) {
+            if (!(sb.length() == 0 && num == 0)) sb.append(num);
+        }
+        return sb.length() == 0 ? "0" : sb.toString();
+    }
+}
