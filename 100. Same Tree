@@ -1,0 +1,27 @@
+class Solution {
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        if(p==null && q==null) return true;
+        else if((p==null && q!=null) || (p!=null && q==null)) return false;
+        return p.val==q.val && isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+    }
+}
+
+/*
+LOGIC---
+Check left and right tree recursively
+At nodes check whether they are at the same time pointing to to null to be identical
+
+We'll use recursion to perform a depth-first search of both trees and compare the nodes, p and q, at each step. This recursive algorithm has three base cases:
+    Are both p and q None? If so, then return True. This is because this only happens when we've reached the end of a branch, and all the nodes so far have matched.
+
+If that wasn't true, then now we know that either p or q is a Node. But are they both nodes or is only one of them None? This leads to the second base case:
+    Is either p or q None? If so, then return False, since that means one of them is None and one of them is a node, and those are clearly different from each other.
+
+If that wasn't true, then at this point we know that both p and q are nodes, so let's compare their values:
+    Are the values of p and q different? If so, return False.
+
+If that wasn't true, then at this point we know that both p and q are nodes and their values are the same. So then we make two recursive calls. 
+We'll pass in p.left and q.left for the first call to check the left subtree, and pass in p.right and q.right for the right subtree. 
+For a visualization of the recursion, please see the video. But the idea is that both left subtrees and right subtrees must be the same, 
+which is why the two recursive calls are connected with an and.
+*/
