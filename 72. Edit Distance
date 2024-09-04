@@ -1,0 +1,89 @@
+/* DP ON STRING LCS TABULATION */
+class Solution{
+    public int minDistance(String s1, String s2){
+        int grid[][] = new int[s2.length()+1][s1.length()+1];
+        for(int i=0;i<=s2.length();i++){
+            grid[i][0]=i;   //filling first column -> converting empty string into s2
+        }
+        for(int j=0;j<=s1.length();j++){
+            grid[0][j]=j;   //filling first row -> converting s1 into empty string
+        }
+        return solve(s1, s2, grid);
+    }
+
+    public static int solve(String s1, String s2, int grid[][]){
+        for(int i=1;i<=s2.length();i++){
+            for(int j=1;j<=s1.length();j++){
+                if(s1.charAt(j-1)==s2.charAt(i-1)){ //no need to apply operation since same character
+                    grid[i][j] = grid[i-1][j-1]; // only take diagonal value
+                }
+                else grid[i][j] = Math.min(grid[i-1][j-1], Math.min(grid[i-1][j], grid[i][j-1])) + 1;
+            }
+        }
+        return grid[s2.length()][s1.length()];
+    }
+}
+
+/*
+LOGIC---
+We have three operations: insertion, deletion, replacement
+
+We make a table, which is described as:
+cell X => would read as number of steps it would take to convert PQRS into AB
+cell Z => would read as numbe rof steps it would take to convert PQRST into ABCDE
+
+    '' P Q R S T 
+''   0 1 2 3 4 5
+A    1
+B    2       X N
+C    3       M O
+D    4
+E    5          Z
+
+Also, 
+when character same => O=X (diagonal value)
+when characters different => O = Math.min(X,M,N) + 1
+
+APPROACH---
+s1 on which we have to apply operation is on columns horizontally
+s2 which is our transformed string is on row vertically
+The cells will contain value needed to transform that part of s1 into that part of s2 
+
+grid will be of size [s1.length()+1][s2.length()+1]
+Reason one extra space on column and row for empty string ""
+
+Answer returned will be grid[s1.length()][s2.length()]
+
+Character same => O=X (diagonal value)
+=>grid[i][j] = grid[i-1][j-1] 
+Why?
+=>Since the upcoming characters on both are same. We don't need to make any operation. So, using the back diagonal value makes sense where the s1 and s2 have already been equalised.
+*/
+
+
+/* RECURSION TLE */
+class Solution {
+    public int minDistance(String s1, String s2) {
+        return solve(s1,s2,0,0);
+    }
+
+    public static int solve(String s1, String s2, int i, int j){
+        if(i==s1.length()) return s2.length()-j;    //s1 is over, s2 remains, insert s2-j extra characters in s2
+        else if(j==s2.length()) return s1.length()-i;   //s2 is over, s1 remains, delete m-i characters in s1
+        if(s1.charAt(i)==s2.charAt(j)){ //same character no operation needed
+            return solve(s1,s2,i+1,j+1);
+        }
+        else{
+            int insert = 1 + solve(s1,s2,i,j+1);    //previously i has been made equal to j
+            int delete = 1 + solve(s1,s2,i+1,j);    //i was unnecessary, deleted, now check i+1 against j
+            int replace = 1 + solve(s1,s2,i+1,j+1); //i is made equal to j with replacement
+            return Math.min(insert, Math.min(delete, replace));
+        }
+    }
+}
+
+/*
+LOGIC---
+apply memoisation using dp[i][j]
+
+*/
