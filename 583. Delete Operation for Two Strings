@@ -1,0 +1,29 @@
+/* LCS TABULATION */
+class Solution {
+    public int minDistance(String s1, String s2){
+        int dp[][] = new int[s2.length()+1][s1.length()+1];
+        return solve(s1, s2, dp);
+    }
+
+    public static int solve(String s1, String s2, int dp[][]){
+        for(int i=1;i<=s2.length();i++){    //the first column and rows will be filled with 0 so leave them out
+            for(int j=1;j<=s1.length();j++){
+                if(s2.charAt(i-1)==s1.charAt(j-1)){
+                    dp[i][j] = dp[i-1][j-1]+1;
+                }
+                else dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+            }
+        }
+        return s1.length() - dp[s2.length()][s1.length()] + s2.length() - dp[s2.length()][s1.length()];
+    }
+}
+
+/*
+LOGIC---
+This time operation is applied on both string of deletion.
+In fact we can say that our LCS should be the common ans
+So, no of deletion steps = s1.length() - dp[s2.length()][s1.length()] + s2.length() - dp[s2.length()][s1.length()]
+
+I want to make two strings equal in min delete operations. Hmm...Let's not delete the common characters between both the strings.
+So, solve for LCS and return the above value
+*/
