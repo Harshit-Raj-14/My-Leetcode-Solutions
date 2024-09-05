@@ -1,0 +1,54 @@
+/* DIVIDE AND CONQUER - QUICK SELECT */
+
+
+
+/*
+LOGIC---
+But wait, there's a twist: a worst-case scenario of O(n^2) and an average-case superhero mode of O(n) exists.
+Average TC- O(n)
+Worst TC - O(n^2)
+*/
+
+/* USING MIN HEAP O(nLogk) */
+class Solution {
+    public int findKthLargest(int[] arr, int k) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        for(int i=0;i<arr.length;i++){
+            pq.offer(arr[i]);
+            if(pq.size()>k) pq.poll();
+        }
+        return pq.peek();
+    }
+}
+
+/*
+LOGIC---
+A min-heap is a binary heap where the smallest element are on top. 
+By maintaining a min-heap of size k, you ensure that the heap contains the largest k elements from the array.
+You keep on putting elements in heap, bottom elements are bigger and top elements are smaller. The elements keeps on taking their place.
+Brining the largest element to bottom and the top elemnt smallest.
+But we need the kth largest element. So, every time heap goes beyond k remove the top element as it will not contribute to our cause.
+The root of the heap will always be the kth largest element after processing the entire array.
+
+TC - O(nLogk) -> iteration through array and O(logk) operation for heap
+SC- O(k) Size of heap
+*/
+
+
+/* SORTING O(nlogn) */
+class Solution {
+    public int findKthLargest(int[] arr, int k) {
+        Arrays.sort(arr);
+        return arr[arr.length-k];
+    }
+}
+
+/* OTHER O(nlogn) solutions */
+sorting: simple sort, and return kth element form back.
+Mapping: In this I mapped the frequency of all the number and then find the kth largest number.
+Binary search: In this I applied binary search between smallest and largest element and for every mid element I counted the number of larger element if it is equal to k - 1 
+then the mid element is our solution else update the end and start of the search space.
+
+The problem with all these solution was that all of then have time complexity equal to or nearly O(nlogn).
+
+COUNT SORT / HASHING - O(n) worst case run time. But this would be largely a waste in memory (to allocate an array of such a large size). => -104 <= nums[i] <= 104 => 10^8 + 1 size
