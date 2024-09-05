@@ -1,0 +1,79 @@
+/* MEMOISATION */
+class Solution {
+    public boolean canIWin(int n, int t) {
+        if (t <= 0 || n >= t) return true;  
+        int totalsum = n*(n+1)/2;     
+        if (totalsum < t) return false;
+        Map<Integer, Boolean> memo = new HashMap<>();
+        int mask = 0;
+        return solve(n, t, mask, memo);
+    }
+
+    public static boolean solve(int n, int t, int mask, Map<Integer, Boolean> memo) {
+        if (memo.containsKey(mask)) return memo.get(mask);
+        for (int i=1; i<=n; i++) {
+            if (((mask>>i)&1)==0) {
+                if(t-i<=0){
+                    memo.put(mask, true);  
+                    return true;
+                } 
+                boolean secondPlayerCanWin = solve(n, t - i, mask^(1<<i), memo);
+                if (!secondPlayerCanWin) {
+                    memo.put(mask, true);  
+                    return true;
+                }
+            }
+        }
+        memo.put(mask, false);  
+        return false;
+    }
+}
+
+/* RECURSION TLE */
+class Solution {
+    public boolean canIWin(int n, int t) {
+        //check if it's even possible for our players to reach target
+        if(t<=0 || n>=t) return true;    //first player always wins
+        int totalsum=n*(n+1)/2; //from 1 to n all numbers chosen by both plyer each turn
+        if(totalsum<t) return false;
+        int mask=0;
+        return solve(n, t, mask);
+    }
+
+    public static boolean solve(int n, int t, int mask){
+        for(int i=1;i<=n;i++){
+            if(((mask>>i)&1)==0){   //number i not in mask => available
+                //first player makes move
+                if(t-i<=0) return true;
+                //second player makes a move if first player fails
+                boolean secondplayer = solve(n, t-i, mask^(1<<i));
+                if(!secondplayer) return true; //read logic for this - if second player fails, first player got a chance to win
+            }
+        }
+        return false;   //first player never won
+    }
+}
+
+
+/*
+LOGIC---
+Why bitmask?
+The recursion can be very deep. everytime the person choose between 1 and n. then you also need to know which number was already chosen so that player does not choose it again.
+If you used array in each recursion it can be very deep and a lot of array will be created each recursion.
+Instead, use a mask, utilizing O(1) space.
+If you see constraints its like almost asking us to use bitmask.
+So, the number utilised, we will use it as index and in our mask mark it as 1 to show its used.
+
+So, do the reucrsion and keept turns in mind.
+ Add numbrs to bitmask but also don't forget to backtrack it.
+ Or, rather include the masking process in recursion itself.
+
+Why 
+there is a theorem in game theory (I quote it from wikipedia)
+"In game theory, Zermelo’s theorem, says that in any finite two-person game of perfect information in which the players move alternatingly and 
+in which chance does not affect the decision making process, if the game cannot end in a draw, then one of the two players must have a winning strategy (i.e. force a win)."
+
+Since the game we are talking about will always have a winner, we can force out a win from player 2 if he loses in first instance, afte everytime given a chance.
+*/
+
+
