@@ -1,0 +1,58 @@
+class Solution {
+    public int[] missingRolls(int[] rolls, int mean, int n) {
+        int m=rolls.length;
+        int summ=0;
+        for(int i=0;i<rolls.length;i++) summ+=rolls[i];
+        int sumn=mean*(n+m)-summ;
+        if(sumn<n || sumn>6*n) return new int[0];   //return empty array impossible case
+        int ans[] = new int[n];
+        if(sumn%n==0){
+            for(int i=0;i<n;i++) ans[i]=sumn/n;
+        }
+        else{
+            for(int i=0;i<n;i++) ans[i]=sumn/n;
+            int k = sumn%n; //remaining value
+            for(int i=0;i<n && k>0;i++){
+                int diff=6-ans[i];  //see whether space is available or not to add remaning
+                if(diff>0){
+                    if(k>diff){     //diff is not big enough to accomodate k, so use entire idff
+                        ans[i]+=diff;
+                        k-=diff;
+                    }
+                    else{   //diff is big enoough to accomodate k
+                        ans[i]+=k;
+                        k-=diff;
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+Note the observaton value can only range from 1 to 6. six-sided dice roll
+We have m observations given and mean of n+m observations.
+In fact let's first find the sum of n observations.
+
+mean = (summ + sumn)/(n+m) =>mean*(n+m)-sum = sumn;
+
+Now we have got n and sum of n numbers.
+We have to fill an array of n such that their sum is sumn.
+Case I: in fact if sumn<n it will be impossible scenarion. Since minimum sumn=n => all 1 observation n times
+
+Case II: If sumn>6*n it will again be an impsosible scenario. Sinc emax sumn=6*n => all 5 observation n times
+
+CaseII: he best option could be divide sumn/n => if(sumn%n==0) we can say all elements can be sumn/n
+
+Case III: But when sumn%n!=0 and also becuase sumn>n && sumn<=6*n holds from previous conditions.
+We can say that for n observation we can equally divide the sumn/n. 
+Burt what to do with the remaining sumn%n
+
+Ideas : we add the remaining sumn%n to the last cell
+But there is a risk : 0<=sumn%n<=5 and the last cell can be 1<=cell<=5
+
+So, we can again little iterate through our ans array and add the remaining sum%n
+
+*/
