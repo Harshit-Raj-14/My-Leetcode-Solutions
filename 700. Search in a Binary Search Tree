@@ -1,0 +1,13 @@
+class Solution {
+    public TreeNode searchBST(TreeNode root, int x) {
+        return solve(root, x);
+    }
+
+    public static TreeNode solve(TreeNode curr, int x){
+        if(curr==null) return null;
+        if(curr.val==x) return curr;
+        if(curr.val>x) return solve(curr.left, x);     //search left side since x is smaller than node
+        if(curr.val<x) return solve(curr.right, x);    //try searching right side, x is greater than node
+        return null;
+    }
+}
