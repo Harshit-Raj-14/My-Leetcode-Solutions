@@ -1,0 +1,46 @@
+/* O(n) */
+class Solution {
+        public int maximumProduct(int[] nums) {
+        int max1 = Integer.MIN_VALUE, max2 = Integer.MIN_VALUE, max3 = Integer.MIN_VALUE;
+        int min1 = Integer.MAX_VALUE, min2 = Integer.MAX_VALUE;
+        for (int n : nums) {
+            //maximum calculation
+            if (n > max1) {
+                max3 = max2;
+                max2 = max1;
+                max1 = n;
+            } else if (n > max2) {
+                max3 = max2;
+                max2 = n;
+            } else if (n > max3) {
+                max3 = n;
+            }
+            //Minimum calculation
+            if (n < min1) {
+                min2 = min1;
+                min1 = n;
+            } else if (n < min2) {
+                min2 = n;
+            }
+        }
+        return Math.max(max1*max2*max3, max1*min1*min2);
+    }
+}
+
+
+/*
+LOGIC---
+Scan the array and compute Maximum, second maximum, third maximum element, and minimum and second minimum element present in the array.
+The answer will always be maximum of product of Maximum, second maximum and third maximum and product of Minimum, second minimum and Maximum element.
+*/
+
+/* SORTING O(nlogn) */
+class Solution {
+    public int maximumProduct(int[] arr) {
+        int n = arr.length;
+        Arrays.sort(arr);
+        int pre=arr[0]*arr[1]*arr[n-1]; //case:[-100,-98,-1,2,3,4]
+        int suf=arr[n-1]*arr[n-2]*arr[n-3];
+        return Math.max(pre,suf);
+    }
+}
