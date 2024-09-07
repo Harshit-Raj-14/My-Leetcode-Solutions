@@ -1,3 +1,34 @@
+/* SLIDING WINDOW O(n) */
+class Solution {
+    public int numSubarrayProductLessThanK(int[] nums, int k){
+        if(k<=1) return 0;  //no such subarray will exist
+        int i=0, j=0;
+        int ans=0;
+        int prod=1;
+        while(j<nums.length){
+            prod*=nums[j];
+            while(i<nums.length && prod>=k){
+                prod/=nums[i];
+                i++;
+            }
+            ans+=j-i+1; //no of subarrays ending at j
+            j++;
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+All elements in array are greater than 0 -> +ve.
+Hence we can directly proceed with multiplying forward.
+And the moment it crosses k, we can divide it by the previous and multiply with the next and check again.
+
+But what we need is number of subarrays.
+So, we also need to have the start and end index of the window.
+So, we maintain two pointers for it.
+*/
+
 /* BRUTE FORCE */
 class Solution {
     public int numSubarrayProductLessThanK(int[] nums, int k) {
