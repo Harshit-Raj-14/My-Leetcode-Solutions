@@ -1,0 +1,51 @@
+/* MEMOISATION DP O(n), O(n) */
+class Solution {
+    public int rob(TreeNode root){
+        HashMap<TreeNode, Integer> map = new HashMap<>();
+        return solve(root, map);
+    }
+
+    public static int solve(TreeNode curr, HashMap<TreeNode, Integer> map){
+        if(curr==null) return 0;
+        if(map.containsKey(curr)) return map.get(curr);
+        int ans=0;
+        //don't take the roor, so let's decide on its two children
+        int not_take = solve(curr.left, map) + solve(curr.right, map);   
+        //if taken the root, then next you will only be able to take its four grnadhcildren 
+        int take = curr.val;
+        if(curr.left!=null) take+=solve(curr.left.left, map) + solve(curr.left.right, map);
+        if(curr.right!=null) take+=solve(curr.right.right, map) + solve(curr.right.left, map);
+       ans=Math.max(take, not_take);
+        map.put(curr, ans);
+        return ans;
+    }
+}
+
+
+/* RECURSION TLE */ 
+class Solution {
+    public int rob(TreeNode root){
+        return solve(root);
+    }
+
+    public static int solve(TreeNode curr){
+        if(curr==null) return 0;
+        //don't take the roor, so let's decide on its two children
+        int not_take = solve(curr.left) + solve(curr.right);   
+        //if taken the root, then next you will only be able to take its four grnadhcildren 
+        int take = curr.val;
+        if(curr.left!=null) take+=solve(curr.left.left) + solve(curr.left.right);
+        if(curr.right!=null) take+=solve(curr.right.right) + solve(curr.right.left);
+        return Math.max(take, not_take);
+    }
+}
+
+/*
+LOGIC---
+Since we have to start with root and we can't rob two directly-linked houses. We have two cases:
+Case1: If we rob the root node - Then we can't rob the child nodes of root,
+but we can rob the 4 grandchildren of the root (i.e., root.left.left, root.left.right, root.right.left, root.right.right).
+Case2: If we don't rob the root node - Then we can rob the 2 children of root (i.e., root.left, root.right).
+And our answer will be maximum of the two cases.
+T.C : O(2^n)
+*/
