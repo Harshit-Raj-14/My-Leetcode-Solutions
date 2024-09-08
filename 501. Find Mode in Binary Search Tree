@@ -1,0 +1,32 @@
+class Solution {
+    public int[] findMode(TreeNode root) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int maxfreq=0;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while(queue.size()!=0){
+            int nodeatlevel=queue.size();
+            while(nodeatlevel-->0){
+                TreeNode curr = queue.poll();
+                map.put(curr.val, map.getOrDefault(curr.val,0)+1);
+                maxfreq=Math.max(maxfreq, map.get(curr.val));
+                if(curr.left!=null) queue.add(curr.left);
+                if(curr.right!=null) queue.add(curr.right);
+            }
+        }
+        ArrayList<Integer> list = new ArrayList<>();
+        for(Map.Entry<Integer, Integer> entry : map.entrySet()){
+            if(entry.getValue()==maxfreq) list.add(entry.getKey());
+        }
+        int ans[] = new int[list.size()];
+        for(int i=0;i<list.size();i++){
+            ans[i]=list.get(i);
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+Find frequency of all node elements and get the maxelement frequency.
+*/
