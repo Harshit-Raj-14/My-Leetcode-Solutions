@@ -1,0 +1,46 @@
+class RandomizedSet {
+    HashMap<Integer, Integer> map;
+    ArrayList<Integer> list;
+    Random random;
+    
+    public RandomizedSet() {
+        map = new HashMap<>();
+        list = new ArrayList<>();
+        random = new Random();
+    }
+    
+    public boolean insert(int val){ //Adds the value to the list and records its index in the map.
+        if(!map.containsKey(val)){
+            list.add(val);
+            map.put(val, list.size()-1);
+            return true;
+        }
+        else return false;
+    }
+    
+    public boolean remove(int val) {
+        if(map.containsKey(val)){
+            int at = map.get(val);
+            int lastel = list.get(list.size()-1);
+            list.set(at, lastel); //replace the element with last value
+            map.put(lastel, at);
+            list.remove(list.size()-1); //remove the last element from list
+            map.remove(val);
+            return true;
+        }
+        else return false;
+    }
+    
+    public int getRandom() {
+        return list.get(random.nextInt(list.size()));
+    }
+}
+
+/*
+LOGIC---
+If you planned to use hashset directly, the getrandom function would work as O(n).
+Using a combination of hashset or hashmap and list to store val along with its index can also get the job done.
+
+For getrandom function to be O(1):
+We use random class with a bound range of list itself and use the list get function which is O(1).
+*/
