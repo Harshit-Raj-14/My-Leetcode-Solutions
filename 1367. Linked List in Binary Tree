@@ -1,0 +1,52 @@
+/* ITERATIVE SOLUTION O(n*m), O(n+m) */
+class Solution {
+    public boolean isSubPath(ListNode head, TreeNode root){
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while(queue.size()!=0){
+            int nodesatlevel=queue.size();
+            while(nodesatlevel-->0){
+                TreeNode curr = queue.poll();
+                if(curr.val==head.val){ //if the first value match check whether this can form a downward path
+                    if(isDownward(head, curr)) return true;
+                }
+                if(curr.left!=null) queue.add(curr.left);
+                if(curr.right!=null) queue.add(curr.right);
+            }
+        }
+        return false;
+    }
+
+    public static boolean isDownward(ListNode head, TreeNode curr){
+        // Base cases
+        if (head == null) return true; //we reached the end of the linked list, means the entire path matched
+        if (curr == null) return false; //binary tree ended before we could match the linked list
+        if (head.val != curr.val) return false;
+        // Recurse to the left and right subtrees, as eithe rof them can be our downward path from there on
+        return isDownward(head.next, curr.left) || isDownward(head.next, curr.right);
+    }
+}
+
+/*
+LOGIC---
+Iteratively move through the tree and check whether from a first matching node can you find a downward path while together moving with the linkedlinst.
+*/
+
+
+
+/* RECURSIVE SOLUTION O(n*m), O(n+m) */
+class Solution {
+    public boolean isSubPath(ListNode head, TreeNode root) {
+        if(root==null) return false;
+        //make a recursive check for head and root; make a recursive call of sub path for left and right path to traverse both paths
+        return check(head, root) || isSubPath(head, root.left) || isSubPath(head, root.right);  
+    }
+
+    public boolean check(ListNode head, TreeNode root){
+        if(head==null) return true; //covered entire linked list
+        if(root==null) return false;
+        if(head.val!=root.val) return false;
+        return check(head.next, root.left) || check(head.next, root.right); //any of the subtrees could have our path
+    }
+}
+```
