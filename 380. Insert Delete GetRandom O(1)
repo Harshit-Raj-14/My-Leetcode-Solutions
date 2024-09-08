@@ -43,4 +43,10 @@ Using a combination of hashset or hashmap and list to store val along with its i
 
 For getrandom function to be O(1):
 We use random class with a bound range of list itself and use the list get function which is O(1).
+
+Why Not Use Only HashSet?
+HashSet: It provides O(1) average time complexity for insertions, deletions, and lookups but does not allow efficient random access or retrieval of elements by index. 
+Hence, using HashSet alone would make the getRandom() operation O(n) because you'd have to iterate through the set to get a random element.
+
+The combination of HashMap and ArrayList allows each operation to be performed in O(1) time on average, achieving the desired efficiency for all operations (insert, remove, and getRandom).
 */
