@@ -1,0 +1,59 @@
+/* ULTIMATE OBSERVATION TRICK O(n), O(1) */
+class Solution {
+    public long findMaximumScore(List<Integer> nums) {
+        long ans=0;
+        int best=0;
+        for(int i=0;i<=nums.size()-2;i++){  //last element will never be considered as a contributor
+            best = Math.max(best, nums.get(i));
+            ans+=best;
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+Observation---- (DECODING THE GIVEN EXPRESSION TRICK)
+SCORE = nums[i] * (j-i) 
+On carefully thinking what the expression does is ----
+j-i would imply nums[i] contributing from index i to j
+
+Say, a1,a2,a3,a4,a5
+So, let's say you want to move from i=1 to i=4
+So, score = a[i]*(j-i)
+So, it can be also read as a[i] works as a contribution score from range i to j as you move
+In fact, you could have made a jump of 1 each time then 
+score = a1[2-1] + a2[3-2] + a3[4-3] + a4[5-4] => notice last element contribution is never taken
+score = a1 + a2 + a3 + a4
+
+But if a2<a1 or something like this, then we can't say its going to make max contribution.
+in fact we could have taken a1 from 1 to 3 directly and say instead of a2 let a1 contribute from 1 to 3.
+So, we say don't let a2 amke the contribution from 2 to 3, let a1 do it instead.
+
+And let's ay now a3>a1, so we can take a3 and discard a1 as contributor and from 3 onwards a3 will be the score contributor.
+
+APPROACH---
+Moving from 1 to n-1 or rahter say 0 to n-2 => the element that should contribute to the score to make it maximum should be the maximum element till i.
+We are just replacing the number at current index with the maximum number we have seen till now.
+
+Why this greedy?
+Infact from i to j => we have mutliple options to choose for our score contributor ranging from [ai to aj-1] => so the best contributor at each point will be the max till then.
+
+
+/*
+HOW TO DO IT WITH DP -> CONVEX HULL OPTIMISATION
+dp[i] -> score made travelling from i to n
+Let'ss ay in between you deicded to jump form i to jj to reach n
+dp[i] = dp[j] + (j-i)*nums[i] => where, dp[j] would contain the maximum score to reach from j to n
+
+In fact we need to maximise dp[i]
+
+max(dp[i]) = max(dp[j] + j*nums[i]) + constant(i*nums[i])
+
+So, we need max(dp[j] + j*nums[i]) => equaltion of a line kind of something
+
+Read about dp optimisation -> https://codeforces.com/blog/entry/8219
+So, the above falls under Convex Hull Optimization 1
+Trick - https://cp-algorithms.com/geometry/convex_hull_trick.html
+
+*/
