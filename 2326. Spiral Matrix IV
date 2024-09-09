@@ -1,0 +1,40 @@
+class Solution {
+    public int[][] spiralMatrix(int m, int n, ListNode head){
+        int mat[][] = new int[m][n];
+        ListNode curr = head;
+        for(int row[]:mat) Arrays.fill(row, -1);  //fill mat with -1 in start itself, makes it easy
+        int l=0, r=n-1;
+        int t=0, b=m-1;
+        while(l<=r && t<=b && curr!=null){
+            // Traverse from left to right across the top row
+                for(int i=l;i<=r && curr!=null;i++){
+                    mat[t][i]=curr.val;
+                    curr=curr.next;
+                }
+            t++;    // Move the top boundary down
+            // Traverse from top to bottom along the right column
+                for(int i=t;i<=b && curr!=null;i++){
+                    mat[i][r]=curr.val;
+                    curr=curr.next;
+                }
+            r--;    // Move the right boundary left
+            // Traverse from right to left across the bottom row
+            if(t<=b){
+                for(int i=r;i>=l && curr!=null;i--){
+                    mat[b][i]=curr.val;
+                    curr=curr.next;
+                }
+                b--;    // Move the bottom boundary up
+            }
+            // Traverse from bottom to top along the left column
+            if(l<=r){
+                for(int i=b;i>=t && curr!=null;i--){
+                    mat[i][l]=curr.val;
+                    curr=curr.next;
+                }
+                l++;  // Move the left boundary right
+            }
+        }
+        return mat;
+    }
+}
