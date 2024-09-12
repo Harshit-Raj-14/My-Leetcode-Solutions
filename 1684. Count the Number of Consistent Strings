@@ -1,0 +1,61 @@
+/* BIT MASKING O(m + n*k), O(1) */
+class Solution {
+    public int countConsistentStrings(String allowed, String[] words) {
+        int mask = 0;
+        for (int i=0; i<allowed.length(); i++) {
+            int n = allowed.charAt(i) - 'a';
+            mask = mask | (1<<n); // mark the presence of character as true
+        }
+        int inconsistentString = 0;
+        for (String word : words) {
+            if (isInconsistent(word, mask)) inconsistentString++;
+        }
+        return words.length - inconsistentString;
+    }
+
+    public static boolean isInconsistent(String s, int mask) {
+        for (int j=0; j<s.length(); j++) {
+            int n = s.charAt(j) - 'a';  
+            if (((mask>>n)&1) == 0) return true;  //at mask the character is labelled as false, so return true becuase we are checking inconsistent 
+        }
+        return false;
+    }
+}
+
+/*
+LOGIC---
+WHY BITMASK?
+Alphabests are only from 1 to 26. So, we can fit it inside an integer.
+Whether a string contains that character is marked as true otherwsie false.
+
+Build a bitmask out of allowed string.
+Check it against stream fo strings.
+
+Basic logic is to decrease space complexity by using one integer variable and replace it with the logic of a boolena array.
+*/
+
+
+/* HASHING O(m + n*k), O(26) */
+class Solution {
+    public int countConsistentStrings(String allowed, String[] words) {
+        int count[] = new int[26];
+        for(int i=0;i<allowed.length();i++) count[allowed.charAt(i)-'a']++;
+        int ans=0;
+        for(int i=0;i<words.length;i++){
+            if(isAllowed(words[i], count)) ans++;
+        }
+        return ans;
+    }
+
+    public static boolean isAllowed(String s, int count[]){
+        for(int i=0;i<s.length();i++){
+            if(count[s.charAt(i)-'a']<=0) return false;
+        }
+        return true;
+    }
+}
+
+/*
+NOTE---
+Could have also used a hashset
+*/
