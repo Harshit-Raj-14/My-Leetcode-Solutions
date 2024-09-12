@@ -1,0 +1,43 @@
+/* OPTIMISED APPROACH O(n), O(1) */
+class Solution {
+    public boolean isPalindrome(ListNode head) {
+        //Step I: find middle of linked list => fast and slow pointer apporach
+        ListNode slow = head;
+        ListNode fast = head;
+        while(fast!=null && fast.next!=null){
+            slow=slow.next;
+            fast=fast.next.next;
+        }
+        //Now slow has become the other half of ll
+        //Step II: reverse the other half of ll => ll reversal technique
+        ListNode prev= null;
+        ListNode curr = slow;
+        ListNode next = slow;
+        while(curr!=null){
+            next=next.next;
+            curr.next=prev;
+            prev=curr;
+            curr=next;
+        }
+        //prev will have the other half of ll in reverse 
+        //Step III: compare the ll from the start and the middle => lead and lag pointer technique
+        curr=head;
+        while(prev!=null){
+            if(curr.val!=prev.val) return false;
+            curr=curr.next;
+            prev=prev.next;
+        }
+        return true;
+    }
+}
+/*
+LOGIC---
+Algorithm---
+Find the middle of the linked list. => use slow and fast pointer approach
+Reverse the second half of the list. => use linked list reversal approach on the second half
+Compare the first half with the reversed second half. => use lag lead traversal, basically traverse from start and mid of array and check whether they are same or not
+*/
+
+/* BRUTE FORCE O(n), O(n) */
+Make a copy of linked lsit. reverse it.
+Now compare it against the original linked list.
