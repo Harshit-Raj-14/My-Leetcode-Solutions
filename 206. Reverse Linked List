@@ -12,3 +12,8 @@ class Solution {
         return prev;
     }
 }
+
+
+/*
+For visualisation you can see this - https://leetcode.com/problems/reverse-linked-list/solutions/5612752/step-by-step-explained-with-images-easiest-to-understand-java-c-python-javascript-go-codes/
+*/
