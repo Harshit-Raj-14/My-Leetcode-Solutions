@@ -1,0 +1,52 @@
+class Solution {
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        ListNode dummy = new ListNode();
+        dummy.next = head;
+        ListNode prev=dummy;
+        ListNode temp=head;
+        for (int i=1; i<left; i++){ // Move `prev` to the node before `left`
+            prev = prev.next;
+            temp=temp.next;
+        }
+
+        // Start reversing from `left`
+        ListNode curr = prev.next;
+        ListNode reversePrev = null;
+        ListNode next = prev.next;
+        for (int i = left; i <= right; i++) {
+            next = next.next;
+            curr.next = reversePrev;
+            reversePrev = curr;
+            curr = next;
+        }
+        prev.next = reversePrev;    //reconnecting the reversed part to the portion before left.
+        temp.next = curr;   
+        return dummy.next;
+    }
+}
+
+/*
+LOGIC---
+The dummy node is a common technique to simplify the logic when dealing with edge cases, such as when the reversal starts at the head of the list (i.e., when left = 1).
+Without dummy, if left == 1, prev would point to null, and it would be harder to handle reconnecting the head of the list after reversing.
+
+temp is used to track the original node at position left before the reversal begins. This node is important because, after the reversal, it will become the last node in the reversed section.
+After reversing the section from left to right, temp.next should point to curr (the node immediately after the right position), completing the reconnection to the remaining part of the list.
+
+EXAMPLE---
+Let's take an example with a list [1, 2, 3, 4, 5], and we want to reverse between left = 2 and right = 4:
+
+Initial list: 1 -> 2 -> 3 -> 4 -> 5
+
+Using dummy:
+    dummy.next will point to 1, and prev will be moved to point to 1 (the node before left = 2).
+
+Using temp:
+    temp will point to 2 (the node at left before reversing). 
+    After reversing the section [2, 3, 4], the list looks like 1 -> 4 -> 3 -> 2.
+    Now, temp.next (which is 2.next) should point to 5 (the node after right = 4). 
+    Without temp, we wouldn't know how to reconnect the last node in the reversed section.
+        
+*/
+
+
