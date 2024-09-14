@@ -1,0 +1,30 @@
+/* USING MIN-HEAP O(nlogn), O(n) */
+class Solution {
+    public ListNode sortList(ListNode head) {
+        // Use a min-heap (priority queue) to sort nodes based on their values
+        PriorityQueue<ListNode> pq = new PriorityQueue<>((a, b) -> a.val - b.val);
+        ListNode curr=head;
+        while(curr!=null){
+            pq.add(curr);
+            curr=curr.next;
+        }
+        ListNode dummy = new ListNode(0);
+        curr = dummy;
+        while(!pq.isEmpty()){
+            curr.next = pq.poll();
+            curr = curr.next;
+        }
+        curr.next = null;  //Ensure the last node points to null
+        return dummy.next;
+    }
+}
+
+/*
+LOGIC---
+PQ does not know how to compare ListNodes so write logic yourself to compare their values.
+
+TC - O(nlogn)
+You iterate through the list once to add all nodes to the priority queue. This operation takes O(nlogn), where n is the number of nodes in the list. Each insertion into the heap takes O(log⁡n), and you do this n times.
+
+SC - O(n)
+*/
