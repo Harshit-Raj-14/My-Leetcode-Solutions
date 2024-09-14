@@ -1,0 +1,87 @@
+/* RECURSION TLE TC-O(2^n) SC-O(n) */
+class Solution {
+    public int deleteAndEarn(int[] nums) {
+        int count[] = new int[10001];
+        for(int i=0;i<nums.length;i++){
+            count[nums[i]]++;
+        }
+        return solve(1, count);
+    }
+
+    public static int solve(int x, int count[]){    //x is the element from nums
+        if(x>=10001) return 0;
+        int not_take = solve(x+1, count);
+        int take=x*count[x] + solve(x+2, count); 
+        return Math.max(take, not_take);
+    }
+}
+
+/*
+LOGIC---
+Problem reduces to House Robber
+Theme - don't pick the neighbour if you select an element
+
+We are given if we pick x, we cannot pick x-1 and x+1 values
+So, once we have got count frequency array.
+We have unqiue values of each element and their frequency act as weights for scores
+
+So, let's say you take x, then trying to take the next element x+2 and move in a forward fashion.
+Gives the same effect as skipping x-1 and x+1.
+*/
+
+/* MEMOISATION TC-O(n) SC-O(n) */
+class Solution {
+    public int deleteAndEarn(int[] nums) {
+        int count[] = new int[10001];
+        for(int i=0;i<nums.length;i++){
+            count[nums[i]]++;
+        }
+        int dp[] = new int[10001];
+        Arrays.fill(dp, -1);
+        return solve(1, count, dp);
+    }
+
+    public static int solve(int x, int count[], int dp[]){    //x is the element from nums
+        if(x>=10001) return 0;
+        if(dp[x]!=-1) return dp[x];
+        int not_take = solve(x+1, count, dp);
+        int take=x*count[x] + solve(x+2, count, dp); 
+        return dp[x] = Math.max(take, not_take);
+    }
+}
+
+
+/* TABULATION TC-O(n) SC-O(n) */
+class Solution {
+    public int deleteAndEarn(int[] nums) {
+        int count[] = new int[10001];
+        for(int i = 0; i < nums.length; i++) {
+            count[nums[i]]++;
+        }
+        int dp[] = new int[10002];  // To avoid boundary issues
+        dp[0] = 0;
+        dp[1] = 1 * count[1];  // Initialize based on the count of '1's
+        for(int i = 2; i < count.length; i++) {
+            dp[i] = Math.max(dp[i-1], dp[i-2] + i*count[i]);  // Max of taking or not taking i
+        }
+        return dp[10000];   //the ending contraint is 10000 for nums[i] value
+    }
+}
+
+/* SPACE OPTIMISED TABULATION TC-O(n) SC-O(1) */
+class Solution {
+    public int deleteAndEarn(int[] nums) {
+        int count[] = new int[10001];
+        for(int i = 0; i < nums.length; i++) {
+            count[nums[i]]++;
+        }
+        int first=0;
+        int second=count[1];
+        for(int i=2; i<count.length; i++) {
+            int val=Math.max(second, first + i*count[i]); 
+            first=second;
+            second=val;
+        }
+        return second;  
+    }
+}
