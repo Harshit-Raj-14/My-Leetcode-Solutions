@@ -1,0 +1,36 @@
+class Solution {
+    public int longestSubarray(int[] nums){
+        int max=0;
+        for(int i=0;i<nums.length;i++){
+            max=Math.max(max, nums[i]);
+        }
+        int freqmax=0;  //maximum frequency of max consecutive
+        int i=0;
+        while(i<nums.length){
+            int curr=0;
+            while(i<nums.length && nums[i]==max){
+                curr++;
+                i++;
+            }
+            freqmax=Math.max(freqmax, curr);
+            i++;
+        }
+        return freqmax;
+    }
+}
+
+/*
+LOGIC---
+Objective - Find longest consecutive length of the maximum element of nums
+LOGIC---
+a & b = x
+We can say about x is that it will be less than both a and b
+In case x=a, that can be only possible if a=b, so a=b=x
+Also x can never be greater than a or b
+
+Hence for maximum of AND of all subarrays = maximum no. in array (why bother taking two number, just choose the max element from array) ~ length of subarray 1
+
+But we can still got for a bigger subarray if it is only mad eof max.
+
+So, the Longest Subarray With Maximum Bitwise AND becoems the same as finding the longest consecutive length of maximum in array
+*/
