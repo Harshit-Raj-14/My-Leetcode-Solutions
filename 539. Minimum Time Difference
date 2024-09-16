@@ -1,0 +1,60 @@
+/* SORTING O(nlogn), O(n) */
+class Solution {
+    public int findMinDifference(List<String> time) {
+        List<Integer> min = new ArrayList<>();
+        for(int i=0;i<time.size();i++){
+            min.add(Integer.parseInt(time.get(i).substring(0,2))*60 + Integer.parseInt(time.get(i).substring(3,5)));
+        }
+        Collections.sort(min);
+        int ans = Integer.MAX_VALUE;
+        for(int i=1;i<min.size();i++){
+            ans=Math.min(ans, min.get(i)-min.get(i-1)); //differnece of adjacent times
+        }
+        ans=Math.min(ans, (24*60+min.get(0)) - min.get(min.size()-1));   //time is circular so need to check differnce between first and last time point
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+Convert all time to minutes.
+Sort min array.
+The differenc eof adjacent would give the minimum time differnece.
+EDGE CASE --- time is circular.
+So, the first time stamp and last time stamp can also yile dminimum time differnece.
+time difference = 24*60 + min[0] - min[last]
+multiply min[0] by 24*60 round clock time to get correct difference backward.
+Or you could have subracted the same from min[last]
+*/
+
+
+/* COUNTING SORT O(n), O(n) */
+class Solution {
+    public int findMinDifference(List<String> time) {
+        boolean[] minutes = new boolean[24 * 60];
+        for (String t : time) {
+            int min =Integer.parseInt(t.substring(0, 2))*60 + Integer.parseInt(t.substring(3));
+            if (minutes[min]) return 0;
+            minutes[min] = true;
+        }
+        int prev = Integer.MAX_VALUE;
+        int first = Integer.MAX_VALUE;
+        int last = Integer.MAX_VALUE;
+        int ans = Integer.MAX_VALUE;
+        for (int i = 0; i < 24 * 60; i++) {
+            if (minutes[i]) {
+                if (prev != Integer.MAX_VALUE) ans = Math.min(ans, i - prev);
+                prev = i;
+                if (first == Integer.MAX_VALUE) first = i;
+                last = i;
+            }
+        }
+        return Math.min(ans, (24*60 + first) - last);
+    }
+}
+
+/*
+LOGIC---
+minutes can only fall into the range [0,24∗60−1]
+So, use count sort
+*/
