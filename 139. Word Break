@@ -1,0 +1,51 @@
+/* DP O(n^2) */
+class Solution {
+    public boolean wordBreak(String s, List<String> wordDict){
+        HashSet<String> dict = new HashSet<>(wordDict); //convert dict to hashset -> using HashSet for O(1) lookups
+        Boolean[] memo = new Boolean[s.length()]; // Memoization array
+        return solve(s, dict, 0, memo);
+    }
+
+    public static boolean solve(String s, HashSet<String> dict, int start, Boolean[] memo){
+        if(start==s.length()) return true;
+        if(memo[start]!=null) return memo[start];
+        for(int end=start+1;end<=s.length();end++){
+            String substring  =s.substring(start, end);
+            if(dict.contains(substring) && solve(s,dict,end, memo)) return memo[start]=true;
+        }
+        return memo[start]=false;
+    }
+}
+
+/*
+LOGIC---
+Is there a combination of words in wordDict that can be used to recreate the original string s. 
+
+Instead of seeing whether we can form word from dictionary words.
+Make substring of s and check whether these substrigns exist in diction or not.
+Convert dict to hahset for efficient lookups.
+*/
+
+
+
+/* WRONG RECURSION TLE SOMETHING IS WRONG WILL FAIL AT TEST CASE 42 AFTER MEMOISATION */
+class Solution {
+    public boolean wordBreak(String s, List<String> dict) {
+        return solve(s, dict, new StringBuilder(""));
+    }
+
+    public static boolean solve(String s, List<String> dict, StringBuilder sb){
+        if(sb.toString().equals(s)) return true;
+        if(sb.length()>s.length()) return false;
+        for(int i=0;i<dict.size();i++){
+            if(s.length()>sb.length() && dict.get(i).charAt(0)==s.charAt(sb.length())){
+                int len=sb.length();
+                sb.append(dict.get(i));
+                if(solve(s,dict,sb)) return true;
+                sb.setLength(len);   //backtrack
+            }
+        }
+        return false;
+    }
+}
+
