@@ -1,0 +1,67 @@
+/* O(n), o(n) USING AUXILIARY ARRAY */
+class Solution {
+    public void setZeroes(int[][] matrix) {
+        int zeror[] = new int[matrix.length];
+        int zeroc[] = new int[matrix[0].length];
+        Arrays.fill(zeror, 1);
+        Arrays.fill(zeroc, 1);
+        for(int i=0;i<matrix.length;i++){
+            for(int j=0;j<matrix[0].length;j++){
+                if(matrix[i][j]==0){
+                    zeror[i]=0;
+                    zeroc[j]=0;
+                }
+            }
+        }
+        for(int i=0;i<matrix.length;i++){
+            for(int j=0;j<matrix[0].length;j++){
+                if(zeror[i]==0 || zeroc[j]==0) matrix[i][j]=0;
+            }
+        }
+    }
+}
+
+/*
+LOGIC---
+Use auxiliary array to stroe indexes where zero occurs and later mark those idnexes with 0.
+*/
+
+/* SPACE OPTIMIZED O(n), O(1) */
+/* O(n), o(n) USING AUXILIARY ARRAY */
+class Solution {
+    public void setZeroes(int[][] matrix) {
+        int col0=1; //for first column marking
+        //Step 1: Traverse the matrix and mark 1st row & col accordingly
+        for(int i=0;i<matrix.length;i++){
+            for(int j=0;j<matrix[0].length;j++){
+                if(matrix[i][j]==0){
+                    matrix[i][0]=0;
+                    if(j==0) col0=0;
+                    else matrix[0][j]=0;
+                }
+            }
+        }
+        //Step 2: Mark with 0 from (1,1) to (n-1, m-1)
+        for(int i=1;i<matrix.length;i++){
+            for(int j=1;j<matrix[0].length;j++){
+                if(matrix[i][0]==0 || matrix[0][j]==0) matrix[i][j]=0;
+            }
+        }
+        //Step 3: Finally mark the 1st col & then 1st row based on matrix[0][0] and col0
+        if(matrix[0][0]==0){    //row should be marked 0
+            for(int j=0;j<matrix[0].length;j++) matrix[0][j]=0;
+        }
+        if(col0==0){  //column should be marked 0
+            for(int i=0;i<matrix.length;i++) matrix[i][0]=0;
+        }
+    }
+}
+
+/*
+LOGIC---
+Use the first row and column of matrix in place of auxliary array and save space.
+In this case we will just make an extra variable for col0 since (0,0) cannot be shared between both row and column markings.
+
+Why we are marking the changes in 1st row first and then the 1st column?
+We modify the 1st row first because it relies on matrix[0][0]. If we change the 1st column first, we might alter matrix[0][0], which would affect the 1st row modification. By changing the 1st row first, we ensure that matrix[0][0] is used correctly before modifying the 1st column based on col0.
+*/
