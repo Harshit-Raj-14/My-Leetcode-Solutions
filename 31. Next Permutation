@@ -1,0 +1,46 @@
+class Solution {
+    public void nextPermutation(int[] nums){
+        int bp=-1;
+        // Step 1: Find the breakpoint where nums[i] < nums[i + 1]
+        for(int i=nums.length-2;i>=0;i--){ //look for the first break point from right (ascending)
+            if(nums[i]<nums[i+1]){bp=i; break;}
+        }
+        // Step 2: If no breakpoint found, reverse the entire array
+        //for sroting a descending array make a reverse function so that TC remains O(n)
+        if(bp==-1) Arrays.sort(nums);    //if no break point array is descending => return sorted array order
+        else{
+            //Step 3: Find the element greater than nums[bp] to the right
+            for(int i=nums.length-1;i>bp;i--){
+                if(nums[i]>nums[bp]){
+                    int temp=nums[bp];
+                    nums[bp]=nums[i];
+                    nums[i]=temp;
+                    break;
+                }
+            }
+            // Step 4: Reverse the part of the array to the right of bp
+            for (int i=bp+1, j=nums.length-1; i<j; i++,j--){ //don't do nums.length-i-i necuase i is not starting from 0 you will be subtracting bp which will be wrong
+                int temp = nums[i];
+                nums[i] = nums[j];
+                nums[j] = temp;
+            }
+        }
+    }
+}
+
+/*
+LOGIC---
+We want to find a larger number, but not too large, just the next larger one.
+We want to avoid chaning the number in the left => it will increase the number too much.
+Example: 432513 -> we can only change the last two numbers and have 432531
+
+What if it was 432531 in the first place? 31 cannot be increased.
+Lets try 531 - still no
+2531 - this can be increased - the smallest number that can be used to increase the 2 is swap 2 with 3. so for now we have 3521.
+Next we want to minimize 3521. 
+thats easier => just sort the numbers to the right of 3 
+=> or rather reverse them becuase they ar ein increasing so it will make them descending => 3125. 
+So the answer is 433125
+
+C++ STLE - next_permutation(nums.begin(), nums.end());
+*/
