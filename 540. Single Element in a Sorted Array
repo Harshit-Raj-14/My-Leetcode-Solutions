@@ -1,0 +1,54 @@
+class Solution {
+    public int singleNonDuplicate(int[] nums){
+        if(nums.length==1) return nums[0];
+        int l=0;
+        int r=nums.length-1;
+        while(l<=r){
+            int mid=l+(r-l)/2;
+            if(checkBinary(nums, mid)){
+                l=mid+1;
+            }
+            else r=mid-1;
+        }
+        return nums[l];
+    }
+
+    public static boolean checkBinary(int nums[], int mid){
+        if(mid==nums.length-1) return false;    //the last element is our culprit
+        if (mid % 2 == 1) mid--;  // Adjust mid to even if it's odd
+        return nums[mid] == nums[mid + 1];  // Check if mid and mid+1 are the same
+    }
+}
+
+
+/*
+LOGIC---
+Let's consider the optimal case, every elements appears twice. Also array is sorted.
+[0,0,1,1,2,2,3,3,4,4,5,5]
+=> each element would shift from their original index by 2
+=> 0 starts from 0
+=> 1 starts from 2
+=> 2 starts from 4
+=> 3 starts from 6
+
+Now consider another array:
+[0,0,1,1,2,2,3,4,4,5,5] => there is only one 3 now
+=> 0 starts from 0
+=> 1 starts from 2
+=> 2 starts from 4
+=> 3 starts from 6
+=> 4 starts from 5 => discrepancy
+
+Observation: each new element will start from even index.
+So, if a new element starts from odd index that is our answer.
+
+So, becuase array is sorted and the elements appearing twice.
+If the discrepancy has till yet not occured till mid. it should appear further.
+If the discrepancy has occured, there are still chances it might have started much before.
+
+Nature: NNNNNNNNYYYYYYYY 
+=> first discrepancy is at first Y 
+=> but our answer will be first N which caused the problem think in the example, 3 is at even index but it caused the discrepancy becuase it existed once
+=> so we need last N => l
+
+*/
