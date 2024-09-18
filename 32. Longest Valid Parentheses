@@ -1,0 +1,130 @@
+/* USING STACK O(n), O(n) */
+class Solution {
+    public int longestValidParentheses(String s) {
+        Stack<Integer> stack = new Stack<>();   //index monotonic stack
+        int ans=0;
+        stack.push(-1);
+        for(int i=0;i<s.length();i++){
+            if(s.charAt(i)=='(') stack.push(i);
+            else{
+                stack.pop();
+                if(stack.isEmpty()) stack.push(i); //Push the current index as a new base for future valid substrings
+                else ans=Math.max(ans, i-stack.peek());
+            }
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+Why stack is pushed with -1 intially?
+The -1 acts as a base index for calculating lengths of valid substrings starting from index 0.
+eg : s="()" ans=1-(-1)= 2 length substring
+
+Why when stack becomes empty we push index of ")"?
+Since we encountered a closing bracket when stack is empty, meaning now we don't have a valid substring parenthesis in our hand at that index. So to act as base for the next substring calculation we need to push the closign bracket index, otherwise in all cases we would alsways add index of opening bracket.
+eg: s="())()"
+At i=2 our stack becoems empty as index 0 and -1 are popped.
+So we add index 2 now.
+At i=3 => "(" stack is again pushed with index 3.
+At i=4 => ")" stack is popped. now it contains only index 2 again.
+And so ans = 4-(2) = 2 that is substring ()
+*/
+
+/* LONGEST CONSECUTIVE ONEs O(n), O(n) */
+class Solution {
+    public int longestValidParentheses(String s) {
+        int arr[] = new int[s.length()];
+        Stack<Integer> stack = new Stack<>();
+        for(int i=0;i<s.length();i++){
+            if(s.charAt(i)=='(') stack.push(i);
+            else{
+                if(!stack.isEmpty()){
+                    arr[i]=1;
+                    arr[stack.pop()] = 1;   //we found pair "()" so mark both places as 1
+                }    
+            }
+        }
+        //find longest consecutive sequence of 1
+        int ans=0;
+        int temp=0;
+        for(int i=0;i<arr.length;i++){
+            if(arr[i]==1){
+                temp++;
+                ans=Math.max(ans, temp);
+            }
+            else temp=0;
+        }
+        return ans;
+    }
+}
+
+
+/*
+LOGIC---
+Transform the parnathesis string into an array of 0 and 1.
+Where 1 marks a successsful valid substring length and 0 would mark as false substring.
+Longest valid parathesis = longest consecutive sequence of 1
+
+use stack and an array, and then change this problem as finding longest continuous 1 in a 01 array. 
+
+First, in stack push position of each '(', then when we meet ')'.
+Pop stack to find its match'('， 
+Place both ')' and '(' as 1 in array
+
+For example, (()()，array should look like[0,1,1,1,1]
+
+Then it is super easy, to find out longest substring that all items are 1 !!!
+
+
+APPROACH---
+Approach
+Initialize an array arr of length n, where n is the length of the input string s, filled with zeros.
+Initialize an empty stack.
+Iterate through each character s[i] in the input string s.
+If s[i] is '(', push its index i onto the stack.
+If s[i] is ')' and the stack is not empty, mark the corresponding opening parenthesis index and the current index as valid by setting arr[stack.pop()] = 1 and arr[i] = 1.
+The false places or invalid (, ) will remain marked as 0, while we successfully makred the valid places as 1.
+Now we need to find longest consecutive 1s in the array.
+*/
+
+
+/* TWO POINTER O(n), O(1) */
+class Solution {
+    public int longestValidParentheses(String s) {
+        int left=0;
+        int right=0;
+        int ans=0;
+        for(int i=0;i<s.length();i++){ 
+            if(s.charAt(i)=='(') left++;
+            else right++;
+            if(left==right) ans=Math.max(ans, right*2);
+            else if(right>left) left=right=0;   //from here on our valid substring breaks so restart
+        }
+        left=right=0;   //reset left and right pointers
+        for(int i=s.length()-1;i>=0;i--){  //do it in reverse order as well
+            if(s.charAt(i)=='(') left++;
+            else right++;
+            if(left==right) ans=Math.max(ans, right*2);
+            else if(left>right) left=right=0;
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+Maintain a two pointer left and right which shows count of ( and ) bracket. Ifa t some index they become equalthat means its valid.
+
+Prefix case : if ()) in this scenario if right>left would mean that at that point valid string breaks. becuase an extra closed bracket from frotn means its invalid while the open ones can wait for their chance to be closed.
+
+Suffx case : if (() in this scenario if left>right wold mean that at that point valid string breaks. becuase an extra open bracket from back means its invalid while the closed ones will still be given a chance to find their opening partner.
+
+Why do it from reverse order?
+In the first loop we have only considered prefix substrings but we should check suffix side as well.
+eg: (((((((()))))
+the longes valid is ((((())))) => and this valid substring is starting from behind so e need to check form behind also.
+Also, in backward case left>right should reset becuase at this point we have encoutnered ( opening bracket from backward which will make our string bad
+
+*/
