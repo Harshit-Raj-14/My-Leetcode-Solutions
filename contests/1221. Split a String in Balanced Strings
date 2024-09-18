@@ -1,0 +1,39 @@
+class Solution {
+    public int balancedStringSplit(String s) {
+        int l=0;
+        int r=0;
+        int ans=0;
+        for(int i=0;i<s.length();i++){
+            if(s.charAt(i)=='L') l++;
+            if(s.charAt(i)=='R') r++;
+            if(l==r){
+                ans++;
+                l=0;
+                r=0;
+            }
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+To get maximum substrings we want to derive all the smalelst possible substring which is equal quantity of L and R.
+Maintain two pointers for it.
+*/
+
+
+/* ELEGANT SOLUTION */
+class Solution {
+    public int balancedStringSplit(String s) {
+        int count=0;
+        int ans=0;
+        for(int i=0;i<s.length();i++){
+            if(s.charAt(i)=='L') count++;
+            if(s.charAt(i)=='R') count--;
+            if(count==0)ans++;
+        }
+        return ans;
+    }
+}
+
