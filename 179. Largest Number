@@ -1,0 +1,28 @@
+class Solution {
+    public String largestNumber(int[] nums){
+        String[] arr = new String[nums.length];
+        for(int i=0;i<nums.length;i++){
+            arr[i]=Integer.toString(nums[i]);
+        }
+        Arrays.sort(arr, (a,b) -> (b+a).compareTo(a+b));
+        if(arr[0].equals("0")) return "0";  //edge case, if first number is 0 all are 0
+        StringBuilder sb = new StringBuilder("");
+        for(String s : arr){
+            sb.append(s);
+        }
+        return sb.toString();
+    }
+}
+
+/*
+LOGIC---
+If AB > BA. Then we have ACB > BCA for any C. 
+we want to compare numbers based on the result of their concatenation in two different orders.
+
+Sorting the numbers in descending order might seem like a good idea, but it leads to issues when numbers share the same leading digit. For example, sorting [9, 5, 34, 3, 30] in descending order gives "9534303", but the correct answer is "9534330". The problem arises because "3" and "30" share the same leading digit.
+
+we compare a + b and b + a (where + denotes string concatenation). If a + b is larger, we place a before b. This ensures that the numbers are ordered correctly for the largest possible result.
+
+EDGE CASE---
+If the first element in this sorted list is "0", it indicates that all numbers were zeros, so the largest number possible is "0". In this case, we return "0". If not, we return the concatenated result.
+*/
