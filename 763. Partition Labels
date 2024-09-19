@@ -1,0 +1,48 @@
+class Solution {
+    public List<Integer> partitionLabels(String s) {
+        HashMap<Character, Integer> map = new HashMap<>();
+        for(int i=0;i<s.length();i++){
+            map.put(s.charAt(i), i);    //this will update the last index of all characters in map
+        }
+        ArrayList<Integer> ans = new ArrayList<>();
+        int start=0;
+        int end=0;
+        for(int i=0;i<s.length();i++){
+            end=Math.max(end, map.get(s.charAt(i)));
+            if(end==i){ //partition time, the characters encountered till now does not exist outside this range
+                ans.add(end-start+1);
+                start=end+1;
+            }
+        }
+        return ans;
+
+    }
+}
+
+/*
+LOGIC---
+Goal: characters at each partition DOES NOT appear in any other partition then return the length of each one.
+
+why HashMap?
+because, we gonna need each & every character index in our hashmap & by that we'll got an idea, from where to partition it.
+
+How to know when to partition?
+After storing index of last occurence of each element we get to know where each character ends in string. So, once you start iterating string. The moment current index hits the maximum endpoint of all the characters encountered til now, that means at curr index all the characters we have seen till now will no longer exist in other part of the string. All the characters are till this interval only. This means this here can be our very partition.
+Now find length of partition.
+Now the next index becomes the start of next partition.
+
+Visual representation : https://leetcode.com/problems/partition-labels/
+
+APPROACH---
+=> Create a map that stores the last index of each character in the string.
+=> the question now reduces to the other question : "Merge intervals".
+=> initialize two variables, "start" and "end", to keep track of the current partition. Set them both to 0 initially.
+=> Iterate through the string. 
+    ->For each character: update the value of "end" to be the maximum of its current value and the last index of the character in the map.
+    ->If the current index is equal to "end", we have found a partition. 
+    ->Add its length (which is "end" - "start" + 1) to the list of partition sizes, and update "start" to be the next index.
+
+=> Return the list of partition sizes.
+
+A few optimisation- Instead of hashmap, we can also use int array of length 26.
+*/
