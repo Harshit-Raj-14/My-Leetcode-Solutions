@@ -1,0 +1,56 @@
+class Solution {
+    public List<Integer> diffWaysToCompute(String s){
+        return solve(s);
+    }
+
+    public static List<Integer> solve(String s){
+        ArrayList<Integer> ans = new ArrayList<>();
+        for(int i=0; i<s.length();i++){
+            if(s.charAt(i)=='+' || s.charAt(i)=='-' ||s.charAt(i)=='*'){
+                // Recursively solve left and right substrings
+                List<Integer> left = solve(s.substring(0,i));  //store the left side combinations
+                List<Integer> right = solve(s.substring(i+1)); //store the right side combinations
+                // Combine results from left and right parts
+                for(int l:left){
+                    for(int r:right){
+                        if(s.charAt(i)=='+') ans.add(l+r);
+                        else if(s.charAt(i)=='-') ans.add(l-r);
+                        else if(s.charAt(i)=='*') ans.add(l*r);
+                    }
+                }
+            }
+        }
+        if(ans.size()==0) ans.add(Integer.parseInt(s)); //scenario like 1,2,22 etc. where no operators -> base case
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+Objective - find the distinct evaluated value of the expression, after placing brackets at differnet places. 
+
+What does bracket helps us to do? 
+=> It helps us to split an expression.
+
+RECURSION
+Split the string into two parts based on the operator, then solve each substring recursively.
+Whenver you see a operator split the string at that point, solve the split parts independently. And apply the same operator where we splitted.
+
+eg: 2-1-1
+split at first '-' => 2 and 1-1 => 2 and 0 => 2-0 => 2
+split at second '-' => 2-1 and 1 => 1 and 1 => 1-1 = 0
+
+eg: 2*2-1-1
+split at first * => 2 and 2-1-1
+Now in right part the expression in itslef can evaluate to multiple answers as seen above.
+Same can go for left side. So, we need to further evaluate left and right and store their combination in list.
+these two list can be later combined to get final answer.
+
+TC-O(n*2^n)
+For each sub-expression, we iterate through the string to identify the operators, which takes O(n) time. At every step from there we again explore two possibilty to sl=plit or not. 2^n
+
+SC-O(2^n)
+
+Note memoisation or tabulation will make SC-O(n^2*2^n) and no change in TC. 
+Despite the efficiency gains from memoization, the time complexity is still dominated by the recursive nature of the algorithm. So, don't use them.
+*/
