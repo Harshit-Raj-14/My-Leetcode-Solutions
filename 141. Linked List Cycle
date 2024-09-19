@@ -1,0 +1,50 @@
+/* FAST AND SLOW POINTER O(n), O(1) */
+public class Solution {
+    public boolean hasCycle(ListNode head){
+        if(head==null) return false;
+        ListNode fast = head;
+        ListNode slow = head;
+        while(fast!=null && fast.next!=null){   //remember these two checks always exist for fast pointer
+            slow=slow.next;
+            fast=fast.next.next;
+            if (slow == fast) return true;  // Check after moving pointers
+        }
+        return false;
+    }
+}
+
+/*
+LOGIC---
+Use a fast and slow pointer
+
+In case of no cycle -> eventually our fast pointer will hit null first either as fast.next==null || fast==null.
+
+Incase of a cycle:
+At one point fast would enter cycle first.  If at some point the two pointers meet on the same node, then that means a cycle exists.
+
+Why does this work? For a visual animation, please see the video, but for a simple explanation, think of two people running on a circular track. If both people run and one of them runs faster than the other, then the faster person will eventually catch up to the slower one and "lap" them. In other words, they will be back at the same position again. This is what we're looking for in the algorithm and it's how we detect a cycle.
+
+Why equality check after moving pointers?
+The reason you should move the slow and fast pointers first and then check for equality is that at the start of the loop, both slow and fast are pointing to the same node (the head of the list). If you check if (slow == fast) before moving them, the condition will be true right away, even if there is no cycle, because both pointers are still at the starting node.
+*/
+
+
+/* USING HASHSET O(n), O(n) */
+public class Solution {
+    public boolean hasCycle(ListNode head){
+        if(head==null) return false;
+        HashSet<ListNode> set = new HashSet<>();
+        ListNode curr = head;
+        while(curr.next!=null){
+            if(set.contains(curr))return true;  //cycle detected
+            else set.add(curr);
+            curr=curr.next;
+        }
+        return false;
+    }
+}
+
+/*
+LOGIC---
+If we encounter the same listnode having same val and next pointer, it means it was a cycle and we were redirected to a previous traversed node.
+*/
