@@ -1,0 +1,53 @@
+/* FAST & SLOW POINTER */
+class Solution {
+    public boolean isHappy(int n) {
+        int slow=n;
+        int fast=n;
+        while(fast!=1 && sum(fast)!=1){ //double check fast twice here
+            slow=sum(slow);
+            fast=sum(sum(fast));
+            if(slow==fast) return false;    //slow ==fast check always comes after movign the pointers
+        }
+        return true;
+    }
+
+    public static int sum(int n){
+        int ans=0;
+        while(n!=0){
+            int r=n%10;
+            ans += r*r;
+            n/=10;
+        }
+        return ans;
+    }
+}
+
+
+/*
+LOGIC---
+If sum of one number again yileds a previously calculated sum. it menas it is a loop and we will never reach 1.
+
+*/
+
+/* USING HASHSET */
+class Solution {
+    public boolean isHappy(int n) {
+        HashSet<Integer> set = new HashSet<>();
+        while(n!=1 & !set.contains(n)){
+            set.add(n);
+            int sum = 0;
+            while(n>0){
+                int r = n%10;
+                sum += r*r;
+                n/=10;
+            }
+            n=sum;
+        }
+        return n == 1;
+    }
+}
+
+/*
+It will only loop endlessly if we keep on doing the operation and we again get back to one of the squares in the process
+So, first we need to make sure to store the squares in a set
+*/
