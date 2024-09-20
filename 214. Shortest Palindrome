@@ -1,0 +1,135 @@
+/* KMP O(n), O(n) */
+class Solution {
+    public String shortestPalindrome(String s){
+        StringBuilder sb = new StringBuilder(s);
+        String rev = sb.reverse().toString();
+        String temp=s+"-"+rev;
+        int lps[] = new int[temp.length()];
+        computeLPS(temp, lps);
+        int longestLPS = lps[temp.length() - 1];  // The last value of LPS array
+        String culprit = rev.substring(0, s.length()-longestLPS);   //the unequal suffix
+        return culprit+s;
+    }
+
+    public static void computeLPS(String pattern, int[] lps) {
+        int n=pattern.length();
+        int len = 0; // Length of the previous longest prefix & suffix
+        lps[0]=0; // Because there is no proper suffix and prefix of pattern[0..0]
+        int i = 1;
+        while(i<n) {
+            if(pattern.charAt(i) == pattern.charAt(len)) {
+                len++;
+                lps[i] = len;
+                i++;
+            } 
+            else {
+                if(len!=0) len = lps[len-1]; // Similar to len = len-1;
+                else {
+                    lps[i] = 0;
+                    i++;
+                }
+            }
+        }
+    }
+}
+
+/*
+APPROACH---
+In previous accepted, We need to find the longest prefix in s that is available as a suffix in reverse of s.
+eg:
+s=abac
+r=caba
+So, aba is the longest prefix in s that is equal to the suffix in reverse.
+So, palindrome  = unequal left string of rev + s
+
+Infact look it at like this:
+word :   (a a c e c a a) a
+rev  : a (a c e c a a a) 
+The part in brackets is the common prefix suffix we need to find. => KMP Algo
+
+LPS = Longest proper prefix in s which is a also a suffix in s.
+
+In a string s=ABCD
+e traverse the string and find LPS for that substring
+At i=0: LPS=1
+At i=1: if(A==B) LPS=1 else 0
+At i=2: if(A==C) LPS=1 else 0
+At i=3: if(A==D) LPS=1 else 0
+Also, if(A==C && B==D) LPS=2, see that we don't need to reverse the suffix, we move forward and check equality, this is proper suffix. basically, AB=CD
+
+But here we need LPS between s and reverse of s.
+And KMP is done on 1 string.
+So, combine s and reverse of s => s-rev and send it to LPS
+Now calculate its LPS
+Find the unequal suffix that is the culprit that needs to be added to string to make it palindrome
+*/
+
+/* ACCEPTED O(n^2) */
+class Solution {
+    public String shortestPalindrome(String s){
+        StringBuilder sb = new StringBuilder(s);
+        sb.reverse();   //to easily get reverse suffix
+        for(int i=0;i<s.length();i++){     //i is the pivot where prefix and suffix needs to be equal
+            String prefix=s.substring(0, s.length()-i);
+            String suffix=sb.toString().substring(i);
+            if(prefix.equals(suffix)) return sb.toString().substring(0, i)+s;
+        }
+        return "";
+    }
+}
+
+/*
+LOGIC---
+In brute force we tried making suffix each time we could not make it work as a prefix of a palindrome.
+Let P be the pivot.
+XPZ => to be a palindrome => X==Z
+to be precise X==reverse(Z)
+
+So, find XP as prefix and PZ as suffix reversed, so it should be ZP
+Now if XP==ZP => it is a palindrome
+
+So, include reverse(Z)+s => will be our palindrome
+
+The reaosn this solution passes while still being O(n^2) becuase unlike creating suffix each time and iterationg, here we create the reversed version of the string once using StringBuilder.reverse() and reuses it. 
+*/
+
+
+/* BRUTE FORCE OBSERVATION APPENDING REVERSE OF SUFFIX AND CHECK TLE O(n^2) */
+class Solution {
+    public String shortestPalindrome(String s) {
+        if(isPalindrome(s)) return s;
+        for(int i=s.length()-1;i>=0;i--){
+            String reverse_suffix = new StringBuilder(s.substring(i)).reverse().toString();
+            if(isPalindrome(reverse_suffix+s)) return reverse_suffix+s;
+        }
+        return "";
+    }
+
+    public static boolean isPalindrome(String s){
+        for(int i=0;i<s.length()/2;i++){
+            if(s.charAt(i)!=s.charAt(s.length()-1-i)) return false;
+        }
+        return true;
+    }
+}
+
+/*
+LOGIC---
+eg: XYXZ => not a palindrome
+Z is not matching with Z
+So, let's add a Z at the end => ZXYXZ => Palindrome
+
+eg: XYXDZ =>not a palindrome
+Z is not matching X
+So, let's try adding Z at the end => ZXYXDZ
+But now again D is not matchign with X. So Z is the suffix we needed to add but try doing DZ
+So, let's add DZ reversed to front, => ZDXYXDZ => Palindrome
+
+So, to make the shortest palindrome we need to add the suffix not present in the prefix to make it Palindrome.
+
+APPROACH---
+From back we are going to one by one check suffix and keep on increasing length of suffix.
+Reverse the suffix and add it to the front and check to form a palindrome.
+
+Note - there will always be a valid solution wher esuffix added will be s.substring(1), with the fist character as center.
+*/
