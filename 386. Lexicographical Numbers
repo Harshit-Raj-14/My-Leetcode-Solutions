@@ -1,0 +1,172 @@
+/* DFS SOLUTION O(n), O(1) */
+class Solution {
+    public List<Integer> lexicalOrder(int n) {
+        ArrayList<Integer> ans = new ArrayList<>();
+        for(int i=1;i<=9;i++){
+            dfs(n, i, ans);
+        }
+        return ans;
+    }
+
+    public static void dfs(int n, int i, ArrayList<Integer> ans){
+        if(i>n) return;
+        ans.add(i);
+        for(int j=0;j<=9;j++){
+            int next=i*10 + j;    //after 1 it will be 10, then 100 and so on... till we return and explore next subtree
+            dfs(n, next, ans);
+        }
+    }
+}
+
+/*
+LOGIC---
+n=2 -> 1,2
+n=10 -> 1,10, 2,3,4,5,6,7,8,9
+n=22 -> 1,10...19, 2,21,22,3,4,5,6,7,8,9
+n=110 -> 1,10,100,11,12,13....19,100,101,102,103,...110, 2,20,21,22,23
+Note : 100 will come before 11
+
+One things for clear, Lexicographical order -> dictionary order
+So, first dictionary will containa all numbers starting with 1, then all numbers starting with 2, and so on...
+
+Approach---
+Generate the lexicographical order by constructing numbers one by one based on their prefix. This can be done using a recursive Depth First Search (DFS)-like traversal.
+Iterate from 1 to 9 since it will be the first letters of dictionary. -> let's call them indexes
+
+Now let's consider index 1 to be root.
+From 1 we have 10 options 0,1,2,3,4,5,6,7,8,9 and we can club 1 with them
+But there's a catch as seen above lexicographically  1,10,100,101, 11 
+100, 101...109 will come before 11.
+And we can get 100 if we go deep after 10 and again explore from 10 all the ten options of joining 0 to 9.
+
+Hence to generate lexicographic order for one index, we need to do dfs for that tree. Go deep then come back then eplore again in the next subtree and so on...
+Infact you will realise its inorder traversal
+
+Hence, traverse with DFS, and collect numbers along the way: 1, 10, 100, ... you get it. When we encounter a number larger than n, we can return back to the previous level.
+
+STEPS---
+-> We start DFS from numbers 1 to 9 because they are the first digits in lexicographical order.
+-> The dfs function builds numbers by appending digits (0 to 9) to the current number, as long as the result doesn't exceed n.
+-> The recursion ensures that numbers are added in lexicographical order, starting from 1, 10, 100, etc., then moving to the next available numbers like 2, 20, 200, and so on.
+
+       1
+      /|\  (Append digits 0-9)
+    10 11 12 ... 19
+   /|\  /|\ 
+100 101 ... 109 (Repeat appending digits until n is exceeded)
+ |
+1001 1002....
+(Stop when exceeding n)
+
+TC-O(n)
+SC-O(logn)~O(1)
+
+Why TC is O(n)?
+The algorithm generates all numbers from 1 to n in lexicographical order. Each number is visited exactly once and added to the result list. The total number of operations is proportional to the number of elements generated, which is n.
+
+Why space O(1) when recursion?
+When using recursion, in each recursive call, the function keeps a frame in the call stack, so it can grow to O(depth of the tree) space.
+Reason see constraints of n=10^5. Here log(n) can give maximum value around 16. 
+log2(1e5)=16.61 to be exact 
+so absolutely it is O(1)
+*/
+
+/* ITERATIVE SOLUTION O(n), O(1) */
+class Solution {
+    public List<Integer> lexicalOrder(int n) {
+    List<Integer> ans = new  ArrayList<>();
+    int curr = 1; //basicc indexes - 1,23,4,5,6,7,8,9 for dictionary
+    for(int i=1; i<=n; i++){
+      ans.add(curr);
+      if(curr*10<=n) curr = curr*10;    //moving to next level 1->10->100->1000....
+      else{ //stope when cannot exceed n
+        while(curr%10==9 || curr>=n){
+          curr = curr/10;   //go back to previous level
+        } 
+        curr++;
+      }
+    } 
+    return ans;
+    }
+}
+
+/*
+DRY RUN---
+lets take n = 25 , lets say i have a list initially empty.
+int curr = 1;
+
+for i=1 to i<=25 i++
+// would add curr
+{1, }
+//now i have to add association of 1 , 10, 11 .....>
+so to do that we have to multiply curr with 10 (curr=1 as of now)
+
+curr = 1*10; 10 so its less than 25 so no problem, will go to loop
+
+now we would add curr to list (curr = 10 now), now list like below
+
+{1, 10, }
+
+again we will multiply curr * 10 = 10 * 10 = 100 But But this is greater than 25 .
+
+yes so we can not do that ....then what ?
+
+no problem whenever this situation appear we will go to else part and increment the curr by 1
+
+well so now curr = 10 + 1 = 11 ...will go to for loop again...
+now our list would look like :-
+
+{1, 10, 11}
+
+again curr*10 = 110 greater than 25...so again go to else part and keep on increatment them.
+
+our list would be at times like below :-
+{1, 10, 12, 13, 14, 15, 16, 17, 18, 19} at this time our char = 19 and we would going below ...again curr = 10 * 19 = 190 > 25 so again will go to else part
+
+BUT BUT bro your were saying we would keep on creament curr by one so now you would make it curr = 19 + 1 = 20
+
+so you would add 20 to list , so where is 2 ? why why??
+
+wait a min i would be also checking in else part that whatever is my curr value does this curr is having curr % 10 = 9
+
+with this help i will catch the values like 19, so when curr = 19
+in else part if(curr%10==9) i will update the curr val so that it will converted to
+
+curr = curr/10 ===> 19/10 ==> 1
+and now again i will increase it so curr = curr + 1 = 2
+
+and yes , i would keep on doing same thing.
+
+but wait a min, how would you print all those single digits like 3, 4, 5, 6, 7, 8, 9 ?
+
+well when we would add the numbers till 25 , our curr = 26 , we will again check in while loop 26 >= 25 so curr = 26/10 = 2
+
+now here i would also add a condition same if where we put curr%10==9
+i will use OR curr>=n (25 in this case) we will make
+
+curr = curr/10; ===> 26/10 ===> 2 increment = 2+1 = 3 will go to for loop again ..... curr = 10*3 > 25, will go to else part, will increase it again ....
+
+it would add 3, 4, 5, 6, 7, 8, 9
+
+Ok, so what is next value after adding 9?
+
+ohh, come one bro, our for loop is only runs 25 times...it would be done no more execcution.
+
+our list would be like this:-
+{1, 10, ....19, 2, 21, 22, 23, 24, 25, 3, 4, 5, 6, 7, 8, 9}
+
+*/
+
+/* SORTING O(nlogn) */
+class Solution {
+    public List<Integer> lexicalOrder(int n){
+        List<Integer> ans = new  ArrayList<>();
+        for(int i=1;i<=n;i++) ans.add(i);
+        Collections.sort(ans, (a,b) -> { //lexicographically sort using comparator
+            String s1 = Integer.toString(a);
+            String s2 = Integer.toString(b);
+            return s1.compareTo(s2);
+        });
+    return ans;
+    }
+}
