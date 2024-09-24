@@ -1,0 +1,133 @@
+/* GOD MODE O(1) , O(1) */
+class Solution {
+    public int minimumNumbers(int sum, int k) {
+        if(sum==0) return 0;
+        for(int i=1;i<=10;i++){
+            if(i*k<=sum && (i*k)%10 == sum%10) return i;
+        }
+        return -1;
+    }
+}
+
+/*
+LOGIC---
+Case I: If num == 0, then empty set valid, return 0.
+
+1234= 1000 + 200 + 30 + 4 
+    = 10^3 + 2x10^2 + 3x10^1 + 4 
+    = 10^3 + (10^2 + 10^2) + (10 + 10 + 10) + 4 
+    -> notice how only 4 is actually what we are concerned the rest are just 10's
+    
+=> hence, you only need to look at the last digit.
+
+Reason:
+The series that we will be using to construct sum is in fact:
+eg: k=2 : 2,12,22,32,42,....
+its of form: k, k+10, k+10+10, k+10+10+10,.... and so on
+-> again its just the number k and rest are multiple of 10
+
+So, we can say 
+sum = a*k + some arbitrary multiple of 10
+
+Where when a is multiplied by k, its last digit and the las tdigit of sum should be same.
+
+eg:
+sum=58, k=9
+We need to rewrite the number sum in form of sum = a*k + some multiple of 10
+Hence the last digit of multiple of 9 must be equal to the last digit of 58.
+
+And we do have 2*9=18
+58 = 2*9 + 40
+Now, the number 40 there are multiple ways to make it multiples of 10 like (0, 40), (10,30), (20,20). 
+Then you can add it into your (9, 9) to achieve (9,49) (19, 39), (29, 29).
+
+That means the correct size of our set which we need is infact the frequency of k without which the sum would become a multiple of 10.
+
+APPROACH---
+Example [58 9] , we take 58 - 9 = 49 , then 49 - 9 = 40
+now we can add 40 in tens place or hundreds place anywhere as we want
+we can do 39 19 or 49 9 or 29 29
+
+DERIVED TWO IMPORTANT CONDITION:
+last digit of a*k = last digit of sum => (size*k)%10 == sum%10 : VALIDITY CHECK
+when to stop or rather reached the minimum size(freq) : size*k <= sum : OPTIMAL ANSWER CHECK
+where, size is basically our answer or number a or the frequency of k.
+
+Apply these two conditions in a loop of size existing ebtween range [1,10].
+
+Finally why do we have range of 1  to 10?
+Say you've got k = 1, and your num's unit digit is 0 (say num = 10). In this case, you'll need 10 numbers with a unit digit of 1. This is an extreme example, and if you think about it, for the rest of the cases, the set size will be less than or equal to 10. 
+
+SOME MATHS PROOF---
+Assume the size of the set is n, and the numbers in the set are A1, A2,..., An
+A1 + A2 + ... + An = sum
+All numbers must have k as the unit digit
+So A1 + A2 + ... + An = n*k + 10*(a1 + a2 + .. + an) = sum
+Which (a1 + a2 + .. + an) can be any number.
+For example:
+sum = 58, k = 9 => we have n*k = 2*9 = 18, and 10*(a1 + a2) = 58 - 18 = 40. So a1 + a2 = 4
+Just find the minimum number satisfying the condition (n*k)%10==sum%10, because 10*(a1 + a2 + .. + an)%10 allways equal to 0
+*/
+
+
+/* MEMOISATION */
+class Solution {
+    public int minimumNumbers(int sum, int k) {
+        if(sum==0) return 0;
+        if(sum%2!=0 && k%2==0) return -1;   //failed to make set when sum is odd and unit digit is even
+        int dp[][] = new int[3001][3001];
+        for(int row[]:dp) Arrays.fill(row,-1);
+        int ans=solve(sum, k, dp);
+        if(ans==1000000) return-1;
+        else return ans;
+    }
+
+    public static int solve(int sum, int idx, int dp[][]){
+        if(sum==0) return 0;
+        if(idx>sum) return 1000000;
+        if(dp[sum][idx]!=-1) return dp[sum][idx];
+        int not_take = solve(sum, idx+10, dp);
+        int take = 1000000;
+        if(idx>0) take= 1 + solve(sum-idx, idx, dp);
+        return dp[sum][idx]=Math.min(take, not_take);
+    }
+}
+
+
+/* RECURSION TLE */
+class Solution {
+    public int minimumNumbers(int sum, int k) {
+        if(sum==0) return 0;
+        if(sum%2!=0 && k%2==0) return -1;   //failed to make set when sum is odd and unit digit is even
+        int ans=solve(sum, k, k);
+        if(ans==1000000) return-1;
+        else return ans;
+    }
+
+    public static int solve(int sum, int idx, int k){
+        if(sum==0) return 0;
+        if(idx>sum) return 1000000;
+        int not_take = solve(sum, idx+10, k);
+        int take = 1000000;
+        if(idx>0) take= 1 + solve(sum-idx, idx, k);
+        return Math.min(take, not_take);
+    }
+}
+
+/*
+LOGIC---
+Why DP? 
+Observe the series and imagine how take and not_take options works.
+
+The series from which we can choose number from is:
+k, 1k, 2k, 3k,.....
+so its basically 10+k each time
+
+So, just apply take not_take logic to the above series and find which can be made into sum.
+
+Take the minimum of both for answer and take a high value which would imply that we wont be able to make sum.
+
+Some base cases:
+Case I: If num == 0, then empty set valid, return 0.
+Case II: sum is odd and unit digit is even => return -1 will fial to make sum
+*/
