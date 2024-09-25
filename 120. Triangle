@@ -1,0 +1,42 @@
+/* MEMOISATION */
+class Solution {
+    public int minimumTotal(List<List<Integer>> arr){
+        int dp[][] = new int[201][201];
+        for(int row[]: dp) Arrays.fill(row, -1);
+        return solve(arr, 0, 0, dp);
+    }
+
+    public static int solve(List<List<Integer>> arr, int row, int i, int dp[][]){
+        if(row==arr.size()) return 0;
+        if(dp[row][i]!=-1) return dp[row][i];
+        int takei = arr.get(row).get(i) + solve(arr, row+1, i, dp); //take the next i
+        int takei1 = Integer.MAX_VALUE;
+        if(i+1< arr.get(row).size()) takei1 = arr.get(row).get(i+1) + solve(arr, row+1, i+1, dp);   //take the next i+1
+        return dp[row][i]=Math.min(takei, takei1);
+    }
+}
+
+
+/* RECURSION TLE O(n^2), O(n^2) */
+class Solution {
+    public int minimumTotal(List<List<Integer>> arr) {
+        return solve(arr, 0, 0);
+    }
+
+    public static int solve(List<List<Integer>> arr, int row, int i){
+        if(row==arr.size()) return 0;
+        int takei = arr.get(row).get(i) + solve(arr, row+1, i); //take the next i
+        int takei1 = Integer.MAX_VALUE; //since you are taking accumulative minimum start with takei1 with a large number, so that it does not miscalculate when takei1 was not possible
+        if(i+1< arr.get(row).size()) takei1 = arr.get(row).get(i+1) + solve(arr, row+1, i+1);   //take the next i+1
+        return Math.min(takei, takei1);
+    }
+}
+
+/*
+LOGIC---
+Find the minimum path in triangle.
+Only contraint is that when you move to the row below you can then only choose index i or i+1 element, where i was previously the index of chosen element on the previous row.
+
+Funnily triangle is infact a matrix itself.
+type: triangle[0].length == 1 && triangle[i].length == triangle[i - 1].length + 1
+*/
