@@ -1,0 +1,66 @@
+/* MEMOISATION */
+class Solution {
+    public int minExtraChar(String s, String[] dict){
+        HashSet<String> set = new HashSet<>();
+        for(String el : dict) set.add(el);
+        int dp[] = new int[s.length()];
+        Arrays.fill(dp, -1);
+        return solve(s, 0, dp, set);
+    }
+
+    public static int solve(String s, int start, int dp[], HashSet<String> set){
+        if(start>=s.length()) return 0;
+        if(dp[start]!=-1) return dp[start];   
+        int ans=Integer.MAX_VALUE;
+        int not_take = 1 + solve(s, start+1, dp, set);
+        int take=Integer.MAX_VALUE;
+        for(int end=start+1;end<=s.length();end++){
+            String sub = s.substring(start, end);
+            if(set.contains(sub)){
+                take = Math.min(take, solve(s, end, dp, set)); // Only consider the minimum for 'take'
+            }
+            dp[start] = Math.min(take, not_take);
+        }
+        return dp[start];
+
+    }
+}
+
+
+/* RECURSION */
+class Solution {
+    public int minExtraChar(String s, String[] dict){
+        HashSet<String> set = new HashSet<>();
+        for(String el : dict) set.add(el);
+        return solve(s, 0, set);
+    }
+
+    public static int solve(String s, int start, HashSet<String> set){
+        if(start>=s.length()) return 0;   
+        int ans=Integer.MAX_VALUE;
+        int not_take = 1 + solve(s, start+1, set);
+        int take=Integer.MAX_VALUE;
+        for(int end=start+1;end<=s.length();end++){
+            String sub = s.substring(start, end);
+            if(set.contains(sub)){
+                take = solve(s,end,set);
+            }
+            ans=Math.min(ans, Math.min(take, not_take));
+        }
+        return ans;
+
+    }
+}
+
+/*
+LOGIC---
+Same logic as word break but this time just need to take elft character which will be equal to not_Take logic.
+
+Time complexity: O(n^3). 
+There can be N+1 unique states of the dp method. In each state of dp, we iterate over end, which is O(N) iterations. 
+In each of these iterations, we create a substring, which costs O(N). 
+Hence, the overall cost of the dp method is O(N3).
+
+Space complexity: O(N+M⋅K)
+
+*/
