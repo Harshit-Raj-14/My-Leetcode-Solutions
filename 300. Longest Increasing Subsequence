@@ -1,0 +1,198 @@
+/* MEMOISATION O(n^2), O(n^2) */
+class Solution {
+    public int lengthOfLIS(int[] nums){
+        int dp[][] = new int[nums.length][nums.length];
+        for(int row[]: dp) Arrays.fill(row, -1);
+        return solve(nums, 0, -1, dp);
+    }
+
+    public static int solve(int nums[], int curr, int prev, int dp[][]){
+        if(curr==nums.length) return 0;
+        //if(prev!=-1 && dp[curr][prev]!=-1) return dp[curr][prev];
+        // We use prev + 1 to handle the -1 case
+        if (dp[curr][prev+1]!=-1) return dp[curr][prev+1];
+        int not_take = solve(nums, curr+1, prev, dp);
+        int take=0;
+        if(prev==-1 || nums[curr]>nums[prev]){
+            take= 1 + solve(nums, curr+1, curr, dp);  //take next element curr, make prev element curr
+        }
+        //if (prev!=-1) dp[curr][prev]= Math.max(take, not_take);
+        dp[curr][prev+1]= Math.max(take, not_take);
+        return dp[curr][prev+1];
+    }
+}
+
+/*
+Since in code we use prev=-1;
+In dp states use dp[curr][prev+1] to avoid array out of bound. you can do it without as well if you put if checks commented in code.
+
+Time complexity: O(n^2) due to the recursive function's nested loops.
+Space complexity: O(n^2) for the memoization table.
+
+*/
+
+/* Greedy with Binary Search O(nlogn) */
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        ArrayList<Integer> sub = new ArrayList<>();
+        for(int x : nums){
+            if(sub.size()==0 || sub.get(sub.size()-1)<x){   //can move forward as a subseuqence
+                sub.add(x);
+            }   
+            else{   //encountered a smaller number try to fit in the sub
+                int idx = Collections.binarySearch(sub, x); // Find the index of the element
+                if (idx<0) idx = -(idx + 1); // Convert to insertion point
+                sub.set(idx, x); // Replace the element at that index
+            }
+        }
+        System.out.println(sub);
+        return sub.size();
+    }
+}
+
+
+/*
+EXAMPLE---
+Consider the example nums = [2, 6, 8, 3, 4, 5, 1].
+let's try to build the increasing subsequences starting with an empty one: sub1 = [].
+=> Let pick the first element, sub1 = [2].
+=> 6 is greater than previous number, sub1 = [2, 6]
+=> 8 is greater than previous number, sub1 = [2, 6, 8]
+=> 3 is less than previous number, we can't extend the subsequence sub1, but we must keep 3 because in the future there may have the longest subsequence start with [2, 3], sub1 = [2, 6, 8], sub2 = [2, 3].
+    
+=> With 4, we can't extend sub1, but we can extend sub2, so sub1 = [2, 6, 8], sub2 = [2, 3, 4].
+=> With 5, we can't extend sub1, but we can extend sub2, so sub1 = [2, 6, 8], sub2 = [2, 3, 4, 5].
+=> With 1, we can't extend neither sub1 nor sub2, but we need to keep 1, so sub1=[2,6,8], sub2=[2,3,4,5], sub3=[1].
+
+Finally, length of longest increase subsequence = len(sub2) = 4.
+
+
+OBSERVATION---
+we need to keep different sub arrays (sub1, sub2..., subk) which causes poor performance. But we notice that we can just keep one sub array, when new number x is not greater than the last element of the subsequence sub, we do binary search to find the smallest element >= x in sub, and replace with number x.
+
+EXAMPLE---
+Let's run that example nums = [2, 6, 8, 3, 4, 5, 1] again:
+=> Let pick the first element, sub = [2].
+=> 6 is greater than previous number, sub = [2, 6]
+=> 8 is greater than previous number, sub = [2, 6, 8]
+=> 3 is less than previous number, so we can't extend the subsequence sub. We need to find the smallest number >= 3 in sub, it's 6. Then we overwrite it, now sub = [2, 3, 8].
+=> 4 is less than previous number, so we can't extend the subsequence sub. We overwrite 8 by 4, so sub = [2, 3, 4].
+=> 5 is greater than previous number, sub = [2, 3, 4, 5].
+=> 1 is less than previous number, so we can't extend the subsequence sub. We overwrite 2 by 1, so sub = [1, 3, 4, 5].
+
+Finally, length of longest increase subsequence = len(sub) = 4.
+
+WHY BINARY SEARCH WORKS--- 
+For those wondering why BS works, here's a rundown for ya:
+Basically we keep extending the sequence long as we keep finding increasing elements. Soon as we find a smaller element, we replace it, emphasis on the word REPLACE . Replacing doesnt change the length, meaning that our longest length is kept intact, but the order of the elements get changed. Hence, we get the correct length, but not to correct LIS.
+
+Note  :sub wont be the correct LIS it would jsut be the correct size of LIS.
+*/
+
+
+/* RECURSION TLE O(n^2), O(n^2) */
+class Solution {
+    public int lengthOfLIS(int[] nums){
+        int curr=0;
+        int prev=-1;
+        return solve(nums, 0, -1);
+    }
+
+    public static int solve(int nums[], int curr, int prev){
+        if(curr==nums.length) return 0;
+        int not_take = solve(nums, curr+1, prev);
+        int take=0;
+        if(prev==-1 || nums[curr]>nums[prev]){
+            take= 1 + solve(nums, curr+1, curr);  //take next element curr, make prev element curr
+        }
+        return Math.max(take, not_take);
+    }
+}
+
+/*
+LOGIC---
+Apply take and not_take logic.
+
+Take will be initiated only when nums[curr]>nums[prev] => increasing subsequence
+or when prev == -1: This indicates that no element has been selected so far, meaning the current element (nums[curr]) can be freely chosen to start a new subsequence.
+
+Update prev and curr accordingly.
+
+*/
+
+
+/* TABULATION */
+public class Solution {
+    public int lengthOfLIS(int[] nums) {
+        int n = nums.length;
+        int[] dp = new int[n];
+        Arrays.fill(dp, 1);  // Initialize the dp array with 1
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[i] > nums[j] && dp[i] < dp[j] + 1) {
+                    dp[i] = dp[j] + 1;
+                }
+            }
+        }
+        // Find the maximum value in the dp array
+        int maxLIS = 0;
+        for (int value : dp) {
+            maxLIS = Math.max(maxLIS, value);
+        }
+        return maxLIS;
+    }
+}
+
+/*
+LOGIC---
+dp[i] is the longest increase subsequence of nums[0..i] 
+which has nums[i] as the end element of the subsequence.
+*/
+
+/* SPECIAL THEOREM */
+Any sequence of n 2 + 1 distinct real numbers either has an increasing or decreasing subsequence of size n + 1.
+[by pigeonhole principle]
+GOOD REFERENCE PAPER - https://www.cs.princeton.edu/courses/archive/spring13/cos423/lectures/LongestIncreasingSubsequence.pdf
+
+
+
+
+
+/****************************************************************************************************/
+PS- Get Longest Increasing Subsequence Path
+
+/* CODE */
+public class Solution {
+    public List<Integer> pathOfLIS(int[] nums) {
+        int n = nums.length;
+        List<Integer> sub = new ArrayList<>();
+        List<Integer> subIndex = new ArrayList<>(); // Store indices for tracing path
+        int[] trace = new int[n]; // Trace to record the previous index of LIS
+        for (int i = 0; i < n; i++) {
+            trace[i] = -1; // Initialize trace array
+        }
+        for (int i = 0; i < n; i++) {
+            if (sub.isEmpty() || nums[sub.get(sub.size() - 1)] < nums[i]) {
+                if (!sub.isEmpty()) {
+                    trace[i] = subIndex.get(sub.size() - 1);
+                }
+                sub.add(i);
+                subIndex.add(i);
+            } else {
+                int idx = Collections.binarySearch(sub, i, (a, b) -> Integer.compare(nums[a], nums[b]));
+                if (idx < 0) idx = -(idx + 1); // Convert to insertion point
+                if (idx > 0) trace[i] = subIndex.get(idx - 1);
+                sub.set(idx, i);
+                subIndex.set(idx, i);
+            }
+        }
+        List<Integer> path = new ArrayList<>();
+        int t = subIndex.get(subIndex.size() - 1);
+        while (t != -1) {
+            path.add(nums[t]);
+            t = trace[t];
+        }
+        Collections.reverse(path); // Reverse the path to get the correct order
+        return path;
+    }
+}
