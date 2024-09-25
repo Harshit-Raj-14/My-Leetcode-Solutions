@@ -1,0 +1,43 @@
+/* MEMOISATION */
+class Solution {
+    public boolean canPartition(int[] nums) {
+        int sum=0;
+        for(int i=0;i<nums.length;i++){
+            sum+=nums[i];
+        }
+        if(sum%2!=0) return false;  //there are no 0's in array so minimum sum partition=1, totalsum=2
+        Boolean dp[][] = new Boolean[sum][nums.length+1];
+        return solve(nums, sum/2, 0, dp);
+    }
+
+    public static boolean solve(int nums[], int sum, int i, Boolean dp[][]){
+        if(sum==0) return true;
+        if(i>=nums.length || sum<0) return false;
+        if(sum>=0 && dp[sum][i]!=null) return dp[sum][i];
+        if(solve(nums, sum, i+1, dp)) return dp[sum][i]=true;  //not_take
+        if(solve(nums, sum-nums[i], i+1, dp)) return dp[sum][i]=true;  //take
+        return dp[sum][i]=false;
+    }
+}
+
+
+/* RECURSION TLE */
+class Solution {
+    public boolean canPartition(int[] nums) {
+        int sum=0;
+        for(int i=0;i<nums.length;i++){
+            sum+=nums[i];
+        }
+        if(sum%2!=0) return false;  //there are no 0's in array so minimum sum partition=1, totalsum=2
+        return solve(nums, sum/2, 0);
+    }
+
+    public static boolean solve(int nums[], int sum, int i){
+        if(sum==0) return true;
+        if(i>=nums.length || sum<0) return false;
+        if(solve(nums, sum, i+1)) return true;  //not_take
+        if(solve(nums, sum-nums[i], i+1)) return true;  //take
+        return false;
+    }
+}
+ 
