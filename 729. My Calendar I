@@ -1,0 +1,30 @@
+/* BRUTE FORCE O(n^2), O(n) */
+class MyCalendar {
+    ArrayList<int[]> calendar;
+    public MyCalendar() {
+        calendar = new ArrayList<>();
+    }
+    
+    public boolean book(int start, int end) {
+        for(int curr[] : calendar){      //check for overlap with every existing booking
+            if(!(end<=curr[0] || start>=curr[1])) return false;   //opposite of overlapping condition = non-overlapping
+        }
+        // If no overlap, add the booking to the calendar
+        calendar.add(new int[]{start, end});
+        return true;
+    }
+}
+
+
+/*
+LOGIC---
+Declare an arraylist of int[] array.
+Put all intervals in list.
+If there is an overlap with some previous time, check and return false otherwise add to calendar list.
+
+Non-overlapping condition : end<=curr[0] || start>=curr[1] => imagine all cases
+take opposite of non-overlapping = overlapping
+
+TC - O(n^2) For each new event, we process every previous event to decide whether the new event can be booked. This leads to O(n^2) complexity.
+SC - O(n)
+*/
