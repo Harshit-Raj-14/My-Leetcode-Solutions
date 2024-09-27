@@ -1,0 +1,112 @@
+/* MEMOISATION O(m^3) --- m = size of cuts */
+class Solution {
+    public int minCost(int n, int[] cut){
+        ArrayList<Integer> cuts = new ArrayList<>();
+        cuts.add(0);    //adding 0 and n to cuts array for corrct length calculation.
+        for(int i=0;i<cut.length;i++){
+            cuts.add(cut[i]);
+        }
+        cuts.add(n);
+        Collections.sort(cuts); //to make them uniform for operating on left and right parts
+        int dp[][] = new int[cuts.size()][cuts.size()];
+        for(int row[]:dp) Arrays.fill(row, -1);
+        return solve(n, cuts, 1, cuts.size()-2, dp);    //taking from index 1 to n-2 on cuts[], since 0 and n-1 has 0 and size of rod for lengths calculation
+    }
+
+    public static int solve(int n, ArrayList<Integer> cuts, int i, int j, int dp[][]){
+        if(i>j) return 0;
+        if(dp[i][j]!=-1) return dp[i][j];
+        int ans=Integer.MAX_VALUE;
+        for(int idx=i;idx<=j;idx++){    
+            int cost = (cuts.get(j+1)-cuts.get(i-1)) + solve(n, cuts, i, idx-1, dp) + solve(n, cuts, idx+1, j, dp);
+            ans=Math.min(ans, cost);
+        }
+        return dp[i][j]=ans;
+    }
+}
+
+/*
+LOGIC---
+TC- O(m^3)
+Why O(m^3) = The number of states in our DP is the number of possible combinations of (left, right), which is O(m^2). 
+For each subproblem cost(left, right), we need to try all possible cutting positions between new_cuts[left] and new_cuts[right], 
+resulting in an additional factor of m. Therefore, the overall time complexity is O(m^3).
+
+*/
+
+/* RECURSION TLE */
+class Solution {
+    public int minCost(int n, int[] cut){
+        ArrayList<Integer> cuts = new ArrayList<>();
+        cuts.add(0);    //adding 0 and n to cuts array for correct length calculation
+        cuts.add(n);
+        for(int i=0;i<cut.length;i++){
+            cuts.add(cut[i]);
+        }
+        Collections.sort(cuts); //to make them uniform for operating on left and right parts
+        return solve(n, cuts, 1, cuts.size()-2);    //taking from index 1 to n-2 on cuts[], since 0 and n-1 has 0 and size of rod for lengths calculation
+    }
+
+    public static int solve(int n, ArrayList<Integer> cuts, int i, int j){
+        if(i>j) return 0;
+        int ans=Integer.MAX_VALUE;
+        for(int idx=i;idx<=j;idx++){    
+            int cost = (cuts.get(j+1)-cuts.get(i-1)) + solve(n, cuts, i, idx-1) + solve(n, cuts, idx+1, j);
+            ans=Math.min(ans, cost);
+        }
+        return ans;
+    }
+}
+
+
+/*
+LOGIC---
+We need to reorder the cuts in such a way that total cost is minimum. 
+
+ALGORITHM:
+Whenever you make a cut in cuts array : {a1,a2,a3,a4,a5}
+And make cut at a3.
+It will divide stick in two parts.
+Now {a1, a2} will operate on left part of stick. and {a4,a5} will operate on right part of stick.
+We want such configuration to make things simple. And a3 will go away.
+So, first of all array of cuts should be sorted for this to happen for left and right calculation to be correct. For a1 and a2 to fall on left stick and a4 and a5 to fall on right part of stick subproblems.
+
+Add 0 and n to our cuts list. Why? for correct size cost calculation. think of it like intiating the process wil cuts at 0 or nth position which will give the full rod itself.
+
+So, cuts = {0, a1,a2,a3,a4,a5,n} => sorted
+Now apply cut at a3 position.
+Cuts : {0,a1,a2} {a4,a5,n}
+Rods : [0.1.2.....a2...a3] [a3....a4....a5....n] => this will be the left and right of rods now
+initial rod length = end-start = n-0 = n
+left rod length = end-start = a3-0 = where cut made - 0
+right rod length = end-start = n-a3 = n - where cut made
+
+expression = cost of cutting the current rod + solving left subproblem rod + solving right subproblem rod
+expression = arr[j+1]-arr[i-1] + solve(i, idx-1) + solve(idx+1, j) where idx was the place where cut was made
+For first cut = arr[cuts.size()-2 + 1] - arr[1-1] + solve(1,idx-1) + solve(idx+1, cuts.size()-2)
+
+--------------------------------------------------------------------------------------------------
+PARTITION DP:
+Whenever we make a cut, we are changing the length of the stick which in turn decides the cost. Therefore the order in which we make the cuts changes the total cost. whenever the order of solving the problem comes into play, we can think in terms of Partition DP.
+
+Algo of partition dp: 
+    Start with the entire block/array and mark it with i,j.
+    Try all partitions.
+    Return the best possible answer of the two partitions (the answer that comes after dividing the problem into two subproblems and solving them recursively).
+
+
+APPROACH---
+Step 1: 
+If we have to make a total of cn (cn=cuts.length) cuts, then we need to decide which is the first cut out of those cn. Brute force can be to make every cut as the first cut and go further.
+
+Step 2: So, for every 0≤i<cn, make cuts[i] as the first cut. Cost for this will be n (stick length).
+Now we will have two sticks of lengths (cuts[i]−0) and (n−cuts[i]).
+
+Step 3: Now, to make the second cut, we can choose any one of the two sticks because their cost will be dependent on only their length. It is the same problem but with smaller stick length. And we have to reorder all the cuts that are to be made on first smaller stick (0...cuts[i]). And similarly reorder the cuts for the second smaller stick (cuts[i]...n).
+
+If we select cuts[p1] as the first cutting position, it would result in a cost of n and split the stick into two pieces of length cuts[p1] and n - cuts[p1], respectively.
+
+Understanding the DP expression:
+
+Note:  We are breaking the left subproblem to f(i,ind-1) rather than f(i,ind) because we have already made a cut at CUTS[ind] and we don't want to consider it twice.
+*/
