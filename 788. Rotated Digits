@@ -1,0 +1,102 @@
+/* DIGIT DP O(n), O(N) */
+class Solution {
+    public int rotatedDigits(int n){
+        int dp[] = new int[n+1];
+        int ans=0;
+        for(int i=0;i<=n;i++){
+            if(i<10){
+                if(i==0 || i==1 || i==8) dp[i] = 1;
+                else if(i==2 || i==5 || i==6 || i==9){
+                    dp[i]=2;
+                    ans++;
+                }
+            }
+            else{   //number greater than single digit
+                int a=i/10; //left side of number
+                int b=i%10; //last digit of number
+                if(dp[a]==0 || dp[b]==0) dp[i]=0;
+                else if(dp[a]==1 && dp[b]==1) dp[i]=1;
+                else{
+                    dp[i]=2;   //one of them is valid and different
+                    ans++;
+                }
+            }
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+Representation encoding:
+dp[i] = 0, invalid number
+dp[i] = 1, valid and same number
+dp[i] = 2, valid and different number
+
+The idea is to split the current processing number into 2 sub-numbers which have already been processed, the way used here is to split the number (say x digits) into x-1 digit number and 1-digit number, it actually doesn't matter on where to split number, you can totally split the number evenly in the mid and the result should still be the same.
+eg: Once it gets to 100, all 2 digits result are already available in dp[]. Just need to consider the addition digit.
+Case i: dp[a]==0 || dp[b]==0 => one of them invalid will make the whole number invalid
+Now if dp[a]==dp[b]==1 => invalid when they will be put together since same number will come out
+
+APPROACH---
+We can fill the dp for single numbers.
+Now how to go for double numbers without calculating again.
+Like 11 => break it into two parts
+a=1(rest of number), b=1(last digit of number)
+Now a and b would already be precalculated in dp.
+So, we can directly return.
+
+In case of bigger number like 111112, you won't have to iterarte over the whole number again.
+a=11111 and b=2 would already be calculated in dp table.
+dp[11111]=1 and dp[2]=2
+so, our number is valid.
+
+
+WHY DP?
+The point is to reduce calculating the same sub problems.
+In brute force, e.g. N=112, you need to judge digit by digit for N=1 to 112. time complexity: O(N * #digits)
+And the same pattern like 11 is actually re-calculated because you already traversed N=11, and know it's a valid and same pattern, but you judge it again when you meet N=112.
+
+In DP, N=112 is separated into 2 sub-problems, N=11 and N=2, and since these two patterns have already been caculated, we can get the answer for 112 directly. 
+
+The simple point is we don't want to iterate each number again and again like in brute force but use precalculated answers.
+
+time complexity: O(N) 
+space complexity: O(N)
+Though, in this problem, the execution time for DP is not faster than brute force, but in theorem it's faster.
+
+
+How to ocme up with this solution:
+n=abcdef
+One of ways to identify if it can be rotated and be valdi si to iterate and check all the indivudal digits.
+if one of them is rotateable and changes without any invalid number will make number good.
+Infact the validity of number is indivudally calculated through digits.
+So, if the number contaisn no invalid number, and a is rotatebale and valid, so will be ab, abc and abd and so on wil make it valid.
+*/
+
+
+/* BRUTE FORCE O*n^2) */
+class Solution {
+    public int rotatedDigits(int n) {
+        int count=0;
+        for(int i=1;i<=n;i++){
+            if(isRotate(i)) count++;
+        }
+        return count;
+    }
+
+    public static boolean isRotate(int n){
+        String s = Integer.toString(n);
+        if(s.indexOf('3')!=-1 || s.indexOf('4')!=-1 || s.indexOf('7')!=-1) return false;
+        if(s.indexOf('6')!=-1 || s.indexOf('9')!=-1 || s.indexOf('2')!=-1 || s.indexOf('5')!=-1) return true;
+        else return false;
+    }
+}
+
+/*
+LOGIC---
+Having 3,4,7 -> will make it invalid.
+Having 0,1,8 only -> the rotation will keep the same number -> invalid
+you need to have atleast one occurence of 2,5,6,9 -> valid
+
+*/
