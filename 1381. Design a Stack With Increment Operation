@@ -1,0 +1,104 @@
+/* USING ARRAY O(k) */
+class CustomStack {
+    int arr[];
+    int topindex;
+    public CustomStack(int maxSize) {
+        arr = new int[maxSize];
+        topindex=-1;
+    }
+    
+    public void push(int x) {
+        if(topindex<arr.length-1){
+            topindex++;
+            arr[topindex]=x;
+        }
+    }
+    
+    public int pop() {
+        if(topindex<0) return -1;
+        else{
+            int pop=arr[topindex];
+            topindex--;
+            return pop;
+        }
+    }
+    
+    public void increment(int k, int val){
+        if(k>topindex+1) k=topindex+1;
+        while(k-->0){
+            arr[0+k]+=val;
+        }
+    }
+}
+
+/*
+LOGIC---
+At its core, a stack is essentially a list with limited access where we can only interact with the topmost element.
+Let's keep a pointer topIndex to point to the top element. We'll simulate the stack using an array since we can access each index of the array in constant time.
+Time complexity: O(1) for push and pop, O(k) for increment
+Space complexity: O(maxSize)
+*/
+
+/* Array using Lazy Propagation O(1) */
+class CustomStack {
+    private int[] stackArray; // Array to store stack elements
+    private int[] incrementArray; // Array to store increments for lazy propagation
+    private int topIndex;
+
+    public CustomStack(int maxSize) {
+        stackArray = new int[maxSize];
+        incrementArray = new int[maxSize];
+        topIndex = -1;
+    }
+
+    public void push(int x) {
+        if (topIndex < stackArray.length-1) {
+            stackArray[++topIndex] = x;
+        }
+    }
+
+    public int pop() {
+        if (topIndex < 0) return -1;
+        // Calculate the actual value with increment
+        int result = stackArray[topIndex] + incrementArray[topIndex];
+        // Propagate the increment to the element below
+        if (topIndex>0) {
+            incrementArray[topIndex-1] += incrementArray[topIndex];
+        }
+        incrementArray[topIndex] = 0;   // Reset the increment for this position
+        topIndex--;
+        return result;
+    }
+
+    public void increment(int k, int val) {
+        if (topIndex >= 0) {
+            // Apply increment to the topmost element of the range
+            int incrementIndex = Math.min(topIndex, k - 1);
+            incrementArray[incrementIndex] += val;
+        }
+    }
+}
+
+/*
+LOGIC---
+In the previous approach, the increment operation modified the bottom k elements directly, which can become inefficient for large stacks or frequent increments. 
+To improve this, we can use lazy propagation, a technique where updates are delayed until absolutely necessary.
+Instead of immediately updating all affected elements during an increment, we store the increment value and apply it only when needed. 
+This is useful when dealing with a range of elements but without the need for immediate updates.
+We introduce an additional array, incrementArray, that tracks the increment values. 
+Each index i in this array holds the cumulative value by which the elements [0, i] in the stack will be incremented.
+
+
+
+pop():
+When popping an element, we return the value at the top of the stack, including any increments that apply to it. This is where lazy propagation is used.
+First, we retrieve the value at topIndex and add the corresponding increment from incrementArray. Since this top position is being removed, 
+the increment for it needs to be passed down to the next element below. We do this by adding the increment at topIndex to incrementArray[topIndex-1], 
+preserving the necessary increments for future pops.
+Then, we decrement topIndex to remove the current top element.
+
+increment():
+Instead of directly modifying the bottom k elements, we simply update the value at index k-1 in incrementArray. 
+If the stack size is less than k, we update the increment at topIndex instead. This avoids unnecessary modifications and applies the increments only when the affected elements are accessed.
+
+*/
