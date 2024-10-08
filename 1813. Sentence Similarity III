@@ -1,0 +1,35 @@
+class Solution {
+    public boolean areSentencesSimilar(String s1, String s2){
+        if(s2.length()>s1.length()) return areSentencesSimilar(s2, s1);
+        String arr1[] = s1.split(" ");
+        String arr2[] = s2.split(" ");
+        int start=0;
+        int end1=arr1.length-1;
+        int end2=arr2.length-1;
+        //trying matching maximum words in front
+        while(start<arr2.length && arr1[start].equals(arr2[start])) start++;
+        //trying matching maximum words in end
+        while(end2>=0 && arr1[end1].equals(arr2[end2])){ end1--; end2--;}
+        if(start>end2) return true; //traversed whole s2 meaning s2 can be made similar to s1
+        else return false;
+    }
+}
+
+/*
+LOGIC---
+s1= "hello world python"
+s2= "python"
+---> True because "python" is suffix of s1
+we can insert the rest on the left
+
+s1= "hello world python"
+s2= "hello"
+---> True because "hello" is prefix of s1
+we can insert the rest on the right
+
+Hence if one string is a suffix or prefix of other string. We can add one complete sentence to make it an equal sentence.
+
+The goal is still the same: check if the sentences are similar by matching words from the beginning (prefix) and the end (suffix). If all words at the start and end match, the remaining words in the middle can be ignored, making the sentences similar.
+
+The insight here is that if both arrays (tokenize the strings into arrays of words) were originally the same, and we took a subarray out of the middle of one of them, then the beginning and ends of each array should still match (up to the missing subarry)! We just need to iterate over the matching ends and if we have exhausted the smaller array in doing so, we have identified the missing sentence!
+*/
