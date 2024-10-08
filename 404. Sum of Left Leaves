@@ -1,0 +1,18 @@
+class Solution {
+    public int sumOfLeftLeaves(TreeNode root){
+        int sum=0;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int numberofnodes = queue.size();
+        while(!queue.isEmpty()){
+            TreeNode curr=queue.poll();
+            // Check if the left child is a leaf node
+            if (curr.left!=null) {
+                if (curr.left.left==null && curr.left.right==null) sum += curr.left.val; 
+                else queue.add(curr.left);
+            }
+            if(curr.right!=null) queue.add(curr.right);
+        }
+        return sum;
+    }
+}
