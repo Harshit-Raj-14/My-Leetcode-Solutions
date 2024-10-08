@@ -1,0 +1,48 @@
+/* USING HASHING O(N), O(1) */
+class Solution {
+    public long dividePlayers(int[] arr){
+        int n=arr.length;
+        int total=0;
+        int count[] = new int[1001];
+        for(int x:arr){
+            total+=x;
+            count[x]++;
+        }
+        if (total%(n/2)!=0) return -1; // Check if total skill can be evenly distributed among teams
+        int teamskill=total/(n/2);
+        long ans=0;
+        for(int x:arr){
+            int pair=teamskill-x;
+            if(count[pair]==0) return -1;
+            ans+=pair*x;
+            count[pair]--;  //pair is used
+        }
+        return ans/2; // Return half of ans as each pair is counted twice
+    }
+}
+
+/*
+LOGIC---
+Make frequency table to check whether the pair skill value exists or not and have constant lookups.
+*/
+
+
+/* USING SORTING O(nlogn) */
+class Solution {
+    public long dividePlayers(int[] arr){
+        Arrays.sort(arr);
+        long ans=0;
+        int sum=arr[0]+arr[arr.length-1];
+        for(int i=0;i<arr.length/2;i++){
+            if(arr[i]+arr[arr.length-1-i]!=sum) return -1;
+            ans+=arr[i]*arr[arr.length-1-i];
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+For forming equal pairs sort the array and take last and first pairwise.
+
+*/
