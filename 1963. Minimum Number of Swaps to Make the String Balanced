@@ -1,0 +1,55 @@
+/* OPTIMISED SOLUTION */
+class Solution {
+    public int minSwaps(String s) {
+        int unbalanced=0;   
+        for(int i=0;i<s.length();i++){
+            if(s.charAt(i)=='[') unbalanced++;
+            else{
+                if(unbalanced>0) unbalanced--;
+            }
+        }
+        return (unbalanced+1)/2;    //extra unbalanced closed brackets
+    }
+}
+
+/*
+LOGIC---
+We only need to count the unbalanced opening brackets [ that don't have matching closing brackets ]. 
+This helps us figure out how many swaps are needed. Instead of using a stack, we can track the number of unmatched brackets with an integer, which saves space.
+*/
+
+
+/* USING STACK */
+class Solution {
+    public int minSwaps(String s) {
+        Stack<Character> stack = new Stack<>();
+        int unbalanced=0;
+        for(int i=0;i<s.length();i++){
+            if(s.charAt(i)=='[') stack.push(s.charAt(i));
+            else{
+                if(!stack.isEmpty()) stack.pop();
+                else unbalanced++;
+            }
+        }
+        return (unbalanced+1)/2;    //we want the ceil value
+    }
+}
+
+/*
+LOGIC---
+Balanced parentheses mean that every opening bracket [ has a matching closing bracket ] in the correct order. 
+Unbalanced parentheses occur when there are more closing brackets ] than opening brackets [ at some point in the string.
+Swapping balanced brackets won't help. If you swap characters in a balanced pair like [], it becomes ][, which makes the string unbalanced. 
+So, this type of swap increases the problem instead of solving it.
+Swapping unbalanced brackets can fix the string. If a closing bracket ] appears before its matching opening bracket [, a swap between an unbalanced ] and an unbalanced [ will balance one pair.
+Therefore, the optimal approach is to swap unbalanced parentheses with each other. 
+Since 2 unbalanced parentheses are made balanced with a single swap, the total number of swaps to balance are given by unbalanced / 2.
+
+Let's take a simple example to explain why the return value will be (n + 1) / 2, where n is the stackSize or unbalanced value (the number of unmatched brackets).
+
+If n is 4 (even), e.g. ]]]][[[[, we can perform 2 swaps on the first two elements and on the last two elements, resulting in the balanced sequence [[]] [[]].
+If n is 5 (odd), e.g. ]]]]][[[[[, we can perform 2 + 1 swaps on the first three elements and the last three elements, transforming the sequence to ] [[]] [[]] [ and then into the balanced sequence [ [[]] [[]] ].
+
+From this observation, we conclude that for an even n, we need n / 2 swaps, and for an odd n, we need n / 2 swaps plus one additional swap. 
+This can be represented as n / 2 + n % 2, which simplifies to (n + 1) / 2. Therefore, the return value is (n + 1) / 2.
+*/
