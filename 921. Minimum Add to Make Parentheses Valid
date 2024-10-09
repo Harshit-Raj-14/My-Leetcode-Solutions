@@ -1,0 +1,34 @@
+class Solution {
+    public int minAddToMakeValid(String s) {
+        int open=0;
+        int extraclosed=0;
+        for(int i=0;i<s.length();i++){
+            if(s.charAt(i)=='(') open++;
+            else{
+                if(open>0) open--;
+                else extraclosed++;
+            }
+        }
+        return Math.abs(open)+Math.abs(extraclosed);
+    }
+}
+
+
+/*
+TESTCASES---
+Input
+s =
+"()))"
+Output
+2
+Expected
+2
+
+
+Input
+s =
+"()))(("
+Output
+4
+Expected
+4
