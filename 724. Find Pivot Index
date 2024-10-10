@@ -1,6 +1,28 @@
-//LEETCODE PROBLEM
-//LEVEL - Easy
-//724. Find Pivot Index
+/* O(n) */
+class Solution {
+    public int pivotIndex(int[] nums) {
+        int total=0;
+        for(int x:nums) total+=x;
+        int curr=0;
+        for(int i=0;i<nums.length;i++){
+            if(2*curr==(total-nums[i])) return i;
+            curr+=nums[i];
+        }
+        return -1;
+    }
+}
+
+/*
+LOGIC---
+What we are doing here is fiding total_sum from zero index to last index.
+Next we start finding sum from zero index to i.
+If sum turns out to be half of (total_sum - nums[i]). then i will be the pivot. Since the both sides of pivot have equal sum.
+
+Don't use => curr==(total-nums[i])/2
+USE => 2*curr==(total-nums[i])
+REASON : dividing by 2 will lose precision and result in an incorrect check
+*/
+
 
 /*  ACCEPTED O(n^2) JAVA SOLUTION  */
 class Solution {
