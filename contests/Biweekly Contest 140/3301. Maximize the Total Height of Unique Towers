@@ -1,0 +1,24 @@
+class Solution {
+    public long maximumTotalSum(int[] nums){
+        Arrays.sort(nums);
+        HashSet<Integer> set = new HashSet<>();
+        long ans=0;
+        int available_seat=0;
+        for(int i=nums.length-1;i>=0;i--){
+            if(!set.contains(nums[i])){
+                set.add(nums[i]);
+                ans+=nums[i];
+                available_seat=nums[i]-1;
+            }
+            else{
+                nums[i]=available_seat;
+                if(nums[i]==0) return -1;
+                set.add(nums[i]);
+                ans+=nums[i];
+                available_seat=nums[i]-1;
+            }
+        }
+        //System.out.println(Arrays.toString(nums));
+        return ans;
+    }
+}
