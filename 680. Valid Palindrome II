@@ -1,0 +1,45 @@
+class Solution {
+    public boolean validPalindrome(String s) {
+        if(s.length()==0 || s.length()==1) return true;
+        if(s.length()==2) return true;  //will always be true, if not palindrome delete one char and make it 
+        int i=0;
+        int j=s.length()-1;
+        while(i<=j){
+            if(s.charAt(i)==s.charAt(j)) {i++; j--;}
+            else{
+                if(isRestPalindrome(s, i+1, j)) return true;    //deleting the left character
+                if(isRestPalindrome(s, i , j-1)) return true;   //deleting the right character
+                return false;   //cannot be made equal after deleting character
+            }
+        }
+        return true;
+    }
+
+    public static boolean isRestPalindrome(String s, int i, int j){
+        while(i<=j){
+            if(s.charAt(i)!=s.charAt(j)) return false;
+            i++;
+            j--;
+        }
+        return true;
+    }
+}
+
+/*
+LOGIC---
+Approach:
+Firstly check three basic corner cases of string length=0, string length=1 and string length=2. Return accordingly.
+
+Use an extra O(n) space to store the array, reverse it and directly check if its pallindrome or not.
+These two approaches will save a lot of time.
+    
+Using the concept of two pointers, start traversing the string character by character from front and from the
+back. If all the the characters comes up to be same, your string must be palindrome.
+    
+If two characters comes up as not the same, try checking neglecting both the character one at a time, and check
+=> if the rest of available string is pallindrome or not (clue: use another function for this checking part).
+=> if it comes true even after neglecting any one of the unmatched character. Your string must be pallindrome. 
+
+Else it cannot be a pallindrome.
+
+*/
