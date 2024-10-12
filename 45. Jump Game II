@@ -1,0 +1,71 @@
+/* GREEDY BFS O(n) */
+class Solution {
+    public int jump(int[] nums) {
+        int n = nums.length;
+        int currstart=0;    //start and end of a level - index
+        int currend=0;
+        int jumps=0; 
+        while(currend<n-1){
+            int farthest=0; //farthest jump from curr level to decide the currend of next level, while curr start of next level will be currend+1
+            for(int i=currstart;i<=currend;i++){
+                farthest = Math.max(farthest, i+nums[i]);   //jumping from i
+            }
+            currstart=currend+1;
+            currend=farthest;
+            jumps++;
+        }
+	    return jumps;
+    }
+}
+
+/*
+LOGIC---
+[2,3,1,4,1,1,1,2]
+From 2 we can jump to 3 or 1.
+So, 2 is the first level.
+Now 3 and 1 becomes the next level. Now from these two we need to see what cna be the next level.
+From 3 or 1 we can reach 1,4,1 which will make next level.
+From 1,4,1 we can reach 1,1,2
+
+And in fact these number of levels will be equal to the number of minimum jumps required to reach end.
+
+So levelwise => (2), (3,1), (4,1,1), (1,2) 
+We can take 1 jump from one level to another.
+=> 4 levels 4 min jumps
+
+So, we need to maintain the extent which makes the next level from the curr level. And try reaching the end.
+
+So, fidn the furthest jump form curr level and decide the boundary of next levels.
+
+So from 2 we can jump to (3,1)
+Use window (3,1) to calculate the farthest jump that is 3
+So, the next window start from (1)+1 uptill previ+3
+
+*/
+
+/* MEMOISATION O(n^2) */
+class Solution {
+    public int jump(int[] nums){
+        int dp[] = new int[nums.length];
+        Arrays.fill(dp, -1);
+        return solve(nums, 0, dp);
+    }
+
+    public static int solve(int nums[], int idx, int dp[]){
+        if(idx>=nums.length-1) return 0;
+        if(dp[idx]!=-1) return dp[idx];
+        int minjump = Integer.MAX_VALUE;
+        //explore all possibilities
+        for(int i=1;i<=nums[idx];i++){    //at each step jump can be from 1 to nums[i]
+            int jump = solve(nums, idx + i, dp);
+            if (jump != Integer.MAX_VALUE) {   // Ensure we don't overflow, like if nums[i] could have been 0
+                minjump = Math.min(minjump, 1 + jump);
+            }
+        }
+        return dp[idx] = minjump;
+    }
+}
+
+/*
+RECURSION : O(2^n)
+*/
