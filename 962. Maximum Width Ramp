@@ -1,0 +1,58 @@
+/* SLIDING WINDOW O(n), O(n) */
+class Solution {
+    public int maxWidthRamp(int[] nums) {
+        int maxright[] = new int[nums.length];  //max value seen so far
+        int max=0;
+        for(int i=nums.length-1;i>=0;i--){
+            max = Math.max(max, nums[i]);
+            maxright[i] = max;
+        }
+        int i=0;
+        int j=0;
+        int ans=0;
+        while(j<maxright.length){
+            while(i<j && nums[i]>maxright[j]) i++;  //shrink window
+            ans=Math.max(ans, j-i);
+            j++;    //increase window traverse over maxright
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+From optimised brute force wealready know that if we already precalculate the maxright we can get the longest distance.
+Traverse over maxright to find the maximum window which can give our answer for current i.
+
+eg:
+nums = [6,0,8,2,1,5] => i
+maxr = [8,8,8,5,5,5] => j
+6 will yield correct answer till rightmost 8 in maxr. no point in checking beyond with maxr being 5.
+So, shrink window and check with next i that is 0. Now 5 also works so expand the next widnow.
+TC-O(n)
+Reason: j pointer travels only once on maxright.
+i pointer travels once on array. So O(n)+O(n)
+SC=O(n)
+*/
+
+
+/* OPTIMISED BRUTE FORCE O(n^2) */
+class Solution {
+    public int maxWidthRamp(int[] nums){
+        int n=nums.length;
+        int ans=0;
+        for(int i=0;i<n;i++){
+            boolean foundmax=false;
+            for(int j=n-1;j>=0 && !foundmax;j--){    //by moving form reverse back we avoid iterations
+                if(nums[i]<=nums[j]){
+                    foundmax=true;
+                    ans=Math.max(ans, j-i);
+                }
+            }
+        }
+        return ans;
+    }
+}
+
+
+
