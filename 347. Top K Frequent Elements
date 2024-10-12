@@ -1,0 +1,48 @@
+/* BUCKET SORT O(n), O(n) */
+class Solution {
+    public int[] topKFrequent(int[] arr, int k) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for(int i=0;i<arr.length;i++) map.put(arr[i], map.getOrDefault(arr[i],0)+1);
+        int n=arr.length;
+        // Array to track the frequencies of frequencies; this way we sort frequencies without sorting
+        ArrayList<Integer> buckets[] = new ArrayList[arr.length+1]; //an array of ArrayList<Integer> objects
+        for(Map.Entry<Integer, Integer> m : map.entrySet()) {
+            int value = m.getKey();
+            int count = m.getValue();
+            if(buckets[count] == null) buckets[count] = new ArrayList<>();
+            buckets[count].add(value);
+        }
+        int ans[] = new int[k];
+        int index = 0;
+        for(int i=n; i>=0; i--){    //iterate over frequencies
+            if(buckets[i] != null) {
+                for(int el : buckets[i]) {
+                    ans[index++] = el;
+                }
+            }
+            if(index == k) break; //Found the k most frequent elements
+        }
+        return ans;
+    }
+}
+
+
+/* USING MIN-HEAP O(nlogk), O(n+k) */
+class Solution {
+    public int[] topKFrequent(int[] nums, int k) {
+        if (k == nums.length) return nums;
+        HashMap<Integer, Integer> map = new HashMap();
+        for (int n: nums) map.put(n, map.getOrDefault(n, 0) + 1);
+        // init pq 'the less frequent element first'
+        Queue<Integer> pq = new PriorityQueue<>((n1, n2) -> map.get(n1) - map.get(n2));
+        for (int n: map.keySet()){
+          pq.add(n);
+          if (pq.size()>k) pq.poll();    //O(logk)
+        }
+        int[] top = new int[k];
+        for(int i=k-1; i>=0; i--) {
+            top[i] = pq.poll();
+        }
+        return top;
+    }
+}
