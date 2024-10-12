@@ -1,0 +1,36 @@
+/* COUNTING SORT O(n), O(1) */
+class Solution {
+    public int findLeastNumOfUniqueInts(int[] arr, int k) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for(int x: arr) map.put(x, map.getOrDefault(x,0)+1);
+        int n=arr.length;
+        // Array to track the frequencies of frequencies; this way we sort frequencies without sorting
+        int countoffreq[] = new int[n+1]; //The maximum possible frequency of any element will be n (size is the max freq itself if all elements same)
+        for(int count : map.values()) countoffreq[count]++;
+        int unique = map.size();
+        for(int i=1;i<=n;i++){ //traversing possible frequencies
+            int elementstoremove = Math.min(k/i, countoffreq[i]); //there could be more freq than k
+            if(elementstoremove>0){
+                k -= i*elementstoremove; //subtract k by how many times frequency i occurs
+                unique-=elementstoremove;
+            }
+        }
+        return unique;   //traversed all frequencies and removed all elements
+    }
+}
+
+/*
+LOGIC---
+Use frequencies of elements to find how many elements can you eliminate.
+The trick is to make a freq count of the frequencies of elements.
+
+SInce array length is n => maxfreq can be n
+
+Good TC:
+arr =[2,1,1,3,3,3,4,4,4,4], k =3
+Output 2
+
+arr =[2,4,1,8,3,5,1,3], k =3
+Output: 3
+
+*/
