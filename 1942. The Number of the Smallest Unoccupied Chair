@@ -1,0 +1,31 @@
+/* SIMULATION BRUTE FORCE O(n^2) */
+class Solution {
+    public int smallestChair(int[][] times, int friend) {
+        int friendarrivaltime = times[friend][0];   //friend arrival time
+        Arrays.sort(times, (a, b) -> a[0]-b[0]); // Sorting based on arrival time
+        int chairs[] = new int[times.length]; // at max we will have 0 to n-1 chairs
+        //simulate the situation
+        for(int time[]:times){
+            int arrival = time[0];
+            int dept = time[1];
+            for(int i=0;i<chairs.length;i++){   //check for each guest which chair is free
+                if(chairs[i]<=arrival){ //whatever person was seating is going to leave
+                    chairs[i]=dept; //make person sit, chair is now occupied and will be free at dept
+                    if(arrival == friendarrivaltime) return i;
+                    break;
+                }
+            }
+        }
+        return -1;
+    }
+}
+
+
+/*
+LOGIC---
+GOAL - Tell on which chair friend will sit.
+Get the friend arrival time first so that later we can sort times.
+Now you can sort the times, you might have gotten it unsorted.
+
+TC-O(n^2) => For each guest we iterate chairs arrays.
+*/
