@@ -1,0 +1,35 @@
+/* SLIDING WINDOW O(n) */
+class Solution {
+    public int numberOfSubstrings(String s) {
+        int count[] = new int[3];
+        int left = 0;
+        int ans = 0;
+        for (int right=0; right<s.length(); right++) {
+            count[s.charAt(right)-'a']++;
+            //found a valid window, Keep shrinking the window until it contains at least one of each a,b,c
+            while(count[0]>0 && count[1]>0 && count[2]>0){
+                ans += s.length()-right; // Count all valid substrings ending at 'right'
+                count[s.charAt(left)-'a']--;
+                left++;
+            }
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+Sliding window
+When a valid window is found, ans += s.length() - right counts all the valid substrings that end at the current right position.
+
+The reason for this is that if the current window (starting from left and ending at right) is valid, then all substrings starting from any index between left and right (inclusive) and ending at right are also valid. 
+Therefore, there are s.length() - right such valid substrings for each left.
+
+eg: bbacba
+if acb is a valid.
+Then bbacb is also valid. So, start does not matter and will always be at 0.
+So, the start of valid substirng does not matter.
+So, ans += s.length() - (right-left) will be wrong
+Since left will always be left=0
+ans += s.length() - right is correct
+*/
