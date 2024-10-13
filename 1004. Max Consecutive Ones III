@@ -1,0 +1,26 @@
+class Solution {
+    public int longestOnes(int[] nums, int k) {
+        int l=0;
+        int zero=0;
+        int ans=0;
+        for(int r=0;r<nums.length;r++){
+            if(nums[r]==0) zero++;  //zeroes allowed
+            while(zero>k){  //exceed zero threshold shrink curr window
+                if(nums[l]==0) zero--;  //shrink window till you get rid of 0's
+                l++;    //move left pointer forward
+            }
+            ans=Math.max(ans, r-l+1);
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+Basically, in a given window, we can never have more than k zeros.
+
+Expand the window till zero threshold becomes k.
+Now shrink window.
+Now again expand the window form there.
+TC-O(n)
+*/
