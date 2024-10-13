@@ -1,0 +1,39 @@
+/* SLIDING WINDOW */
+class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+        ArrayList<Integer> list = new ArrayList<>();
+        if(s.length()<p.length()) return list;  //no anagrams
+        int count[] = new int[26];
+        for(int i=0;i<p.length();i++) count[p.charAt(i)-'a']++;
+        int window[] = new int[26]; //window count
+        //first window count
+        for(int i=0;i<p.length();i++) window[s.charAt(i)-'a']++;
+        //check intial window
+        if(isAnagram(window, count)) list.add(0);
+        for(int r=p.length();r<s.length();r++){
+            window[s.charAt(r)-'a']++;  //new character in
+            window[s.charAt(r-p.length())-'a']--;   //first character out
+            if(isAnagram(window, count)) list.add(r-p.length()+1); //Add the start index of the current window
+        }
+        return list;
+    }
+
+    public static boolean isAnagram(int window[], int count[]){
+        for(int i=0;i<count.length;i++){
+            if(count[i]!=window[i]) return false;
+        }
+        return true;
+    }
+}
+
+/*
+LOGIC---
+Create two arrays (or hash maps) to store the frequency of each letter in p and in the current substring of s that we're considering.
+Iterate through s, and for each iteration, consider the substring of s that starts from the current index and has a length equal to the length of p.
+Compare the frequency arrays (or hash maps) of the current substring in s and p. If they are the same, it means that the current substring is an anagram of p.
+If they are the same, add the start index of the current substring to the output list.
+Move the "sliding window" one step to the right by removing the first character of the current substring and adding the next character to the end.
+Repeat steps 3-5 until we reach the end of s.
+By using a sliding window, we only need to update the frequency arrays (or hash maps) when moving the window one step to the right, 
+instead of computing the arrays (or hash maps) from scratch for every substring of s. This makes the solution more efficient.
+*/
