@@ -1,0 +1,60 @@
+/* HASHING STATES O(n), O(n) */
+class Solution{
+    public int numSubarraysWithSum(int[] nums, int goal){
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int curr=0;
+        int ans=0;
+        for(int i=0;i<nums.length;i++){
+            curr+=nums[i];
+            if(curr==goal) ans++;   //directly found a valid subarray
+            if(map.containsKey(curr-goal)){ //Check if any curr sum -goal exits
+                ans+=map.get(curr-goal);
+            }
+            map.put(curr, map.getOrDefault(curr,0)+1);
+        }
+        return ans;
+    }
+}
+/*
+LOGIC---
+Case I: if the current sum precisely matches the target value. If it does, we have found a subarray whose elements add up to the goal.
+
+Case II: current sum exceeds the target value.
+How to extract favorable subarray from case II?
+Since curr is now greater than goal
+curr-x=gaol
+x = curr-goal. Now if this exist in map then the gap between them can still be a valid subarray.
+So, no of valids ubarray will be equal to the curr-goal frequencies stored in map.
+*/
+
+/* SLIDING WINDOW O(n), O(1) */
+class Solution {
+    public int numSubarraysWithSum(int[] nums, int goal) {
+        int l=0;
+        int curr=0;
+        int c0=0;
+        int ans=0;
+        for(int r=0;r<nums.length;r++){
+            curr+=nums[r];
+            while(l<r && (nums[l]==0 || curr>goal)){
+                if(nums[l]==0) c0++;    //can still shrink window if nums[r] is 0
+                else c0=0;  //reset when encoutner 1
+                curr-=nums[l];
+                l++;
+            }
+            if(curr==goal) ans+=1+c0;    //include zeros that could have still been skipped while keeping goal
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+Shrink condition:curr>goal
+There is actually one more shrink condition nums[r]==0
+When nums[r]==0 we need to be careful that we cna still shrink the ewindow and bring curr to k.
+This will actually yield a new subarray infact.
+
+So, incldue this in window shrinking logic.
+
+*/
