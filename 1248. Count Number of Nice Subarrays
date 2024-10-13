@@ -1,0 +1,59 @@
+/* HASHING STATES O(n), O(n) */
+class Solution {
+    public int numberOfSubarrays(int[] nums, int k) {
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]%2==0) nums[i]=0;
+            else nums[i]=1;
+        }
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int curr=0;
+        int ans=0;
+        for(int i=0;i<nums.length;i++){
+            curr+=nums[i];
+            if(curr==k) ans++;   //directly found a valid subarray
+            if(map.containsKey(curr-k)){ //Check if any curr sum-k exits
+                ans+=map.get(curr-k);
+            }
+            map.put(curr, map.getOrDefault(curr,0)+1);
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+After replacing each even by zero and every odd by one 
+This problem ahs reduced to PS- 930. Binary Subarrays With Sum
+
+Reason: Making odd 1's. If the sum is now k. it means there are k odd numbers in subarray.
+*/
+
+/* SLIDING WINDOW */
+class Solution {
+    public int numberOfSubarrays(int[] nums, int k) {
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]%2==0) nums[i]=0;
+            else nums[i]=1;
+        }
+        int l=0;
+        int curr=0;
+        int c0=0;
+        int ans=0;
+        for(int r=0;r<nums.length;r++){
+            curr+=nums[r];
+            while(l<r && (nums[l]==0 || curr>k)){
+                if(nums[l]==0) c0++;    //can still shrink window if nums[r] is 0
+                else c0=0;  //reset when encoutner 1
+                curr-=nums[l];
+                l++;
+            }
+            if(curr==k) ans+=1+c0;    //include zeros that could have still been skipped while keeping k
+        }
+        return ans;
+    }
+}
+/*
+LOGIC---
+Same sliding window apply after converting to 0 and 1
+PS- 930. Binary Subarrays With Sum 
+*/
