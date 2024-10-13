@@ -1,0 +1,74 @@
+/* DIFFERENCE ARRAY TECHNIQUE Line Sweep Algorithm O(n) */
+class Solution {
+    public int minGroups(int[][] intervals) {
+        int rangeStart = Integer.MAX_VALUE;
+        int rangeEnd = Integer.MIN_VALUE;
+        for (int[] interval : intervals) {
+            rangeStart = Math.min(rangeStart, interval[0]);
+            rangeEnd = Math.max(rangeEnd, interval[1]);
+        }
+        int[] diff = new int[rangeEnd+2]; //for the last interval time we need to put -1, so need extra time
+        for (int interval[] : intervals){   //difference array technique
+            diff[interval[0]]++; // Increment at the start of the interval
+            diff[interval[1] + 1]--; // Decrement right after the end of the interval
+        }
+        int overlap = 0;
+        int maxoverlap = 0;
+        for (int i=rangeStart; i<=rangeEnd; i++) {
+            overlap += diff[i];
+            maxoverlap = Math.max(maxoverlap, overlap);
+        }
+        return maxoverlap;
+    }
+}
+
+/*
+LOGIC---
+same as  Meeting Rooms II
+Our goal is to divide the intervals into multiple groups such that each interval belongs to exactly one group and no intervals within the same group overlap. We need to minimize the number of groups created.
+
+Consider making a difference array.
+At start do +1
+and (end time+1) do -1
+
+Now if you take sum the value gives overlapped rooms/intervals at that point. And we can can find a maxoverlap while iterating.
+This max_overlap will infact be the number of groups created int toal since they can't be put together.
+
+No of non-overlap groups = total number of overlapping intervals
+*/
+
+/* SORTING O(nlogn) */
+class Solution {
+    public int minGroups(int[][] intervals) {
+        int n = intervals.length;
+        int[] start_times = new int[n];
+        int[] end_times = new int[n];
+        for (int i = 0; i < n; i++){ //Extract start and end times
+            start_times[i] = intervals[i][0];
+            end_times[i] = intervals[i][1];
+        }
+        Arrays.sort(start_times);
+        Arrays.sort(end_times);
+        int end_ptr = 0;
+        int ans = 0;
+        for (int start : start_times) {
+            if (start > end_times[end_ptr]) end_ptr++;
+            else ans++;
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+We need to group intervals so that no intervals in the same group overlap. 
+
+By sorting start and end times, we can track how many intervals overlap at any point. If a new interval starts after an earlier one ends, we can reuse that group. Otherwise, we need a new group.
+
+Sort start time and end time.
+If start2>end1 only then they are non-overlap. So we can use start1 and append it with end2 as one group.
+But if we encounter  start2<=end1, means they will overlap. So start a new group.
+
+Why it's possible to sort the start time and end time separately—doesn't their pairing matter? 
+If we look at two intervals, say [2, 3] and [1, 5], and you draw them on a number line, you'll notice that it makes no difference if you swap them to [1, 3] and [2, 5], because they only overlap between [2, 3], while they're separate in the intervals [1, 2) and (3, 5].
+*/
