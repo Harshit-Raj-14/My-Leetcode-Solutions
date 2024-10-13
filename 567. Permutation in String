@@ -1,0 +1,26 @@
+class Solution {
+    public boolean checkInclusion(String s2, String s1) {
+        ArrayList<Integer> list = new ArrayList<>();
+        if(s1.length()<s2.length()) return false;  //no anagrams
+        int count[] = new int[26];
+        for(int i=0;i<s2.length();i++) count[s2.charAt(i)-'a']++;
+        int window[] = new int[26]; //window count
+        //first window count
+        for(int i=0;i<s2.length();i++) window[s1.charAt(i)-'a']++;
+        //check intial window
+        if(isAnagram(window, count)) return true;
+        for(int r=s2.length();r<s1.length();r++){
+            window[s1.charAt(r)-'a']++;  //new character in
+            window[s1.charAt(r-s2.length())-'a']--;   //first character out
+            if(isAnagram(window, count)) return true; 
+        }
+        return false;
+    }
+
+    public static boolean isAnagram(int window[], int count[]){
+        for(int i=0;i<count.length;i++){
+            if(count[i]!=window[i]) return false;
+        }
+        return true;
+    }
+}
