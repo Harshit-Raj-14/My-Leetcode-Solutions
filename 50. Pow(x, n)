@@ -1,145 +1,23 @@
-//LEETCODE PROBLEM
-//LEVEL - MODERATE
-//50. Pow(x, n)
-
-
-/*  ACCEPTED SOLUTION #1 */
-//Time Complexity : O(logn)
-
 class Solution {
-    public double myPow(double x, int n) {   
-
-        if(n==0)
-            return 1;
-        
-        if(n == Integer.MIN_VALUE)              //to handle n=-2147483648 which will cause stackoverflow
-        {     
-            x = x * x;
-            n = n/2;
-        }
-      
-        if(n<0)
-        {
-            n = -n;
-            x = 1/x;
-            //return 1/myPow(x,-n);
-        }
-        
-        double half=myPow(x, n/2);
-        
-        if(n%2==0)              //even number
-            return half*half;
-        else                    //odd number
-            return x*half*half;
-            
-    }
-}
-
-// END OF PROGRAM //
-
-
-// ACCEPTED SOLUTION #2 //
-class Solution {
-    public double myPow(double x, int n) {
-        return myPow(x, 1L*n);   //converting n to long by multiplying by 1L takes care of the -2^31 case
-    }
-    
-    private double myPow(double x, long n){
-    if(n==0)
-        return 1;
-    if (n<0)
-        return myPow(1/x,-n);
-    return n%2==0 ? myPow(x*x,n/2):x*myPow(x*x,n/2);
-    }
- }
-// END OF PROGRAM //
-
-
-// ACCEPTED SOLUTION #3 //  Time Complexity - O(logn) and using while loop and bit magic
-class Solution {
-    public double myPow(double x, int n) {
-        long l = Math.abs((long)n);     //l variable stores n in long typecasted and positive absolute value
-        double ans = 1;
-        while(l>0)
-        {
-            if((l & 1) == 1) ans *= x;           //an odd number in binary always ends with one so when & operator applied with 1 it always becomes one showing l is odd
-            x*=x;
-            l >>= 1;                    // divide l by 2 using left shift operator
-        }
-        return n<0 ? 1/ans : ans;
-        }
-   }
-
-// END OF PROGRAM //
-
-
-/* ACCEPTED SOLUTION BEATS 100% RECURSIVE O(logn) */
-class Solution {
-    public double myPow(double x, int n) {   
+    public double myPow(double x, int n){
         if(n==0) return 1;
-        else if(n==1) return x;
-        else if(n==-1) return 1/x;
-        else if(n%2==0){
-            double half = myPow(x,n/2);
-            return half * half;
-        }
-        else return myPow(x,n-1) * x;
+        if(n==1) return x;
+        if(n==-1) return 1/x;   // if(n<0) return 1/myPow(x, n);
+        if(n%2==0){
+            double y=myPow(x, n/2);
+            return y*y;
+        } 
+        else return x*myPow(x, n-1);
     }
 }
 
+/*
+LOGIC---
+n can be even or odd
 
+when n is even => x^n = x^(n/2) * x^(n/2)
+Similarly for n is odd => x^n = x^(n-1/2) * x^(n-1/2) *x => since n-1 iwll be now even
 
-/*  OTHER APPROACHES AND EXPLANATION  */
-        
-
-/* Recursion with dividing the n by 2
-//Time Complexity: O(logn) - Runtime error
- if (n==0)
-            return 1;
-        if(n<0) 
-        {
-            n=-n;   //DETRIMENTAL ERROR IF WE MAKE IT +ve THENT HE VALUE WILL OVERFLOW IF WE INPUT A NUMBER GREATER THAN ITS LIMITS eg -2^31 cannot be stored in +ve
-                        //SO IT FAILS AT EDGE CASE OF -2^31 for the test-cases where n=-2147483648 TO SOLVE THIS WE WILL TAKE ANOTHER VAIRABLE AND MAKE IT long
-            x=1/x;
-        }
-        return (n%2==0) ? (myPow(x*x,n/2)) : x*myPow(x*x,n/2));
-
-
-// LOGIC :   if(n%2==0)   // n IS EVEN then 2^4 = (2*2)^2; so n gets halved each time
-            return myPow(x*x,n/2);
-        
-        else           //n is ODD then 2^5 = 2x[(2x2)^2]
-            return x*myPow(x*x,n/2);
+In case if n is 0 return 1
+If n is negative, solve for positive value of n and then invert 1/x 
 */
-             
-        
-        
-        /* RECURSIVE APPROACH
-        //Time Complexity: O(n) - Stackoverflow Error (rejected)
-        
-        else
-            return x * myPow(x,n-1);
-        */
- 
- 
-      
-        
-        /* NAIVE APPROACH
-        //Time complexity : O(n) rejected
-        else if (n>0)
-        {
-            for(int i=1; i<n;i++)
-            {
-                x=x*temp;
-            }
-            return x;
-        }
-        else
-        {
-            for(int i=1;i<-n;i++)
-            {
-                x=x*temp;
-            }
-            return 1/x;
-        }
-        */
