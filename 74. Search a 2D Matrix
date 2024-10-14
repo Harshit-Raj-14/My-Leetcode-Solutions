@@ -1,0 +1,76 @@
+/* FLATTENING 2D ARRAY TO 1D + BINARY SEARCH O(log(m*n)) */
+class Solution {
+    public boolean searchMatrix(int[][] mat, int t){
+        int n=mat.length;
+        int m=mat[0].length;
+        int l=0;
+        int r=m*n-1;    //last element index if it were 1D
+        while(l<=r){
+            int mid=l+(r-l)/2;
+            if(mat[mid/m][mid%m]==t) return true;
+            else if(mat[mid/m][mid%m]>t) r=mid-1;
+            else l=mid+1;
+        }
+        return false;
+    }
+}
+
+/*
+LOGIC---
+Since the matrix is sorted, if we flatten the given 2D matrix to a 1D array, the 1D array will also be sorted. 
+By utilizing binary search on this sorted 1D array to locate the 'target' element, we can further decrease the time complexity.
+
+But if we really try to flatten the 2D matrix, it will take O(N x M) time complexity and extra space to store the 1D array. In that case, it will not be the optimal solution anymore.
+
+How to apply binary search on the 1D array without actually flattening the 2D matrix?
+We will use the following formula:
+If index = i, and no. of columns in the matrix = m, 
+the index i corresponds to the cell with row = i / m and col = i % m. 
+More formally, the cell is (i / m, i % m)(0-based indexing).
+
+eg: index 5 on 1D wil lcorresspond to (1,1) on 2D
+row=5/4=1
+col=5%4
+
+So, l=0
+r=m*n-1 => total numbe rof elements-1 => last index if it were 1D
+Now apply binary search to above range
+mat[mid/m][mid%m] to represent row and column index
+*/
+
+/* LINEAR + BINARY O(r + logc) */
+class Solution {
+    public boolean searchMatrix(int[][] mat, int t) {
+        int n=mat.length;
+        int m=mat[0].length;
+        for(int i=0;i<n;i++){
+            if(mat[i][0]<=t && mat[i][m-1]>=t) return binarySearch(mat, i, t);
+        }
+        return false;
+    }
+
+    public static boolean binarySearch(int mat[][], int i, int t){ //travel in one row where target can be
+        int l=0;
+        int r=mat[0].length;
+        while(l<=r){
+            int mid=l+(r-l)/2;
+            if(mat[i][mid]==t) return true;
+            else if(mat[i][mid]>t) r=mid-1;
+            else l=mid+1;
+        }
+        return false;
+    }
+}
+
+/*
+LOGIC---
+Traverse first rwo wise and using the first and last element ans start and end range, check whether t can lie in that range.
+Once its confirmed use binary search on that row where t is expected to be.
+
+Time Complexity: O(N + logM), where N = given row number, M = given column number.
+Reason: We are traversing all rows and it takes O(N) time complexity. 
+But for all rows, we are not applying binary search rather we are only applying it once for a particular row.
+*/
+
+
+
