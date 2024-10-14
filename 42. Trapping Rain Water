@@ -1,13 +1,43 @@
-//LEETCODE PROBLEM
-//LEVEL - Hard
-//42. Trapping Rain Water
+/* TWO POINTER O(n), O(1) */
+class Solution {
+    public int trap(int[] height){
+        int l=0;
+        int r=height.length-1;
+        int maxL=height[l];
+        int maxR=height[r];
+        int ans=0;
+        while(l<r){
+            if (maxL<maxR) {
+                ans+= maxL-height[l];
+                l++;
+                maxL=Math.max(maxL, height[l]); //update maxl with next height
+            } 
+            else{
+                ans+=maxR-height[r];
+                r--;
+                maxR=Math.max(maxR, height[r]); //update maxr with next height
+            }
+        }
+        return ans;
+    }
+}
 
+/*
+LOGIC---
+Water only stores in a space if it is contaiend by length on left and right.
+Now in preprocessing method we took min(lmax, rmax) for determining how much water can be trapped.
+But in fact just knowing the maxl and maxr from both ends will also suffice our solution.
 
-/*ACCEPTED JAVA O(n) SOLUTION) */
+By knowing whether maxl<maxr or maxl>maxr can tell us which length of tower will actually help us to trap the valid water.
+l=0, r=n-1
+maxl=h[0], maxr=h[n-1]
+if(maxl<maxr) l++, trap=maxl-h[i], update maxl with next h[++l]
+if(maxl>=maxr) r--, trap=maxr-h[i], update maxr with next h[--r]
+*/
 
+/* PREPROCESSING LENGTHS O(n), O(n) */
 class Solution {
     public int trap(int[] height) {
-        
         int []lmax=new int [height.length];
         int []rmax=new int [height.length];
         
