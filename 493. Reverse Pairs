@@ -1,0 +1,138 @@
+/* MERGE SORT O(nlogn), O(n) */
+class Solution {
+    public int reversePairs(int[] nums) {
+        return reversePairsSub(nums, 0, nums.length - 1);
+    }
+    
+    public static int reversePairsSub(int[] nums, int l, int r) {
+        if (l >= r) return 0;
+        int mid = l + (r - l)/2;
+        int ans = reversePairsSub(nums, l, mid) + reversePairsSub(nums, mid+1, r); //divide into two halves
+        int i = l, j = mid + 1;
+        int k = 0;
+        int p = mid + 1;
+        int[] merge = new int[r-l+1];
+        while (i<=mid){
+            // two-pointer searching process on the two divided arrays, otherwise all rest part is merge sort
+            while (p<=r && nums[i] > 2*(long)nums[p]) p++;
+            ans += p-(mid + 1);
+            //sorting the divided array parts and merging them by comparison - basic merge sort
+            while (j<=r && nums[i]>=nums[j]) merge[k++] = nums[j++];
+            merge[k++] = nums[i++];
+        }
+        while (j<=r) merge[k++] = nums[j++];    //remaining right hand subarray
+        System.arraycopy(merge, 0, nums, l, merge.length); 
+        return ans;
+    }
+}
+
+
+/*
+LOGIC---
+Function "reversePairsSub" will return the total number of important reverse pairs within subarray nums[l, r]. 
+The two-pointer searching process is represented by the nested while loop involving variable p, while the rest is the standard merging algorithm.
+
+We apply divide and conquer to divide the array to redcue to its least form which cna be considered the smallest sorted from.
+This sort all the subarrays whenw e start merging them.
+
+With both subarrays sorted, the number of important reverse pairs can be found in linear time by employing the so-called two-pointer technique.
+One pointing to elements in the left subarray while the other to those in the right subarray and both pointers will go only in one direction due to the ordering of the elements.
+
+WHY MERGE SORT?
+Since we need to partition the array into halves anyway, it is most natural to adapt it into a Merge-sort. Another point in favor of Merge-sort is that the searching process above can be embedded seamlessly into its merging stage.
+
+APPROACH---
+STEP I: Dividing array/subarrays into two subparts
+The total number of reverse pairs in the current subarray is the sum of reverse pairs from both halves and the reverse pairs that span across the two halves.
+
+STEP II: Two-Pointer Technique (Count Reverse Pairs):
+After dividing the array, we need to count the reverse pairs that span the left and right halves. This is done using the two-pointer technique:
+=> Pointer i iterates through the left half (l to mid).
+=> Pointer p scans the right half (mid + 1 to r), 
+looking for the first element where nums[i] > 2 * nums[p]. 
+For every valid p, the count of reverse pairs increases by (p - (mid + 1)).
+
+STEP III: Sorting and Merging (Merge Sort):
+After counting reverse pairs, the next step is to sort the two halves and merge them. 
+Once all elements are merged, they are copied back to the original array using System.arraycopy(merge, 0, nums, l, merge.length).
+
+=> System.arraycopy(sourceArray, sourceStartIndex, destinationArray, destinationStartIndex, length);
+
+WHy make the array sorted?
+So, that two pointers work effectively for counting reverse pairs.
+Reason: see striver's dry run
+When you two point over two sorted list. if till i is the current reverse pairs, then next number can be checked from i+1 witout again checking from 0 to i.
+*/
+
+/* BST & BIT BASED SOLUTIONS */
+https://leetcode.com/problems/reverse-pairs/solutions/97268/general-principles-behind-problems-similar-to-reverse-pairs/
+
+
+/* Merge Sort with Counting O(nlogn), O(n) */
+class Solution {
+    public int reversePairs(int arr[]){
+        if(arr==null || arr.length==0) return 0;
+        return mergeSortAndCount(arr, 0, arr.length-1);
+    }
+
+    public static int mergeSortAndCount(int arr[], int l, int r){
+        if(l>=r) return 0;
+        int mid=l+(r-l)/2;
+        int count=0;
+        count+=mergeSortAndCount(arr, l, mid);
+        count+=mergeSortAndCount(arr, mid+1, r);
+        count+=mergeAndCount(arr, l, mid, r);
+        return count;
+    }
+
+    public static int mergeAndCount(int arr[], int l, int mid, int r){
+        int count=0;
+        int j=mid+1;
+        //count reverse pairs
+        for(int i=l;i<=mid;i++){
+            while(j<=r && arr[i]>2*(long)arr[j]) j++;
+            count+=(j-(mid+1));
+        }
+        //merging two halves
+        int temp[] = new int[r-l+1];
+        int i=l;
+        int k=0;
+        j=mid+1;
+        while(i<=mid && j<=r){
+            if (arr[i] <= arr[j]) temp[k++] = arr[i++];
+            else temp[k++] = arr[j++];
+        }
+        while (i <= mid){
+            temp[k++] = arr[i++];
+        }
+        while (j <= r){
+            temp[k++] = arr[j++];
+        }
+
+        for (i=l; i<=r; i++) {
+            arr[i] = temp[i-l];
+        }
+        return count;
+    }
+}
+
+/*
+LOGIC---
+The key idea to efficiently solve this problem is to leverage the divide and conquer strategy used in merge sort. While performing the merge step, we can count the reverse pairs across the two halves of the array.
+*/
+
+
+/* BRUTE FORCE O(n^2) */
+class Solution {
+    public int reversePairs(int[] nums){
+        int ans=0;
+        for(int i=0;i<nums.length;i++){
+            for(int j=i+1;j<nums.length;j++){
+                long x= nums[i];
+                long y = 2*(long)nums[j];
+                if(x>y) ans++;
+            }
+        }
+        return ans;
+    }
+}
