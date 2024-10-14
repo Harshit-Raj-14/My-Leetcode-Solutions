@@ -1,3 +1,22 @@
+/* SLIDING WINDOW + HASHSET O(n), O(n) */
+class Solution {
+    public int lengthOfLongestSubstring(String s){
+        HashSet<Character> set=new HashSet<>();
+        int ans=0;
+        int l=0;    // two pointers to make a window of unrepeating characters
+        for (int r=0; r<s.length(); r++) {
+            while(set.contains(s.charAt(r))){  //Shrink the window until the duplicate character is removed
+                set.remove(s.charAt(l));
+                l++;
+            }
+            set.add(s.charAt(r));
+            ans=Math.max(ans, r-l+1);  // calculate length of the current window
+        }
+        return ans;
+    }
+}
+
+
 /* O(n^2) USING HASHSET */
 class Solution {
     public int lengthOfLongestSubstring(String s) {
