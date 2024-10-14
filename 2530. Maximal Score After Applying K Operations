@@ -1,0 +1,26 @@
+class Solution {
+    public long maxKelements(int[] nums, int k) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+        for(int num : nums) pq.add(num);
+        long ans=0;
+        while(k-->0){
+            int x=pq.poll();
+            ans+=x;
+            x=(int)Math.ceil(x/(3*1.0));
+            pq.add(x);
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+ime complexity: O(klogn+nlogn)
+Initially, inserting all n elements into the max-heap takes O(nlogn) time.
+Each of the k operations involves extracting the largest element from the heap and inserting a new value back into it, both of which take O(logn) time. 
+Performing k such operations results in a time complexity of O(klogn).
+
+Space complexity: O(n)
+The space complexity is dominated by the size of the max-heap, which contains at most n elements.
+
+*/
