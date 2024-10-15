@@ -1,0 +1,55 @@
+/* OPTMIAL SOLUTION O(n) */
+class Solution {
+    public long minimumSteps(String s) {
+        int c0=0;
+        long ans=0;
+        for(int i=s.length()-1;i>=0;i--){
+            if(s.charAt(i)=='0') c0++;
+            else{   //encountered 1 on left
+                ans+=c0;    //no of swaps will be equivalent to numbe rof 0's encountered on right of 1
+            }
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+Instead of swapping characters every time like in brute force, 
+we can track how many 0s we’ve encountered and directly compute the result based on how many 1s we have to the right of each 0.
+When we encounter 01 no need to swap.
+But when we encounter 10 we need to swap. and he numbe rof swaps will be equivalent to the number of zeroes to the right after encountering 1.
+
+Note: You should not reset the count of 0s (c0) after encountering a 1. 
+The reason is that each 1 you encounter needs to be "moved" past all the 0s that come after it. 
+So the count of 0s (c0) accumulates as you move through the string, and every 1 needs to account for all the 0s on its right.
+*/
+
+/* BRUTE FORCE O(n) TLE extra operations */
+class Solution {
+    public long minimumSteps(String s){
+        StringBuilder sb = new StringBuilder(s);
+        int ans=0;
+        for(int i=sb.length()-1;i>=0;i--){
+            if(sb.charAt(i)=='0'){
+                int j=i;
+                while(j>=0 && sb.charAt(j)=='0'){
+                    j--;
+                }
+                if(j<0) return ans; //reached start with only 0's so string is good now
+                else{   //swap places and add distance moved
+                    sb.setCharAt(i, '1');
+                    sb.setCharAt(j, '0');
+                    ans+=i-j;
+                }
+            }
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+1 on the right and 0 to the left.
+iterate from back and try to push all 1's to right and 0's to left
+*/
