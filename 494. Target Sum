@@ -1,0 +1,35 @@
+/* MEMOISATION O(t*n), O(t*n) */
+class Solution {
+    public int findTargetSumWays(int[] nums, int t){
+        int total = Arrays.stream(nums).sum();
+        HashMap<String, Integer> map = new HashMap<>();
+        //for(int row[]:dp) Arrays.fill(row, -1);
+        return solve(nums, 0, t, map);
+    }
+
+    public static int solve(int nums[], int i, int t, HashMap<String, Integer> map){
+        String key = i+"#"+t;
+        if(t==0 && i==nums.length) return 1;
+        if(i>=nums.length) return 0;
+        if(map.containsKey(key)) return map.get(key);
+        int sub = solve(nums, i+1, t-nums[i], map);
+        int add = solve(nums, i+1, t+nums[i], map);
+        map.put(key, sub+add);
+        return map.get(key);
+    }
+}
+
+/* RECURSION O(2^n), O(n) */
+class Solution {
+    public int findTargetSumWays(int[] nums, int t) {
+        return solve(nums, 0, t);
+    }
+
+    public static int solve(int nums[], int i, int t){
+        if(t==0 && i==nums.length) return 1;
+        if(i>=nums.length) return 0;
+        int sub = solve(nums, i+1, t-nums[i]);
+        int add = solve(nums, i+1, t+nums[i]);
+        return sub+add;
+    }
+}
