@@ -1,0 +1,71 @@
+/* USING MONOTONIC DEQUE O(n), O(k) */
+class Solution{
+    public int[] maxSlidingWindow(int[] nums, int k){
+        int ans[] = new int[nums.length-k+1];
+        int idx=0;
+        Deque<Integer> dq = new LinkedList<>();  //deque - double ended queue
+        for(int i=0; i<nums.length; i++){
+            //Step I: adding element to deque
+            while(!dq.isEmpty() && dq.getLast()<nums[i]){ //bring the larger number in front so pop smaller el, since smaller will no longer contribute to max window element since a much larger value is introduced
+                dq.pollLast();
+            }
+            dq.addLast(nums[i]);    //adding the current element
+            //Step II: shrinking window -> removing the element out of the window
+            if(i>=k && nums[i-k]==dq.getFirst()){  //el that is sliding out of the window is the same as the first element in the dq 
+                dq.pollFirst();
+            }
+            if(i>=k-1) ans[idx++]=dq.getFirst();  //adding the maximum(first el of dq), when i>=k(1-indexed)
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+When thinking of applying simple sliding window.
+The real prolem comes when you shift a window and kick the first element out and if it turned outt o be max. We won't know the second max to compare with incoming element, until we again iterate through window whih will make it O(kn).
+
+In fact we can improve this situation if we are able to store the window in sorted order without using sorting, otheriwse sorting every widnow too costly.
+In fact this can be doen by deque if we store the values inside deque in a sorted order.
+If the incoming number is smaller than top number in deque we simply add it.
+But in case if it bigger, we pop the current number inside deeque till we can add the latest number.
+
+DRY RUN - https://leetcode.com/problems/sliding-window-maximum/solutions/5587140/video-keep-decreasing-order-in-deque/
+
+TC - O(n)
+SC - O(k) => size of deque => size of window
+
+Why DEQUE ?
+Here we have used a montonic decreasing deque.
+By using dq we can add and remove element from beginning and end in O(1) time. that's why dq is a good data structure here and we cant just use a stack.
+*/
+
+/* SUFIX & PREFIX ARRAY TO REPLCAE DEQUE O(n), O(n) */
+class Solution{
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        if (nums.length == 0 || k == 0) return new int[0];  // assume nums is not null
+        int n=nums.length;
+        int ans[]=new int[n - k + 1]; // number of windows
+        int left[]=new int[n];
+        int right[]=new int[n];
+        left[0]=nums[0]; 
+        right[n - 1]=nums[n - 1];
+        for (int i=1; i<n; ++i) { 
+            if(i%k==0) left[i]=nums[i]; // new block
+            else left[i]=Math.max(left[i - 1], nums[i]);
+        }
+        for (int j=n-2; j>=0; j--) { 
+            if(j%k==k-1) right[j]=nums[j]; // new block
+            else right[j]=Math.max(right[j+1], nums[j]);
+        } 
+        for (int i=0, j=i+k-1; j<n; i++, j++) {
+            ans[i]=Math.max(right[i], left[j]);
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+Rather than using a sliding window, I can use segments of two (left and right) static windows (blocks) to get from O(nk) to O(n)
+*/
