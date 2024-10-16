@@ -1,0 +1,42 @@
+class Solution {
+    public int closedIsland(int[][] grid){
+        int ans=0;
+        for(int i=0;i<grid.length;i++){
+            for(int j=0;j<grid[0].length;j++){
+                if(grid[i][j]==0 && solve(grid, i, j)) ans++;   //island surrounded by water on all sides
+            }
+        }
+        return ans;
+    }
+
+    public static boolean solve(int grid[][], int i, int j){
+        if(i<0 || j<0 || i>=grid.length || j>=grid[0].length) return false;    //reached boundary, not closed
+        if(grid[i][j]==1) return true;  //surrounded with water
+        if(grid[i][j]==-1) return true; //already visited
+        grid[i][j]=-1;  //mark as visited
+        boolean up = solve(grid, i-1, j);
+        boolean down = solve(grid, i+1, j);
+        boolean left = solve(grid, i, j-1);
+        boolean right = solve(grid, i, j+1);
+        return up && down && left && right; //if even one of them is false(land on boundary), it is not closed
+    }
+}
+
+/*
+LOGIC---
+0 -> land
+1 -> water
+close island -> island surrounded on 4 sides with water
+
+Observation:
+Lands(0) on or reaching edges will never be a closed island.
+
+All other Lands inside grid will now be clsoed becuase they have water on all four sides.
+
+No of closed islands = total no of islands - island reaching boundary
+No of closed islands = total connected 0 components - connected 0 components on edges
+
+APPROACH---
+Use a normal algorithm (bfs/dfs) to find the number of islands and mark them, but only add 1 to the answer if no nodes in that island are on the border
+
+*/
