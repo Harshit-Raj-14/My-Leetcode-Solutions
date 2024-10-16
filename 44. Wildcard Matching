@@ -1,0 +1,119 @@
+/* MEMOIZATION O(m*n) */
+class Solution {
+    public boolean isMatch(String s, String p){
+        Boolean dp[][] = new Boolean[s.length()+1][p.length()+1];
+        return solve(s, p, s.length()-1, p.length()-1, dp);
+    }
+
+    public static boolean solve(String s, String p, int i, int j, Boolean dp[][]){
+        if(i<0 && j<0) return true;
+        if(i>=0 && j<0) return false;   //pattern is over, string is left
+        if(i<0){    //string is over
+            while(j>=0){    //check if remaning pattern is only star
+                if(p.charAt(j)!='*') return false;  
+                j--;
+            }
+            return true;
+        }
+        if(dp[i][j]!=null) return dp[i][j];
+        //one point match
+        if(s.charAt(i)==p.charAt(j) || p.charAt(j)=='?') return dp[i][j]=solve(s,p,i-1,j-1, dp);
+        if(p.charAt(j)=='*'){   //star match => * will stay(coin change infinte dp)
+            boolean take = solve(s,p,i-1,j, dp);
+            boolean not_take = solve(s,p,i,j-1, dp);    //something like consuming empty string with *
+            return dp[i][j]=take || not_take;
+        }
+        return dp[i][j]=false;
+    }
+}
+
+/* RECURSION TLE O(2^(m + n)) */
+class Solution {
+    public boolean isMatch(String s, String p) {
+        return solve(s, p, s.length()-1, p.length()-1);
+    }
+
+    public static boolean solve(String s, String p, int i, int j){
+        if(i<0 && j<0) return true;
+        if(i>=0 && j<0) return false;   //pattern is over, string is left
+        if(i<0){    //string is over
+            while(j>=0){    //check if remaning pattern is only star
+                if(p.charAt(j)!='*') return false;  
+                j--;
+            }
+            return true;
+        }
+        //one point match
+        if(s.charAt(i)==p.charAt(j) || p.charAt(j)=='?') return solve(s,p,i-1,j-1);
+        if(p.charAt(j)=='*'){   //star match => * will stay(coin change infinte dp)
+            boolean take = solve(s,p,i-1,j);
+            boolean not_take = solve(s,p,i,j-1);    //something like consuming empty string with *
+            return take || not_take;
+        }
+        return false;
+    }
+}
+
+/*
+LOGIC---
+? -> you can skip one character at that place
+* -> you can skip a sequence of that character at place
+
+Real purpose - can we generate s using pattern
+
+One point match => s[i]==p[j] (same character) || p[j]='?'
+Match => matches with any sequence => considering the current character to be part of * => take/not take => recursion
+
+* => can match with anything => consuming from empty string upto infinte character
+*/
+
+/* LCS COPIED LEETCODE */
+public class Solution {
+    public boolean isMatch(String s, String p) {
+        int slen = s.length(), plen = p.length();
+        boolean[][] dp = new boolean[slen + 1][plen + 1];
+        dp[slen][plen] = true;
+        for (int j = plen - 1; j >= 0; j--) {
+            dp[slen][j] = p.charAt(j) == '*' && dp[slen][j + 1];
+        }
+        for (int i = slen - 1; i >= 0; i--) {
+            for (int j = plen - 1; j >= 0; j--) {
+                if (p.charAt(j) != '*') {
+                    dp[i][j] = dp[i + 1][j + 1] && (s.charAt(i) == p.charAt(j) || p.charAt(j) == '?');
+                } else {
+                    dp[i][j] = dp[i][j + 1] || dp[i + 1][j];    //match zero element || match at least one element
+                }
+            }
+        }
+        return dp[0][0];
+    }
+}
+
+/* GREEDY */
+public class Solution {
+    public boolean isMatch(String s, String p) {
+        int i = 0, j = 0, match = 0, star = -1;
+        while (i < s.length()) {
+            if (j < p.length() && (p.charAt(j) == '?' || p.charAt(j) == s.charAt(i))) {
+                i++;
+                j++;
+                continue;
+            }
+            if (j < p.length() && p.charAt(j) == '*') {
+                match = i;
+                star = j++;
+                continue;
+            }
+            if (star >= 0) {
+                i = ++match;
+                j = star + 1;
+                continue;
+            }
+            return false;
+        }
+        while (j < p.length()) {
+            if (p.charAt(j++) != '*') return false;
+        }
+        return true;
+    }
+}
