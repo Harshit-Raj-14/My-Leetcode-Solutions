@@ -1,0 +1,63 @@
+class Solution {
+    public String longestDiverseString(int a, int b, int c) {
+        PriorityQueue<int[]> pq = new PriorityQueue<>((x, y) -> y[0] - x[0]);
+        if (a > 0) pq.offer(new int[]{a, 'a'});
+        if (b > 0) pq.offer(new int[]{b, 'b'});
+        if (c > 0) pq.offer(new int[]{c, 'c'});
+        StringBuilder sb = new StringBuilder("");
+        while(pq.size()!=0){
+            int first[] = pq.poll();
+            int n=sb.length();
+            // Check if last two characters are the same for the incoming char
+            if(sb.length()>=2 && sb.charAt(n-1)==first[1] && sb.charAt(n-1)==sb.charAt(n-2)){
+                if(pq.isEmpty()) break;  // No more valid characters left to insert
+                //otherwise pick the second character and try filling with it
+                int second[] = pq.poll();
+                sb.append((char)second[1]);
+                second[0]--;
+                if(second[0]>0) pq.offer(second);
+                pq.offer(first);
+            }
+            else{   //we can use the first most freq left character
+                sb.append((char) first[1]);
+                first[0]--;
+                if(first[0]>0) pq.offer(first);
+            }
+        }
+        return sb.toString();
+    }
+}
+
+/*
+LOGIC---
+Gaol : build s where s does not contain any of "aaa", "bbb", or "ccc" as a substring.
+
+So, we can't have 3 consecutive same characters.
+
+In fact for character with larger freq its beterr to ocnsider them in packets of 2.
+The put the others in between again packets of 2. If there are less than 2 then just put packet of 1.
+
+Approach---
+Formula to build s:
+s=most common char + most common char + second most common char + second most common char +....most common char + most common char + second most common char + second most common char...(SECOND MOST CHAR IS OVER, SO LEAST CHAR WILL TAKE ITS PLACE) + most common char + most common char + least char + least char + most common char + most common char + least char + least char
+
+So,
+a=1,b=1,c=7
+s=c
+a=1,b=1,c=6
+s=cc
+a=1,b=1,c=7
+Now we can't put 3 c's so now sed secodn most common char
+s=ccb
+a=1,b=0,c=6
+Follow same,
+s=ccbcc
+a=1,b=0,c=4
+s=ccbcca
+a=0,b=0,c=4
+s=ccbccacc
+left a=0,b=0,c=2
+ans=s=ccbccacc
+
+Also ,to get the max char each time we will use heap
+*/
