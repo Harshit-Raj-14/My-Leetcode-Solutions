@@ -1,0 +1,40 @@
+class Solution {
+    public int numIslands(char[][] grid){
+        int ans=0;
+        for(int i=0;i<grid.length;i++){
+            for(int j=0;j<grid[0].length;j++){
+                if(grid[i][j]=='1'){
+                    solve(grid, i, j);  //make one entire island marked as x
+                    ans++;
+                }
+            }
+        }
+        return ans;
+    }
+
+    public static void solve(char grid[][], int i, int j){
+        if(i<0 || j<0 || i>=grid.length || j>=grid[0].length) return; //reached out of bond , island ends
+        if(grid[i][j]=='0') return;   //found water, island ends
+        if(grid[i][j]=='x') return;    //already visited
+        grid[i][j]='x'; //marking as visited
+        solve(grid, i+1, j);    //explore down
+        solve(grid, i-1, j);    //explore up
+        solve(grid, i, j+1);    //explore right
+        solve(grid, i, j-1);    //explore left
+    }
+}
+
+/*
+LOGIC---
+We start form any grid with 1.
+The explore all four directions.
+if found water(0), means island ends ther for that point we return
+if out of bond, means island ends there return.
+if another island, we explore further in four directions
+each grid visited will be marked as x.
+
+In fact the sole purpose of solve function is to mark visited grids as x.
+So, one '1' encountered leads to exploration of a bigger island and then marked as x, so we did nto visit the same island again.
+
+TC- O(m×n) => each grid is visited only once
+*/
