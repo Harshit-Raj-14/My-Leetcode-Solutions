@@ -1,0 +1,24 @@
+class Solution {
+    public boolean hasPathSum(TreeNode root, int t){
+        if(root==null) return false;    //input : root =[], t=0 => false
+        return solve(root, t);
+    }
+
+    public static boolean solve(TreeNode root, int t){
+        if(root==null) return false;    // if we reach a null node, return false
+        if(root.left==null && root.right==null && t==root.val) return true; //at leaf node, with target
+        boolean left = solve(root.left, t-root.val);
+        boolean right = solve(root.right, t-root.val);
+        return left || right;
+    }
+}
+
+/*
+Note : t can become negative and positive since there ar eboth element elements
+so, (t<0) return false is incorrect.
+
+So, for a binary tree with n nodes, the function will visit each node once, resulting in a time complexity of O(n), where n is the total number of nodes in the tree.
+
+In the worst case (for an unbalanced tree, such as a skewed tree), the height of the tree will be n, leading to a space complexity of O(n).
+In the best case (for a balanced tree), the height of the tree will be log(n), leading to a space complexity of O(log n).
+*/
