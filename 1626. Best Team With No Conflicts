@@ -1,0 +1,106 @@
+/* MEMOIZATION O(n^2), O(n^2 + n^2) */
+class Solution {
+    public int bestTeamScore(int[] scores, int[] ages) {
+        int arr[][] = new int[ages.length][2];
+        for(int i=0;i<arr.length;i++){
+            arr[i][0]=ages[i];
+            arr[i][1]=scores[i];
+        }
+        // Sort by age first, and if ages are the same, by score
+        Arrays.sort(arr, (a, b) -> {
+            if (a[0] == b[0]) return Integer.compare(a[1], b[1]); // Sort by score if ages are the same
+            return Integer.compare(a[0], b[0]); // Otherwise, sort by age
+        });
+        int nums[] = new int[scores.length];    //sorted scores as per age
+        for(int i=0;i<nums.length;i++){
+            nums[i]=arr[i][1];
+        }
+        return sumOfLIS(nums); //maximum score
+    }
+
+    public int sumOfLIS(int[] nums){
+        int dp[][] = new int[nums.length][nums.length];
+        for(int row[]: dp) Arrays.fill(row, -1);
+        return solve(nums, 0, -1, dp);
+    }
+
+    public static int solve(int nums[], int curr, int prev, int dp[][]){
+        if(curr==nums.length) return 0;
+        if (dp[curr][prev+1]!=-1) return dp[curr][prev+1];
+        int not_take = solve(nums, curr+1, prev, dp);
+        int take=0;
+        if(prev==-1 || nums[curr]>=nums[prev]){ //here equality sign can hold, same age allowed
+            take= nums[curr] + solve(nums, curr+1, curr, dp);  
+        }
+        return dp[curr][prev+1]= Math.max(take, not_take);
+    }
+}
+
+/*
+LOGIC---
+final socre = sum of score of each player of team
+Constraint : while taking score, we need to make sure age of that player with a higher score cannot be less than the age of the player with lower score.
+
+APPROACH---
+Make a 2d array, first column -> ages, 2nd column -> score
+Sort the 2d array wrt age (1st column)
+Now the contraint gets fulfilled if we proceed taking players in forward direction.
+
+Now to get maximum score, we can simply take a longest Increasing Subsequence (LIS)sum to get our answer
+
+Why LIS?
+After sorting we can have something like:
+age : 1  2  3  4  5  6  7
+sco : 40 50 20 10 40 60 80
+
+So, for constriant to remain fulfilled to have maximum score for player belong to older player remain true, we take Longest increasing subsequence fo score to choose players.
+
+Note : we need to sort by age and then score if age same to handle duplicay of age:
+otheriwse code will fial tto get the correct LIS from TC-
+scores = [319776,611683,835240,602298,430007,574,142444,858606,734364,896074]
+ages = [1,1,1,1,1,1,1,1,1,1]
+*/
+
+/* 1D TABULATION O(n^2), O(n^2 + n) */
+class Solution {
+    public int bestTeamScore(int[] scores, int[] ages) {
+        int[][] arr = new int[ages.length][2];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i][0] = ages[i];   // Age
+            arr[i][1] = scores[i]; // Score
+        }
+        // Sort by age first, and if ages are the same, by score
+        Arrays.sort(arr, (a, b) -> {
+            if (a[0] == b[0]) return Integer.compare(a[1], b[1]);
+            else return Integer.compare(a[0], b[0]);
+        });
+
+        // Extract the sorted scores
+        int[] sortedScores = new int[scores.length];
+        for (int i = 0; i < sortedScores.length; i++) {
+            sortedScores[i] = arr[i][1];
+        }
+        // Use DP to find the maximum sum of Longest Increasing Subsequence (LIS)
+        return sumOfLIS(sortedScores);
+    }
+
+    public int sumOfLIS(int[] nums) {
+        int n = nums.length;
+        int[] dp = new int[n];  // dp[i] will store the maximum score ending at index i
+        int maxScore = 0;
+        // Initialize dp array with the scores themselves
+        for (int i = 0; i < n; i++) {
+            dp[i] = nums[i];
+        }
+        // Compute the LIS sum
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[i] >= nums[j]) {  // Ensure a non-decreasing sequence
+                    dp[i] = Math.max(dp[i], dp[j] + nums[i]);
+                }
+            }
+            maxScore = Math.max(maxScore, dp[i]);  // Track the maximum score
+        }
+        return maxScore;
+    }
+}
