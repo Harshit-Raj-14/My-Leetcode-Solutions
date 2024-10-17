@@ -1,0 +1,62 @@
+/* MEMOIZATION O(n^3), O(n^2) */
+class Solution {
+    public int maxCoins(int[] nums){
+        int arr[] = new int[nums.length + 2];
+        arr[0] = 1;
+        arr[arr.length-1] = 1;
+        for (int i=0; i<nums.length; i++){
+            arr[i+1] = nums[i];
+        }
+        int dp[][] = new int[arr.length][arr.length];
+        for(int row[]: dp) Arrays.fill(row, -1);
+        return solve(arr, 1, arr.length-2, dp);
+    }
+
+    public static int solve(int arr[], int l, int r, int dp[][]){
+        if(l>r) return 0;   //no balloons left
+        if(dp[l][r]!=-1) return dp[l][r];
+        int ans=Integer.MIN_VALUE;
+        for(int i=l;i<=r;i++){
+            int points = arr[l-1]*arr[i]*arr[r+1] + solve(arr, l, i-1, dp) + solve(arr, i+1, r, dp);
+            ans=Math.max(ans, points);
+        }
+        return dp[l][r]=ans;
+    }
+}
+
+/* RECURSION TLE */
+class Solution {
+    public int maxCoins(int[] nums){
+        int arr[] = new int[nums.length + 2];
+        arr[0] = 1;
+        arr[arr.length-1] = 1;
+        for (int i=0; i<nums.length; i++) {
+            arr[i+1] = nums[i];
+        }
+        return solve(arr, 1, arr.length-2);
+    }
+
+    public static int solve(int arr[], int l, int r){
+        if(l>r) return 0;   //no balloons left
+        int ans=Integer.MIN_VALUE;
+        for(int i=l;i<=r;i++){
+            int points = arr[l-1]*arr[i]*arr[r+1] + solve(arr, l, i-1) + solve(arr, i+1, r);
+            ans=Math.max(ans, points);
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+Same as minimum cut on sticks
+
+Why not arr[i-1]*arr[i]*arr[i+1] but, arr[l-1]*arr[i]*arr[r+1]?
+The array is being divided recursively into smaller subarrays, and at each step, you are bursting one balloon in that range. 
+The effective left and right boundaries are l-1 and r+1, which refer to the balloons that would be next to balloon i after all the other balloons between l and r are burst.
+=> i-1 and i+1 are misleading: In a recursive approach, i-1 and i+1 may no longer be the adjacent balloons because balloons between l and i-1 or i+1 and r could have already been burst.
+=> arr[l-1] * arr[i] * arr[r+1] ensures that you are considering the correct left and right boundaries in the context of the remaining balloons after bursting some of them.
+
+If your array is [3, 1, 5, 8], and you're bursting the 2nd balloon (value 5), the current boundaries might be different after recursive calls, and the actual neighbors are the ones outside the current subproblem (e.g., arr[l-1] and arr[r+1]).
+
+*/
