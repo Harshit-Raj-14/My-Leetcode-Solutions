@@ -1,0 +1,46 @@
+class Solution {
+    public int countMaxOrSubsets(int[] nums) {
+        int maxor=0;
+        for(int i=0;i<nums.length;i++){
+            maxor |= nums[i];
+        }
+        int dp[][] = new int[nums.length][maxor+1];
+        for(int row[]:dp) Arrays.fill(row, -1);
+        return solve(nums, 0, 0, maxor, dp);
+    }
+
+    public int solve(int nums[], int i, int curror, int maxor, int dp[][]){
+        if(i==nums.length){
+            if(curror==maxor) return 1;
+            else return 0;
+        }
+        if(dp[i][curror]!=-1) return dp[i][curror];
+        int not_take = solve(nums, i+1, curror, maxor, dp);
+        int take = solve(nums, i+1, curror | nums[i], maxor, dp);
+        return dp[i][curror]=take+not_take;
+    }
+}
+
+/*
+LOGIC---
+Note - The questions asks subset not array, meaning we want no of subsequences with maximum OR.
+
+The maximum bitwise-OR is the bitwise-OR of the whole array.
+Why? 
+Because OR is an operation that only adds bits, it never removes them. 
+So including more numbers can only increase (or keep the same) the OR value, never decrease it.
+Just like how you add numbers.
+For example, consider 3 numbers: 1 (001), 4 (100), and 2 (010).
+
+ORing the three numbers means we look at the bits in each position and combine them using the OR operation to get the resultant bit. 
+Notice that the resultant bit will be 0 only when all the bits at that position are 0, otherwise, it will always be 1. 
+This means that the worst-case scenario is that the bit remains the same, and in all other cases, the bit increases in value.
+
+APPROACH---
+Maximum OR of array, is the OR of the full array.
+Now we just need to find number of subsets that will give us this OR.
+Produce subsets(or subsequence) and apply dp recursion to take or not_take numbers in OR and get frequency of maxor subsets.
+
+Time complexity: O(n⋅maxOrValue)
+Space complexity: O(n⋅maxOrValue)
+*/
