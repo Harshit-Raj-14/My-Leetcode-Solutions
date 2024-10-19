@@ -1,0 +1,30 @@
+/* DFS O(n) */
+
+/* BRUTE FORCE O(2^n) */
+class Solution {
+    public char findKthBit(int n, int k) {
+        String s = "0";
+        for(int i=2;i<=n;i++){
+            s = s+"1"+ inverthenrevrse(s);
+        }
+        System.out.println(s);
+        return s.charAt(k-1);
+    }
+
+    public static String inverthenrevrse(String s){
+        char[] arr = s.toCharArray();
+        for(int i=0;i<=arr.length/2;i++){
+            //invert
+            if(arr[i]=='1') arr[i]='0';
+            else arr[i]='1';
+            if(arr[arr.length-1-i]=='1') arr[arr.length-1-i]='0';
+            else arr[arr.length-1-i]='1';
+            //reverse
+            char temp=arr[i];
+            arr[i]=arr[arr.length-1-i];
+            arr[arr.length-1-i] = temp;
+        }
+        System.out.println(new String(arr));
+        return new String(arr);
+    }
+}
