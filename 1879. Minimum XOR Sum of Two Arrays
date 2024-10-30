@@ -1,0 +1,93 @@
+/* BITMASK DP MEMOIZATION O(n*2^n), O(2^n) */
+class Solution {
+    public int minimumXORSum(int[] nums1, int[] nums2) {
+        int mask=0;
+        int dp[] = new int[1<<nums1.length];
+        Arrays.fill(dp, -1);
+        return solve(nums1, nums2, 0, mask, dp);
+    }
+
+    public static int solve(int nums1[], int nums2[], int i, int mask, int dp[]){
+        if(i>=nums1.length) return 0;
+        if(dp[mask]!=-1) return dp[mask];
+        int ans = Integer.MAX_VALUE;
+        for(int j=0;j<nums2.length;j++){
+            if(((mask>>j)&1)!=1){
+                int curr = (nums1[i]^nums2[j]) + solve(nums1, nums2, i+1, mask|(1<<j), dp);
+                ans = Math.min(ans, curr);
+            }
+        }
+        return dp[mask]=ans;
+    }
+}
+
+/*
+LOGIC---
+TC - O(n*2^n)
+For i, there are n states.
+For mask, there are 2^n states.
+
+SC-  O(2^n)
+*/
+
+/* BITMASK DP RECURSION O(n*n!) */
+class Solution {
+    public int minimumXORSum(int[] nums1, int[] nums2) {
+        int mask=0;
+        return solve(nums1, nums2, 0, mask);
+    }
+
+    public static int solve(int nums1[], int nums2[], int i, int mask){
+        if(i>=nums1.length) return 0;
+        int ans = Integer.MAX_VALUE;
+        for(int j=0;j<nums2.length;j++){
+            if(((mask>>j)&1)!=1){
+                int curr = (nums1[i]^nums2[j]) + solve(nums1, nums2, i+1, mask|(1<<j));
+                ans = Math.min(ans, curr);
+            }
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+WHY dp size int[1<<nums2.length] ?
+Since each of the n bits can be either 0 or 1, there are 2^n possible bitmasks. Therefore, to store the results for all possible bitmasks, the size of the dp array must be at least 2^n.
+
+Use bitmask dp since the size of n is till 14 we can use a mask instead of a boolean array to store elements of nums2 which we have already utilised.
+
+APPROACH---
+While iterating in nums1, we check every possiblity of taking every element from nums2 against nums1.
+
+Note- Remember to use this brackets (a[i] ^ b[j]) as the author have else you will get WA because of the precedence. How do I know this ? Because I couldn't solve this problem just because of this issue.
+*/
+
+
+/* WITHOUT BITMASK DP */
+class Solution{
+    public int minimumXORSum(int[] nums1, int[] nums2) {
+        HashMap<String, Integer> map = new HashMap<>();
+        boolean arr[] = new boolean[nums2.length];
+        return solve(nums1, nums2, 0, arr, map);
+    }
+    
+    public static int solve(int nums1[], int nums2[], int i, boolean[] arr, HashMap<String, Integer> map){
+        if(i == nums1.length) return 0;
+        String key = Integer.toString(i);
+        for(int k = 0; k < nums1.length; k++){
+            if(arr[k]) key += "#" + Integer.toString(k);
+        }
+        if(map.containsKey(key)) return map.get(key);
+        int ans = Integer.MAX_VALUE;
+        for(int j = 0; j<nums2.length; j++) {
+            if(!arr[j]) {
+                arr[j] = true;
+                ans = Math.min(ans, (nums1[i] ^ nums2[j]) + solve(nums1, nums2, i+1, arr, map));
+                arr[j] = false;
+            }
+        }
+        map.put(key, ans);
+        return ans;
+    } 
+}
