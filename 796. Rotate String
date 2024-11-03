@@ -1,0 +1,19 @@
+class Solution {
+    public boolean rotateString(String s, String goal) {
+        if(s.length()!=goal.length()) return false;
+        s+=s;
+        if(s.indexOf(goal)!=-1) return true;
+        else return false;
+    }
+}
+
+/*
+LOGIC---
+Goal - If we have two string a and b and we have to check whether b is rotation of a or not
+    
+APPROACH---
+=> If length of both the string are not equal then it is not possible that they are rotation of each other.
+=> We just concatentate string a with itself.
+Now just check whether b string present inside a or not. If present then it is true
+    else false
+*/
