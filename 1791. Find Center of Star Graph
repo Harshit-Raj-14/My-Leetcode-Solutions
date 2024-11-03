@@ -1,0 +1,43 @@
+/* O(1) SOLUTION */
+class Solution {
+    public int findCenter(int[][] edges){
+        int u1=edges[0][0];
+        int v1=edges[0][1];
+        int u2=edges[1][0];
+        int v2=edges[1][1];
+        if(u1==u2 || u1==v2) return u1;
+        else return v1;
+    }
+}
+
+/*
+LOGIC---
+Since center node will be there in each edge values since it has all the edges conencted to it.
+So, the equal value in the first two edges will be our answer.
+*/
+
+/* O(n) SOLUTION */
+class Solution {
+    public int findCenter(int[][] edges){
+        int no_of_edges = edges.length;
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for(int i=0;i<edges.length;i++){
+            int u = edges[i][0];
+            int v = edges[i][1];
+            map.put(u, map.getOrDefault(u, 0)+1);
+            map.put(v, map.getOrDefault(v, 0)+1);
+            if(map.get(u)==no_of_edges) return u;
+            if(map.get(v)==no_of_edges) return v;
+        }
+        return -1;
+    }
+}
+
+/*
+LOGIC---
+For a star graph there are n-1 edges attached to a center node.
+
+In fact our center is the one which has no of edges equal to edges.length
+Since it would be there in all the edges
+Now, while iterating through the edges the node which has n-1 occurence will be our center.
+*/
