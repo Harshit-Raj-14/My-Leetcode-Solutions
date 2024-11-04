@@ -1,0 +1,16 @@
+class Solution {
+    public String compressedString(String s) {
+        StringBuilder sb = new StringBuilder("");
+        int i = 0;
+        while (i<s.length()) {
+            int count = 0;
+            char curr = s.charAt(i);
+            while(i<s.length() && count<9 && s.charAt(i)==curr){
+                count++;
+                i++;
+            }
+            sb.append(count+""+curr);
+        }
+        return sb.toString();
+    }
+}
