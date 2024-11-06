@@ -1,0 +1,73 @@
+/* Sortable Segments O(n), O(1) */
+class Solution {
+    public boolean canSortArray(int[] nums) {
+        int currgroupmin=Integer.MAX_VALUE;
+        int currgroupmax=Integer.MIN_VALUE;
+        int prevgroupmax=Integer.MIN_VALUE;
+        int i=0;
+        while(i<nums.length){
+            int start=i;
+            currgroupmin=nums[i];
+            currgroupmax=nums[i];
+            int currsetbit=getsetbit(nums[i]);
+            while(i<nums.length && getsetbit(nums[i])==currsetbit){
+                currgroupmin=Math.min(currgroupmin, nums[i]);
+                currgroupmax=Math.max(currgroupmax, nums[i]);
+                i++;
+            }
+            if(prevgroupmax!=Integer.MIN_VALUE){
+                if(currgroupmin<prevgroupmax) return false;
+            }
+            prevgroupmax=currgroupmax;
+        }
+        return true;
+    }
+
+    public static int getsetbit(int n){
+        int set=0;
+        while(n>0){
+            if((n&1)==1) set++;
+            n=n>>1;
+        }
+        return set;
+    }
+}
+
+/*
+LOGIC---
+Being able to swap 2 adjacent elements means that any number of contiguous elements can be sorted as long as they all have the same number of set bits.
+
+Consider a run of numbers with the same number of set bits to be a group. 
+Each group contains a maximum and minimum value. 
+If the maximum of the proceeding group is greater than the minimum of the following group, then the array cannot be sorted.
+
+We only need to find if the array can be sorted, and we don't need to sort the array
+
+Example 1:
+nums = [8,4,2,30,15]
+bits = [1,1,1, 4, 4]
+Sorting group wise : (2,4,8),(15,30)
+Now since 8<15 => max of previous group < min of next group 
+=> we can say the two groups can always be sorted properly
+
+Example 2:
+nums = [1,2,3,4,5]
+bits = [1,1,2,1,2]
+       (1,2),(3),(4),(5)
+
+Example 3:
+nums = [3,16,8,4,2]
+bits = [2, 1,1,1,1]
+       (3),(2,4,8,16)
+
+Example 4:
+nums = [7,13,  18,17,  8,16,2]
+bits = [3, 3,   2, 2,  1, 1,1]
+       (7,13),(17,18),(2,8,16)
+
+nums = [15,  128,1,  255]
+bits = [4,     1,1,    8]
+       (15),(1,128),(255)
+
+
+*/
