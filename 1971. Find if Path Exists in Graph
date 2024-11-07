@@ -1,0 +1,88 @@
+/* DFS O(V+E) */
+class Solution {
+    public boolean validPath(int n, int[][] edges, int source, int destination){
+        if(source==destination) return true;
+        //Step I: make adjacency list
+        HashMap<Integer, List<Integer>> adjacencyList = new HashMap<>();
+        for(int i=0;i<edges.length;i++){
+            int u=edges[i][0];
+            int v = edges[i][1];
+            if(!adjacencyList.containsKey(u)) adjacencyList.put(u, new LinkedList<>());  
+            if(!adjacencyList.containsKey(v)) adjacencyList.put(v, new LinkedList<>());
+            adjacencyList.get(u).add(v); 
+            adjacencyList.get(v).add(u);    //bidirectional
+        }
+        //Step II: DFS - traverse graph from source using adjacency list
+        Stack<Integer> stack = new Stack<>();
+        HashSet<Integer> visited = new HashSet<>();
+        stack.push(source);
+        while(!stack.isEmpty()){
+            int curr = stack.pop();
+            if(curr==destination) return true;  //found destination
+            if(!visited.contains(curr)){ //if curr node has not been visited then explore it
+                visited.add(curr);
+                List<Integer> neighbors = adjacencyList.get(curr);
+                for(int neighbor : neighbors){
+                    if(!visited.contains(neighbor)) stack.push(neighbor);
+                }
+            }
+        }
+        return false;
+    }
+}
+
+/*
+LOGIC---
+Goal : We need to find path from source to destination.
+Meaning  : we need either bfs or dfs to traverse path. so apply it.
+
+Apply bfs/dfs from source and see while traversing can you reach destination.
+
+APPROACH---
+Step I : from edges, make an adjacency list.
+Step II : Now traverse the graph using adjacency list
+
+For DFS use stack,
+For BFS use queue
+*/
+
+
+/* DFS Adjacency list of List<List<Integer>> */
+class Solution {
+	public boolean validPath(int n, int[][] edges, int source, int destination) {
+        List<List<Integer>> adj=new ArrayList<>();
+		boolean[] vis=new boolean[n];
+		makeGraph(adj, n, edges);   //Step I: Create adjacnecy list
+		return isValid(adj, source, destination, vis);  //Step II: traverse and check for dest
+    }
+
+    public boolean isValid(List<List<Integer>> adj, int source, int destination, boolean[] vis){
+		if(source==destination) return true;    //base case
+		vis[source]=true;
+		for(int v:adj.get(source)) {
+			if(!vis[v] && isValid(adj,v,destination,vis)){  //recurse and check further deep
+                return true;
+            }
+		}
+		return false;
+	}
+
+    public  void makeGraph(List<List<Integer>> adj,int n,int[][] edges){  //Create adjacency list
+		for(int i=0;i<n;i++){   //adding emtpy list for each node
+			adj.add(new ArrayList<Integer>()); 
+        }   
+		for(int i=0;i<edges.length;i++) {
+			adj.get(edges[i][0]).add(edges[i][1]);
+			adj.get(edges[i][1]).add(edges[i][0]);
+		}
+	}
+}
+
+
+/* UNION FIND DISJOINT SET */
+
+/*
+LOGIC---
+Union Find: two nodes are connected if they belong to set set.
+
+*/
