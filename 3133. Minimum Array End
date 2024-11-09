@@ -1,0 +1,56 @@
+class Solution {
+    public long minEnd(int n, int x) {
+        long ans = 0;
+        int idx = n - 1;
+        int i = 0;
+        while (x != 0 || idx != 0) {
+            if ((x & 1) == 1){ // If x has a set bit at the current position
+                ans |= (1L << i); // Set the corresponding bit in ans
+            } 
+            else{   // If x has an unset bit, use bits from idx
+                ans |= ((long)(idx & 1) << i);  // Place the current bit of idx in ans
+                idx >>= 1;          // Move to the next bit of idx
+            }
+            x >>= 1;        // Move to the next bit of x
+            i++;
+        }
+        
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+Goal : make an ascending array whose AND is x. return the minimum possible value of last element of nums.
+
+To get the final x while AND the all elements of nums, we need to keep the setbits of x untouched. 
+That means we will have all the bits as set in all element of nums. 
+
+Since our task is to create as small as possible ascending array, we can start with all zeros, then 1, then 2, etc.
+
+0 1 1 1 0 0 1 => x
+Now these are elements of array with set bit at same position as x. 
+  1 1 1     1 
+  1 1 1     1
+  1 1 1     1
+and so on...
+Now since we want increasing numbers in array, we replace the empty spaces with increasing binaries:0, 1, 10, 11, 100, 101 and so on, 
+which actually translates to: (decimal) 0, 1, 2, 3, 4, 5 and so...
+which is in fact the indexing of array.
+
+So, the last element of our required array can be constructed using x and n-1(index no.).
+
+Now where to fill the bits of n-1 in x is where the unsetbits occur.
+And that will be our answer.
+
+0 1 1 1 0 0 1 => x
+_ 1 1 1 _ _ 1 => skeleton we need to fill
+0 1 1 1 0 0 1 => place 0 => 0
+0 1 1 1 0 1 1 => place 01 => 1    
+0 1 1 1 1 0 1 => place 10 => 2
+0 1 1 1 1 1 1 => place 11 => 3
+1 1 1 1 0 0 1 => place 100 => 4
+1 1 1 1 0 1 1 => place 101 => 5
+
+As you can see we are filling the unset bit position in X, linearly that's why last element of array will be merge X with n-1, means in every unset bit position of X put binary representation of n-1.
+*/
