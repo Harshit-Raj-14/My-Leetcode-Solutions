@@ -1,0 +1,20 @@
+class Solution {
+    public int smallestNumber(int n, int t){
+        while(true){
+            if(solve(n)%t==0){
+                return n;
+            }
+            n++;
+        }
+    }
+    
+    public static int solve(int n){
+        int ans=1;
+        while(n>0){
+            int l=n%10;
+            ans*=l;
+            n/=10;
+        }
+        return ans;
+    }
+}

@@ -1,0 +1,39 @@
+class Solution {
+    public int maxFrequency(int[] nums, int k, int ops) {
+        Arrays.sort(nums);
+        HashMap<Integer, Integer> originalsreq = new HashMap<>();
+        TreeMap<Integer, Integer> intervals = new TreeMap<>();  //intervals created (a-k, a+k)
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
+        for(int i=0;i<nums.length;i++){
+            originalsreq.put(nums[i], originalsreq.getOrDefault(nums[i],0)+1);
+            min=Math.min(min, nums[i]-k);
+            max=Math.max(max, nums[i]+k);
+            intervals.put(nums[i]-k, intervals.getOrDefault(nums[i]-k,0)+1);   //range[nums[i]-k]++;
+            intervals.put(nums[i]+k+1, intervals.getOrDefault(nums[i]+k+1,0)-1);   //range[nums[i]+k+1]--;
+            intervals.put(nums[i], intervals.getOrDefault(nums[i],0));   //range[nums[i]]; just add to intervals map
+        }
+        int ans=1;  //max frequency
+        int prevfreq = 0;
+        for (Map.Entry<Integer, Integer> entry : intervals.entrySet()){  //Iterate through the interval map
+            entry.setValue(entry.getValue() + prevfreq);
+            prevfreq = entry.getValue();
+            int originals = originalsreq.getOrDefault(entry.getKey(), 0);
+            int adjustables = entry.getValue() - originals;
+            adjustables = Math.min(adjustables, ops);
+            ans=Math.max(ans, adjustables+originals);
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+We know our number that will have maxfreq will be one on which the operation will be applied.
+Specifically nums[i], nums[i]-k, nums[i]+k : somehow you have to just know this fact. 
+So, instead of trying to iterate through range min to max.
+Just iterate on points of treemap made of intervals. Use differnece array technique on it by maintiang a prev value.
+
+Reason for treemap : sorted order => sort original array
+
+*/

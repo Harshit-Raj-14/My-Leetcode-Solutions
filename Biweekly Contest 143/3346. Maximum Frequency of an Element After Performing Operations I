@@ -1,0 +1,49 @@
+/* MAIN SOLUTION ACCEPTED FOR PART I : DIFFERNECE ARRAY TECHNIQUE O(n+k) */
+class Solution {
+    public int maxFrequency(int[] nums, int k, int ops) {
+        HashMap<Integer, Integer> originalsreq = new HashMap<>();
+        HashMap<Integer, Integer> intervals = new HashMap<>();  //intervals created (a-k, a+k)
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
+        for(int i=0;i<nums.length;i++){
+            originalsreq.put(nums[i], originalsreq.getOrDefault(nums[i],0)+1);
+            min=Math.min(min, nums[i]-k);
+            max=Math.max(max, nums[i]+k);
+            intervals.put(nums[i]-k, intervals.getOrDefault(nums[i]-k,0)+1);   //range[nums[i]-k]++;
+            intervals.put(nums[i]+k+1, intervals.getOrDefault(nums[i]+k+1,0)-1); //range[nums[i]+k+1]--;
+        }
+        int ans=1;  //max frequency
+        for(int i=min; i<=max; i++){    //iterate through possible rnag eof array
+            //make prefix sum of count array as per difference arrya technique
+            if(i>min) intervals.put(i, intervals.getOrDefault(i, 0) + intervals.get(i - 1));
+            else intervals.put(i, intervals.getOrDefault(i, 0));
+            int originals = originalsreq.getOrDefault(i,0);
+            int adjustables = intervals.get(i) - originals; //all possible adjustable when infinite ops
+            adjustables=Math.min(adjustables, ops); //ops allowed
+            ans=Math.max(ans, adjustables+originals);
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+Operation add(-k, k) to all elements.
+Hence each element of array will now lie in a range:
+arr : [a,b,c]
+after operation:
+[(a-k)to(a+k), (b-k)to(b+k), (c-k)to(c+k)]
+
+Now to know the freq of maximum number that cna occur if we were allowed infinte number of operations, it would be equivalent to applying difference arrya technique by treating the above (a-k) to (a+k) as queries on a count array. And the max freq of a number will be the max of count array.
+
+But the constraint is we don't have infinite operations. We have a fixed number of operations to apply:
+
+So, let's say after applying difference array technique for a number x we get freq f.
+Now the freq of this number x can come from those brought by applying operations and ones that already existed.
+freq of x = f = (adjustables)after applying ops + (originals)were already in array
+
+So, if we think the number of ops that we can apply is equal to adjustables or more than adjustables, then f can be our answer.
+So in fact we would want f = adjustables + originals
+where adjustables<=ops allowed
+
+*/
