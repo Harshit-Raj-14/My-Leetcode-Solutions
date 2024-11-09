@@ -1,0 +1,52 @@
+class Solution {
+    public int eraseOverlapIntervals(int[][] intervals) {
+        Arrays.sort(intervals, (a, b) -> Integer.compare(a[1], b[1]));
+        int prev_end=intervals[0][1];
+        int ans=0;
+        for(int i=1;i<intervals.length;i++){
+            int curr_start=intervals[i][0];
+            int curr_end=intervals[i][1];
+            if(curr_start>=prev_end){    //no overlap
+                prev_end=curr_end;   //update the end point
+            }
+            else{   //overlapping
+                ans++;  //remove interval
+                prev_end=Math.min(prev_end, curr_end);  //remove the one which ends later
+            }
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+In sorted order of starting time, removing the interval which ends later and keep the one which ends first is always beneficial.
+
+Interval 1 : ______________
+Interval 2 : ________
+Interval 3 :            ___________
+So, we would prefer to remove 3 becuase its end time is too big and will be an inconvenience.
+
+APPROACH---
+=> Sort the given intervals based on starting points
+=> While considering the intervals in the ascending order of starting points we make use of a pointer prev pointer to keep track of the interval just included in the final list.
+
+Case 1
+    You don't need to remove any intervals
+    Continue by simply assigning the prev pointer to the later interval
+    The count of intervals removed remains unchanged
+
+Case 2
+    Remove the interval with the later end point
+    The prev pointer is updated to current interval
+    count of intervals removed is incremented by 1
+
+Case 3
+    Remove the interval with the later end point
+    The prev pointer remains unchanged
+    count of intervals removed is incremented by 1
+
+Rule of Thumb
+    Always choose the interval that ends first
+
+*/
