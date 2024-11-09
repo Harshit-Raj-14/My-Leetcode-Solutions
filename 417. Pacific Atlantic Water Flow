@@ -1,0 +1,103 @@
+/* ELEGANT OPTIMIZED APPROACH REVERSE THINKING O(m*n) */
+class Solution {
+    public List<List<Integer>> pacificAtlantic(int[][] heights) {
+        int n = heights.length, m = heights[0].length;
+        boolean pac[][] = new boolean[n][m];    //mark which cells reach pacific
+        boolean atl[][] = new boolean[n][m];    //mark which cells reach atlantic
+        for (int i = 0; i < n; i++) {
+    for (int j = 0; j < m; j++) {
+        if(i==0) dfs(i, j, n, m, pac, heights[i][j], heights);  // Pacific row (top)
+        if(i==n-1) dfs(i, j, n, m, atl, heights[i][j], heights);  // Atlantic row (bottom)
+        if(j==0) dfs(i, j, n, m, pac, heights[i][j], heights);  // Pacific column (left)
+        if(j==m-1) dfs(i, j, n, m, atl, heights[i][j], heights);  // Atlantic column (right)
+    }
+}
+        List<List<Integer>> ans = new ArrayList<List<Integer>>();
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(pac[i][j] && atl[i][j]) ans.add(Arrays.asList(i,j));
+            } 
+        }
+        return ans;
+    }
+
+    private void dfs(int i, int j, int n, int m, boolean visited[][], int prevHeight, int[][] heights){
+        if(i<0 || i>=n || j<0 || j>=m || visited[i][j] || prevHeight > heights[i][j]) return;
+        visited[i][j]= true;    //mark as visited
+        dfs(i+1, j, n, m, visited, heights[i][j], heights);
+        dfs(i-1, j, n, m, visited, heights[i][j], heights);
+        dfs(i, j+1, n, m, visited, heights[i][j], heights);
+        dfs(i, j-1, n, m, visited, heights[i][j], heights);
+    }
+}
+
+
+/*
+Since the edges are where we come in contact with the oceans.
+Reverse think, mark the cells that can be reached from edges to inside as true. That menas in vice versa from those cells we can also reach back to edge cells.
+Now for both boolean arrays which are true will be our answers.
+*/
+
+
+/* BRUTE FORCE O((m*n)^2) */
+class Solution {
+    public List<List<Integer>> pacificAtlantic(int[][] heights){
+        ArrayList<List<Integer>> ans = new ArrayList<>();
+        for(int i=0;i<heights.length;i++){
+            for(int j=0;j<heights[0].length;j++){
+                if(reachPacific(heights, i, j, new boolean[heights.length][heights[0].length]) && reachAtlantic(heights, i, j, new boolean[heights.length][heights[0].length])){
+                    ArrayList<Integer> list = new ArrayList<>();
+                    list.add(i);
+                    list.add(j);
+                    ans.add(list);
+                }
+            }
+        }
+        return ans;
+    }
+
+    public static boolean reachPacific(int[][] heights, int i, int j, boolean visited[][]){
+        if((i==0 && j<=heights[0].length-1) || (i<=heights.length-1 && j==0)) return true; //pacific reach
+        if(i<0 || j<0 || i>=heights.length || j>=heights[0].length) return false;
+        if(visited[i][j]==true) return false;    //already traversed
+        visited[i][j]=true;
+        //move in four direction
+        boolean canReach = false;
+        if(i+1<heights.length && heights[i][j]>=heights[i+1][j]) canReach |= reachPacific(heights, i+1, j, visited);
+        if(i-1>=0 && heights[i][j]>=heights[i-1][j]) canReach |= reachPacific(heights, i-1, j, visited);
+        if(j+1<heights[0].length && heights[i][j]>=heights[i][j+1]) canReach |= reachPacific(heights, i, j+1, visited);
+        if(j-1>=0 && heights[i][j]>=heights[i][j-1]) canReach |= reachPacific(heights, i, j-1, visited);
+        return canReach;
+    }
+
+        public static boolean reachAtlantic(int[][] heights, int i, int j, boolean visited[][]){
+        if((i==heights.length-1 && j<=heights[0].length-1) || (i<=heights.length-1 && j==heights[0].length-1)) return true; //atlantic reach
+        if(i<0 || j<0 || i>=heights.length || j>=heights[0].length) return false;
+        if(visited[i][j]==true) return false;    //already traversed
+        visited[i][j]=true;
+        //move in four direction
+        boolean canReach = false;
+        if(i+1<heights.length && heights[i][j]>=heights[i+1][j]) canReach |= reachAtlantic(heights, i+1, j, visited);
+        if(i-1>=0 && heights[i][j]>=heights[i-1][j]) canReach |= reachAtlantic(heights, i-1, j, visited);
+        if(j+1<heights[0].length && heights[i][j]>=heights[i][j+1]) canReach|=reachAtlantic(heights, i, j+1, visited);
+        if(j-1>=0 && heights[i][j]>=heights[i][j-1]) canReach |= reachAtlantic(heights, i, j-1, visited);
+        return canReach;
+    }
+}
+
+/*
+LOGIC---
+If water can flow from cell(i,j) to both atlantic or pacific edge.
+That will be our answer.
+Note : from cell we need to reach both pacific and atlantic independently. So, we are running to check functions.
+
+Also, make boolean array to keep cells marked as visited.
+Dont forget uber mistake.
+
+Time Complexity: O((m * n)^2)
+Space Complexity: O(m * n)
+Why this is brute force is because we are outerly iterating heights array and then again in dfs we are doing O(mn) iterations.
+
+But in optimised case, we see that we are visiting only once in each dfs for atlantic and pacific becuase we used a main boolena array for which ocean.
+So, iteration is done only O(mn);
+*/
