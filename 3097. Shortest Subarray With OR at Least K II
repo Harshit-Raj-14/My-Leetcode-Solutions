@@ -1,0 +1,43 @@
+/* BIT MANIPULATION + SLIDING WINDOW O(n) */
+class Solution {
+    public int minimumSubarrayLength(int[] nums, int k){
+        int ans=Integer.MAX_VALUE;
+        int l=0;
+        int count[] = new int[32];  //frequency of setbits
+        for(int r=0;r<nums.length;r++){
+            updatebitcount(count, nums[r],1);   //increase window size => add current number to window
+            while(l<=r && convertbitcount(count)>=k){
+                ans=Math.min(ans, r-l+1);
+                updatebitcount(count, nums[l],-1);  //shrink window size => remove starting element
+                l++;
+            }
+        }
+        if(ans==Integer.MAX_VALUE) return -1;   //no valid subarray found
+        else return ans;
+    }
+
+    public static void updatebitcount(int count[], int x, int type){    //type -> removal/addition
+        for(int i=0;i<32;i++){
+            if(((x>>i)&1)==1) count[i]+=type;
+        }
+    }
+
+    public static int convertbitcount(int count[]){
+        int val=0;
+        for(int i=0;i<32;i++){
+            if(count[i]>0) val+=(int)Math.pow(2,i);
+        }
+        return val;
+    }
+}
+
+/*
+LOGIC---
+OR is like a sum growing function. bitwise OR never unsets any bits and only sets new bits.
+So, OR is a nondecreasing function as we know.
+Hence finding a subarray with >=k OR, is simple as implmeneting a sliding window.
+If curror<k => increase window size
+If curror>=k => decrease window size
+keep track of sizes
+we get our answer
+*/
