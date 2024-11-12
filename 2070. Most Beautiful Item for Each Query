@@ -1,0 +1,52 @@
+/* SORTING + BINARY SEARCH O((M+N)⋅logM) */
+class Solution {
+    public int[] maximumBeauty(int[][] items, int[] queries) {
+        Arrays.sort(items, (a,b) -> Integer.compare(a[0], b[0]));
+        int currmax=items[0][1];
+        for(int i=1;i<items.length;i++){
+            currmax=Math.max(currmax, items[i][1]);
+            items[i][1]=currmax;
+        }
+        int ans[] = new int[queries.length];
+        for(int i=0;i<queries.length;i++){
+            ans[i]= binarySearch(items, queries[i]);
+        }
+        return ans;
+    }
+
+    public static int binarySearch(int items[][], int p){
+        int l=0;
+        int r=items.length-1;
+        int ans=0;
+        while(l<=r){
+            int mid=l+(r-l)/2;
+            if(items[mid][0]<=p){
+                l=mid+1;    //find a better solution
+                ans = items[mid][1];
+            }
+            else r=mid-1;
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+Sort the items pricewise. Now, find the maxbeauty uptill each price value that cna exist.
+Now for queries, you can simply, apply binarysearch on first-row to get price and tell the beauty.
+
+APPROACH---
+1. sort items in ascending order of price
+2. Pre-compute maximum beauty uptill each index of item.
+3. Use binary search for each query.
+
+You may use TreeSet for solving without binary search
+
+
+
+Time Complexity: O((M+N)⋅logM)
+
+Sorting items in ascending order of price takes O(M⋅logM) time. Then, going through all queries will take O(N) time, where answering each query involves a binary search that takes O(logM) time. 
+Thus, the total time complexity is O((M+N)⋅logM).
+
+*/
