@@ -1,0 +1,41 @@
+/* SORTING + TWO POINTER O(nlogn) */
+class Solution {
+    public long countFairPairs(int[] nums, int lower, int upper) {
+        Arrays.sort(nums);
+        return solve(nums, upper) - solve(nums, lower-1);
+    }
+
+    public static long solve(int nums[], int target){    //return number of pairs with sum<=target
+        int i=0;
+        int j=nums.length-1;
+        long ans=0;
+        while(i<j){
+            if(nums[i]+nums[j]<=target){    //calculate pairs for the next number
+                ans+=(j-i);
+                i++;
+            }
+            else j--;   //shrink window
+        }
+        return ans;
+    }
+}
+
+
+/*
+LOGIC----
+To find number of pairs in array whose sum lies in range [lower, upper]
+Now total pairs in array = n-1+n-2+...+2+1 = n(n-1)/2
+Now lets say there are x pairs that have sum less than lower
+And then there are y pairs that have sum less than equal to upper
+
+--------- x
+-------------------------y
+          --------------- x-y => required answer which means pairs sum range [lower, upper]
+pairs whose sum between [lower, upper] = y-x
+
+find total pairs having sum < lower => x
+find total pairs having sum <= upper => y
+ans=y-x
+
+Now you can find the above pairs using two pointer approach on a sorted array.
+*/
