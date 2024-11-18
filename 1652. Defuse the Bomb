@@ -1,0 +1,70 @@
+/* SLIDING WINDOW O(n) */
+class Solution {
+    public int[] decrypt(int[] code, int k) {
+        int n = code.length;
+        int ans[] = new int[n];
+        if(k==0) return ans;
+        int l = 1, r= k, sum = 0;
+        if(k<0){    //If k<0, the starting point will be end of the array
+            l =  n - Math.abs(k);
+            r= n - 1;
+        }
+        for (int i=l; i<=r; i++) sum+=code[i];  //sum for the first window
+        for (int i=0; i<n; i++){
+            ans[i] = sum;
+            sum -= code[(l) % n];   //removing the first elementto shorten the window
+            sum += code[(r+ 1) % n];    //adding the next element to extend the widnow
+            l++;
+            r++;
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+For positive k, we start by calculating the sum of the first k elements and store it in result[0]. Let’s call this initial sum sum. 
+As we shift the window to each new index, we update sum by subtracting the element that's leaving the window and adding the new element entering it. 
+We repeat this process until we cover all indices and store each updated sum in result.
+
+Similarly, when k is negative, we calculate the sum of the |k| elements preceding each index, beginning with the last |k| elements for the first index. 
+Then, for each subsequent index, we update the sum by adjusting for the outgoing and incoming elements as before. 
+
+After visiting all indices, we return the result array.
+
+*/
+
+
+/*  BRUTE FROCE O(n^2) */
+class Solution {
+    public int[] decrypt(int[] code, int k) {
+        int n = code.length;
+        int ans[] = new int[n];
+        if(k==0) return ans;
+        else if(k>0){
+            for(int i=0;i<n;i++){
+                int sum=0;
+                int start=i+1;
+                for(int j=0;j<k;j++){
+                    if(start==n) start=0;
+                    sum+=code[start];
+                    start++;
+                }
+                ans[i]=sum;
+            }
+        }
+        else if(k<0){
+            for(int i=0;i<n;i++){
+                int sum=0;
+                int start=i-1;
+                for(int j=0;j<Math.abs(k);j++){
+                    if(start==-1) start=n-1;
+                    sum+=code[start];
+                    start--;
+                }
+                ans[i]=sum;
+            }
+        }
+        return ans;
+    }
+}
