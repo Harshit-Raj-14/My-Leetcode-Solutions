@@ -1,0 +1,23 @@
+class SeatManager {
+    PriorityQueue<Integer> pq;
+    public SeatManager(int n) {
+        pq = new PriorityQueue<>();  //unreserved seats
+        for(int i=1;i<=n;i++){
+            pq.add(i);  //all seats are unreserved to begin with
+        }
+    }
+    
+    public int reserve() {
+        return pq.poll();
+    }
+    
+    public void unreserve(int seatNumber) {
+        pq.add(seatNumber);
+    }
+}
+
+/*
+Use min-heap to keep track of unreserved seats.
+Reason: when you try to reserve you can simply pop the smallest number from min-heap.
+And for unreserve we simply add that seat to our min-heap
+*/
