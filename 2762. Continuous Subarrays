@@ -1,0 +1,25 @@
+/* USING SLIDING WINDOW + HASHMAP 0(n), O(n) */
+class Solution {
+    public long continuousSubarrays(int[] nums) {
+        long ans = 0;
+        int l = 0; 
+        TreeMap<Integer, Integer> map = new TreeMap<>(); //track frequency of elements in the window
+        for (int r = 0; r<nums.length; r++){
+            map.put(nums[r], map.getOrDefault(nums[r], 0) + 1); //add the current number to the map
+            while (map.lastKey()-map.firstKey()>2){ //shrink the window until the condition is satisfied
+                map.put(nums[l], map.get(nums[l]) - 1); //remove the front element
+                if (map.get(nums[l])==0) map.remove(nums[l]);
+                l++;
+            }
+            ans += (r - l + 1); // Count all valid subarrays ending at index r
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+Use sliding window.
+Use map to keep track of the maximum and minimum of subarrays.
+Fun fact : A window in this question cannot have more than 3 distinct element!
+*/
