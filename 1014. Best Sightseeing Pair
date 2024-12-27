@@ -1,0 +1,22 @@
+class Solution {
+    public int maxScoreSightseeingPair(int[] arr){
+        int ans=0;
+        int maxtillnow=arr[0]+0;    //val[i]+i
+        for(int j=1;j<arr.length;j++){
+            ans=Math.max(ans, maxtillnow + (arr[j]-j));
+            maxtillnow = Math.max(maxtillnow, arr[j]+j);    //arr[j]+j -> will act as val[i]+i
+        }
+        return ans;
+    }
+}
+
+/*
+LOGIC---
+val = values[i] + values[j] + i - j, where i<j
+val to be high => val[i] and val[j] should be high => i should be high => j should be less
+
+If we iterate forward:
+val = val[i]+i + (val[j]-j)
+val = maxtillnow + (currval)
+This is our ans
+*/
