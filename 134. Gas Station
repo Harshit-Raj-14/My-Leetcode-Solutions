@@ -1,0 +1,97 @@
+/* GREEDY O(n) */
+class Solution {
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int totalg=0;
+        int totalc=0;
+        for(int i=0;i<gas.length;i++){
+            totalg+=gas[i];
+            totalc+=cost[i];
+        }
+        if(totalg<totalc) return -1;    //not possible to complete circle
+        else{   //one solution always exist
+            int curr=0;
+            int start=0;
+            for(int i=0;i<gas.length;i++){
+                curr += gas[i]-cost[i];
+                if(curr<0){
+                    curr=0; //failed to reach next gas station, so reset
+                    start=i+1;  //next station become sstart
+                }
+            }
+            return start;
+        }
+    }
+}
+
+/*
+LOGIC---
+The key is "If we got a start point given our total gas >=total cost , we will be able to reach back to that point with just enough gas."
+
+**Part 1** - Sum of the gas array >= sum of the cost array:  
+This is very intuitive; we should always have enough gas. 
+=> So, if above condition is true there is always one solution.
+
+**Part 2** - We are keeping a total += gas[i] - cost[i] for each i, and whenever it is <0, we skip that point and move forward, resetting total to 0.  
+This means we ran out of gas if we started at some point which was <= the current position of i. Now, we have to find a new starting position, which will be > the current position of i.
+
+Now think, why will this new start lie ahead of the current position of i, and not anywhere before it? You could think of it this way: 
+We started from point A → B (total till now > 0) → C (total < 0). According to this algorithm, we try to find the start ahead of C. What if we started from B and skipped A instead? 
+Well, that wouldn’t work. You moved from A → B with some positive value (or at least 0), or else you would have stopped right at B and reset total to 0. So, point A improved our chances of having a positive total. 
+Therefore, there’s no point in looking for a new start position anywhere behind point C.
+
+**Part 3** - When the total stays positive, we don’t do anything to the start point. Our start pointer points to the first index where our total became positive.
+
+This is similar to the above explanation. Let’s suppose we start from X (negative) → Y (negative) → A (positive) → B (positive) → C (positive), where C is the end of the array. 
+Our start (which is also the answer) would be A.
+
+Why not B? Why not C?
+It’s because we moved from A to B with some positive value, or at least 0. Whereas if we had started from B, we would have only had the value of B. 
+So, the earlier point (A) added some value to our total. Therefore, it’s more favorable and helps us reach the answer, making the earliest point the best choice.
+
+**Part 4** - Why do we stop at point C and not complete the cycle and check?
+It’s because from Part 1, we would have already identified if the given set of inputs will have an answer. So, if we have reached Part 3, it means we surely have an answer. 
+It is mentioned in the question that there is only one valid answer, so we will always choose the most favorable answer, which is also the fundamental idea behind Greedy Algorithms. 
+
+Its not even greedy, its essentially kadane algo applied on the difference array (gas - cost array).
+*/
+
+/* GREEDY ONE PASS O(n) */
+class Solution {
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int totalg = 0, totalc = 0, curr = 0, start = 0;
+        for (int i = 0; i < gas.length; i++) {
+            totalg += gas[i];
+            totalc += cost[i];
+            curr += gas[i] - cost[i];
+            if (curr < 0) {  // If curr is negative, reset the start point
+                curr = 0;
+                start = i + 1;
+            }
+        }
+        // If the total gas is less than the total cost, return -1
+        return totalg < totalc ? -1 : start;
+    }
+}
+
+
+/* BRUTE FORCE O(n^2) */
+class Solution {
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        for (int i=0; i<gas.length; i++) {
+            int curr = 0;
+            int j = i;
+            for (int count=0; count<gas.length; count++){  //if able to complete length of array then loop completed
+                curr += gas[j] - cost[j];  // Gain gas and spend cost
+                if (curr < 0) break;  // Can't complete the circuit from this starting point, so check next station
+                j = (j + 1) % gas.length;  // Move to the next station (circular)
+            }
+            if (curr >= 0) return i;  // Successfully completed the circuit
+        }
+        return -1; 
+    }
+}
+
+/*
+LOGIC---
+One way to know the loop has been covered = traversing equal to length of array.
+*/
