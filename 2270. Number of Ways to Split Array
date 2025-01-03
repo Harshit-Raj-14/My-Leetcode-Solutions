@@ -1,0 +1,35 @@
+/* TWO POINTER O(n), O(1) */
+class Solution {
+    public int waysToSplitArray(int[] nums) {
+        int n=nums.length;
+        long l=0;
+        long r=0;
+        for(int x: nums) r+=x;  //initially consider all elements on right
+        int ans=0;
+        for(int i=0;i<nums.length-1;i++){   //last element cannot be partition point
+            l+=nums[i]; //add to left sum
+            r-=nums[i]; //subtract from right sum
+            if(l>=r) ans++;
+        }
+        return ans;
+    }
+}
+
+
+/* PREFIX SUM O(n), O(n) */
+class Solution {
+    public int waysToSplitArray(int[] nums) {
+        int n=nums.length;
+        long prefix[] = new long[n+1];
+        prefix[0]=nums[0];
+        for(int i=1;i<n;i++){
+            prefix[i]=prefix[i-1]+nums[i];
+        }
+        long total=prefix[n-1];
+        int ans=0;
+        for(int i=0;i<n-1;i++){ //last element cannot be a valid split since we require at least one element on right
+            if(prefix[i]>=total-prefix[i]) ans++;
+        }
+        return ans;
+    }
+}
