@@ -1,0 +1,55 @@
+/* O(n^3) SOLUTION */
+class Solution {
+    public List<String> stringMatching(String[] words) {
+        HashSet<String> set = new HashSet<>(); //to avoid duplicates
+        for (int i = 0; i < words.length; i++) {
+            for (int j = 0; j < words.length; j++) {
+                if (i!=j && words[j].contains(words[i])) {
+                    set.add(words[i]); 
+                    break; 
+                }
+            }
+        }
+        return new ArrayList<>(set); 
+    }
+}
+
+/*
+LOGIC---
+Outer and Inner Loops
+
+    The outer loop iterates over the words array (n iterations).
+    The inner loop also iterates over the words array (n iterations).
+    This results in a nested loop, giving a time complexity of O(n2)O(n2).
+
+contains Method
+
+    The contains method checks whether one string is a substring of another. This method operates in O(m)O(m), where mm is the length of the second string (the one being checked for a match).
+    In the worst case, the contains method may be called for every pair of strings.
+
+Overall Complexity
+
+    Let LL be the average length of the strings in the words array. For each pair of strings, the contains method contributes O(L)O(L).
+    The overall complexity is O(n2⋅L)O(n2⋅L), where:
+        nn: Number of words in the array.
+        LL: Average length of the strings.
+
+Space Complexity
+
+    The space complexity is:
+        O(k)O(k), where kk is the number of unique substrings stored in the HashSet (result).
+        Additional O(1)O(1) for variables.
+    Total: O(k)O(k).
+
+
+Can It Be Optimized Further?
+
+Yes, the code can be optimized further if constraints allow:
+
+    Sort by Length:
+        If the words are sorted by length, you only need to check longer words for containing shorter ones. This reduces unnecessary comparisons.
+        Complexity for sorting: O(nlog⁡n)O(nlogn).
+
+    Using a Trie:
+        If substring matching is frequent, a trie (prefix tree) can reduce the complexity of substring checks.
+        However, building and querying the trie have additional overhead.
