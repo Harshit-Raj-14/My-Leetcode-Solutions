@@ -1,0 +1,64 @@
+/* Swapping O(n), O(1) */
+class Solution {
+    public boolean areAlmostEqual(String s1, String s2){
+        if(s1.length()!=s2.length()) return false;
+        int unequal=0, first=-1, second=-1;
+        for(int i=0;i<s1.length();i++){
+            if(s1.charAt(i)!=s2.charAt(i))
+            {
+                unequal++;
+                if(unequal>2) return false; //more than 2 differences -> not swappable
+                if(unequal==1) first = i; // First mismatch
+                else second = i; // Second mismatch
+            }
+        }
+        if(unequal==0) return true;
+        if(unequal==2){ //check if swapping s1[first] and s1[second] makes s1 equal to s2
+            if(s1.charAt(first)==s2.charAt(second) && s1.charAt(second)==s2.charAt(first)) return true;
+        }
+        return false;
+    }
+}
+
+/*
+LOGIC---
+Identify indices where s1[i] != s2[i]. There should be exactly 0 or 2 such indices.
+If there are exactly two mismatches, check whether swapping those characters would make the strings equal.
+*/
+
+/* HASHING */
+class Solution {
+
+    public boolean areAlmostEqual(String s1, String s2) {
+        if (s1.equals(s2)) {
+            return true;
+        }
+        char[] s1FrequencyMap = new char[26];
+        char[] s2FrequencyMap = new char[26];
+        int numDiffs = 0;
+
+        for (int i = 0; i < s1.length(); i++) {
+            char s1Char = s1.charAt(i);
+            char s2Char = s2.charAt(i);
+
+            if (s1Char != s2Char) {
+                numDiffs++;
+                // numDiffs is more than 2, one string swap will not make two strings equal
+                if (numDiffs > 2) return false;
+            }
+
+            // increment frequencies
+            s1FrequencyMap[s1Char - 'a']++;
+            s2FrequencyMap[s2Char - 'a']++;
+        }
+
+        // check if frequencies are equal
+        return Arrays.equals(s1FrequencyMap, s2FrequencyMap);
+    }
+}
+
+/*
+LOGIC---
+The answer is false if the number of nonequal positions in the strings is not equal to 0 or 2.
+Check that these positions have the same set of characters.
+*/
