@@ -1,0 +1,85 @@
+/* O(n) */
+class Solution {
+    public String bestHand(int[] ranks, char[] suits){
+        HashMap<Integer, Integer> map = new HashMap<>();
+        HashSet<Character> set = new HashSet<>();
+        for(int i=0;i<5;i++){
+            map.put(ranks[i], map.getOrDefault(ranks[i],0)+1);
+            set.add(suits[i]);
+        }
+        if(set.size()==1) return "Flush";    //all five cards same suit
+        int max=0;
+        for (Integer value : map.values()){
+            max=Math.max(max, value);
+        }
+        if(max>2) return "Three of a Kind";
+        if(max==2) return "Pair";
+        else return "High Card";
+    }
+}
+
+/*
+LOGIC---
+set size=> l
+l==1 => all same kind
+l==2 => 4 same, 1 distinct || 3 same, 2 same
+l==3 => 2same, 2same, 1 distinct || 3 same, 1 distinct, 1 distinct 
+
+*/
+
+/* BEAUTIFIED CODE ONE PASS */
+class Solution {
+    public static String bestHand(int[] ranks, char[] suits) {
+        int[] cnt = new int[14];
+        int[] suit = new int[4];
+        boolean pair = false, three = false, flush = false;
+        for (int i = 0; i < 5; i++) {
+            cnt[ranks[i]]++;
+            suit[suits[i] - 'a']++;
+            if (suit[suits[i] - 'a'] == 5) flush = true;
+            if (cnt[ranks[i]] >= 3) three = true;
+            if (cnt[ranks[i]] == 2) pair = true;
+        }
+        if (flush) return "Flush";
+        if (three) return "Three of a Kind";
+        if (pair) return "Pair";
+        return "High Card";
+    }
+}
+
+
+
+AMAZON Follow UP---
+add a Full House (one Pair and one Three of a Kind)
+class Solution {
+    public static String bestHand(int[] ranks, char[] suits) {
+        int[] cnt = new int[14];
+        int[] suit = new int[4];
+        boolean pair = false, three = false, flush = false;
+        int pairCount = 0;
+        for (int i = 0; i < 5; i++) {
+            cnt[ranks[i]]++;
+            suit[suits[i] - 'a']++;
+
+            if (suit[suits[i] - 'a'] == 5) flush = true;
+            if (cnt[ranks[i]] == 3) three = true;
+            if (cnt[ranks[i]] == 2) {
+                pair = true;
+                pairCount++;
+            }
+        }
+        if (flush) return "Flush";
+        if (three && pairCount >= 2) return "Full House"; // Full House condition
+        if (three) return "Three of a Kind";
+        if (pair) return "Pair";
+        return "High Card";
+    }
+
+/*
+LOGIC---
+Full House Check:
+    A "Full House" consists of one Three of a Kind and one Pair.
+    The variable pairCount tracks how many distinct pairs exist. => main reason to use pair count
+    If three == true and pairCount >= 2 (ensuring another distinct pair), it's a Full House.
+
+*/
