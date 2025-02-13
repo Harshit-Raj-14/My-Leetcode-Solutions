@@ -1,0 +1,20 @@
+/* DFS O(m*n) */
+class Solution {
+    public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+        int originalColor = image[sr][sc];  // Store the original color
+        if (originalColor != color) {  // no flood fill if the original color and to color are same
+        solve(image, sr, sc, originalColor, color);
+        }
+        return image;
+    }
+
+    public static void solve(int mat[][], int i, int j, int oc, int x){
+        if(i<0 || j<0 || i>=mat.length || j>=mat[0].length) return;
+        if(mat[i][j]!=oc) return;
+        mat[i][j]=x;   //change the color
+        solve(mat, i+1, j, oc, x);
+        solve(mat, i-1, j, oc, x);
+        solve(mat, i, j+1, oc, x);
+        solve(mat, i, j-1, oc, x);
+    }
+}
