@@ -1,0 +1,95 @@
+/* USING ARRAY O(1) */
+class MyHashMap {
+    int[] map;
+    public MyHashMap() {
+        map = new int[1000000+1];
+    }
+    
+    public void put(int key, int value) {
+        map[key] = value+1;
+    }
+    
+    public int get(int key) {
+        return map[key]-1;
+    }
+    
+    public void remove(int key) {
+        map[key] = 0;
+    }
+}
+
+/*
+LOGIC---
+Why doing value+1 and value-1?
+The value of arrays will be initiated as 0 automatically.
+But it is also legal to insert a pair such as (key, 0);
+We need to distinguish the inserted value 0 from the original 0;
+And for the original 0s, it will be returned as -1;
+
+You can also fill the array with -1 and then +1 and -1 is no longer useful.
+
+So, in fact we take the base as number 1 instead of 0 to resolve this issue.
+this way we avoid using Arrays.fill() and keep the tc to O(1)
+*/
+
+
+/* USING LINKEDLIST */
+class MyHashMap {
+
+    static class ListNode {
+        int key, val;
+        ListNode next;
+        
+        ListNode(int key, int val, ListNode next) {
+            this.key = key;
+            this.val = val;
+            this.next = next;
+        }
+    }
+    
+    ListNode[] map;
+
+    /** Initialize your data structure here. */
+    public MyHashMap() {
+        map = new ListNode[10000];
+    }
+    
+    ListNode find(ListNode x, int key) {
+        if (x == null) return null;
+        if (x.key == key) return x;
+        return find(x.next, key);
+    }
+    
+    ListNode remove(ListNode x, int key) {
+        if (x == null) return null;
+        if (x.key == key) return x.next;
+        x.next = remove(x.next, key);
+        return x;
+    }
+    
+    /** value will always be non-negative. */
+    public void put(int key, int value) {
+        int hash = key % 10000;
+        ListNode x = find(map[hash], key);
+        if (x != null) {
+            x.val = value;
+        } else {
+            map[hash] = new ListNode(key, value, map[hash]);
+        }
+    }
+    
+    /** Returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key */
+    public int get(int key) {
+        int hash = key % 10000;
+        ListNode x = find(map[hash], key);
+        if (x != null) return x.val;
+        return -1;
+    }
+    
+    /** Removes the mapping of the specified value key if this map contains a mapping for the key */
+    public void remove(int key) {
+        int hash = key % 10000;
+        map[hash] = remove(map[hash], key);
+    }    
+
+}
